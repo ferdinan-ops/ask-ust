@@ -1,0 +1,9 @@
+// alias pada folder component
+{
+   "compilerOptions": {
+     "baseUrl": ".",
+     "paths": {
+       "@components/*": ["components/*"]
+     }
+   }
+ }
