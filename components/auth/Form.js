@@ -1,3 +1,4 @@
+import LoadingBtn from "@components/loading/LoadingBtn";
 import Link from "next/link";
 import React from "react";
 import GoogleIcon from "../../public/icons/google.svg";
@@ -9,6 +10,7 @@ function Form({
   handleSubmit,
   handleChangeText,
   data,
+  isLoading,
 }) {
   return (
     <div className="2xl:px-40 lg:w-1/2 w-full md:py-0 p-10 m-auto ">
@@ -36,9 +38,11 @@ function Form({
             <label htmlFor="name">Nama</label>
             <input
               type="text"
-              id="name"
+              id="username"
               placeholder="Masukkan Nama"
               className="input-auth"
+              onChange={handleChangeText}
+              value={data.username}
             />
           </div>
         )}
@@ -90,8 +94,9 @@ function Form({
         <button
           className="w-full bg-primary text-white py-5 rounded-md font-semibold hover:shadow-2xl hover:shadow-primary/20 transition duration-300 ease-in-out"
           type="submit"
+          disabled={isLoading}
         >
-          {isLogin ? "Masuk" : "Mendaftar"}
+          {isLoading ? <LoadingBtn /> : isLogin ? "Masuk" : "Mendaftar"}
         </button>
       </form>
 
