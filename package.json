@@ -10,6 +10,7 @@
     "knex": "dotenv -e .env.local knex"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
     "bcryptjs": "^2.4.3",
     "dotenv-cli": "^6.0.0",
     "firebase": "^9.9.3",

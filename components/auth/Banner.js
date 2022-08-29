@@ -1,6 +1,6 @@
 import React from "react";
 
-function Banner({ image, description }) {
+function Banner({ image, isLogin }) {
   return (
     <div className="lg:w-1/2 bg-gradient-to-b from-[#3C0D0D] to-[#761D1D] lg:flex hidden relative overflow-hidden">
       <div className="m-auto">
@@ -14,8 +14,9 @@ function Banner({ image, description }) {
             UDF.VERCEL.COM
           </p>
           <p className="text-2xl text-white">
-            Diskusi secara online semakin mudah – tetap berdiskusi walaupun pake
-            kuota dari Kemendikbud hehe~
+            {isLogin
+              ? "Diskusi secara online semakin mudah – tetap berdiskusi walaupun pake kuota dari Kemendikbud hehe~"
+              : "Ayo mendaftar dan rajin berdiskusi di sini supaya masalah Anda cepat terselesaikan biar gak stress mulu~"}
           </p>
         </div>
       </div>

@@ -4,24 +4,31 @@ import React from "react";
 import GoogleIcon from "../../public/icons/google.svg";
 
 function Form({
-  description,
+  data,
   isLogin,
+  isLoading,
   isRegister,
+  authGoogle,
   handleSubmit,
   handleChangeText,
-  data,
-  isLoading,
 }) {
   return (
     <div className="2xl:px-40 lg:w-1/2 w-full md:py-0 p-10 m-auto ">
       <h1 className="text-[32px] font-bold mb-[10px]">
         {isLogin ? "Masuk" : "Daftar"}
       </h1>
-      <p className="text-black/60 mb-5 ">{description}</p>
+      <p className="text-black/60 mb-5 ">
+        {isLogin
+          ? "Anda dapat login dengan akun terdaftar Anda atau login cepat dengan akun Google Anda."
+          : "Masukkan detail data Anda di bawah."}
+      </p>
 
       {isLogin && (
         <>
-          <button className="w-full border py-5 font-semibold flex justify-center gap-4 rounded-md hover:bg-gray-50 bg-white ">
+          <button
+            className="w-full border py-5 font-semibold flex justify-center gap-4 rounded-md hover:bg-gray-50 bg-white"
+            onClick={authGoogle}
+          >
             <GoogleIcon /> Masuk dengan Google
           </button>
           <div className="flex justify-between items-center mt-[35px]">

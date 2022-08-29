@@ -16,3 +16,13 @@
     @apply opacity-100;
   }
 }
+
+@layer components {
+  .hoverAnimation {
+    @apply h-[52px] w-[52px] cursor-pointer rounded-full transition  ease-in-out hover:bg-[#EEE] xl:h-auto xl:w-auto xl:py-3 xl:px-4 duration-300;
+  }
+
+  .hoverLogo {
+    @apply h-[52px] w-[52px] cursor-pointer rounded-full transition  ease-in-out hover:bg-primary/10 xl:h-auto xl:w-auto xl:py-3 xl:px-4 duration-300;
+  }
+}

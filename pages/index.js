@@ -1,20 +1,25 @@
-import Head from 'next/head'
-import Container from '@components/Container';
-import Layout from '@components/Layout';
-import SideMenu from '@components/SideMenu';
-import Main from '@components/Main';
-import SideColumn from '@components/SideColumn';
+import Feed from "@components/main/Feed";
+import Sidebar from "@components/main/Sidebar";
+import { authPage } from "middlewares/authorizationPage";
 
-export default function Home() {
+export async function getServerSideProps(ctx) {
+  const { token, id } = await authPage(ctx);
+
+  const userReq = await fetch(`${process.env.URL_SERVER}/api/auth/user/${id}`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  const user = await userReq.json();
+
+  return { props: { user: user.data } };
+}
+
+export default function Home({ user }) {
   return (
-    <Layout>
-      <Container>
-        <div className='flex py-8 items-start'>
-          <SideMenu />
-          <Main />
-          <SideColumn />
-        </div>
-      </Container>
-    </Layout>
-  )
+    <main className="mx-auto flex min-h-screen max-w-[1500px]">
+      <Sidebar session={user} />
+      <Feed />
+    </main>
+  );
 }

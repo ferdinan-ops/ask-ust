@@ -4,7 +4,7 @@ export function unauthPage(ctx) {
   return new Promise((resolve) => {
     const allCookies = cookies(ctx);
 
-    if (allCookies.token) {
+    if (allCookies.token && allCookies.session) {
       return ctx.res.writeHead(302, { location: "/" }).end();
     }
 
@@ -16,10 +16,10 @@ export function authPage(ctx) {
   return new Promise((resolve) => {
     const allCookies = cookies(ctx);
 
-    if (!allCookies.token) {
+    if (!allCookies.token && !allCookies.session) {
       return ctx.res.writeHead(302, { location: "/auth/login" }).end();
     }
 
-    return resolve({ token: allCookies.token });
+    return resolve({ token: allCookies.token, id: allCookies.session });
   });
 }

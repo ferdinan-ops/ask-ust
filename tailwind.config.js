@@ -7,14 +7,6 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    container: {
-      screens: {
-        sm: "640px",
-        md: "768px",
-        lg: "1024px",
-        xl: "1080px",
-      },
-    },
     extend: {
       fontFamily: {
         sans: ["Montserrat", "sans-serif"],
@@ -27,6 +19,7 @@ module.exports = {
         column: "#F7F9FA",
         dark: "#202433",
         "secondary-dark": "#33394F",
+        secondary: "#d9d9d9",
       },
     },
   },

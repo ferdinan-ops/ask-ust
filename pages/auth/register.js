@@ -4,11 +4,6 @@ import Layout from "@components/auth/Layout";
 import { unauthPage } from "middlewares/authorizationPage";
 import React, { useState } from "react";
 
-export async function getServerSideProps(req, res) {
-  await unauthPage(ctx);
-  return { props: {} };
-}
-
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const [fields, setFields] = useState({
@@ -27,13 +22,19 @@ function Register() {
       body: JSON.stringify(fields),
       headers: { "Content-Type": "Aplication/json" },
     });
+    const registerRes = await registerReq.json();
 
-    if (!registerReq.ok) {
+    if (registerReq.status === 401) {
       setIsLoading(false);
-      return console.log("Error" + registerReq.status);
+      setFields({
+        username: "",
+        email: "",
+        password: "",
+        image: null,
+      });
+      return alert(registerRes.message);
     }
 
-    const registerRes = await registerReq.json();
     setIsLoading(false);
     setFields({
       username: "",
@@ -41,6 +42,9 @@ function Register() {
       password: "",
       image: null,
     });
+
+    Cookies.set("token", registerRes.token);
+    Router.push("/");
   };
 
   const fieldHandler = (e) => {
@@ -50,12 +54,8 @@ function Register() {
 
   return (
     <Layout>
-      <Banner
-        description="Ayo mendaftar dan rajin berdiskusi di sini supaya masalah Anda cepat terselesaikan biar gak stress mulu~"
-        image="register"
-      />
+      <Banner image="register" />
       <Form
-        description="Masukkan detail data Anda di bawah."
         isRegister
         handleChangeText={fieldHandler}
         handleSubmit={registerHandler}
@@ -67,3 +67,8 @@ function Register() {
 }
 
 export default Register;
+
+export async function getServerSideProps(ctx) {
+  await unauthPage(ctx);
+  return { props: {} };
+}
