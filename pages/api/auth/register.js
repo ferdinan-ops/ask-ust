@@ -24,7 +24,7 @@ export default async function handler(req, res) {
   const register = await db("users").insert({
     username,
     email,
-    passwordHash,
+    password: passwordHash,
     image,
   });
   const registeredUser = await db("users").where({ id: register }).first();

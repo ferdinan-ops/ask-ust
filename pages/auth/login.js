@@ -17,12 +17,11 @@ function Login(props) {
   const fieldHandler = (e) => {
     const { id, value } = e.target;
     setFields({ ...fields, [id]: value });
-    console.log(fields);
   };
 
   const loginHandler = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    dispatch({ type: "CHANGE_LOADING", value: true });
 
     const loginReq = await fetch("/api/auth/login", {
       method: "POST",
@@ -31,17 +30,17 @@ function Login(props) {
     });
 
     if (!loginReq.ok) {
-      setIsLoading(false);
+      dispatch({ type: "CHANGE_LOADING", value: false });
       return console.log("Error" + loginReq.status);
     }
 
     const loginRes = await loginReq.json();
-    setIsLoading(false);
     setFields({ email: "", password: "" });
 
     Cookies.set("token", loginRes.token);
     Cookies.set("session", JSON.stringify(loginRes.data.id));
     Router.push("/");
+    dispatch({ type: "CHANGE_LOADING", value: false });
   };
 
   const authGoogle = async (e) => {

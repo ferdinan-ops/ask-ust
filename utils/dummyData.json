@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "username": "Azeey",
+    "image": "/ayank.jpg",
+    "score": 500,
+    "tag": "@azeey"
+  },
+  {
+    "id": 2,
+    "username": "SpaceX",
+    "image": "https://twitter-clone-delta-rose.vercel.app/_next/image?url=https%3A%2F%2Frb.gy%2Furakiy&w=128&q=75",
+    "score": 400,
+    "tag": "@spacex"
+  },
+  {
+    "id": 3,
+    "username": "Elon Musk",
+    "image": "https://twitter-clone-delta-rose.vercel.app/_next/image?url=https%3A%2F%2Frb.gy%2Faluxgh&w=128&q=75",
+    "score": 330,
+    "tag": "@elonmusk"
+  },
+  {
+    "id": 4,
+    "username": "Tesla",
+    "image": "https://twitter-clone-delta-rose.vercel.app/_next/image?url=https%3A%2F%2Frb.gy%2Fzyvazm&w=128&q=75",
+    "score": 328,
+    "tag": "@tesla"
+  },
+  {
+    "id": 5,
+    "username": "Some One",
+    "image": "https://images.unsplash.com/photo-1505866535066-ccebd6b2b98a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=889&q=80",
+    "score": 301,
+    "tag": "@someone"
+  }
+]

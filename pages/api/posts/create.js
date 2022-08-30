@@ -8,10 +8,15 @@ export default async function handler(req, res) {
   const auth = await authorization(req, res);
 
   // body request
-  const { title, content, id_user } = JSON.parse(req.body);
+  const { title, content, id_user, answered } = JSON.parse(req.body);
 
   // insert data
-  const create = await db("posts").insert({ title, content, id_user });
+  const create = await db("posts").insert({
+    title,
+    content,
+    id_user,
+    answered,
+  });
 
   // select data
   const createdData = await db("posts").where("id", create).first();

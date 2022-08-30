@@ -12,12 +12,16 @@ import { useRouter } from "next/router";
 function Sidebar({ session }) {
   const router = useRouter();
   const { username, image } = session;
+  const tag = username.split(" ").join("").toLocaleLowerCase();
 
   return (
     <div className="fixed hidden h-full flex-col items-center p-2 sm:flex xl:w-[340px] xl:items-start">
       {/* logo */}
-      <div className="hoverLogo flex h-14 w-14 items-center justify-center p-0 xl:ml-24 ">
-        <img src="/logo.svg" alt="" width={40} height={40} />
+      <div className="flex items-center gap-x-3">
+        <div className="hoverLogo flex h-14 w-14 items-center justify-center p-0 xl:ml-24 ">
+          <img src="/logo-2.svg" alt="" width={40} height={40} />
+        </div>
+        <span className="font-bold text-xl hidden xl:flex">UDF</span>
       </div>
 
       {/* list menu */}
@@ -55,22 +59,25 @@ function Sidebar({ session }) {
       </div>
 
       {/* Make button */}
-      <button className="ml-auto hidden h-[52px] w-56 rounded-full bg-primary text-base font-bold text-white shadow-md hover:bg-[#901211] xl:inline mt-10">
+      <button
+        className="ml-auto hidden h-[52px] w-56 rounded-full bg-primary text-base font-bold text-white shadow-md hover:bg-[#C21D28] xl:inline mt-10"
+        onClick={() => router.push("posts/create")}
+      >
         Buat Pertanyaan
       </button>
 
       {/* Logout button */}
-      <div className="hoverAnimation mt-auto flex max-w-[230px] items-center justify-center text-slate-800 xl:ml-auto group">
+      <div className="hoverAnimation mt-auto flex max-w-[230px] xl:min-w-[220px] items-center justify-center xl:justify-between text-slate-800 xl:ml-auto group">
         <img
-          src={image !== null ? image : "/images/profile-dasar.jpg"}
+          src={image !== null ? image : "/profile.jpg"}
           alt=""
           className="h-10 w-10 rounded-full xl:mr-3"
           referrerPolicy="no-referrer"
         />
         <div className="hidden leading-5 xl:inline">
           <h4 className="max-w-[88px] truncate font-bold">{username}</h4>
-          <p className="max-w-[88px] text-sm truncate text-green-500 font-medium">
-            online &bull;
+          <p className="max-w-[88px] text-sm truncate text-[#5B7083] font-medium">
+            @{tag}
           </p>
         </div>
         <DotsHorizontalIcon className="ml-10 hidden h-5 xl:inline" />

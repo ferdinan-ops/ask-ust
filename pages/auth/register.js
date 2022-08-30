@@ -1,8 +1,10 @@
 import Banner from "@components/auth/Banner";
 import Form from "@components/auth/Form";
 import Layout from "@components/auth/Layout";
+import Cookies from "js-cookie";
 import { unauthPage } from "middlewares/authorizationPage";
 import React, { useState } from "react";
+import Router from "next/router";
 
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
@@ -44,6 +46,7 @@ function Register() {
     });
 
     Cookies.set("token", registerRes.token);
+    Cookies.set("session", JSON.stringify(registerRes.data.id));
     Router.push("/");
   };
 

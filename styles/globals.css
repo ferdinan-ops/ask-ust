@@ -9,9 +9,19 @@
   .menu-icon {
     @apply w-full py-[15px] px-[10px] flex items-center gap-4;
   }
-  .input-box {
-    @apply rounded-lg bg-input py-5 px-10 text-base outline-none;
+
+  .label {
+    @apply font-semibold mb-1 text-slate-700 text-lg after:content-['*'] after:text-pink-500 after:ml-0.5;
   }
+
+  .button-create {
+    @apply block py-2 px-4 font-medium rounded-md text-sm;
+  }
+
+  .input-create {
+    @apply px-3 py-2 border shadow rounded w-full block placeholder:text-slate-400 focus:outline-none focus:ring-2 text-base focus:ring-sky-500 focus:border-sky-500 mt-[10px];
+  }
+
   #check-box:checked ~ .checked-icon {
     @apply opacity-100;
   }

@@ -6,7 +6,7 @@ function SidebarLink({ Icon, text, active, href }) {
       <a className="block">
         <div
           className={`hoverAnimation flex items-center justify-center space-x-3 text-xl xl:justify-start ${
-            active ? "font-bold text-primary" : "text-slate-900"
+            active ? "font-bold text-primary" : "text-font font-medium"
           }`}
         >
           <Icon className="h-7" />
