@@ -4,6 +4,7 @@ import Widget from "@components/main/Widget";
 import { authPage } from "middlewares/authorizationPage";
 import { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 
 export async function getServerSideProps(ctx) {
   const { token, id } = await authPage(ctx);
@@ -25,6 +26,8 @@ export async function getServerSideProps(ctx) {
 export default function Home({ user, allposts }) {
   const [userData, setUserData] = useState(user);
   const [posts, setPosts] = useState(allposts);
+  const dispatch = useDispatch();
+  dispatch({ type: "CHANGE_LOADING", value: false });
 
   return (
     <main className="mx-auto flex min-h-screen max-w-[1500px]">

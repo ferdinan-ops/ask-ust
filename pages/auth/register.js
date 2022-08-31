@@ -1,10 +1,11 @@
-import Banner from "@components/auth/Banner";
-import Form from "@components/auth/Form";
-import Layout from "@components/auth/Layout";
-import Cookies from "js-cookie";
 import { unauthPage } from "middlewares/authorizationPage";
+import Banner from "@components/auth/Banner";
+import Layout from "@components/auth/Layout";
+import Form from "@components/auth/Form";
 import React, { useState } from "react";
 import Router from "next/router";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,41 +13,27 @@ function Register() {
     username: "",
     email: "",
     password: "",
-    image: null,
   });
 
   const registerHandler = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const registerReq = await fetch("/api/auth/register", {
-      method: "POST",
-      body: JSON.stringify(fields),
+    const register = await axios.post("/api/auth/register", fields, {
       headers: { "Content-Type": "Aplication/json" },
     });
-    const registerRes = await registerReq.json();
 
-    if (registerReq.status === 401) {
+    if (register.status === 401) {
       setIsLoading(false);
-      setFields({
-        username: "",
-        email: "",
-        password: "",
-        image: null,
-      });
-      return alert(registerRes.message);
+      setFields({ username: "", email: "", password: "" });
+      return alert(register.data.message);
     }
 
+    const { token, data } = register.data;
     setIsLoading(false);
-    setFields({
-      username: "",
-      email: "",
-      password: "",
-      image: null,
-    });
-
-    Cookies.set("token", registerRes.token);
-    Cookies.set("session", JSON.stringify(registerRes.data.id));
+    setFields({ username: "", email: "", password: "" });
+    Cookies.set("token", token);
+    Cookies.set("session", data.id);
     Router.push("/");
   };
 

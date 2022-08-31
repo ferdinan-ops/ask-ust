@@ -19,7 +19,7 @@
   }
 
   .input-create {
-    @apply px-3 py-2 border shadow rounded w-full block placeholder:text-slate-400 focus:outline-none focus:ring-2 text-base focus:ring-sky-500 focus:border-sky-500 mt-[10px];
+    @apply px-3 py-2 border shadow rounded w-full block placeholder:text-slate-400 focus:outline-none focus:ring-2 text-base focus:ring-primary focus:border-primary mt-[10px];
   }
 
   #check-box:checked ~ .checked-icon {
@@ -34,5 +34,9 @@
 
   .hoverLogo {
     @apply h-[52px] w-[52px] cursor-pointer rounded-full transition  ease-in-out hover:bg-primary/10 xl:h-auto xl:w-auto xl:py-3 xl:px-4 duration-300;
+  }
+
+  .icon {
+    @apply flex h-9 w-9 cursor-pointer items-center justify-center rounded-full transition ease-out hover:bg-[#eee] hover:text-primary;
   }
 }

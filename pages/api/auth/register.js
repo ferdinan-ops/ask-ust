@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
-  const { username, email, password, image } = JSON.parse(req.body);
+  const { username, email, password } = JSON.parse(req.body);
 
   // middleware
   const checkEmail = await db("users").where({ email }).first();
@@ -25,7 +25,6 @@ export default async function handler(req, res) {
     username,
     email,
     password: passwordHash,
-    image,
   });
   const registeredUser = await db("users").where({ id: register }).first();
 

@@ -1,22 +1,27 @@
-import { useState } from "react";
-import dynamic from "next/dynamic";
-import { EditorState, convertToRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { EditorState, convertToRaw } from "draft-js";
+import { useEffect, useState } from "react";
 import draftToHtml from "draftjs-to-html";
+import dynamic from "next/dynamic";
+import Prism from "prismjs";
 
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
   { ssr: false }
 );
 
-export default function TextEditor() {
+export default function TextEditor({ setContent }) {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [content, setContent] = useState();
+  const [uploadedImages, setUploadedImages] = useState([]);
+
   const contentHandler = (newState) => {
     setEditorState(newState);
     setContent(draftToHtml(convertToRaw(newState.getCurrentContent())));
   };
-  console.log(content);
+
+  useEffect(() => Prism.highlightAll(), []);
+
+  function uploadImageCallBack(file) {}
 
   return (
     <div className="input-create min-h-[450px]">
@@ -28,7 +33,6 @@ export default function TextEditor() {
             "inline",
             "blockType",
             "list",
-            "colorPicker",
             "link",
             "emoji",
             "image",
@@ -37,9 +41,12 @@ export default function TextEditor() {
           ],
           inline: { inDropdown: true },
           list: { inDropdown: true },
-          textAlign: { inDropdown: true },
           link: { inDropdown: true },
           history: { inDropdown: true },
+          image: {
+            uploadCallback: uploadImageCallBack,
+            alt: { present: true, mandatory: false },
+          },
         }}
       />
     </div>

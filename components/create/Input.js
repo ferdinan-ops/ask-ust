@@ -1,8 +1,16 @@
+import LoadingBtn from "@components/loading/LoadingBtn";
+import { useState } from "react";
 import TextEditor from "./TextEditor";
 
-export default function Input() {
+export default function Input({
+  setContent,
+  setTitle,
+  title,
+  createHandler,
+  isLoading,
+}) {
   return (
-    <form className="text-font p-5">
+    <form className="text-font p-5" onSubmit={createHandler}>
       {/* title */}
       <div className="flex flex-col">
         <label htmlFor="judul" className="label">
@@ -12,14 +20,15 @@ export default function Input() {
           placeholder="Masukkan Judul Pertanyaan Anda..."
           className="input-create"
           id="judul"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
       </div>
 
       {/* editor */}
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-y-[10px]">
         <label className="label mt-[30px]">Deskripsi</label>
-        {/* <textarea className="input-create" /> */}
-        <TextEditor />
+        <TextEditor setContent={setContent} />
       </div>
 
       {/* Submit and cancel */}
@@ -30,8 +39,9 @@ export default function Input() {
         <button
           className="bg-primary text-white hover:bg-[#C21D28] button-create"
           type="submit"
+          disabled={isLoading}
         >
-          Kirim Pertanyaan Anda
+          {isLoading ? <LoadingBtn /> : "Kirim Pertanyaan Anda"}
         </button>
       </div>
     </form>

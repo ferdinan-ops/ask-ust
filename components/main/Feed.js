@@ -4,7 +4,6 @@ import { useState } from "react";
 
 function Feed({ allPosts }) {
   const [posts, setPosts] = useState(allPosts);
-  console.log(posts);
 
   return (
     <Main title="Beranda">

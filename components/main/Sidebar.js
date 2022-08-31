@@ -8,11 +8,23 @@ import {
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import SidebarLink from "./SidebarLink";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
+import { useState } from "react";
 
 function Sidebar({ session }) {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { username, image } = session;
   const tag = username.split(" ").join("").toLocaleLowerCase();
+
+  const [show, setShow] = useState(false);
+
+  const logoutHandler = (e) => {
+    e.preventDefault();
+    Cookies.remove("token");
+    router.replace("/auth/login");
+  };
 
   return (
     <div className="fixed hidden h-full flex-col items-center p-2 sm:flex xl:w-[340px] xl:items-start">
@@ -61,13 +73,19 @@ function Sidebar({ session }) {
       {/* Make button */}
       <button
         className="ml-auto hidden h-[52px] w-56 rounded-full bg-primary text-base font-bold text-white shadow-md hover:bg-[#C21D28] xl:inline mt-10"
-        onClick={() => router.push("posts/create")}
+        onClick={() => {
+          router.push("posts/create");
+          dispatch({ type: "CHANGE_LOADING", value: true });
+        }}
       >
         Buat Pertanyaan
       </button>
 
       {/* Logout button */}
-      <div className="hoverAnimation mt-auto flex max-w-[230px] xl:min-w-[220px] items-center justify-center xl:justify-between text-slate-800 xl:ml-auto group">
+      <div
+        className="relative hoverAnimation mt-auto flex max-w-[230px] xl:min-w-[220px] items-center justify-center xl:justify-between text-slate-800 xl:ml-auto group"
+        onClick={() => setShow(!show)}
+      >
         <img
           src={image !== null ? image : "/profile.jpg"}
           alt=""
@@ -81,6 +99,15 @@ function Sidebar({ session }) {
           </p>
         </div>
         <DotsHorizontalIcon className="ml-10 hidden h-5 xl:inline" />
+
+        {show && (
+          <div
+            className="absolute shadow-lg bg-red-500 border-2 max-w-[220px] w-[220px] px-4 py-3 -top-16 left-1/2 -translate-x-1/2 rounded-md"
+            onClick={logoutHandler}
+          >
+            <p className="text-center font-semibold text-white">Keluar</p>
+          </div>
+        )}
       </div>
     </div>
   );

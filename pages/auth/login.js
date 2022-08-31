@@ -9,40 +9,41 @@ import { connect } from "react-redux";
 import { useState } from "react";
 import Router from "next/router";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 function Login(props) {
   const [fields, setFields] = useState({ email: "", password: "" });
   const dispatch = useDispatch();
 
+  // input handler
   const fieldHandler = (e) => {
     const { id, value } = e.target;
     setFields({ ...fields, [id]: value });
   };
 
+  // login without google
   const loginHandler = async (e) => {
     e.preventDefault();
     dispatch({ type: "CHANGE_LOADING", value: true });
 
-    const loginReq = await fetch("/api/auth/login", {
-      method: "POST",
-      body: JSON.stringify(fields),
+    const login = await axios.post("/api/auth/login", fields, {
       headers: { "Content-Type": "Aplication/json" },
     });
 
-    if (!loginReq.ok) {
+    if (login.status !== 200) {
       dispatch({ type: "CHANGE_LOADING", value: false });
-      return console.log("Error" + loginReq.status);
+      return console.log("Error" + login.status);
     }
 
-    const loginRes = await loginReq.json();
+    const { token, data } = login.data;
     setFields({ email: "", password: "" });
-
-    Cookies.set("token", loginRes.token);
-    Cookies.set("session", JSON.stringify(loginRes.data.id));
+    Cookies.set("token", token);
+    Cookies.set("session", data.id);
     Router.push("/");
     dispatch({ type: "CHANGE_LOADING", value: false });
   };
 
+  // login with google
   const authGoogle = async (e) => {
     const response = await props.loginGoogle();
     if (response) {
@@ -54,17 +55,14 @@ function Login(props) {
       };
 
       dispatch({ type: "CHANGE_LOADING", value: true });
-      const googleReq = await fetch("/api/auth/google", {
-        method: "POST",
-        body: JSON.stringify(dataUser),
+      const google = await axios.post("/api/auth/google", dataUser, {
         headers: { "Content-Type": "Aplication/json" },
       });
 
-      if (!googleReq.ok) return console.log("error => " + googleReq.status);
-      const googleRes = await googleReq.json();
-
-      Cookies.set("token", googleRes.token);
-      Cookies.set("session", JSON.stringify(googleRes.data.id));
+      if (google.status !== 200) console.log("error" + google.status);
+      const { token, data } = google.data;
+      Cookies.set("token", token);
+      Cookies.set("session", data.id);
       Router.push("/");
     }
   };
