@@ -37,6 +37,6 @@
   }
 
   .icon {
-    @apply flex h-9 w-9 cursor-pointer items-center justify-center rounded-full transition ease-out hover:bg-[#eee] hover:text-primary;
+    @apply flex h-9 w-9 cursor-pointer items-center justify-center rounded-full transition ease-out hover:bg-[#eee];
   }
 }

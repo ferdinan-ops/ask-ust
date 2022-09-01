@@ -1,16 +1,11 @@
-import {
-  BellIcon,
-  BookmarkIcon,
-  DotsCircleHorizontalIcon,
-  HomeIcon,
-  UserIcon,
-} from "@heroicons/react/solid";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
+import { useDispatch } from "react-redux";
 import SidebarLink from "./SidebarLink";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
-import Cookies from "js-cookie";
 import { useState } from "react";
+import Cookies from "js-cookie";
+import { menus } from "../../utils/menus";
+import { PlusCircleIcon } from "@heroicons/react/solid";
 
 function Sidebar({ session }) {
   const router = useRouter();
@@ -38,47 +33,28 @@ function Sidebar({ session }) {
 
       {/* list menu */}
       <div className="mt-4 mb-2.5 space-y-2.5 xl:ml-24">
-        <SidebarLink
-          href="/"
-          text="Beranda"
-          Icon={HomeIcon}
-          active={router.pathname == "/" ? true : false}
-        />
-        <SidebarLink
-          href="/notification"
-          text="Notifikasi"
-          Icon={BellIcon}
-          active={router.pathname == "/notification" ? true : false}
-        />
-        <SidebarLink
-          href="/bookmarks"
-          text="Disimpan"
-          Icon={BookmarkIcon}
-          active={router.pathname == "/bookmarks" ? true : false}
-        />
-        <SidebarLink
-          href="/profile"
-          text="Profil"
-          Icon={UserIcon}
-          active={router.pathname == "/profile" ? true : false}
-        />
-        <SidebarLink
-          href="/more"
-          text="Lainnya"
-          Icon={DotsCircleHorizontalIcon}
-          active={router.pathname == "/more" ? true : false}
-        />
+        {menus.map((menu, index) => (
+          <SidebarLink
+            key={index}
+            href={menu.href}
+            text={menu.text}
+            Icon={menu.Icon}
+            active={router.pathname == menu.href ? true : false}
+          />
+        ))}
       </div>
 
       {/* Make button */}
       <button
-        className="ml-auto hidden h-[52px] w-56 rounded-full bg-primary text-base font-bold text-white shadow-md hover:bg-[#C21D28] xl:inline mt-10"
+        className="xl:ml-auto xl:h-[52px] xl:w-56 rounded-full text-primary hover:text-[#C21D28] xl:hover:text-white xl:bg-primary text-base font-bold xl:text-white shadow-md xl:hover:bg-[#C21D28] xl:inline mt-10"
         onClick={() => {
           router.push("posts/create");
           dispatch({ type: "CHANGE_LOADING", value: true });
         }}
+        title="Buat Pertanyaan"
       >
-        Buat Pertanyaan
+        <span className="hidden xl:inline">Buat Pertanyaan</span>
+        <PlusCircleIcon className="h-10 m-auto block xl:hidden" />
       </button>
 
       {/* Logout button */}
@@ -102,7 +78,7 @@ function Sidebar({ session }) {
 
         {show && (
           <div
-            className="absolute shadow-lg bg-red-500 border-2 max-w-[220px] w-[220px] px-4 py-3 -top-16 left-1/2 -translate-x-1/2 rounded-md"
+            className="left-0 -top-16 absolute shadow-lg bg-red-500 border-2 max-w-[220px] w-[220px] px-4 py-3 xl:-top-16 xl:left-1/2 xl:-translate-x-1/2 rounded-md"
             onClick={logoutHandler}
           >
             <p className="text-center font-semibold text-white">Keluar</p>

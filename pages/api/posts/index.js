@@ -19,7 +19,8 @@ export default async function handler(req, res) {
       "posts.title",
       "posts.answered",
       "posts.updated_at"
-    );
+    )
+    .orderBy("posts.updated_at", "desc");
 
   res.status(200).json({
     message: "All Posts",

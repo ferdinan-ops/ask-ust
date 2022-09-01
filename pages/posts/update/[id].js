@@ -1,12 +1,12 @@
+import { authPage } from "middlewares/authorizationPage";
 import Sidebar from "@components/main/Sidebar";
 import Widget from "@components/main/Widget";
-import { authPage } from "middlewares/authorizationPage";
-import { useState } from "react";
-import axios from "axios";
-import Main from "@components/main/Main";
 import Input from "@components/create/Input";
 import { useDispatch } from "react-redux";
+import Main from "@components/main/Main";
 import Router from "next/router";
+import { useState } from "react";
+import axios from "axios";
 
 export async function getServerSideProps(ctx) {
   const { token, id } = await authPage(ctx);
@@ -17,34 +17,41 @@ export async function getServerSideProps(ctx) {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  return { props: { user: user.data.data, token } };
+  const { id: postId } = ctx.query;
+  const postURL = `${process.env.URL_SERVER}/api/posts/detail/${postId}`;
+  const post = await axios.get(postURL, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return { props: { user: user.data.data, token, post: post.data.data } };
 }
 
-export default function Create({ user, token }) {
-  const [content, setContent] = useState("<p>Masukkan Deskripsi disini...</p>");
+export default function Update({ user, token, post }) {
+  console.log(post);
+  const [content, setContent] = useState(post.content);
   const [userData, setUserData] = useState(user);
   const [loading, setLoading] = useState(false);
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(post.title);
 
   const dispatch = useDispatch();
   dispatch({ type: "CHANGE_LOADING", value: false });
 
-  const createHandler = async (e) => {
+  const updateHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const data = { title, content, id_user: userData.id, answered: false };
-    const create = await axios.post("/api/posts/create", data, {
+    const data = { title, content };
+    const update = await axios.put(`/api/posts/update/${post.id}`, data, {
       headers: {
         "Content-Type": "Aplication/json",
         Authorization: `Bearer ${token}`,
       },
     });
 
-    if (create.status !== 200) return console.log("Error" + create.status);
+    if (update.status !== 200) return console.log("Error" + update.status);
 
     setTitle("");
-    setContent("<p>Masukkan Deskripsi disini...</p>");
+    setContent("<p>Masukkan Deskripsi disini...<p>");
     setLoading(false);
     Router.push("/");
   };
@@ -52,12 +59,12 @@ export default function Create({ user, token }) {
   return (
     <main className="mx-auto flex min-h-screen max-w-[1500px]">
       <Sidebar session={userData} />
-      <Main title="Buat Pertanyaan">
+      <Main title="Edit Pertanyaan">
         <Input
           setTitle={setTitle}
           setContent={setContent}
           title={title}
-          createHandler={createHandler}
+          createHandler={updateHandler}
           isLoading={loading}
           content={content}
         />

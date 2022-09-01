@@ -1,9 +1,9 @@
 import LoadingBtn from "@components/loading/LoadingBtn";
-import { useState } from "react";
-import TextEditor from "./TextEditor";
+import TinyEditor from "./TinyEditor";
 
 export default function Input({
   setContent,
+  content,
   setTitle,
   title,
   createHandler,
@@ -22,13 +22,14 @@ export default function Input({
           id="judul"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          required
         />
       </div>
 
       {/* editor */}
       <div className="flex flex-col gap-y-[10px]">
         <label className="label mt-[30px]">Deskripsi</label>
-        <TextEditor setContent={setContent} />
+        <TinyEditor setContent={setContent} content={content} />
       </div>
 
       {/* Submit and cancel */}
