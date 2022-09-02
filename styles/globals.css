@@ -25,6 +25,15 @@
   #check-box:checked ~ .checked-icon {
     @apply opacity-100;
   }
+
+  .detail a {
+    display: inline-block;
+    @apply truncate max-w-[340px] xl:max-w-[620px];
+  }
+
+  code {
+    font-family: "Fira Code", monospace !important;
+  }
 }
 
 @layer components {

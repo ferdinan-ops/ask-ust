@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["Montserrat", "sans-serif"],
+        mono: ["Fira Code", "monospace"],
         // sans: ["Poppins", "sans-serif"],
         // sans: ["Inter", "sans-serif"],
       },
@@ -20,5 +21,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };

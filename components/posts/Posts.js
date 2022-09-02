@@ -43,12 +43,15 @@ function Posts({ post, sessionId, deleteHandler }) {
           </div>
           <div
             className="icon group ml-auto flex-shrink-0 relative"
-            onClick={() => setShow(!show)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShow(!show);
+            }}
           >
             <DotsHorizontalIcon className="h-5 text-gray-500" />
             {show && (
               <More
-                userPost={sessionId === userId}
+                isUserHave={sessionId === userId}
                 deleteHandler={deleteHandler}
                 postId={postId}
               />

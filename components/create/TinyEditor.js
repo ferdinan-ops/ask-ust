@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-import "prismjs/themes/prism-laserwave.css";
+import "prismjs/themes/prism-dracula.css";
 import Prism from "prismjs";
 
 function TinyEditor({ content, setContent }) {
@@ -35,9 +35,8 @@ function TinyEditor({ content, setContent }) {
           ],
           toolbar:
             "undo redo " +
-            "| bold italic backcolor | " +
-            "image codesample link | numlist bullist | " +
-            "removeformat | help",
+            " | bold italic backcolor | " +
+            " | image link codesample | numlist bullist",
         }}
       />
     </>

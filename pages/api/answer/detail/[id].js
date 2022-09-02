@@ -8,16 +8,13 @@ export default async function handler(req, res) {
 
   const auth = await authorization(req, res);
 
-  const post = await db("users")
-    .join("posts", "users.id", "=", "posts.id_user")
-    .select("users.username", "users.image", "posts.*")
-    .where({ "posts.id": id })
-    .first();
-
-  if (!post) return res.status(404).end();
+  const answerList = await db("answer")
+    .join("users", "answer.id_user", "=", "users.id")
+    .select("users.username", "users.image", "answer.*")
+    .where({ id_post: id });
 
   res.status(200).json({
-    message: "detail post",
-    data: post,
+    message: `List Answer in this ${id} post`,
+    data: answerList,
   });
 }

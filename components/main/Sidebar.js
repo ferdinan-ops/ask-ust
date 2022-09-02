@@ -78,7 +78,7 @@ function Sidebar({ session }) {
 
         {show && (
           <div
-            className="left-0 -top-16 absolute shadow-lg bg-red-500 border-2 max-w-[220px] w-[220px] px-4 py-3 xl:-top-16 xl:left-1/2 xl:-translate-x-1/2 rounded-md"
+            className="left-0 -top-16 z-[99999] absolute shadow-lg bg-red-500 border-2 max-w-[220px] w-[220px] px-4 py-3 xl:-top-16 xl:left-1/2 xl:-translate-x-1/2 rounded-md"
             onClick={logoutHandler}
           >
             <p className="text-center font-semibold text-white">Keluar</p>

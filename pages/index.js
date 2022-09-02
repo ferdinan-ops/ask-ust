@@ -8,17 +8,19 @@ import { useDispatch } from "react-redux";
 
 export async function getServerSideProps(ctx) {
   const { token, id } = await authPage(ctx);
+  const options = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
 
   // user session data
   const userURL = `${process.env.URL_SERVER}/api/auth/user/${id}`;
-  const user = await axios.get(userURL, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const user = await axios.get(userURL, options);
 
   // posts data
-  const posts = await axios.get(process.env.URL_SERVER + "/api/posts/", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const posts = await axios.get(
+    process.env.URL_SERVER + "/api/posts/",
+    options
+  );
 
   return { props: { user: user.data.data, allposts: posts.data.data, token } };
 }

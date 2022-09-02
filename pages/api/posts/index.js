@@ -1,5 +1,4 @@
 import db from "../../../libs/db";
-import knex from "libs/db";
 import authorization from "middlewares/authorization";
 
 export default async function handler(req, res) {

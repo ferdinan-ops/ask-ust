@@ -6,8 +6,8 @@ function Widget() {
   const [topUser, setTopUser] = useState(mockUser);
 
   return (
-    <div className="ml-8 hidden space-y-5 py-1 pb-4 lg:inline xl:w-[450px]">
-      <div className="sticky top-0 z-50  py-1.5 xl:w-9/12">
+    <div className="2xl:fixed 2xl:right-14 2xl:inline hidden space-y-5 py-1 pb-4 xl:w-[450px]">
+      <div className="py-1.5 xl:w-9/12">
         <div className="relative flex items-center bg-[#EBEEF0] rounded-full bg-[#] p-3">
           <SearchIcon className="z-50 h-5 text-gray-500" />
           <input
