@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import Router from "next/router";
 import Cookies from "js-cookie";
 import axios from "axios";
+import Head from "next/head";
 
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,17 +43,16 @@ function Register() {
     setFields({ ...fields, [id]: value });
   };
 
+  const formProps = { fieldHandler, handleSubmit: registerHandler, fields, isLoading }
+
   return (
-    <Layout>
-      <Banner image="register" />
-      <Form
-        isRegister
-        handleChangeText={fieldHandler}
-        handleSubmit={registerHandler}
-        data={fields}
-        isLoading={isLoading}
-      />
-    </Layout>
+    <>
+      <Head><title>UDF - Ayo Segera Daftarkan Dirimu</title></Head>
+      <Layout>
+        <Banner image="register" />
+        <Form isRegister {...formProps} />
+      </Layout>
+    </>
   );
 }
 

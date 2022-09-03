@@ -9,6 +9,7 @@ exports.up = function (knex) {
     table.string("email");
     table.string("password");
     table.text("image");
+    table.text("banner");
     table.timestamps(true, true);
   });
 };

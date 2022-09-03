@@ -4,13 +4,13 @@ import React from "react";
 import GoogleIcon from "../../public/icons/google.svg";
 
 function Form({
-  data,
+  fields,
   isLogin,
   isLoading,
   isRegister,
   authGoogle,
+  fieldHandler,
   handleSubmit,
-  handleChangeText,
 }) {
   return (
     <div className="2xl:px-40 lg:w-1/2 w-full md:py-0 p-10 m-auto ">
@@ -48,8 +48,8 @@ function Form({
               id="username"
               placeholder="Masukkan Nama"
               className="input-auth"
-              onChange={handleChangeText}
-              value={data.username}
+              onChange={fieldHandler}
+              value={fields.username}
             />
           </div>
         )}
@@ -61,8 +61,8 @@ function Form({
             id="email"
             placeholder="Masukkan Email"
             className="input-auth"
-            onChange={handleChangeText}
-            value={data.email}
+            onChange={fieldHandler}
+            value={fields.email}
           />
         </div>
 
@@ -80,8 +80,8 @@ function Form({
             id="password"
             placeholder="Masukkan Password"
             className="input-auth"
-            onChange={handleChangeText}
-            value={data.password}
+            onChange={fieldHandler}
+            value={fields.password}
           />
         </div>
 

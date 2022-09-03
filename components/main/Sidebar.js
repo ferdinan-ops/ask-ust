@@ -48,7 +48,7 @@ function Sidebar({ session }) {
       <button
         className="xl:ml-auto xl:h-[52px] xl:w-56 rounded-full text-primary hover:text-[#C21D28] xl:hover:text-white xl:bg-primary text-base font-bold xl:text-white shadow-md xl:hover:bg-[#C21D28] xl:inline mt-10"
         onClick={() => {
-          router.push("posts/create");
+          router.push("/posts/create");
           dispatch({ type: "CHANGE_LOADING", value: true });
         }}
         title="Buat Pertanyaan"

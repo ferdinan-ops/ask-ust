@@ -5,6 +5,7 @@ import { authPage } from "middlewares/authorizationPage";
 import { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import Head from "next/head";
 
 export async function getServerSideProps(ctx) {
   const { token, id } = await authPage(ctx);
@@ -17,10 +18,8 @@ export async function getServerSideProps(ctx) {
   const user = await axios.get(userURL, options);
 
   // posts data
-  const posts = await axios.get(
-    process.env.URL_SERVER + "/api/posts/",
-    options
-  );
+  const postsURL = process.env.URL_SERVER + "/api/posts/";
+  const posts = await axios.get(postsURL, options);
 
   return { props: { user: user.data.data, allposts: posts.data.data, token } };
 }
@@ -40,12 +39,12 @@ export default function Home({ user, allposts, token }) {
       });
       const postFiltered = posts.filter((post) => post.postId !== id);
       setPosts(postFiltered);
-      console.log(postFiltered);
     }
   };
 
   return (
     <main className="mx-auto flex min-h-screen max-w-[1500px]">
+      <Head><title>UDF - Beranda</title></Head>
       <Sidebar session={userData} />
       <Feed allPosts={posts} session={userData} deleteHandler={deleteHandler} />
       <Widget />

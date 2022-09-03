@@ -8,17 +8,22 @@ import Moment from "react-moment";
 import { CheckCircleIcon } from "@heroicons/react/solid";
 import More from "@components/main/More";
 import Router from "next/router";
+import { useDispatch } from "react-redux";
 
 function Posts({ post, sessionId, deleteHandler }) {
   const { title, username, userImage, updated_at, answered, userId, postId } =
     post;
   const [show, setShow] = useState(false);
   const tag = username.split(" ").join("").toLocaleLowerCase();
+  const dispatch = useDispatch()
 
   return (
     <div
       className="flex cursor-pointer p-3 border-b-2 border-[#EBEEF0] hover:bg-slate-50 font-medium"
-      onClick={() => Router.push(`/posts/${postId}`)}
+      onClick={() => {
+        Router.push(`/posts/${postId}`)
+        dispatch({ type: "CHANGE_LOADING", value: true });
+      }}
     >
       <img
         src={userImage !== null ? userImage : "/profile.jpg"}

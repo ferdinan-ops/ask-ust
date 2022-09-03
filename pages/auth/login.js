@@ -10,10 +10,12 @@ import { useState } from "react";
 import Router from "next/router";
 import Cookies from "js-cookie";
 import axios from "axios";
+import Head from "next/head";
 
 function Login(props) {
   const [fields, setFields] = useState({ email: "", password: "" });
   const dispatch = useDispatch();
+  const options = { headers: { "Content-Type": "Aplication/json" }, }
 
   // input handler
   const fieldHandler = (e) => {
@@ -21,14 +23,19 @@ function Login(props) {
     setFields({ ...fields, [id]: value });
   };
 
+  const finishLogin = (token, data) => {
+    Cookies.set("token", token);
+    Cookies.set("session", data);
+    Router.push("/");
+    dispatch({ type: "CHANGE_LOADING", value: false });
+  }
+
   // login without google
   const loginHandler = async (e) => {
     e.preventDefault();
     dispatch({ type: "CHANGE_LOADING", value: true });
 
-    const login = await axios.post("/api/auth/login", fields, {
-      headers: { "Content-Type": "Aplication/json" },
-    });
+    const login = await axios.post("/api/auth/login", fields, options);
 
     if (login.status !== 200) {
       dispatch({ type: "CHANGE_LOADING", value: false });
@@ -37,10 +44,7 @@ function Login(props) {
 
     const { token, data } = login.data;
     setFields({ email: "", password: "" });
-    Cookies.set("token", token);
-    Cookies.set("session", data.id);
-    Router.push("/");
-    dispatch({ type: "CHANGE_LOADING", value: false });
+    finishLogin(token, data.id)
   };
 
   // login with google
@@ -55,29 +59,24 @@ function Login(props) {
       };
 
       dispatch({ type: "CHANGE_LOADING", value: true });
-      const google = await axios.post("/api/auth/google", dataUser, {
-        headers: { "Content-Type": "Aplication/json" },
-      });
+      const google = await axios.post("/api/auth/google", dataUser, options);
 
-      if (google.status !== 200) console.log("error" + google.status);
+      if (google.status !== 200) return console.log("error" + google.status);
       const { token, data } = google.data;
-      Cookies.set("token", token);
-      Cookies.set("session", data.id);
-      Router.push("/");
+      finishLogin(token, data.id)
     }
   };
 
+  const formProps = { fields, authGoogle, fieldHandler, handleSubmit: loginHandler }
+
   return (
     <>
+      <Head>
+        <title>UDF - Ayo masuk dan mulai tanyakan</title>
+      </Head>
       <Layout>
         <Banner isLogin image="login" />
-        <Form
-          isLogin
-          handleChangeText={fieldHandler}
-          handleSubmit={loginHandler}
-          data={fields}
-          authGoogle={authGoogle}
-        />
+        <Form isLogin {...formProps} />
       </Layout>
       {props.isLoading && <Loading />}
     </>

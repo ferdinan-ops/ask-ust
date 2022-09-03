@@ -3,18 +3,23 @@ import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
 import Moment from "react-moment";
 import DOMPurify from "isomorphic-dompurify";
+import More from "@components/main/More";
 
-function Answer({ answerList, render, userId }) {
-  const { username, image, content, updated_at, id_user } = answerList;
+function Answer({
+  answerList,
+  render,
+  userId,
+  deleteHandler,
+  setContent,
+  setEdit,
+}) {
+  const { username, image, content, updated_at, id_user, id } = answerList;
   const tag = username.split(" ").join("").toLocaleLowerCase();
   const detail = DOMPurify.sanitize(content);
   const [show, setShow] = useState(false);
-  console.log(answerList);
 
   return (
-    <div className="border-b-2 p-4 border-[#EBEEF0] xl:py-4 xl:px-6">
-      <h1 className="text-xl font-semibold text-font">3 Jawaban</h1>
-
+    <>
       <div className="mt-6 flex items-center font-medium">
         <img
           src={image !== null ? image : "/profile.jpg"}
@@ -32,8 +37,18 @@ function Answer({ answerList, render, userId }) {
           <span className="text-sm text-gray-500">@{tag}</span>
         </div>
         {userId == id_user && (
-          <div className="ml-auto icon">
+          <div className="ml-auto icon relative" onClick={() => setShow(!show)}>
             <DotsHorizontalIcon className="h-5 text-font" />
+            {show && (
+              <More
+                isUserHave
+                isAnswer
+                deleteHandler={deleteHandler}
+                answerList={answerList}
+                setContent={setContent}
+                setEdit={setEdit}
+              />
+            )}
           </div>
         )}
       </div>
@@ -46,7 +61,7 @@ function Answer({ answerList, render, userId }) {
       )}
 
       <PostReaction />
-    </div>
+    </>
   );
 }
 
