@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import Head from "next/head";
 
-function Register() {
+export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const [fields, setFields] = useState({
     username: "",
@@ -55,8 +55,6 @@ function Register() {
     </>
   );
 }
-
-export default Register;
 
 export async function getServerSideProps(ctx) {
   await unauthPage(ctx);

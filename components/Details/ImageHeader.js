@@ -1,6 +1,6 @@
 import Moment from "react-moment";
 
-function ImageHeader({ image, username, updated_at }) {
+export default function ImageHeader({ image, username, updated_at }) {
   const tag = username.split(" ").join("").toLocaleLowerCase();
 
   return (
@@ -23,5 +23,3 @@ function ImageHeader({ image, username, updated_at }) {
     </div>
   );
 }
-
-export default ImageHeader;

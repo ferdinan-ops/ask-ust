@@ -1,15 +1,13 @@
-import TinyEditor from "@components/create/TinyEditor";
+import TinyEditor from "@components/Created/TinyEditor";
 import LoadingBtn from "@components/loading/LoadingBtn";
-import React from "react";
 
-function InputAnswer({
+export default function Editor({
   content,
   setContent,
   answerHandler,
   isLoading,
   edit,
-  setEdit,
-  cancelHandler
+  cancelHandler,
 }) {
   return (
     <form className="px-6 py-9">
@@ -41,5 +39,3 @@ function InputAnswer({
     </form>
   );
 }
-
-export default InputAnswer;

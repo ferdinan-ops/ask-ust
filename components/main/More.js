@@ -46,11 +46,12 @@ function More({
           </li>
         </>
       )}
+
+      <li className="flex items-center gap-x-3 hover:bg-slate-100 py-2 px-5 rounded-md">
+        <FlagIcon className="h-5" /> Report
+      </li>
       {!isAnswer && (
         <>
-          <li className="flex items-center gap-x-3 hover:bg-slate-100 py-2 px-5 rounded-md">
-            <FlagIcon className="h-5" /> Report
-          </li>
           <li className="flex items-center gap-x-3 hover:bg-slate-100 py-2 px-5 rounded-md">
             <BookmarkIcon className="h-5" /> Save
           </li>

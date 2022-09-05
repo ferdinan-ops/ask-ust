@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function LoadingFeed() {
   return (
     <div className="absolute bg-white top-0 bottom-0 left-0 right-0 transition">

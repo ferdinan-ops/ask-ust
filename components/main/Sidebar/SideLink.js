@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-function SidebarLink({ Icon, text, active, href }) {
+export default function SideLink({ Icon, text, active, href }) {
   return (
     <Link href={href}>
       <a className="block">
@@ -16,5 +16,3 @@ function SidebarLink({ Icon, text, active, href }) {
     </Link>
   );
 }
-
-export default SidebarLink;

@@ -1,14 +1,12 @@
 import { authPage } from "middlewares/authorizationPage";
-import DetailPost from "@components/posts/DetailPost";
-import Sidebar from "@components/main/Sidebar";
-import Widget from "@components/main/Widget";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import "prismjs/themes/prism-dracula.css";
 import moment from "moment/moment";
 import Prism from "prismjs";
 import axios from "axios";
-import Head from "next/head";
+import Template from "@components/main/Template";
+import DetailPost from "@components/Details";
 
 export async function getServerSideProps(ctx) {
   const { token, id } = await authPage(ctx);
@@ -112,18 +110,22 @@ export default function Home({ user, post, answer, token }) {
 
   const inputProps = { answerHandler, cancelHandler, content, setContent, edit: edit.id, setEdit, isLoading };
   const answerProps = { render, userId: user.id, deleteHandler };
+  const detailProps = { post, answers, inputProps, answerProps }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-[1500px]">
-      <Head><title>{post.title}</title></Head>
-      <Sidebar session={user} />
-      <DetailPost
-        post={post}
-        answers={answers}
-        inputProps={inputProps}
-        answerProps={answerProps}
-      />
-      <Widget />
-    </main>
+    <Template titleHead={post.title} user={user}>
+      <DetailPost {...detailProps} />
+    </Template>
+    // <main className="mx-auto flex min-h-screen max-w-[1500px]">
+    //   <Head><title>{post.title}</title></Head>
+    //   <Sidebar session={user} />
+    //   <DetailPost
+    //     post={post}
+    //     answers={answers}
+    //     inputProps={inputProps}
+    //     answerProps={answerProps}
+    //   />
+    //   <Widget />
+    // </main>
   );
 }

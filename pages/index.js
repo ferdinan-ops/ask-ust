@@ -1,11 +1,9 @@
-import Feed from "@components/main/Feed";
-import Sidebar from "@components/main/Sidebar";
-import Widget from "@components/main/Widget";
 import { authPage } from "middlewares/authorizationPage";
+import { useDispatch } from "react-redux";
+import Home from "@components/Home";
 import { useState } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import Head from "next/head";
+import Template from "@components/main/Template";
 
 export async function getServerSideProps(ctx) {
   const { token, id } = await authPage(ctx);
@@ -24,8 +22,7 @@ export async function getServerSideProps(ctx) {
   return { props: { user: user.data.data, allposts: posts.data.data, token } };
 }
 
-export default function Home({ user, allposts, token }) {
-  const [userData, setUserData] = useState(user);
+export default function HomePages({ user, allposts, token }) {
   const [posts, setPosts] = useState(allposts);
   const dispatch = useDispatch();
   dispatch({ type: "CHANGE_LOADING", value: false });
@@ -43,11 +40,8 @@ export default function Home({ user, allposts, token }) {
   };
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-[1500px]">
-      <Head><title>UDF - Beranda</title></Head>
-      <Sidebar session={userData} />
-      <Feed allPosts={posts} session={userData} deleteHandler={deleteHandler} />
-      <Widget />
-    </main>
+    <Template titleHead="UDF - Beranda" user={user}>
+      <Home allPosts={posts} session={user} deleteHandler={deleteHandler} />
+    </Template>
   );
 }

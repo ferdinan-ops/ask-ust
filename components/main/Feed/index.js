@@ -1,7 +1,7 @@
 import LoadingFeed from "@components/loading/LoadingFeed";
 import { connect } from "react-redux";
 
-function Main({ children, title, isLoading, isDetailPost }) {
+function Feed({ children, title, isLoading, isDetailPost }) {
   return (
     <div
       className={`relative z-0 max-w-2xl min-h-screen flex-grow  sm:ml-[73px] xl:ml-[370px] text-font ${
@@ -21,4 +21,4 @@ function Main({ children, title, isLoading, isDetailPost }) {
   );
 }
 const reduxState = (state) => ({ isLoading: state.isLoading });
-export default connect(reduxState, null)(Main);
+export default connect(reduxState, null)(Feed);

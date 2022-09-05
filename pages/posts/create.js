@@ -1,13 +1,10 @@
 import { authPage } from "middlewares/authorizationPage";
-import Sidebar from "@components/main/Sidebar";
-import Input from "@components/create/Input";
-import Widget from "@components/main/Widget";
 import { useDispatch } from "react-redux";
-import Main from "@components/main/Main";
 import { useState } from "react";
 import Router from "next/router";
-import Head from "next/head";
 import axios from "axios";
+import Template from "@components/main/Template";
+import CreatePost from "@components/Created";
 
 export async function getServerSideProps(ctx) {
   const { token, id } = await authPage(ctx);
@@ -22,7 +19,7 @@ export async function getServerSideProps(ctx) {
 }
 
 export default function Create({ user, token }) {
-  const [content, setContent] = useState("<p>Masukkan Deskripsi disini...</p>");
+  const [content, setContent] = useState("");
   const [userData, setUserData] = useState(user);
   const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState("");
@@ -45,7 +42,7 @@ export default function Create({ user, token }) {
     if (create.status !== 200) return console.log("Error" + create.status);
 
     setTitle("");
-    setContent("<p>Masukkan Deskripsi disini...</p>");
+    setContent("");
     setIsLoading(false);
     Router.push("/");
   };
@@ -53,13 +50,16 @@ export default function Create({ user, token }) {
   const inputProps = { setTitle, setContent, title, createHandler, isLoading, content }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-[1500px]">
-      <Head><title>UDF - Buat Pertanyaan</title></Head>
-      <Sidebar session={userData} />
-      <Main title="Buat Pertanyaan">
-        <Input {...inputProps} />
-      </Main>
-      <Widget />
-    </main>
+    <Template titleHead="Buat Pertanyaan" user={user}>
+      <CreatePost {...inputProps} feedTitle="Buat Pertanyaan" />
+    </Template>
+    // <main className="mx-auto flex min-h-screen max-w-[1500px]">
+    //   <Head><title>UDF - Buat Pertanyaan</title></Head>
+    //   <Sidebar session={userData} />
+    //   <Main title="Buat Pertanyaan">
+    //     <Input {...inputProps} />
+    //   </Main>
+    //   <Widget />
+    // </main>
   );
 }
