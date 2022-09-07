@@ -15,7 +15,7 @@ import Head from "next/head";
 function Login(props) {
   const [fields, setFields] = useState({ email: "", password: "" });
   const dispatch = useDispatch();
-  const options = { headers: { "Content-Type": "Aplication/json" }, }
+  const options = { headers: { "Content-Type": "Aplication/json" } };
 
   // input handler
   const fieldHandler = (e) => {
@@ -28,7 +28,7 @@ function Login(props) {
     Cookies.set("session", data);
     Router.push("/");
     dispatch({ type: "CHANGE_LOADING", value: false });
-  }
+  };
 
   // login without google
   const loginHandler = async (e) => {
@@ -44,7 +44,7 @@ function Login(props) {
 
     const { token, data } = login.data;
     setFields({ email: "", password: "" });
-    finishLogin(token, data.id)
+    finishLogin(token, data.id);
   };
 
   // login with google
@@ -63,11 +63,16 @@ function Login(props) {
 
       if (google.status !== 200) return console.log("error" + google.status);
       const { token, data } = google.data;
-      finishLogin(token, data.id)
+      finishLogin(token, data.id);
     }
   };
 
-  const formProps = { fields, authGoogle, fieldHandler, handleSubmit: loginHandler }
+  const formProps = {
+    fields,
+    authGoogle,
+    fieldHandler,
+    handleSubmit: loginHandler,
+  };
 
   return (
     <>

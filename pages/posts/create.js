@@ -47,19 +47,18 @@ export default function Create({ user, token }) {
     Router.push("/");
   };
 
-  const inputProps = { setTitle, setContent, title, createHandler, isLoading, content }
+  const inputProps = {
+    setTitle,
+    setContent,
+    title,
+    createHandler,
+    isLoading,
+    content,
+  };
 
   return (
     <Template titleHead="Buat Pertanyaan" user={user}>
       <CreatePost {...inputProps} feedTitle="Buat Pertanyaan" />
     </Template>
-    // <main className="mx-auto flex min-h-screen max-w-[1500px]">
-    //   <Head><title>UDF - Buat Pertanyaan</title></Head>
-    //   <Sidebar session={userData} />
-    //   <Main title="Buat Pertanyaan">
-    //     <Input {...inputProps} />
-    //   </Main>
-    //   <Widget />
-    // </main>
   );
 }

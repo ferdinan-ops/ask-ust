@@ -4,17 +4,8 @@ import PostReact from "./PostReact";
 import ProfileHeader from "./ProfileHeader";
 
 function Posts({ post, sessionId, deleteHandler }) {
+  const { username, userImage, updated_at, postId, userId } = post;
   const dispatch = useDispatch();
-  const more = {
-    isUserHave: sessionId === post.userId,
-    deleteHandler,
-    postId: post.postId,
-  };
-  const postProps = {
-    username: post.username,
-    image: post.userImage,
-    updated_at: post.updated_at,
-  };
 
   return (
     <div
@@ -24,7 +15,14 @@ function Posts({ post, sessionId, deleteHandler }) {
         dispatch({ type: "CHANGE_LOADING", value: true });
       }}
     >
-      <ProfileHeader postInfo={postProps} more={more} />
+      <ProfileHeader
+        username={username}
+        image={userImage}
+        updated_at={updated_at}
+        isUserHave={sessionId === userId}
+        deleteHandler={deleteHandler}
+        postId={postId}
+      />
 
       <h1 className="my-5 text-lg text-font font-bold">{post.title}</h1>
 

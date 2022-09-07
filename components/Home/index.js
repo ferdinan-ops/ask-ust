@@ -11,7 +11,12 @@ export default function Home({ allPosts, session, deleteHandler }) {
       <div className="pb-72 text-font">
         {allPosts.length > 0 ? (
           allPosts.map((post, index) => (
-            <Posts key={index} post={post} {...postsProps} />
+            <Posts
+              key={index}
+              post={post}
+              sessionId={session.id}
+              deleteHandler={deleteHandler}
+            />
           ))
         ) : (
           <NoPost />

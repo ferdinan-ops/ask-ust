@@ -10,38 +10,33 @@ export default function Card({
   setEdit,
   userId,
 }) {
-  const detail = DOMPurify.sanitize(answerList.content);
+  const { id_user, username, image, updated_at, content } = answerList;
+  const detail = DOMPurify.sanitize(content);
 
   return (
-    <>
+    <div className="pb-6 check px-4 xl:px-6">
       <div className="mt-6 flex items-center font-medium">
         <ProfileHeader
           isAnswer
           deleteHandler={deleteHandler}
-          answerList={answerList}
           setContent={setContent}
           setEdit={setEdit}
-          postInfo={answerList}
-          isUserHave={userId === answerList.id_user}
+          username={username}
+          image={image}
+          updated_at={updated_at}
+          isUserHave={userId == id_user}
+          answerList={answerList}
         />
       </div>
-      {/* more={{
-          isUserHave: userId === answerList.id_user,
-          isAnswer: true,
-          deleteHandler,
-          answerList,
-          setContent,
-          setEdit,
-        }} */}
 
       {render && (
         <div
-          className="mt-5 prose text-font detail"
+          className="mt-5 prose text-font detail "
           dangerouslySetInnerHTML={{ __html: detail }}
         />
       )}
 
       <AnswerReact />
-    </>
+    </div>
   );
 }

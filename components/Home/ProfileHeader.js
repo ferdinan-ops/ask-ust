@@ -4,8 +4,7 @@ import React, { useState } from "react";
 import Moment from "react-moment";
 
 export default function ProfileHeader(props) {
-  console.log(props);
-  const { username, image, updated_at } = props.postInfo;
+  const { username, image, updated_at } = props;
   const [show, setShow] = useState(false);
   const tag = username.split(" ").join("").toLocaleLowerCase();
 

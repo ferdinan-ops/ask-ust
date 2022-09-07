@@ -12,10 +12,7 @@ export async function getServerSideProps(ctx) {
   const { token, id } = await authPage(ctx);
   const { id: postId } = ctx.query;
   const options = {
-    headers: {
-      "Content-Type": "Aplication/json",
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { "Content-Type": "Aplication/json", Authorization: `Bearer ${token}` },
   };
 
   // user session data
@@ -116,16 +113,5 @@ export default function Home({ user, post, answer, token }) {
     <Template titleHead={post.title} user={user}>
       <DetailPost {...detailProps} />
     </Template>
-    // <main className="mx-auto flex min-h-screen max-w-[1500px]">
-    //   <Head><title>{post.title}</title></Head>
-    //   <Sidebar session={user} />
-    //   <DetailPost
-    //     post={post}
-    //     answers={answers}
-    //     inputProps={inputProps}
-    //     answerProps={answerProps}
-    //   />
-    //   <Widget />
-    // </main>
   );
 }

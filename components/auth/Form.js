@@ -69,11 +69,11 @@ function Form({
         <div className="flex flex-col font-semibold">
           <div className="flex justify-between">
             <label htmlFor="password">Kata Sandi</label>
-            {isLogin && (
+            {/* {isLogin && (
               <a href="#" className="text-primary">
                 Lupa Kata Sandi?
               </a>
-            )}
+            )} */}
           </div>
           <input
             type="password"
@@ -85,18 +85,20 @@ function Form({
           />
         </div>
 
-        <div className="flex flex-col font-semibold">
-          <label className="relative flex items-center cursor-pointer gap-4 font-semibold">
-            <input
-              type="checkbox"
-              name="remember"
-              id="check-box"
-              className="h-6 w-6 appearance-none rounded-sm bg-[#F3F4F6] transition checked:bg-primary cursor-pointer"
-            />
-            {isLogin ? "Ingat Saya" : "Setuju dengan syarat dan ketentuan"}
-            <i className="fa-solid fa-check checked-icon absolute top-0 left-[5px] text-base text-white opacity-0 z-10"></i>
-          </label>
-        </div>
+        {isRegister && (
+          <div className="flex flex-col font-semibold">
+            <label className="relative flex items-center cursor-pointer gap-4 font-semibold">
+              <input
+                type="checkbox"
+                name="remember"
+                id="check-box"
+                className="h-6 w-6 appearance-none rounded-sm bg-[#F3F4F6] transition checked:bg-primary cursor-pointer"
+              />
+              Setuju dengan syarat dan ketentuan
+              <i className="fa-solid fa-check checked-icon absolute top-0 left-[5px] text-base text-white opacity-0 z-10"></i>
+            </label>
+          </div>
+        )}
 
         <button
           className="w-full bg-primary text-white py-5 rounded-md font-semibold hover:shadow-2xl hover:shadow-primary/20 transition duration-300 ease-in-out"

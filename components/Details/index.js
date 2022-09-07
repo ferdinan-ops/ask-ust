@@ -7,9 +7,9 @@ import AnswerReact from "./Answers/AnswerReact";
 import ProfileHeader from "@components/Home/ProfileHeader";
 
 function DetailPost({ post, answers, inputProps, answerProps }) {
-  const { title, content: postDetail } = post;
+  const { title, content: postDetail, username, image, update_at, id } = post;
   const { setContent, setEdit } = inputProps;
-  const { render } = answerProps;
+  const { render, userId, deleteHandler } = answerProps;
   const allAnswerProps = { ...answerProps, setContent, setEdit };
   const more = {
     isUserHave: answerProps.userId === post.id,
@@ -22,7 +22,14 @@ function DetailPost({ post, answers, inputProps, answerProps }) {
       <Layout>
         <div className="flex flex-col p-4 xl:px-6 border-b-2 border-[#EBEEF0] font-medium text-font">
           <h1 className="text-2xl font-semibold mb-6">{title}</h1>
-          <ProfileHeader postInfo={post} more={more} />
+          <ProfileHeader
+            username={username}
+            image={image}
+            update_at={update_at}
+            isUserHave={userId === id}
+            deleteHandler={deleteHandler}
+            postId={id}
+          />
 
           {render && (
             <div
