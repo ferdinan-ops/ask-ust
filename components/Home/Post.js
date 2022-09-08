@@ -16,6 +16,7 @@ function Posts({ post, sessionId, deleteHandler }) {
       }}
     >
       <ProfileHeader
+        userId={userId}
         username={username}
         image={userImage}
         updated_at={updated_at}
@@ -24,9 +25,11 @@ function Posts({ post, sessionId, deleteHandler }) {
         postId={postId}
       />
 
-      <h1 className="my-5 text-lg text-font font-bold">{post.title}</h1>
+      <div className="ml-[60px]">
+        <h1 className="my-5 text-lg text-font font-bold">{post.title}</h1>
 
-      <PostReact answered={post.answered} />
+        <PostReact answered={post.answered} />
+      </div>
     </div>
   );
 }

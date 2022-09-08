@@ -10,6 +10,7 @@ exports.up = function (knex) {
     table.string("password");
     table.text("image");
     table.text("banner");
+    table.text("bio");
     table.timestamps(true, true);
   });
 };

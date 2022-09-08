@@ -23,6 +23,7 @@ function DetailPost({ post, answers, inputProps, answerProps }) {
         <div className="flex flex-col p-4 xl:px-6 border-b-2 border-[#EBEEF0] font-medium text-font">
           <h1 className="text-2xl font-semibold mb-6">{title}</h1>
           <ProfileHeader
+            userId={id}
             username={username}
             image={image}
             update_at={update_at}

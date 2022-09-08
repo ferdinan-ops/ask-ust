@@ -7,7 +7,7 @@ export default function Sidebar({ session }) {
   return (
     <div className="fixed hidden h-full flex-col items-center p-2 sm:flex xl:w-[340px] xl:items-start">
       <Logo />
-      <Menu />
+      <Menu session={session} />
       <Button />
       <Logout session={session} />
     </div>

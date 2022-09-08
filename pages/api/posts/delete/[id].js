@@ -12,6 +12,7 @@ export default async function handler(req, res) {
 
   // delete data query
   const deleteRow = await db("posts").where({ id }).del();
+  const deleteAnswer = await db("answer").where({ id_post: id }).del();
 
   res.status(200).json({ message: "Post deleted successfully" });
 }

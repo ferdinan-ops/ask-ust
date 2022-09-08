@@ -1,10 +1,11 @@
 import More from "@components/main/More";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
+import Router from "next/router";
 import React, { useState } from "react";
 import Moment from "react-moment";
 
 export default function ProfileHeader(props) {
-  const { username, image, updated_at } = props;
+  const { username, image, updated_at, userId } = props;
   const [show, setShow] = useState(false);
   const tag = username.split(" ").join("").toLocaleLowerCase();
 
@@ -13,8 +14,12 @@ export default function ProfileHeader(props) {
       <img
         src={image !== null ? image : "/profile.jpg"}
         alt="Profile Picture"
-        className="mr-4 h-11 w-11 rounded-full"
+        className="mr-4 h-11 w-11 rounded-full cursor-pointer"
         referrerPolicy="no-referrer"
+        onClick={(e) => {
+          e.stopPropagation();
+          Router.push(`/profile/${userId}`);
+        }}
       />
       <div className="flex flex-col">
         <span className="font-semibold text-gray-800 truncate">

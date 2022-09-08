@@ -18,6 +18,7 @@ export default function Card({
       <div className="mt-6 flex items-center font-medium">
         <ProfileHeader
           isAnswer
+          userId={id_user}
           deleteHandler={deleteHandler}
           setContent={setContent}
           setEdit={setEdit}

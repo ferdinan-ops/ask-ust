@@ -1,9 +1,9 @@
 import { authPage } from "middlewares/authorizationPage";
+import Template from "@components/main/Template";
+import CreatePost from "@components/Created";
 import Router from "next/router";
 import { useState } from "react";
 import axios from "axios";
-import Template from "@components/main/Template";
-import CreatePost from "@components/Created";
 
 export async function getServerSideProps(ctx) {
   const { token, id } = await authPage(ctx);
@@ -26,7 +26,6 @@ export default function Update({ user, token, post }) {
   const [title, setTitle] = useState(post.title);
   const [isLoading, setIsLoading] = useState(false);
 
-
   const updateHandler = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -47,19 +46,15 @@ export default function Update({ user, token, post }) {
     Router.push("/");
   };
 
-  const inputProps = { setTitle, setContent, title, isLoading, content }
-
+  const inputProps = { setTitle, setContent, title, isLoading, content };
 
   return (
     <Template titleHead="Edit Pertanyaan" user={user}>
-      <CreatePost {...inputProps} createHandler={updateHandler} feedTitle="Edit Pertanyaan" />
+      <CreatePost
+        {...inputProps}
+        createHandler={updateHandler}
+        feedTitle="Edit Pertanyaan"
+      />
     </Template>
-    // <main className="mx-auto flex min-h-screen max-w-[1500px]">
-    //   <Sidebar session={user} />
-    //   <Main title="Edit Pertanyaan">
-    //     <Input {...inputProps} createHandler={updateHandler} />
-    //   </Main>
-    //   <Widget />
-    // </main>
   );
 }
