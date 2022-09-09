@@ -5,7 +5,15 @@ import ProfileImage from "./ProfileImage";
 import ProfilePost from "./ProfilePost";
 
 export default function Profile(props) {
-  const { user, allPosts, userSessionId } = props;
+  const {
+    user,
+    allPosts,
+    userSessionId,
+    fieldsHandler,
+    imageHandler,
+    changeUser,
+    updateUser,
+  } = props;
   const questions = allPosts.length;
 
   return (
@@ -14,6 +22,10 @@ export default function Profile(props) {
       <ProfileDetail
         user={user}
         questions={questions}
+        changeUser={changeUser}
+        fieldsHandler={fieldsHandler}
+        imageHandler={imageHandler}
+        updateUser={updateUser}
         isUserHave={userSessionId === user.id}
       />
       <ProfilePost {...props} />

@@ -10,6 +10,7 @@
     "knex": "dotenv -e .env.local knex"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.0",
     "@heroicons/react": "^1.0.6",
     "@tinymce/tinymce-react": "^4.2.0",
     "axios": "^0.27.2",
