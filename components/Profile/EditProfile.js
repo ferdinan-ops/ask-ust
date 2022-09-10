@@ -4,7 +4,7 @@ import { Fragment, useState } from "react";
 import ProfileImage from "./ProfileImage";
 
 export default function EditProfile(props) {
-  const { user, fieldsHandler, imageHandler, changeUser, updateUser } = props;
+  const { textHandler, imageHandler, changeUser, updateUser } = props;
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
 
@@ -73,7 +73,7 @@ export default function EditProfile(props) {
                         <input
                           id="username"
                           value={changeUser.username}
-                          onChange={fieldsHandler}
+                          onChange={textHandler}
                           className="input-auth p-0 px-4 py-4"
                         />
                       </label>
@@ -82,8 +82,8 @@ export default function EditProfile(props) {
                         <textarea
                           id="bio"
                           value={changeUser.bio}
-                          onChange={fieldsHandler}
-                          className="input-auth p-0 px-4 py-4"
+                          onChange={textHandler}
+                          className="input-auth h-32 p-0 px-4 py-4"
                           placeholder="Saya adalah seorang mahasiswa"
                         ></textarea>
                       </label>

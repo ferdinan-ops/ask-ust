@@ -6,7 +6,7 @@ export default function ProfileDetail({
   user,
   questions,
   isUserHave,
-  fieldsHandler,
+  textHandler,
   imageHandler,
   changeUser,
   updateUser,
@@ -19,7 +19,7 @@ export default function ProfileDetail({
         {isUserHave && (
           <EditProfile
             user={user}
-            fieldsHandler={fieldsHandler}
+            textHandler={textHandler}
             imageHandler={imageHandler}
             changeUser={changeUser}
             updateUser={updateUser}

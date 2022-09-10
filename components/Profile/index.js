@@ -1,20 +1,10 @@
-import Posts from "@components/Home/Post";
 import Feed from "@components/main/Feed";
 import ProfileDetail from "./ProfileDetail";
 import ProfileImage from "./ProfileImage";
 import ProfilePost from "./ProfilePost";
 
-export default function Profile(props) {
-  const {
-    user,
-    allPosts,
-    userSessionId,
-    fieldsHandler,
-    imageHandler,
-    changeUser,
-    updateUser,
-  } = props;
-  const questions = allPosts.length;
+export default function Profile({ user, sessionId, detailProps, postProps }) {
+  const questions = postProps.allPosts.length;
 
   return (
     <Feed title={user.username}>
@@ -22,13 +12,10 @@ export default function Profile(props) {
       <ProfileDetail
         user={user}
         questions={questions}
-        changeUser={changeUser}
-        fieldsHandler={fieldsHandler}
-        imageHandler={imageHandler}
-        updateUser={updateUser}
-        isUserHave={userSessionId === user.id}
+        isUserHave={sessionId === user.id}
+        {...detailProps}
       />
-      <ProfilePost {...props} />
+      <ProfilePost {...postProps} />
     </Feed>
   );
 }

@@ -8,7 +8,7 @@ export default function ProfileImage({ user, isEdit, imageHandler }) {
   return (
     <div className="relative bg-gray-400">
       {isEdit && <ImageEdit bannerPicker={bannerPicker} />}
-      <div className="h-[200px]">
+      <div className="h-[200px] flex">
         {user.banner && (
           <img
             src={user.banner}
@@ -18,7 +18,7 @@ export default function ProfileImage({ user, isEdit, imageHandler }) {
         )}
       </div>
 
-      <div className="rounded-full border-4 -bottom-[67px] left-6 border-white absolute overflow-hidden">
+      <div className="rounded-full border-4 -bottom-[67px] left-6 border-white absolute overflow-hidden flex">
         <img
           src={user.image ? user.image : "/profile.jpg"}
           alt=""
