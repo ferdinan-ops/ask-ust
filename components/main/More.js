@@ -10,11 +10,12 @@ function More({
   postId,
   setEdit,
   isAnswer,
+  savePost,
   isUserHave,
   answerList,
   setContent,
-  deleteHandler,
   isDetailPost,
+  deleteHandler,
 }) {
   const editHandler = (id, e) => {
     if (!isAnswer) {
@@ -57,7 +58,10 @@ function More({
       )}
       {!isAnswer && (
         <>
-          <li className="flex items-center gap-x-3 hover:bg-slate-100 py-2 px-5 rounded-md">
+          <li
+            className="flex items-center gap-x-3 hover:bg-slate-100 py-2 px-5 rounded-md"
+            onClick={savePost.bind(this, postId)}
+          >
             <BookmarkIcon className="h-5" /> Simpan
           </li>
         </>

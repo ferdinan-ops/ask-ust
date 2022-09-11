@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import PostReact from "./PostReact";
 import ProfileHeader from "./ProfileHeader";
 
-function Posts({ post, sessionId, deleteHandler }) {
+function Posts({ post, sessionId, deleteHandler, savePost }) {
   const { username, userImage, updated_at, postId, userId } = post;
   const dispatch = useDispatch();
 
@@ -17,12 +17,13 @@ function Posts({ post, sessionId, deleteHandler }) {
     >
       <ProfileHeader
         userId={userId}
-        username={username}
-        image={userImage}
-        updated_at={updated_at}
-        isUserHave={sessionId === userId}
-        deleteHandler={deleteHandler}
         postId={postId}
+        image={userImage}
+        username={username}
+        savePost={savePost}
+        updated_at={updated_at}
+        deleteHandler={deleteHandler}
+        isUserHave={sessionId === userId}
       />
 
       <div className="ml-[60px]">

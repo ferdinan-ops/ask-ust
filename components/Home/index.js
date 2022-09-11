@@ -3,7 +3,7 @@ import NoPost from "./NoPost";
 import AddButton from "./mobile/AddButton";
 import Posts from "./Post";
 
-export default function Home({ allPosts, session, deleteHandler }) {
+export default function Home({ allPosts, session, deleteHandler, savePost }) {
   const postsProps = { sessionId: session.id, deleteHandler };
 
   return (
@@ -14,6 +14,7 @@ export default function Home({ allPosts, session, deleteHandler }) {
             <Posts
               key={index}
               post={post}
+              savePost={savePost}
               sessionId={session.id}
               deleteHandler={deleteHandler}
             />

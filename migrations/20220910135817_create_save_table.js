@@ -7,6 +7,7 @@ exports.up = function (knex) {
     table.increments();
     table.string("id_user");
     table.string("id_post");
+    table.timestamps(true, true);
   });
 };
 

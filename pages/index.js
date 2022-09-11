@@ -27,21 +27,33 @@ export default function HomePages({ user, allposts, token }) {
   const dispatch = useDispatch();
   dispatch({ type: "CHANGE_LOADING", value: false });
 
+  const options = { headers: { Authorization: `Bearer ${token}` } };
+
   const deleteHandler = async (id, e) => {
     e.preventDefault();
     const ask = confirm("Apakah Anda Yakin, Ingin Menghapus Data ini?");
     if (ask) {
-      const deletePost = await axios.delete(`/api/posts/delete/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const deletePost = await axios.delete(`/api/posts/delete/${id}`, options);
       const postFiltered = posts.filter((post) => post.postId !== id);
       setPosts(postFiltered);
     }
   };
 
+  const savePost = async (id_post, e) => {
+    e.preventDefault();
+    const data = { id_user: user.id, id_post };
+    const save = await axios.post("/api/save/create", data, options);
+    alert("Pertanyaan berhasil disimpan");
+  };
+
   return (
     <Template titleHead="UDF - Beranda" user={user}>
-      <Home allPosts={posts} session={user} deleteHandler={deleteHandler} />
+      <Home
+        allPosts={posts}
+        session={user}
+        deleteHandler={deleteHandler}
+        savePost={savePost}
+      />
     </Template>
   );
 }

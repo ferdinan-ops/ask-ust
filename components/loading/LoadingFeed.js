@@ -5,7 +5,7 @@ export default function LoadingFeed() {
         <div className="m-auto relative">
           <div className="w-32 h-32 lg:w-48 lg:h-48 rounded-full border-8 border-t-primary border-l-primary border-slate-300 mx-auto animate-spin"></div>
           <img
-            src="/logo.svg"
+            src="/logo-2.svg"
             alt=""
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:w-20 lg:h-20"
           />
