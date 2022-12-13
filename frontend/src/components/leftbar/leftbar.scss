@@ -1,0 +1,74 @@
+@import "../../style.scss";
+
+.leftbar {
+   @include themify($themes) {
+      padding-left: 120px;
+      flex: 1.2;
+      position: sticky;
+      top: 80px;
+      overflow: scroll;
+      min-height: calc(100vh - 80px);
+      border-right: 1px solid rgb(225, 225, 225);
+
+      &::-webkit-scrollbar {
+         display: none;
+      }
+
+      .container {
+         padding-top: 30px;
+         display: flex;
+         flex-direction: column;
+         width: 100%;
+
+         a {
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            color: themed("font");
+         }
+
+         p {
+            text-transform: uppercase;
+            font-weight: 600;
+            color: rgb(117, 117, 117);
+            margin-top: 30px;
+         }
+
+         .public {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+
+            .item {
+               display: flex;
+               cursor: pointer;
+               justify-content: space-between;
+
+               a {
+                  font-size: 16px;
+               }
+
+               .link {
+                  padding: 10px 12px 12px 12px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+               }
+
+               &:first-child {
+                  background-color: lighten(themed("primary"), 50%);
+               }
+
+               .bar {
+                  width: 5px;
+                  background-color: themed("primary");
+               }
+
+               .icons {
+                  width: 24px;
+               }
+            }
+         }
+      }
+   }
+}

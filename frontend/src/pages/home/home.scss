@@ -1,0 +1,7 @@
+@import "../../style.scss";
+
+.home {
+   @include themify($themes) {
+      padding: 30px;
+   }
+}

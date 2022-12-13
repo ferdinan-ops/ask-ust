@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap");
+
+* {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   outline: none;
+   font-family: "Quicksand", sans-serif;
+}
+
+.icons {
+   width: 24px;
+   cursor: pointer;
+}
+
+$themes: (
+   light: (
+      "primary": #00bac7,
+      "font": #272d3e,
+      "bg": #fff,
+      "searchBg": #ededed,
+   ),
+   dark: (
+      "primary": #00bac7,
+      "font": #fff,
+      "bg": linear-gradient(180deg, #2f364b 0%, #262b3d 85.25%),
+      "searchBg": #1a1e2b,
+   ),
+);
+
+@mixin themify($themes) {
+   @each $theme, $map in $themes {
+      .theme-#{$theme} & {
+         $theme-map: () !global;
+         @each $key, $submap in $map {
+            $value: map-get(map-get($themes, $theme), "#{$key}");
+            $theme-map: map-merge(
+               $theme-map,
+               (
+                  $key: $value,
+               )
+            ) !global;
+         }
+         @content;
+         $theme-map: null !global;
+      }
+   }
+}
+
+@function themed($key) {
+   @return map-get($theme-map, $key);
+}
+
+@mixin profilePicture($size: 30px) {
+   width: $size;
+   height: $size;
+   border-radius: 50%;
+   object-fit: cover;
+   cursor: pointer;
+}
+
+@mixin makeButton($padding: 10px, $rounded: unset) {
+   padding: $padding;
+   cursor: pointer;
+   font-weight: 500;
+   border: none;
+   border-radius: $rounded;
+}
