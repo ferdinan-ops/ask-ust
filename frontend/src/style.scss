@@ -6,6 +6,8 @@
    box-sizing: border-box;
    outline: none;
    font-family: "Quicksand", sans-serif;
+   letter-spacing: 0.3px;
+   line-height: 22px;
 }
 
 .icons {
@@ -14,33 +16,41 @@
 }
 
 $themes: (
-   light: (
-      "primary": #00bac7,
+   light: ("primary": #00bac7,
       "font": #272d3e,
       "bg": #fff,
+      "border": rgb(225, 225, 225),
       "searchBg": #ededed,
+      "activeBg": lighten(#00bac7, 50%),
+      "contentBg": #fff,
+      "contentBorder": rgb(230, 230, 230),
    ),
-   dark: (
-      "primary": #00bac7,
-      "font": #fff,
-      "bg": linear-gradient(180deg, #2f364b 0%, #262b3d 85.25%),
+   dark: ("primary": #00bac7,
+      "font": #ddd,
+      "bg": #272d3e,
+      "border": lighten(#272d3e, 15%),
       "searchBg": #1a1e2b,
+      "activeBg": darken(#272d3e, 5%),
+      "contentBg": darken(#272d3e, 5%),
+      "contentBorder": lighten(#272d3e, 15%),
    ),
 );
 
 @mixin themify($themes) {
-   @each $theme, $map in $themes {
+
+   @each $theme,
+   $map in $themes {
       .theme-#{$theme} & {
          $theme-map: () !global;
-         @each $key, $submap in $map {
+
+         @each $key,
+         $submap in $map {
             $value: map-get(map-get($themes, $theme), "#{$key}");
-            $theme-map: map-merge(
-               $theme-map,
-               (
-                  $key: $value,
-               )
-            ) !global;
+            $theme-map: map-merge($theme-map,
+               ($key: $value,
+               )) !global;
          }
+
          @content;
          $theme-map: null !global;
       }
@@ -65,4 +75,25 @@ $themes: (
    font-weight: 500;
    border: none;
    border-radius: $rounded;
+}
+
+@mixin flexStyle($justify: unset, $align: unset, $direction: unset, $gap: 0, $flex: unset) {
+   display: flex;
+   justify-content: $justify;
+   align-items: $align;
+   flex-direction: $direction;
+   gap: $gap;
+   flex: $flex;
+}
+
+@mixin mobileVersion {
+   @media (max-width: 480px) {
+      @content;
+   }
+}
+
+@mixin tabletVersion {
+   @media (max-width: 960px) {
+      @content;
+   }
 }

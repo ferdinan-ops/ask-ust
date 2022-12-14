@@ -1,20 +1,58 @@
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { Layout } from "../components";
-import { Home } from "../pages";
+import { Home, Login, Register } from "../pages";
 
-const Router = () => {
+const Router = ({ currentUser }) => {
+   const ProtectedRoute = ({ children }) => {
+      if (!currentUser) return <Navigate to="/login" />;
+      return children;
+   };
+
+   const ProtectedAuth = ({ children }) => {
+      if (currentUser) return <Navigate to="/forum" />;
+      return children;
+   }
+
+   const AutoNavigate = () => {
+      return <Navigate to="/forum" />
+   }
+
    const router = createBrowserRouter([
       {
          path: "/",
-         element: <Layout />,
+         element: <AutoNavigate />
+      },
+      {
+         path: "/forum",
+         element: (
+            <ProtectedRoute>
+               <Layout />
+            </ProtectedRoute>
+         ),
          children: [
             {
                path: "/forum",
                element: <Home />,
             },
          ],
+      },
+      {
+         path: "/login",
+         element: (
+            <ProtectedAuth>
+               <Login />
+            </ProtectedAuth>
+         ),
+      },
+      {
+         path: "/register",
+         element: (
+            <ProtectedAuth>
+               <Register />
+            </ProtectedAuth>
+         ),
       },
    ]);
 

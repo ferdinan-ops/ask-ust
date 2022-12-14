@@ -1,0 +1,229 @@
+@import "../../style.scss";
+
+$primary: #00bac7;
+$bgInput: #f3f4f6;
+
+.register {
+   @include flexStyle($direction: row-reverse);
+   min-height: 100vh;
+
+   .left {
+      @include flexStyle($justify: center, $align: center, $flex: 1);
+      position: relative;
+
+      .wrapper {
+         width: 440px;
+
+         .brand {
+            display: none;
+            color: #272d3e;
+            font-size: 24px;
+            font-weight: bold;
+            position: absolute;
+            top: 32px;
+            left: 32px;
+
+            span {
+               color: $primary;
+            }
+
+            .logo {
+               padding-top: 4px;
+            }
+
+            @include tabletVersion {
+               display: flex;
+            }
+
+            @include mobileVersion {
+               @include flexStyle($justify: center, $align: center);
+               position: static;
+               margin-bottom: 60px;
+            }
+         }
+
+         @include mobileVersion {
+            width: 100%;
+            padding: 0 18px;
+         }
+
+         .heading {
+            h1 {
+               font-size: 32px;
+               margin-bottom: 10px;
+
+               @include mobileVersion {
+                  font-size: 28px;
+               }
+            }
+
+            span {
+               font-size: 15px;
+
+               @include mobileVersion {
+                  font-size: 13px;
+               }
+            }
+         }
+
+         form {
+            @include flexStyle($direction: column, $gap: 30px);
+
+            @include mobileVersion {
+               gap: 28px;
+            }
+
+            label {
+               @include flexStyle($direction: column, $gap: 10px);
+               font-weight: 600;
+
+               @include mobileVersion {
+                  font-size: 15px;
+                  gap: 8px;
+               }
+
+               input {
+                  border: none;
+                  background-color: $bgInput;
+                  padding: 20px 40px;
+                  font-size: 16px;
+                  font-weight: 500;
+                  border-radius: 8px;
+
+                  @include mobileVersion {
+                     font-size: 15px;
+                     padding: 18px 36px;
+                  }
+               }
+            }
+
+            button {
+               @include makeButton($padding: 20px 0, $rounded: 6px);
+               font-weight: 600;
+               font-size: 16px;
+               background-color: $primary;
+               color: #fff;
+               margin-top: 20px;
+               box-shadow: 0px 30px 60px rgba(0, 186, 199, 0.15);
+
+               &:hover {
+                  background-color: darken($primary, 5%);
+               }
+
+               @include mobileVersion {
+                  margin-top: 0;
+                  font-size: 14px;
+                  padding: 18px;
+               }
+            }
+         }
+
+         p {
+            text-align: center;
+            font-weight: 600;
+
+            @include mobileVersion {
+               font-size: 14px;
+            }
+
+            a {
+               text-decoration: none;
+               color: $primary;
+            }
+         }
+      }
+   }
+
+   .right {
+      @include flexStyle($justify: center, $align: center, $flex: 1);
+      background: linear-gradient(180deg, #309fa7 0%, #2e797f 100%);
+      position: relative;
+      overflow: hidden;
+
+      @include tabletVersion {
+         display: none;
+      }
+
+      .brand {
+         display: flex;
+         color: #272d3e;
+         font-size: 24px;
+         font-weight: bold;
+         position: absolute;
+         top: 32px;
+         left: 32px;
+
+         span {
+            color: #fff;
+         }
+
+         .logo {
+            padding-top: 4px;
+         }
+      }
+
+      .wrapper {
+         @include flexStyle($justify: center, $align: center, $direction: column, $gap: 67px);
+         width: 100%;
+         z-index: 2;
+
+         img {
+            width: 100%;
+         }
+
+         .desc {
+            width: 66%;
+            margin: 0 auto;
+
+            span {
+               color: rgba(255, 255, 255, 0.6);
+               font-weight: 700;
+               letter-spacing: 0.15em;
+               line-height: 28px;
+               margin-bottom: 10px;
+            }
+
+            p {
+               font-size: 28px;
+               line-height: 42px;
+               color: #fff;
+               font-weight: 500;
+            }
+         }
+      }
+
+      .rounded {
+         position: absolute;
+         z-index: 1;
+         top: 73px;
+         left: -249px;
+         width: 1090px;
+         height: 1090px;
+         border-radius: 50%;
+         background: linear-gradient(140.4deg,
+               rgba(255, 255, 255, 0.03) 16.29%,
+               rgba(255, 255, 255, 0) 63.17%);
+
+         &:nth-child(2) {
+            width: 700px;
+            height: 700px;
+            top: 434px;
+            left: 282px;
+         }
+
+         &:nth-child(3) {
+            width: 935px;
+            height: 935px;
+            top: 250px;
+            left: 74px;
+         }
+
+         &:nth-child(4) {
+            width: 935px;
+            height: 935px;
+            top: 66px;
+            left: -134px;
+         }
+      }
+   }
+}

@@ -2,6 +2,23 @@
 
 .home {
    @include themify($themes) {
-      padding: 30px;
+      min-height: calc(100vh - 80px);
+      background: themed("bg");
+      padding: 30px 20px 30px 30px;
+
+      @include mobileVersion {
+         padding: 20px;
+      }
+
+      .homeWrapper {
+         color: themed("font");
+         display: flex;
+         flex-direction: column;
+
+         h1 {
+            margin-bottom: 20px;
+            font-size: 36px;
+         }
+      }
    }
 }

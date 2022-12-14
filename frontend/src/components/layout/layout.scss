@@ -2,8 +2,6 @@
 
 .layout {
    @include themify($themes) {
-      // padding: 0 120px;
       display: flex;
-      // background: themed("bg");
    }
 }

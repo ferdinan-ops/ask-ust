@@ -1,0 +1,36 @@
+@import "../../style.scss";
+
+.posts {
+   @include themify($themes) {
+      display: flex;
+      flex-direction: column;
+
+      .wrapper {
+         .tabs {
+            margin-top: 50px;
+            margin-bottom: 20px;
+            display: flex;
+            border-bottom: 2px solid themed("border");
+
+            button {
+               @include makeButton($padding: 10px 30px, $rounded: 6px 6px 0 0);
+               font-size: 16px;
+               background-color: transparent;
+               border-bottom: 5px solid transparent;
+               color: themed("font");
+            }
+
+            button.active {
+               font-weight: bold;
+               background-color: themed("activeBg");
+               border-bottom: 5px solid themed("primary");
+            }
+         }
+
+         .postWrapper {
+            display: flex;
+            flex-direction: column;
+         }
+      }
+   }
+}

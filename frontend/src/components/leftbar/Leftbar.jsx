@@ -1,10 +1,6 @@
-import {
-   GlobeAsiaAustraliaIcon,
-   HashtagIcon,
-   UserCircleIcon,
-} from "@heroicons/react/24/outline";
+import { GlobeAsiaAustraliaIcon, HashtagIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import { Link, NavLink } from "react-router-dom";
 import React from "react";
-import { Link } from "react-router-dom";
 
 import "./leftbar.scss";
 
@@ -15,25 +11,27 @@ const Leftbar = () => {
             <Link to="/">Beranda</Link>
             <p>public</p>
             <div className="public">
-               <div className="item">
+               <NavLink to="/forum" className={({ isActive }) => isActive ? "item active" : "item"}>
                   <div className="link">
                      <GlobeAsiaAustraliaIcon className="icons" />
-                     <Link to="/">Pertanyaan</Link>
+                     <span>Pertanyaan</span>
                   </div>
                   <div className="bar"></div>
-               </div>
-               <div className="item">
+               </NavLink>
+               <NavLink to="/tags" className={({ isActive }) => isActive ? "item active" : "item"}>
                   <div className="link">
                      <HashtagIcon className="icons" />
-                     <Link to="/">Tags</Link>
+                     <span>Tags</span>
                   </div>
-               </div>
-               <div className="item">
+                  <div className="bar"></div>
+               </NavLink>
+               <NavLink to="/users" className={({ isActive }) => isActive ? "item active" : "item"}>
                   <div className="link">
                      <UserCircleIcon className="icons" />
-                     <Link to="/">Pengguna</Link>
+                     <span>Pengguna</span>
                   </div>
-               </div>
+                  <div className="bar"></div>
+               </NavLink>
             </div>
          </div>
       </div>

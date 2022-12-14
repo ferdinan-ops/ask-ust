@@ -1,0 +1,146 @@
+@import "../../style.scss";
+
+.post {
+   @include themify($themes) {
+      margin-bottom: 24px;
+
+      &:last-child {
+         .container {
+            border-bottom-color: transparent;
+         }
+      }
+
+      .container {
+         padding: unset;
+         padding: 20px;
+         display: flex;
+         gap: 24px;
+         cursor: pointer;
+         color: themed("font");
+         transition: 0.3s;
+         background: themed("bg");
+         border: 2px solid transparent;
+         border-bottom: 2px solid themed("contentBorder");
+
+         @include tabletVersion {
+            flex-direction: column;
+            gap: 18px;
+         }
+
+         &:hover {
+            border-radius: 10px;
+            border: 2px solid themed("primary");
+         }
+
+         .info {
+            margin-top: 5px;
+            width: 17%;
+            display: flex;
+            font-size: 15px;
+
+            @include tabletVersion {
+               margin-top: 0;
+            }
+
+            .wrapper {
+               display: flex;
+               flex-direction: column;
+               margin-left: auto;
+               gap: 15px;
+
+               @include tabletVersion {
+                  flex-direction: row;
+               }
+
+               p {
+                  display: flex;
+                  margin-left: auto;
+                  gap: 8px;
+
+                  span {
+                     font-weight: bold;
+                  }
+
+                  @include mobileVersion {
+                     font-size: 14px;
+                  }
+               }
+            }
+         }
+
+         .content {
+            width: 100%;
+
+            .top {
+               display: flex;
+               flex-direction: column;
+               gap: 10px;
+
+               h2 {
+                  font-size: 20px;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 2;
+                  -webkit-box-orient: vertical;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+
+                  @include mobileVersion {
+                     font-size: 18px;
+                  }
+               }
+
+               span {
+                  font-size: 15px;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 2;
+                  -webkit-box-orient: vertical;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+
+                  @include mobileVersion {
+                     font-size: 13px;
+                  }
+               }
+            }
+
+            .bottom {
+               display: flex;
+               flex-direction: column;
+               gap: 8px;
+
+               .tags {
+                  margin-top: 15px;
+                  display: flex;
+                  gap: 10px;
+
+                  button {
+                     @include makeButton($padding: 6px 8px, $rounded: 3px);
+                     background-color: lighten(themed("primary"), 55%);
+
+                     &:hover {
+                        background-color: lighten(themed("primary"), 50%);
+                     }
+
+                     @include mobileVersion {
+                        font-size: 12px;
+                        padding: 2px 4px;
+                     }
+                  }
+               }
+
+               .userInfo {
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  margin-left: auto;
+                  font-size: 14px;
+
+                  img {
+                     @include profilePicture(18px);
+                  }
+               }
+            }
+         }
+      }
+   }
+}

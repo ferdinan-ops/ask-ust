@@ -2,13 +2,22 @@
 
 .leftbar {
    @include themify($themes) {
-      padding-left: 120px;
+      background: themed("bg");
+      padding-left: 124px;
       flex: 1.2;
       position: sticky;
       top: 80px;
+      height: calc(100vh - 80px);
       overflow: scroll;
-      min-height: calc(100vh - 80px);
-      border-right: 1px solid rgb(225, 225, 225);
+      border-right: 1px solid themed("border");
+
+      @include tabletVersion {
+         padding-left: 20px;
+      }
+
+      @include mobileVersion {
+         display: none;
+      }
 
       &::-webkit-scrollbar {
          display: none;
@@ -43,9 +52,11 @@
                display: flex;
                cursor: pointer;
                justify-content: space-between;
+               color: rgb(117, 117, 117);
+               font-weight: 500;
 
-               a {
-                  font-size: 16px;
+               span {
+                  font-size: 15px;
                }
 
                .link {
@@ -55,17 +66,23 @@
                   gap: 10px;
                }
 
-               &:first-child {
-                  background-color: lighten(themed("primary"), 50%);
-               }
-
                .bar {
                   width: 5px;
-                  background-color: themed("primary");
+                  background-color: themed("bg");
                }
 
                .icons {
                   width: 24px;
+               }
+            }
+
+            .item.active {
+               background-color: themed("activeBg");
+               color: themed("font");
+               font-weight: bold;
+
+               .bar {
+                  background-color: themed("primary");
                }
             }
          }
