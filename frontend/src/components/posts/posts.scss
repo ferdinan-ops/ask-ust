@@ -2,15 +2,19 @@
 
 .posts {
    @include themify($themes) {
-      display: flex;
-      flex-direction: column;
+      @include flexStyle($direction: column);
 
       .wrapper {
          .tabs {
+            display: flex;
             margin-top: 50px;
             margin-bottom: 20px;
-            display: flex;
             border-bottom: 2px solid themed("border");
+
+            @include mobileVersion {
+               margin-top: 40px;
+               margin-bottom: 0;
+            }
 
             button {
                @include makeButton($padding: 10px 30px, $rounded: 6px 6px 0 0);
@@ -18,6 +22,11 @@
                background-color: transparent;
                border-bottom: 5px solid transparent;
                color: themed("font");
+
+               @include mobileVersion {
+                  font-size: 14px;
+                  padding: 8px 28px;
+               }
             }
 
             button.active {

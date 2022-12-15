@@ -4,6 +4,10 @@
    @include themify($themes) {
       margin-bottom: 24px;
 
+      @include mobileVersion {
+         margin-bottom: 0;
+      }
+
       &:last-child {
          .container {
             border-bottom-color: transparent;
@@ -24,7 +28,11 @@
 
          @include tabletVersion {
             flex-direction: column;
-            gap: 18px;
+            gap: 14px;
+         }
+
+         @include mobileVersion {
+            padding: 16px;
          }
 
          &:hover {
@@ -33,9 +41,9 @@
          }
 
          .info {
-            margin-top: 5px;
-            width: 17%;
             display: flex;
+            width: 17%;
+            margin-top: 5px;
             font-size: 15px;
 
             @include tabletVersion {
@@ -43,19 +51,16 @@
             }
 
             .wrapper {
-               display: flex;
-               flex-direction: column;
+               @include flexStyle($direction: column, $gap: 15px);
                margin-left: auto;
-               gap: 15px;
 
                @include tabletVersion {
                   flex-direction: row;
                }
 
                p {
-                  display: flex;
+                  @include flexStyle($gap: 8px);
                   margin-left: auto;
-                  gap: 8px;
 
                   span {
                      font-weight: bold;
@@ -72,9 +77,7 @@
             width: 100%;
 
             .top {
-               display: flex;
-               flex-direction: column;
-               gap: 10px;
+               @include flexStyle($direction: column, $gap: 10px);
 
                h2 {
                   font-size: 20px;
@@ -104,14 +107,16 @@
             }
 
             .bottom {
-               display: flex;
-               flex-direction: column;
-               gap: 8px;
+               @include flexStyle($direction: column, $gap: 8px);
+
+               @include mobileVersion {
+                  gap: 14px;
+               }
 
                .tags {
+                  @include flexStyle($gap: 8px);
                   margin-top: 15px;
-                  display: flex;
-                  gap: 10px;
+                  flex-wrap: wrap;
 
                   button {
                      @include makeButton($padding: 6px 8px, $rounded: 3px);
@@ -129,14 +134,20 @@
                }
 
                .userInfo {
-                  display: flex;
-                  align-items: center;
-                  gap: 10px;
+                  @include flexStyle($align: center, $gap: 10px);
                   margin-left: auto;
                   font-size: 14px;
 
                   img {
                      @include profilePicture(18px);
+
+                     @include mobileVersion {
+                        @include profilePicture(16px);
+                     }
+                  }
+
+                  @include mobileVersion {
+                     font-size: 12px;
                   }
                }
             }

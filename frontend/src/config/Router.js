@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 import React from "react";
 
 import { Layout } from "../components";
-import { Home, Login, Register } from "../pages";
+import { Home, Login, Register, Create } from "../pages";
 
 const Router = ({ currentUser }) => {
    const ProtectedRoute = ({ children }) => {
@@ -35,6 +35,10 @@ const Router = ({ currentUser }) => {
             {
                path: "/forum",
                element: <Home />,
+            },
+            {
+               path: "/forum/create",
+               element: <Create />,
             },
          ],
       },

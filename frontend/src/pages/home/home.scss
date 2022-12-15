@@ -7,17 +7,25 @@
       padding: 30px 20px 30px 30px;
 
       @include mobileVersion {
-         padding: 20px;
+         padding: 30px 20px 20px 20px;
       }
 
       .homeWrapper {
+         @include flexStyle($direction: column);
          color: themed("font");
-         display: flex;
-         flex-direction: column;
+
+         @include mobileVersion {
+            font-size: 12px;
+         }
 
          h1 {
             margin-bottom: 20px;
             font-size: 36px;
+
+            @include mobileVersion {
+               font-size: 28px;
+               margin-bottom: 10px;
+            }
          }
       }
    }

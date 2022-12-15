@@ -1,7 +1,9 @@
 @import "../../style.scss";
 
-.layout {
-   @include themify($themes) {
-      display: flex;
+.mainLayout {
+   flex: 6;
+
+   @include tabletVersion {
+      flex: 4.5;
    }
 }

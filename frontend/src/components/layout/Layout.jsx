@@ -15,7 +15,7 @@ const Layout = () => {
          <Header />
          <div style={{ display: "flex" }}>
             <Leftbar />
-            <div style={{ flex: 4.5 }}>
+            <div className="mainLayout">
                <Outlet />
             </div>
             <Rightbar />
