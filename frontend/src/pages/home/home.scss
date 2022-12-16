@@ -6,8 +6,12 @@
       background: themed("bg");
       padding: 30px 20px 30px 30px;
 
-      @include mobileVersion {
+      @include tabletVersion {
          padding: 30px 20px 20px 20px;
+      }
+
+      @include mobileVersion {
+         padding: 30px 20px 60px 20px;
       }
 
       .homeWrapper {

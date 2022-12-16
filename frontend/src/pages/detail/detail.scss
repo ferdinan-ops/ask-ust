@@ -1,0 +1,94 @@
+@import "../../style.scss";
+
+.detail {
+   @include themify($themes) {
+      min-height: calc(100vh - 80px);
+      padding: 30px 20px 30px 30px;
+      color: themed("font");
+      background-color: themed("bg");
+
+      .detailWrapper {
+         .top {
+            @include flexStyle($direction: column, $gap: 10px);
+            padding-bottom: 20px;
+
+            h1 {
+               line-height: 38px;
+            }
+
+            .userInfo {
+               @include flexStyle($align: center, $gap: 10px);
+
+               img {
+                  @include profilePicture(20px);
+               }
+
+               span {
+                  font-size: 18px;
+                  font-weight: 600;
+                  color: themed("primary");
+                  cursor: pointer;
+
+                  &.date {
+                     font-weight: normal;
+                     color: rgb(172, 172, 172);
+                     font-size: 16px;
+                     cursor: auto;
+                  }
+               }
+            }
+         }
+
+         .details {
+            border-bottom: 1px solid themed("border");
+            border-top: 1px solid themed("border");
+            padding: 20px 0;
+
+            .description {
+               line-height: 28px;
+            }
+
+            .allTags {
+               margin: 20px 0;
+               @include flexStyle($align: center, $gap: 10px);
+
+               button {
+                  @include makeButton($padding: 4px 8px, $rounded: 4px);
+                  background-color: lighten(themed("primary"), 55%);
+                  font-size: 12px;
+
+                  &:hover {
+                     background-color: lighten(themed("primary"), 40%);
+                  }
+               }
+            }
+
+            .actions {
+               @include flexStyle($align: center, $gap: 30px);
+
+               .item {
+                  @include flexStyle($align: center, $gap: 10px);
+                  font-weight: 600;
+
+                  .icons {
+                     width: 24px;
+                  }
+               }
+
+               button {
+                  margin-left: auto;
+                  font-size: 13px;
+                  background-color: themed("primary");
+                  color: #fff;
+                  transition: 0.2s;
+                  @include makeButton($padding: 4px 16px, $rounded: 4px);
+
+                  &:hover {
+                     box-shadow: 0px 0px 18px rgba(0, 186, 199, 0.6);
+                  }
+               }
+            }
+         }
+      }
+   }
+}

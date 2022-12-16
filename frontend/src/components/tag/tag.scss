@@ -1,0 +1,64 @@
+@import "../../style.scss";
+
+.tagContent {
+   @include themify($themes) {
+      margin-bottom: 3.1%;
+      cursor: pointer;
+
+      @include mobileVersion {
+         margin-bottom: 20px;
+      }
+
+      &:hover {
+         .wrapper {
+            border: 2px solid themed("primary");
+         }
+      }
+
+      .wrapper {
+         @include flexStyle($direction: column, $gap: 10px);
+         padding: 16px;
+         border-radius: 8px;
+         width: 268px;
+         border: 2px solid themed("contentBorder");
+         background-color: themed("contentBg");
+         transition: 0.3s;
+
+         @include tabletVersion {
+            width: 286.4px;
+         }
+
+         @include mobileVersion {
+            width: 100%;
+         }
+
+         span {
+            @include truncate(4);
+            color: themed("font");
+            font-size: 14px;
+
+            @include mobileVersion {
+               font-size: 13px;
+            }
+         }
+
+         button {
+            width: fit-content;
+            background-color: lighten(themed("primary"), 55%);
+            color: #272d3e;
+            font-weight: 500;
+            font-size: 12px;
+            @include makeButton($padding: 4px 8px, $rounded: 6px);
+
+            &:hover {
+               background-color: lighten(themed("primary"), 50%);
+            }
+
+            @include mobileVersion {
+               padding: 3px 6px;
+               font-size: 11px;
+            }
+         }
+      }
+   }
+}

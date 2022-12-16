@@ -86,6 +86,7 @@
 
          @include mobileVersion {
             display: block;
+            cursor: pointer;
             color: themed("font");
             width: 28px;
          }

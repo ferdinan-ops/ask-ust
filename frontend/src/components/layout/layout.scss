@@ -7,3 +7,11 @@
       flex: 4.5;
    }
 }
+
+.otherMain {
+   @include themify($themes) {
+      flex: 1;
+      // padding-left: 124px;
+      background-color: themed("bg");
+   }
+}

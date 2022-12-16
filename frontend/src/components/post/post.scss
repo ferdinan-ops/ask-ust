@@ -53,6 +53,7 @@
             .wrapper {
                @include flexStyle($direction: column, $gap: 15px);
                margin-left: auto;
+               padding: unset;
 
                @include tabletVersion {
                   flex-direction: row;
@@ -75,6 +76,7 @@
 
          .content {
             width: 100%;
+            margin: 0;
 
             .top {
                @include flexStyle($direction: column, $gap: 10px);

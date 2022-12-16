@@ -24,6 +24,7 @@ $themes: (
       "activeBg": lighten(#00bac7, 50%),
       "contentBg": #fff,
       "contentBorder": rgb(230, 230, 230),
+      "secondary":rgb(117, 117, 117),
    ),
    dark: ("primary": #00bac7,
       "font": #ddd,
@@ -33,6 +34,7 @@ $themes: (
       "activeBg": darken(#272d3e, 5%),
       "contentBg": darken(#272d3e, 5%),
       "contentBorder": lighten(#272d3e, 15%),
+      "secondary":rgb(189, 188, 188),
    ),
 );
 
@@ -84,6 +86,14 @@ $themes: (
    flex-direction: $direction;
    gap: $gap;
    flex: $flex;
+}
+
+@mixin truncate($line: 1) {
+   display: -webkit-box;
+   -webkit-line-clamp: $line;
+   -webkit-box-orient: vertical;
+   overflow: hidden;
+   text-overflow: ellipsis;
 }
 
 @mixin mobileVersion {

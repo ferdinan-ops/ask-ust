@@ -28,7 +28,7 @@ const Header = () => {
    return (
       <div className="header">
          <Bars3Icon className="mobileIcons" onClick={() => setShowNav(true)} />
-         <Link className="left brands" to="/forum">
+         <Link className="left brands" to="/forum/questions">
             <p>a<span className="logo">?</span>k<span>.</span>UST</p>
          </Link>
          <DarkModeToggle darkMode={darkMode} themeHandler={themeHandler} className="mobileIcons" />
@@ -39,8 +39,8 @@ const Header = () => {
          <div className="right">
             <button onClick={() => navigate("/forum/create")}>Buat Pertanyaan</button>
             <DarkModeToggle darkMode={darkMode} themeHandler={themeHandler} className="icons mobile" />
-            <BellIcon className="icons" />
-            <img src={currentUser.profilPic} alt="" />
+            <BellIcon className="icons" onClick={() => navigate("/forum/notification")} />
+            <img src={currentUser.profilPic} alt="" onClick={() => navigate(`/forum/profile/${currentUser.id}`)} />
          </div>
          <div className={`mobileNav ${showNav ? "active" : ""}`}>
             <div className="top">
@@ -51,11 +51,11 @@ const Header = () => {
                <XMarkIcon className="icons" onClick={() => setShowNav(false)} />
             </div>
             <Link to="/" onClick={() => setShowNav(false)}>Beranda</Link>
-            <Link to="/forum" onClick={() => setShowNav(false)}>Pertanyaan</Link>
-            <Link to="/tags" onClick={() => setShowNav(false)}>Tags</Link>
-            <Link to="/users" onClick={() => setShowNav(false)}>Pengguna</Link>
-            <Link to="/notification" onClick={() => setShowNav(false)}>Notifikasi</Link>
-            <Link to={`/profile/${currentUser.id}`} onClick={() => setShowNav(false)}>
+            <Link to="/forum/questions" onClick={() => setShowNav(false)}>Pertanyaan</Link>
+            <Link to="/forum/tags" onClick={() => setShowNav(false)}>Tags</Link>
+            <Link to="/forum/users" onClick={() => setShowNav(false)}>Pengguna</Link>
+            <Link to="/forum/notification" onClick={() => setShowNav(false)}>Notifikasi</Link>
+            <Link to={`/forum/profile/${currentUser.id}`} onClick={() => setShowNav(false)}>
                <div className="userInfo">
                   <img src={currentUser.profilPic} alt="" />
                   <span>{currentUser.name}</span>

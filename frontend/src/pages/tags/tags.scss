@@ -1,0 +1,86 @@
+@import "../../style.scss";
+
+.tagsPages {
+   @include themify($themes) {
+      min-height: calc(100vh - 80px);
+      background: themed("bg");
+
+      .container {
+         padding: 30px 20px 30px 30px;
+
+         @include tabletVersion {
+            padding: 30px 20px 20px 20px;
+         }
+
+         @include mobileVersion {
+            padding: 30px 20px 60px 20px;
+         }
+
+         .heading {
+            @include flexStyle($direction: column);
+            color: themed("font");
+
+            @include mobileVersion {
+               font-size: 12px;
+            }
+
+            h1 {
+               margin-bottom: 20px;
+               font-size: 36px;
+
+               @include mobileVersion {
+                  font-size: 28px;
+                  margin-bottom: 10px;
+               }
+            }
+         }
+
+         .searchBar {
+            @include flexStyle($align: center, $gap: 16px);
+            background-color: themed("searchBg");
+            padding: 10px 18px;
+            border-radius: 8px;
+            width: 100%;
+            margin-top: 30px;
+
+            @include mobileVersion {
+               padding: 8px 16px;
+            }
+
+            input {
+               width: 100%;
+               border: none;
+               font-weight: 500;
+               background-color: transparent;
+               font-size: 15px;
+               color: themed("font");
+
+               @include mobileVersion {
+                  font-size: 14px;
+               }
+            }
+
+            .icons {
+               width: 22px;
+               color: #757575;
+               cursor: auto;
+
+               @include mobileVersion {
+                  width: 20px;
+               }
+            }
+         }
+
+         .content {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3.1%;
+
+            @include tabletVersion {
+               justify-content: space-between;
+            }
+         }
+      }
+   }
+}

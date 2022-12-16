@@ -1,0 +1,98 @@
+@import "../../style.scss";
+
+.modals {
+   @include themify($themes) {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 999;
+      @include flexStyle($justify: center, $align: center);
+      transform: scale(0);
+      background-color: transparent;
+      transition: transform 0.1s, background-color 0.1s 0.3s;
+      color: themed("font");
+
+
+      &.show {
+         transform: scale(1);
+         background-color: rgba(darken(themed("bg"), 10%), .7);
+      }
+
+      @include mobileVersion {
+         padding: 20px;
+      }
+
+      .container {
+         background-color: themed("bg");
+         border-radius: 8px;
+         min-width: 420px;
+         transform: scale(0);
+         transition: transform 0.3s 0.5s;
+
+         @include mobileVersion {
+            min-width: unset;
+            width: 100%;
+         }
+
+         &.show {
+            transform: scale(1);
+         }
+
+         .top {
+            @include flexStyle($align: center, $gap: 20px);
+            padding: 16px;
+            border-bottom: 1px solid themed("border");
+
+            @include mobileVersion {
+               padding: 13px;
+               gap: 15px;
+            }
+
+            span {
+               font-size: 20px;
+               font-weight: bold;
+
+               @include mobileVersion {
+                  font-size: 18px;
+               }
+            }
+
+            .icons {
+               width: 32px;
+               padding: 5px;
+               border-radius: 50%;
+               background-color: rgba(darken(themed("bg"), 10%), .7);
+
+               @include mobileVersion {
+                  width: 27px;
+               }
+            }
+
+            button {
+               @include makeButton($padding: 4px 16px, $rounded: 30px);
+               margin-left: auto;
+               background-color: themed("primary");
+               font-weight: 600;
+               color: #fff;
+               font-size: 12px;
+
+               &:hover {
+                  background-color: darken(themed("primary"), 10%);
+               }
+
+               @include mobileVersion {
+                  padding: 2px 12px;
+                  font-size: 11px;
+               }
+            }
+         }
+
+         .bottom {
+            padding: 16px;
+            margin: 0;
+         }
+      }
+   }
+}

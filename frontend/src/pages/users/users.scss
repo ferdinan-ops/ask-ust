@@ -1,0 +1,161 @@
+@import "../../style.scss";
+
+.users {
+   @include themify($themes) {
+      min-height: calc(100vh - 80px);
+      background: themed("bg");
+
+      .container {
+         padding: 30px 20px 30px 30px;
+
+         @include tabletVersion {
+            padding: 30px 20px 20px 20px;
+         }
+
+         @include mobileVersion {
+            padding: 30px 20px 60px 20px;
+         }
+
+         .heading {
+            @include flexStyle($direction: column);
+            color: themed("font");
+
+            @include mobileVersion {
+               font-size: 12px;
+            }
+
+            h1 {
+               margin-bottom: 20px;
+               font-size: 36px;
+
+               @include mobileVersion {
+                  font-size: 28px;
+                  margin-bottom: 10px;
+               }
+            }
+         }
+
+         .searchBar {
+            @include flexStyle($align: center, $gap: 16px);
+            background-color: themed("searchBg");
+            padding: 10px 18px;
+            border-radius: 8px;
+            width: 100%;
+            margin-top: 30px;
+
+            @include mobileVersion {
+               padding: 8px 16px;
+            }
+
+            input {
+               width: 100%;
+               border: none;
+               font-weight: 500;
+               background-color: transparent;
+               font-size: 15px;
+               color: themed("font");
+
+               @include mobileVersion {
+                  font-size: 14px;
+               }
+            }
+
+            .icons {
+               width: 22px;
+               color: #757575;
+               cursor: auto;
+
+               @include mobileVersion {
+                  width: 20px;
+               }
+            }
+         }
+
+         .content {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3.1%;
+
+            @include tabletVersion {
+               justify-content: space-between;
+            }
+
+            .user {
+               @include flexStyle($gap: 15px, $align: top);
+               cursor: pointer;
+               margin-bottom: 3.1%;
+               color: themed("font");
+               background-color: themed("contentBg");
+               border: 2px solid themed("contentBorder");
+               padding: 16px;
+               border-radius: 8px;
+               transition: 0.3s;
+               width: 268px;
+
+               &:hover {
+                  border: 2px solid themed("primary");
+               }
+
+               @include tabletVersion {
+                  width: 286.4px;
+               }
+
+               @include mobileVersion {
+                  width: 100%;
+               }
+
+               img {
+                  @include profilePicture(50px);
+                  border-radius: 8px;
+
+                  @include mobileVersion {
+                     width: 46px;
+                     height: 46px;
+                  }
+               }
+
+               .details {
+                  @include flexStyle($direction: column);
+
+                  @include mobileVersion {
+                     width: 100%;
+                  }
+
+                  span {
+                     &:first-child {
+                        font-weight: 600;
+                        @include truncate();
+
+                        @include mobileVersion {
+                           font-size: 14px;
+                        }
+                     }
+
+                     &:nth-child(2) {
+                        font-size: 13px;
+                        @include truncate();
+
+                        @include mobileVersion {
+                           font-size: 11px;
+                        }
+                     }
+
+                     &:last-child {
+                        font-weight: bold;
+                        font-size: 20px;
+                        color: themed("primary");
+                        margin-top: 15px;
+                        margin-left: auto;
+
+                        @include mobileVersion {
+                           font-size: 16px;
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}

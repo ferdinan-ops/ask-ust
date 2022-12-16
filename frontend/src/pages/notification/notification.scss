@@ -1,0 +1,111 @@
+@import "../../style.scss";
+
+.notification {
+   @include themify($themes) {
+      min-height: calc(100vh - 80px);
+      background: themed("bg");
+      width: 907.15px;
+      margin: 0 auto;
+      padding: 30px;
+
+      @include tabletVersion {
+         padding: 30px;
+         width: 80%;
+      }
+
+      @include mobileVersion {
+         padding: 20px;
+         width: 100%;
+      }
+
+      .container {
+         .heading {
+            @include flexStyle($direction: column);
+            color: themed("font");
+            margin-bottom: 20px;
+
+            @include mobileVersion {
+               font-size: 12px;
+            }
+
+            h1 {
+               margin: 30px 0;
+               font-size: 36px;
+               text-align: center;
+
+               @include mobileVersion {
+                  font-size: 28px;
+                  margin: 10px 0;
+               }
+            }
+
+            p {
+               margin-top: 10px;
+            }
+         }
+
+         .content {
+            .card {
+               @include flexStyle($direction: column, $gap: 5px);
+               background-color: rgba(themed("primary"), .2);
+               border-radius: 8px;
+               padding: 16px;
+               cursor: pointer;
+               transition: 0.2s;
+
+               &:hover {
+                  background-color: rgba(themed("primary"), .5);
+               }
+
+               .userInfo {
+                  @include flexStyle($gap: 15px, $align: center);
+
+                  @include mobileVersion {
+                     align-items: flex-start;
+                  }
+
+                  img {
+                     @include profilePicture(45px);
+                     border-radius: 8px;
+
+                     @include mobileVersion {
+                        width: 40px;
+                        height: 40px;
+                     }
+                  }
+
+                  .details {
+                     @include flexStyle($direction: column);
+                     font-weight: 600;
+                     color: themed("font");
+
+                     @include mobileVersion {
+                        font-size: 15px;
+                     }
+
+                     .desc {
+                        font-weight: normal;
+                        font-size: 15px;
+
+                        @include mobileVersion {
+                           font-size: 14px;
+                        }
+                     }
+
+                     .date {
+                        font-size: 14px;
+                        font-weight: bold;
+                        color: themed("secondary");
+
+                        @include mobileVersion {
+                           font-size: 13px;
+                           margin: 5px 0 0 auto;
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}

@@ -7,18 +7,18 @@ import Rightbar from "../rightbar/Rightbar";
 
 import "./layout.scss";
 
-const Layout = () => {
+const Layout = ({ isLeftBar }) => {
    const { darkMode } = useContext(ThemeContext);
 
    return (
       <div className={`theme-${darkMode ? "dark" : "light"}`}>
          <Header />
          <div style={{ display: "flex" }}>
-            <Leftbar />
-            <div className="mainLayout">
+            {!isLeftBar && <Leftbar />}
+            <div className={isLeftBar ? "otherMain" : "mainLayout"}>
                <Outlet />
             </div>
-            <Rightbar />
+            {!isLeftBar && <Rightbar />}
          </div>
       </div>
    );

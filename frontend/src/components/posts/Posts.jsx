@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Post from "../post/Post";
 import { postDummy } from "../../utils/dummy";
+
 import "./posts.scss";
-import { useEffect } from "react";
 
 const Posts = () => {
    const [isNew, setIsNew] = useState(true);
    const [posts, setPosts] = useState([]);
+
 
    useEffect(() => {
       setIsNew(true);
@@ -38,9 +39,7 @@ const Posts = () => {
                </button>
             </div>
             <div className="postWrapper">
-               {posts.map((post) => (
-                  <Post post={post} key={post.id} />
-               ))}
+               {posts.map((post) => (<Post post={post} key={post.id} />))}
             </div>
          </div>
       </div>

@@ -1,12 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./post.scss";
 
 const Post = ({ post }) => {
-   const random = "https://source.unsplash.com/random/200x200?profile";
+   const navigate = useNavigate();
 
    return (
       <div className="post">
-         <div className="container">
+         <div className="container" onClick={() => navigate(`/forum/questions/${post.id}`)}>
             <div className="info">
                <div className="wrapper">
                   <p><span>{post?.likes?.length}</span> suka</p>

@@ -2,7 +2,7 @@ export const postDummy = [
    {
       id: 1,
       title: "Azure AAD - Cross Tenant access to Blazor App getting denied even when configured to allow access",
-      desc: "I'm getting the following error when trying to log in to my Blazor App that is using Microsoft AAD Authentication. The account I'm using to log in is an organizational account outside my Tenant. The ...",
+      desc: "I'm getting the following error when trying to log in to my Blazor App that is using Microsoft AAD Authentication. The account I'm using to log in is an organizational account outside my Tenant. The login works when I use my personal live.com account. I have allowed Cross Tenant access to the application using the following settings",
       tags: ["azure", "azure-active-directory", "blazor", "multi-tenant"],
       createdAt: "1 min ago",
       views: ["1", "2"],
