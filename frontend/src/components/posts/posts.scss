@@ -4,24 +4,20 @@
    @include themify($themes) {
       @include flexStyle($direction: column);
 
-      .wrapper {
-         .tabs {
+      .postsWrapper {
+         .postsTabs {
             display: flex;
-            margin-top: 50px;
-            margin-bottom: 20px;
+            margin: 50px 0 20px 0;
             border-bottom: 2px solid themed("border");
 
             @include mobileVersion {
-               margin-top: 40px;
-               margin-bottom: 0;
+               margin: 40px 0 0 0;
             }
 
             button {
-               @include makeButton($padding: 10px 30px, $rounded: 6px 6px 0 0);
-               font-size: 16px;
-               background-color: transparent;
+               @include makeButton($padding: 10px 30px, $rounded: 6px 6px 0 0, $bg: transparent);
+               @include typoGraphy($fontSize: 16px, $color: themed("font"));
                border-bottom: 5px solid transparent;
-               color: themed("font");
 
                @include mobileVersion {
                   font-size: 14px;
@@ -37,8 +33,7 @@
          }
 
          .postWrapper {
-            display: flex;
-            flex-direction: column;
+            @include flexStyle($direction: column);
          }
       }
    }

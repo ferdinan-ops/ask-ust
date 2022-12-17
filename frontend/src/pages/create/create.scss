@@ -2,10 +2,7 @@
 
 .create {
    @include themify($themes) {
-      min-height: calc(100vh - 80px);
-      padding: 30px;
-      background: themed("bg");
-      color: themed("font");
+      @include pages(30px);
       width: 907.15px;
       margin: 30px auto;
 
@@ -19,170 +16,119 @@
          width: 100%;
       }
 
-      .modalsForm {
-         @include flexStyle($direction: column, $gap: 30px);
-         margin: unset;
-
-         label {
-            @include flexStyle($direction: column, $gap: 10px);
-            font-weight: 600;
-
-            input,
-            textarea {
-               padding: 18px;
-               font-size: 15px;
-               border: 2px solid lighten(themed("searchBg"), 15%);
-               font-weight: 500;
-               color: themed("font");
-               border-radius: 8px;
-               background-color: themed("searchBg");
-
-               @include tabletVersion {
-                  font-size: 14px;
-                  padding: 17px;
-               }
-
-               @include mobileVersion {
-                  font-size: 13px;
-                  padding: 16px;
-               }
-            }
-
-            textarea {
-               min-height: 320px;
-
-               @include tabletVersion {
-                  min-height: 300px;
-               }
-
-               @include mobileVersion {
-                  min-height: 200px;
-               }
-            }
-         }
-      }
-
-      h1 {
-         margin-bottom: 20px;
-         font-size: 36px;
-         text-align: center;
-
-         @include tabletVersion {
-            font-size: 32px;
-         }
-
-         @include mobileVersion {
-            font-size: 28px;
-            margin-bottom: 10px;
-         }
-      }
-
-      form {
-         margin: 50px 0;
-         @include flexStyle($direction: column, $gap: 30px);
-
-         @include tabletVersion {
-            margin: 46px 0;
-            gap: 28px;
-         }
-
-         @include mobileVersion {
-            margin: 36px 0;
-         }
-
-         .inputs {
-            @include flexStyle($direction: column, $gap: 14px);
+      .createContainer {
+         h1 {
+            @include typoGraphy($align: center, $fontSize: 36px, $weight: bold);
+            margin-bottom: 20px;
 
             @include tabletVersion {
-               gap: 13px;
+               font-size: 32px;
             }
 
             @include mobileVersion {
-               gap: 12px;
+               font-size: 28px;
+               margin-bottom: 10px;
+            }
+         }
+
+         form {
+            margin: 50px 0;
+            @include flexStyle($direction: column, $gap: 30px);
+
+            @include tabletVersion {
+               margin: 46px 0;
+               gap: 28px;
             }
 
-            span {
-               font-weight: 600;
-               font-size: 18px;
+            @include mobileVersion {
+               margin: 36px 0;
+            }
+
+            .createInput {
+               @include flexStyle($direction: column, $gap: 14px);
 
                @include tabletVersion {
-                  font-size: 17px;
+                  gap: 13px;
                }
 
                @include mobileVersion {
-                  font-size: 16px;
-               }
-            }
-
-            input,
-            textarea {
-               padding: 18px;
-               font-size: 15px;
-               border: 2px solid lighten(themed("searchBg"), 15%);
-               font-weight: 500;
-               color: themed("font");
-               border-radius: 8px;
-               background-color: themed("searchBg");
-
-               @include tabletVersion {
-                  font-size: 14px;
-                  padding: 17px;
+                  gap: 12px;
                }
 
-               @include mobileVersion {
-                  font-size: 13px;
-                  padding: 16px;
+               span {
+                  @include typoGraphy($weight: 600, $fontSize: 18px);
+
+                  @include tabletVersion {
+                     font-size: 17px;
+                  }
+
+                  @include mobileVersion {
+                     font-size: 16px;
+                  }
                }
-            }
 
-            textarea {
-               min-height: 320px;
+               input {
+                  @include typoGraphy($fontSize: 14px, $weight: 500, $color: themed("font"));
+                  @include input($padding: 16px, $rounded: 8px, $bg: darken(themed("bg"), 5%));
 
-               @include tabletVersion {
-                  min-height: 300px;
+                  @include tabletVersion {
+                     font-size: 14px;
+                     padding: 16px;
+                  }
+
+                  @include mobileVersion {
+                     font-size: 12px;
+                     padding: 14px;
+                  }
                }
 
-               @include mobileVersion {
-                  min-height: 280px;
+               textarea {
+                  min-height: 320px;
+                  background-color: themed("bg");
+
+                  @include tabletVersion {
+                     min-height: 300px;
+                  }
+
+                  @include mobileVersion {
+                     min-height: 280px;
+                  }
                }
-            }
 
-            .tags {
-               @include flexStyle($justify: space-between, $align: center);
+               .tags {
+                  @include flexStyle($justify: space-between, $align: center);
 
-               button {
-                  @include flexStyle($align: center, $gap: 10px);
-                  box-shadow: none;
-                  padding: 4px 8px;
+                  button {
+                     @include flexStyle($align: center, $gap: 10px);
+                     box-shadow: none;
+                     padding: 4px 8px;
 
-                  .icons {
-                     width: 18px;
+                     .icons {
+                        width: 18px;
+                     }
                   }
                }
             }
-         }
 
-         button {
-            @include makeButton($padding: 12px 24px, $rounded: 8px);
-            width: fit-content;
-            font-weight: 700;
-            font-size: 15px;
-            margin-left: auto;
-            background-color: themed("primary");
-            color: #fff;
-            box-shadow: 0px 10px 20px rgba(0, 186, 199, 0.25);
+            .primary-button {
+               @include makeButton($padding: 12px 24px, $rounded: 8px, $bg: themed("primary"));
+               @include typoGraphy($fontSize: 15px, $weight: 700, $color: #fff);
+               width: fit-content;
+               margin-left: auto;
+               box-shadow: themed("shadow");
 
-            &:hover {
-               background-color: darken(themed("primary"), 10%);
-            }
+               &:hover {
+                  background-color: darken(themed("primary"), 10%);
+               }
 
-            @include tabletVersion {
-               font-size: 14px;
-            }
+               @include tabletVersion {
+                  font-size: 14px;
+               }
 
-            @include mobileVersion {
-               font-size: 13px;
-               padding: 10px 20px;
+               @include mobileVersion {
+                  font-size: 13px;
+                  padding: 10px 20px;
+               }
             }
          }
       }

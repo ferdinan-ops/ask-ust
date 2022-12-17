@@ -2,9 +2,7 @@
 
 .home {
    @include themify($themes) {
-      min-height: calc(100vh - 80px);
-      background: themed("bg");
-      padding: 30px 20px 30px 30px;
+      @include pages(30px 20px 30px 30px);
 
       @include tabletVersion {
          padding: 30px 20px 20px 20px;
@@ -12,25 +10,6 @@
 
       @include mobileVersion {
          padding: 30px 20px 60px 20px;
-      }
-
-      .homeWrapper {
-         @include flexStyle($direction: column);
-         color: themed("font");
-
-         @include mobileVersion {
-            font-size: 12px;
-         }
-
-         h1 {
-            margin-bottom: 20px;
-            font-size: 36px;
-
-            @include mobileVersion {
-               font-size: 28px;
-               margin-bottom: 10px;
-            }
-         }
       }
    }
 }

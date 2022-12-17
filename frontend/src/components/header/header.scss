@@ -2,14 +2,10 @@
 
 .header {
    @include themify($themes) {
-      position: sticky;
-      top: 0;
-      z-index: 9999;
+      @include flexStyle($justify: space-between, $align: center);
+      @include position($position: sticky, $z: 9999, $top: 0);
       height: 80px;
       padding: 0 124px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       border-bottom: 1px solid themed("border");
       background: themed("bg");
 
@@ -20,13 +16,9 @@
       .mobileNav {
          display: none;
          padding: 30px;
-         background-color: themed("bg");
-         position: fixed;
-         top: 0;
-         left: 0;
-         right: 0;
-         bottom: 0;
          transition: 0.3s;
+         background-color: themed("bg");
+         @include position($position: fixed, $top: 0, $right: 0, $left: 0);
 
          .top {
             @include flexStyle($align: center, $gap: 30px);
@@ -49,10 +41,9 @@
          }
 
          a {
+            @include typoGraphy($color: themed("font"), $weight: 600);
             width: fit-content;
             text-decoration: none;
-            color: themed("font");
-            font-weight: 600;
 
             .userInfo {
                @include flexStyle($align: center, $gap: 10px);
@@ -93,8 +84,7 @@
       }
 
       .left {
-         font-size: 32px;
-         font-weight: 700;
+         @include typoGraphy($fontSize: 32px, $weight: 600);
          text-decoration: none;
 
          p {
@@ -136,11 +126,8 @@
 
          input {
             width: 100%;
-            border: none;
-            font-weight: 500;
-            background-color: transparent;
-            font-size: 15px;
-            color: themed("font");
+            @include typoGraphy($weight: 500, $fontSize: 15px, $color: themed("font"));
+            @include input($bg: transparent);
          }
 
          .icons {
@@ -151,9 +138,7 @@
       }
 
       .right {
-         display: flex;
-         align-items: center;
-         gap: 30px;
+         @include flexStyle($align: center, $gap: 30px);
 
          @include tabletVersion {
             gap: 20px;
@@ -173,10 +158,7 @@
       }
 
       button {
-         @include makeButton($padding: 10px 20px, $rounded: 8px);
-         border: none;
-         background-color: themed("primary");
-         color: #fff;
+         @include makeButton($padding: 10px 20px, $rounded: 8px, $bg: themed("primary"), $color: #fff);
          transition: 0.2s;
 
          &:hover {

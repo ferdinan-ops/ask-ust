@@ -10,19 +10,17 @@
       }
 
       &:hover {
-         .wrapper {
+         .tagWrapper {
             border: 2px solid themed("primary");
          }
       }
 
-      .wrapper {
+      .tagWrapper {
          @include flexStyle($direction: column, $gap: 10px);
-         padding: 16px;
-         border-radius: 8px;
+         @include makeButton($padding: 16px, $bg: themed("contentBg"), $rounded: 8px);
          width: 268px;
-         border: 2px solid themed("contentBorder");
-         background-color: themed("contentBg");
          transition: 0.3s;
+         border: 2px solid themed("contentBorder");
 
          @include tabletVersion {
             width: 286.4px;
@@ -34,8 +32,7 @@
 
          span {
             @include truncate(4);
-            color: themed("font");
-            font-size: 14px;
+            @include typoGraphy($color: themed("font"), $fontSize: 14px);
 
             @include mobileVersion {
                font-size: 13px;
@@ -44,11 +41,8 @@
 
          button {
             width: fit-content;
-            background-color: lighten(themed("primary"), 55%);
-            color: #272d3e;
-            font-weight: 500;
-            font-size: 12px;
-            @include makeButton($padding: 4px 8px, $rounded: 6px);
+            @include makeButton($padding: 4px 8px, $rounded: 6px, $color: #272d3e, $bg: lighten(themed("primary"), 55%));
+            @include typoGraphy($weight: 500, $fontSize: 12px);
 
             &:hover {
                background-color: lighten(themed("primary"), 50%);

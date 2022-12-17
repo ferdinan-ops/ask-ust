@@ -2,12 +2,11 @@
 
 .leftbar {
    @include themify($themes) {
-      background: themed("bg");
-      padding-left: 124px;
-      flex: 1.2;
-      position: sticky;
-      top: 80px;
+      @include position($position: sticky, $top: 80px);
       height: calc(100vh - 80px);
+      background: themed("bg");
+      flex: 1.2;
+      padding-left: 124px;
       overflow: scroll;
       border-right: 1px solid themed("border");
 
@@ -23,37 +22,30 @@
          display: none;
       }
 
-      .container {
+      .leftContainer {
+         @include flexStyle($direction: column);
          padding-top: 30px;
-         display: flex;
-         flex-direction: column;
          width: 100%;
 
          a {
+            @include typoGraphy($weight: bold, $fontSize: 18px, $color: themed("font"));
             text-decoration: none;
-            font-weight: bold;
-            font-size: 18px;
-            color: themed("font");
          }
 
          p {
             text-transform: uppercase;
-            font-weight: 600;
-            color: rgb(117, 117, 117);
             margin-top: 30px;
+            @include typoGraphy($weight: 600, $color: rgb(117, 117, 117));
          }
 
          .public {
             margin-top: 10px;
-            display: flex;
-            flex-direction: column;
+            @include flexStyle($direction: column);
 
-            .item {
-               display: flex;
+            .leftItem {
                cursor: pointer;
-               justify-content: space-between;
-               color: rgb(117, 117, 117);
-               font-weight: 500;
+               @include flexStyle($justify: space-between);
+               @include typoGraphy($weight: 500, $color: rgb(117, 117, 117));
 
                span {
                   font-size: 15px;
@@ -61,9 +53,7 @@
 
                .link {
                   padding: 10px 12px 12px 12px;
-                  display: flex;
-                  align-items: center;
-                  gap: 10px;
+                  @include flexStyle($align: center, $gap: 10px);
                }
 
                .bar {
@@ -74,15 +64,14 @@
                .icons {
                   width: 24px;
                }
-            }
 
-            .item.active {
-               background-color: themed("activeBg");
-               color: themed("font");
-               font-weight: bold;
+               &.active {
+                  background-color: themed("activeBg");
+                  @include typoGraphy($weight: bold, $color: themed("font"));
 
-               .bar {
-                  background-color: themed("primary");
+                  .bar {
+                     background-color: themed("primary");
+                  }
                }
             }
          }

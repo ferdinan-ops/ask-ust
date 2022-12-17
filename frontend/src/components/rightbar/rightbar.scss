@@ -2,14 +2,13 @@
 
 .rightbar {
    @include themify($themes) {
-      position: sticky;
-      top: 80px;
+      @include position($position: sticky, $top: 80px);
       height: calc(100vh - 80px);
-      overflow: scroll;
       flex: 2;
       padding: 30px 124px 30px 20px;
       background: themed("bg");
       color: themed("font");
+      overflow: scroll;
 
       @include tabletVersion {
          display: none;
@@ -19,25 +18,21 @@
          display: none;
       }
 
-      .container {
+      .rightContainer {
          margin-bottom: 20px;
-         padding: unset;
          padding: 20px;
          background: themed("contentBg");
          border-radius: 10px;
          filter: drop-shadow(0px 1px 4px rgba(0, 0, 0, 0.08)) drop-shadow(0px 2px 12px rgba(0, 0, 0, 0.08));
 
-         .top {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+         .rightTop {
             padding-bottom: 20px;
             border-bottom: 1px solid themed("border");
-            font-weight: bold;
-            color: themed("primary");
+            @include flexStyle($align: center, $gap: 10px);
+            @include typoGraphy($weight: bold, $color: themed("primary"));
          }
 
-         .bottom {
+         .rightBottom {
             padding-top: 20px;
             line-height: 26px;
 
@@ -45,15 +40,12 @@
                padding: 10px 20px;
 
                li {
-                  font-size: 14px;
-                  line-height: 24px;
+                  @include typoGraphy($fontSize: 14px, $lineHeight: 24px);
                }
             }
 
-            .item {
-               display: flex;
-               justify-content: space-between;
-               align-items: center;
+            .rightItem {
+               @include flexStyle($align: center, $justify: space-between);
                margin-bottom: 20px;
 
                .icons {
@@ -74,10 +66,8 @@
                   }
                }
 
-               .userInfo {
-                  display: flex;
-                  align-items: center;
-                  gap: 15px;
+               .rigthUserInfo {
+                  @include flexStyle($align: center, $gap: 15px);
                   font-weight: 500;
 
                   img {

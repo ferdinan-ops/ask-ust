@@ -7,26 +7,26 @@ const Post = ({ post }) => {
 
    return (
       <div className="post">
-         <div className="container" onClick={() => navigate(`/forum/questions/${post.id}`)}>
+         <div className="postContainer" onClick={() => navigate(`/forum/questions/${post.id}`)}>
             <div className="info">
-               <div className="wrapper">
+               <div className="postWrapper">
                   <p><span>{post?.likes?.length}</span> suka</p>
                   <p><span>{post?.answers?.length}</span> jawaban</p>
                   <p><span>{post?.views?.length}</span> melihat</p>
                </div>
             </div>
-            <div className="content">
-               <div className="top">
+            <div className="postContent">
+               <div className="postTop">
                   <h2>{post.title}</h2>
                   <span>{post.desc}</span>
                </div>
-               <div className="bottom">
-                  <div className="tags">
+               <div className="postBottom">
+                  <div className="postTags">
                      {post?.tags?.map((tag, index) => (
                         <button key={index}># {tag}</button>
                      ))}
                   </div>
-                  <div className="userInfo">
+                  <div className="postUserInfo">
                      <img src={post?.user?.profilePic} alt="" />
                      <span>{post?.user?.name}</span>
                      <span>&bull;</span>

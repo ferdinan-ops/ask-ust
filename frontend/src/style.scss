@@ -25,6 +25,8 @@ $themes: (
       "contentBg": #fff,
       "contentBorder": rgb(230, 230, 230),
       "secondary":rgb(117, 117, 117),
+      "bgEditor":#fff,
+      "shadow":0px 10px 20px rgba(0, 186, 199, 0.25),
    ),
    dark: ("primary": #00bac7,
       "font": #ddd,
@@ -35,6 +37,7 @@ $themes: (
       "contentBg": darken(#272d3e, 5%),
       "contentBorder": lighten(#272d3e, 15%),
       "secondary":rgb(189, 188, 188),
+      "bgEditor":#eee,
    ),
 );
 
@@ -71,12 +74,14 @@ $themes: (
    cursor: pointer;
 }
 
-@mixin makeButton($padding: 10px, $rounded: unset) {
+@mixin makeButton($padding: 10px, $rounded: unset, $bg: unset, $color: unset) {
    padding: $padding;
    cursor: pointer;
-   font-weight: 500;
+   font-weight: 600;
    border: none;
    border-radius: $rounded;
+   background-color: $bg;
+   color: $color;
 }
 
 @mixin flexStyle($justify: unset, $align: unset, $direction: unset, $gap: 0, $flex: unset) {
@@ -96,6 +101,37 @@ $themes: (
    text-overflow: ellipsis;
 }
 
+@mixin input($bg: unset, $border: none, $padding: 0, $rounded: unset) {
+   border: $border;
+   background-color: $bg;
+   padding: $padding;
+   border-radius: $rounded;
+}
+
+@mixin pages($padding: 0) {
+   min-height: calc(100vh - 80px);
+   background: themed("bg");
+   color: themed("font");
+   padding: $padding;
+}
+
+@mixin typoGraphy($fontSize: normal, $color: unset, $weight: normal, $lineHeight: unset, $align: unset) {
+   font-size: $fontSize;
+   color: $color;
+   font-weight: $weight;
+   line-height: $lineHeight;
+   text-align: $align;
+}
+
+@mixin position($position: unset, $top: unset, $right: unset, $left: unset, $bottom: unset, $z: unset) {
+   position: $position;
+   top: $top;
+   bottom: $bottom;
+   right: $right;
+   left: $left;
+   z-index: $z;
+}
+
 @mixin mobileVersion {
    @media (max-width: 480px) {
       @content;
@@ -105,5 +141,26 @@ $themes: (
 @mixin tabletVersion {
    @media (max-width: 960px) {
       @content;
+   }
+}
+
+.pagesTitle {
+   @include themify($themes) {
+      @include flexStyle($direction: column);
+      color: themed("font");
+
+      @include mobileVersion {
+         font-size: 12px;
+      }
+
+      h1 {
+         margin-bottom: 20px;
+         font-size: 36px;
+
+         @include mobileVersion {
+            font-size: 28px;
+            margin-bottom: 10px;
+         }
+      }
    }
 }

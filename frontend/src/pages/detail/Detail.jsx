@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline";
+import { Answers, More, TextEditor } from "../../components";
 import { postDummy } from "../../utils/dummy";
-
 import "./detail.scss";
 
 const Detail = () => {
@@ -20,42 +19,45 @@ const Detail = () => {
       document.title = post.title + " | ask.UST";
    }, [post]);
 
-   console.log({ post });
-
    return (
       <div className="detail">
          <div className="detailWrapper">
-            <div className="top">
+            <div className="detailHead">
                <h1>{post.title}</h1>
-               <div className="userInfo">
-                  <p>Author: </p>
+               <div className="detailUserInfo">
+                  <span>Author: </span>
                   <img src={post?.user?.profilePic} alt="" />
-                  <span>{post?.user?.name}</span>
+                  <span className="name">{post?.user?.name}</span>
                   &bull;
                   <span className="date">{post?.createdAt}</span>
+                  <More />
                </div>
             </div>
-            <div className="details">
-               <div className="description">{post.desc}</div>
-               <div className="allTags">
+            <div className="detailContent">
+               <div className="detailDesc">{post.desc}</div>
+               <div className="detailAllTags">
                   {post?.tags?.map((item) => (
                      <button key={item}># {item}</button>
                   ))}
                </div>
-               <div className="actions">
-                  <div className="item">
+               <div className="detailActions">
+                  <div className="detailItem">
                      <HeartIcon className="icons" />
                      <span>{post?.likes?.length}</span>
                   </div>
-                  <div className="item">
+                  <div className="detailItem">
                      <BookmarkIcon className="icons" />
                      <span>{post?.likes?.length}</span>
                   </div>
-                  <button>Beri Komentar</button>
                </div>
             </div>
-            <div className="answer">
-
+            <Answers post={post} />
+            <div className="yourAnswer">
+               <h2>Ayo berikan jawaban kamu! 😁</h2>
+               <form>
+                  <TextEditor />
+                  <button className="submit">Kirim Jawaban</button>
+               </form>
             </div>
          </div>
       </div >

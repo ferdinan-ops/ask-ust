@@ -2,18 +2,12 @@
 
 .modals {
    @include themify($themes) {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 999;
+      @include position($position: fixed, $top: 0, $bottom: 0, $left: 0, $right: 0, $z: 999);
       @include flexStyle($justify: center, $align: center);
       transform: scale(0);
+      color: themed("font");
       background-color: transparent;
       transition: transform 0.1s, background-color 0.1s 0.3s;
-      color: themed("font");
-
 
       &.show {
          transform: scale(1);
@@ -41,9 +35,9 @@
          }
 
          .top {
-            @include flexStyle($align: center, $gap: 20px);
             padding: 16px;
             border-bottom: 1px solid themed("border");
+            @include flexStyle($align: center, $gap: 20px);
 
             @include mobileVersion {
                padding: 13px;
@@ -51,8 +45,7 @@
             }
 
             span {
-               font-size: 20px;
-               font-weight: bold;
+               @include typoGraphy($weight: bold, $fontSize: 20px);
 
                @include mobileVersion {
                   font-size: 18px;
@@ -71,12 +64,9 @@
             }
 
             button {
-               @include makeButton($padding: 4px 16px, $rounded: 30px);
+               @include makeButton($padding: 4px 16px, $rounded: 30px, $bg: themed("primary"));
+               @include typoGraphy($fontSize: 12px, $color: #fff);
                margin-left: auto;
-               background-color: themed("primary");
-               font-weight: 600;
-               color: #fff;
-               font-size: 12px;
 
                &:hover {
                   background-color: darken(themed("primary"), 10%);
@@ -92,6 +82,39 @@
          .bottom {
             padding: 16px;
             margin: 0;
+
+            .modalWrapper {
+               @include flexStyle($direction: column, $gap: 30px);
+
+               label {
+                  @include flexStyle($direction: column, $gap: 10px);
+                  font-weight: 600;
+
+                  input,
+                  textarea {
+                     @include typoGraphy($fontSize: 15px, $weight: 500, $color: themed("font"));
+                     @include input($padding: 18px, $rounded: 8px, $bg: themed("searchBg"), $border: 2px solid lighten(themed("searchBg"), 15%));
+
+                     @include tabletVersion {
+                        font-size: 14px;
+                        padding: 17px;
+                     }
+
+                     @include mobileVersion {
+                        font-size: 13px;
+                        padding: 16px;
+                     }
+                  }
+
+                  textarea {
+                     min-height: 300px;
+
+                     @include mobileVersion {
+                        min-height: 200px;
+                     }
+                  }
+               }
+            }
          }
       }
    }

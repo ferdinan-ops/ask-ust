@@ -12,7 +12,34 @@ export const postDummy = [
          name: "techno",
          profilePic: "https://source.unsplash.com/random/200x200?man",
       },
-      answers: [],
+      answers: [
+         {
+            id: 3,
+            desc: "I'm getting the following error when trying to log in to my Blazor App that is using Microsoft AAD Authentication. The account I'm using to log in is an organizational account outside my Tenant. The login works when I use my personal live.com account. I have allowed Cross Tenant access to the application using the following settings. I have searched for the same solution but I didn't find any solution which fulfilled my requirement so I come up with my own code. So here's my implementation code: Lorem ipsum dolor sit amet consectetur adipisicing elit. Et sit ad nesciunt est quaerat reprehenderit tenetur earum, accusamus maiores dolorum? Voluptatum perferendis deserunt asperiores voluptas blanditiis enim iure tempore hic.",
+            isBestAnswer: true,
+            createdAt: "1 jam yang lalu",
+            likes: [1, 2, 3],
+            dislikes: [3, 4],
+            user: {
+               id: 3,
+               name: "Ferdinan Imanuel Tumanggor",
+               profilePic: "https://source.unsplash.com/random/200x200?galaxy"
+            }
+         },
+         {
+            id: 1,
+            desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit perferendis hic beatae fugiat veritatis iste dignissimos eos nulla libero quos assumenda nam, animi corporis praesentium illo. Adipisci nisi sunt unde!",
+            createdAt: "1 min ago",
+            isBestAnswer: false,
+            likes: [],
+            dislikes: [3, 4],
+            user: {
+               id: 3,
+               name: "Yami Sukehiro",
+               profilePic: "https://source.unsplash.com/random/200x200?earth"
+            }
+         },
+      ],
    },
    {
       id: 2,
@@ -33,18 +60,6 @@ export const postDummy = [
             desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit perferendis hic beatae fugiat veritatis iste dignissimos eos nulla libero quos assumenda nam, animi corporis praesentium illo. Adipisci nisi sunt unde!",
             isBestAnswer: true,
             createdAt: "1 min ago",
-            comments: [
-               {
-                  id: 1,
-                  desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit perferendis hic beatae fugiat",
-                  createdAt: "1 min ago",
-                  user: {
-                     id: 1,
-                     name: "techno",
-                     profilePic: "https://source.unsplash.com/random/200x200?man",
-                  },
-               },
-            ],
          },
       ],
    },

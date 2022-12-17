@@ -1,0 +1,68 @@
+@import "../../style.scss";
+
+.tox-editor-container,
+.tox-toolbar-overlord,
+.tox-toolbar__primary {
+   @include themify($themes) {
+      background-color: darken(themed("bg"), 5%) !important;
+      box-shadow: unset !important;
+   }
+}
+
+.tox-editor-header {
+   @include themify($themes) {
+      background-color: darken(themed("bg"), 5%) !important;
+      border-bottom: 2px solid darken(themed("bg"), 5%) !important;
+      box-shadow: unset !important;
+   }
+}
+
+.tox-statusbar__path-item {
+   @include themify($themes) {
+      color: themed("font") !important;
+   }
+}
+
+.tox-statusbar {
+   @include themify($themes) {
+      border-color: darken(themed("bg"), 5%) !important;
+      background-color: darken(themed("bg"), 5%) !important;
+   }
+}
+
+.tox-statusbar__branding {
+   display: none !important;
+}
+
+.tox-tbtn svg,
+.tox-tbtn__icon-wrap svg {
+   @include themify($themes) {
+      fill: themed("font") !important;
+   }
+}
+
+.tox-tbtn:hover {
+   @include themify($themes) {
+      background: darken(themed("bg"), 15%) !important;
+   }
+}
+
+.tox-tbtn--enabled {
+   @include themify($themes) {
+      background: darken(themed("bg"), 15%) !important;
+   }
+}
+
+.tox-tinymce {
+   @include themify($themes) {
+      border-color: darken(themed("bg"), 5%);
+      background-color: darken(themed("bg"), 5%) !important;
+   }
+}
+
+.tox-edit-area__iframe {
+   @include themify($themes) {
+      color: themed("font") !important;
+      background-color: themed("bgEditor") !important;
+   }
+}

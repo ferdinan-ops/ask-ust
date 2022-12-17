@@ -1,4 +1,4 @@
-import { MagnifyingGlassIcon, BellIcon, MoonIcon, SunIcon, Bars3Icon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon, BellIcon, MoonIcon, SunIcon, Bars3Icon, HomeIcon } from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -24,7 +24,6 @@ const Header = () => {
    const { darkMode, themeHandler } = useContext(ThemeContext);
    const { currentUser } = useContext(AuthContext);
 
-
    return (
       <div className="header">
          <Bars3Icon className="mobileIcons" onClick={() => setShowNav(true)} />
@@ -38,9 +37,10 @@ const Header = () => {
          </div>
          <div className="right">
             <button onClick={() => navigate("/forum/create")}>Buat Pertanyaan</button>
+            <HomeIcon className="icons" onClick={() => navigate("/forum/questions")} />
             <DarkModeToggle darkMode={darkMode} themeHandler={themeHandler} className="icons mobile" />
             <BellIcon className="icons" onClick={() => navigate("/forum/notification")} />
-            <img src={currentUser.profilPic} alt="" onClick={() => navigate(`/forum/profile/${currentUser.id}`)} />
+            <img src={currentUser.profilPic} alt="" onClick={() => navigate(`/forum/users/${currentUser.id}`)} />
          </div>
          <div className={`mobileNav ${showNav ? "active" : ""}`}>
             <div className="top">
@@ -55,7 +55,7 @@ const Header = () => {
             <Link to="/forum/tags" onClick={() => setShowNav(false)}>Tags</Link>
             <Link to="/forum/users" onClick={() => setShowNav(false)}>Pengguna</Link>
             <Link to="/forum/notification" onClick={() => setShowNav(false)}>Notifikasi</Link>
-            <Link to={`/forum/profile/${currentUser.id}`} onClick={() => setShowNav(false)}>
+            <Link to={`/forum/users/${currentUser.id}`} onClick={() => setShowNav(false)}>
                <div className="userInfo">
                   <img src={currentUser.profilPic} alt="" />
                   <span>{currentUser.name}</span>

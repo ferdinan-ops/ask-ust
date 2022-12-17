@@ -52,6 +52,10 @@ const Router = ({ currentUser }) => {
                path: "/forum/users",
                element: <Users />,
             },
+            {
+               path: "/forum/users/:id",
+               element: <Profile />,
+            },
          ],
       },
       {
@@ -62,10 +66,6 @@ const Router = ({ currentUser }) => {
             </ProtectedRoute>
          ),
          children: [
-            {
-               path: "/forum/profile/:id",
-               element: <Profile />,
-            },
             {
                path: "/forum/notification",
                element: <Notification />,

@@ -16,12 +16,8 @@ $bgInput: #f3f4f6;
 
          .brand {
             display: flex;
-            color: #272d3e;
-            font-size: 24px;
-            font-weight: bold;
-            position: absolute;
-            top: 32px;
-            left: 32px;
+            @include typoGraphy($color: #272d3e, $fontSize: 24px, $weight: bold);
+            @include position($position: absolute, $top: 32px, $left: 32px);
 
             span {
                color: $primary;
@@ -54,7 +50,7 @@ $bgInput: #f3f4f6;
             }
 
             span {
-               font-size: 15px;
+               font-size: 14px;
 
                @include mobileVersion {
                   font-size: 13px;
@@ -63,6 +59,7 @@ $bgInput: #f3f4f6;
          }
 
          form {
+            margin: 45px 0;
             @include flexStyle($direction: column, $gap: 30px);
 
             @include mobileVersion {
@@ -79,12 +76,8 @@ $bgInput: #f3f4f6;
                }
 
                input {
-                  border: none;
-                  background-color: $bgInput;
-                  padding: 20px 40px;
-                  font-size: 16px;
-                  font-weight: 500;
-                  border-radius: 8px;
+                  @include input($bg: $bgInput, $padding: 20px 40px, $rounded: 8px);
+                  @include typoGraphy($fontSize: 16px, $weight: 500);
 
                   @include mobileVersion {
                      font-size: 15px;
@@ -94,13 +87,10 @@ $bgInput: #f3f4f6;
             }
 
             button {
-               @include makeButton($padding: 20px 0, $rounded: 6px);
-               font-weight: 600;
-               font-size: 16px;
-               background-color: $primary;
-               color: #fff;
                margin-top: 20px;
                box-shadow: 0px 30px 60px rgba(0, 186, 199, 0.15);
+               @include makeButton($padding: 20px 0, $rounded: 6px, $bg: $primary);
+               @include typoGraphy($weight: 600, $fontSize: 16px, $color: #fff, $align: center);
 
                &:hover {
                   background-color: darken($primary, 5%);
@@ -154,33 +144,23 @@ $bgInput: #f3f4f6;
             margin: 0 auto;
 
             span {
-               color: rgba(255, 255, 255, 0.6);
-               font-weight: 700;
+               @include typoGraphy($color: rgba(255, 255, 255, 0.6), $weight: 700, $lineHeight: 28px);
                letter-spacing: 0.15em;
-               line-height: 28px;
                margin-bottom: 10px;
             }
 
             p {
-               font-size: 28px;
-               line-height: 42px;
-               color: #fff;
-               font-weight: 500;
+               @include typoGraphy($fontSize: 28px, $weight: 500, $lineHeight: 42px, $color: #fff);
             }
          }
       }
 
       .rounded {
-         position: absolute;
-         z-index: 1;
-         top: 73px;
-         left: -249px;
+         @include position($position: absolute, $z: 1, $top: 73px, $left: -249px);
          width: 1090px;
          height: 1090px;
          border-radius: 50%;
-         background: linear-gradient(140.4deg,
-               rgba(255, 255, 255, 0.03) 16.29%,
-               rgba(255, 255, 255, 0) 63.17%);
+         background: linear-gradient(140.4deg, rgba(255, 255, 255, 0.03) 16.29%, rgba(255, 255, 255, 0) 63.17%);
 
          &:nth-child(2) {
             width: 700px;

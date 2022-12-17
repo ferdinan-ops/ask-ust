@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import { Gap } from "../../components";
 import "./register.scss";
 
 const Register = () => {
@@ -23,7 +22,6 @@ const Register = () => {
                      aja terus langsung jadi deh!
                   </span>
                </div>
-               <Gap height={45} />
                <form>
                   <label>
                      <span>Username</span>
@@ -39,7 +37,6 @@ const Register = () => {
                   </label>
                   <button>Mendaftar</button>
                </form>
-               <Gap height={45} />
                <p>
                   Udah punya akun? <Link to="/login">Login!</Link>
                </p>

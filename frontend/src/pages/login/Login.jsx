@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { Gap } from "../../components";
 import { AuthContext } from "../../context/authContext";
 import "./login.scss";
 
@@ -26,7 +25,6 @@ const Login = () => {
                      solusi dari masalah kamu!
                   </span>
                </div>
-               <Gap height={45} />
                <form>
                   <label>
                      <span>Email</span>
@@ -38,7 +36,6 @@ const Login = () => {
                   </label>
                   <button onClick={login}>Masuk</button>
                </form>
-               <Gap height={45} />
                <p>
                   Belum punya akun?{" "}
                   <Link to="/register">Daftar sekarang, gratis!</Link>

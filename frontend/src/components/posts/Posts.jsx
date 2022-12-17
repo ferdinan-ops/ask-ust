@@ -29,8 +29,8 @@ const Posts = () => {
 
    return (
       <div className="posts">
-         <div className="wrapper">
-            <div className="tabs">
+         <div className="postsWrapper">
+            <div className="postsTabs">
                <button className={isNew ? "active" : ""} onClick={setTabs}>
                   Terbaru
                </button>

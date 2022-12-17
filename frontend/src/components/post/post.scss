@@ -14,21 +14,18 @@
          }
       }
 
-      .container {
-         padding: unset;
+      .postContainer {
+         @include flexStyle($gap: 24px);
          padding: 20px;
-         display: flex;
-         gap: 24px;
          cursor: pointer;
-         color: themed("font");
          transition: 0.3s;
+         color: themed("font");
          background: themed("bg");
          border: 2px solid transparent;
          border-bottom: 2px solid themed("contentBorder");
 
          @include tabletVersion {
-            flex-direction: column;
-            gap: 14px;
+            @include flexStyle($direction: column, $gap: 14px);
          }
 
          @include mobileVersion {
@@ -50,10 +47,9 @@
                margin-top: 0;
             }
 
-            .wrapper {
+            .postWrapper {
                @include flexStyle($direction: column, $gap: 15px);
                margin-left: auto;
-               padding: unset;
 
                @include tabletVersion {
                   flex-direction: row;
@@ -74,20 +70,16 @@
             }
          }
 
-         .content {
+         .postContent {
             width: 100%;
             margin: 0;
 
-            .top {
+            .postTop {
                @include flexStyle($direction: column, $gap: 10px);
 
                h2 {
                   font-size: 20px;
-                  display: -webkit-box;
-                  -webkit-line-clamp: 2;
-                  -webkit-box-orient: vertical;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
+                  @include truncate(2);
 
                   @include mobileVersion {
                      font-size: 18px;
@@ -96,11 +88,7 @@
 
                span {
                   font-size: 15px;
-                  display: -webkit-box;
-                  -webkit-line-clamp: 2;
-                  -webkit-box-orient: vertical;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
+                  @include truncate(2);
 
                   @include mobileVersion {
                      font-size: 13px;
@@ -108,21 +96,20 @@
                }
             }
 
-            .bottom {
+            .postBottom {
                @include flexStyle($direction: column, $gap: 8px);
 
                @include mobileVersion {
                   gap: 14px;
                }
 
-               .tags {
+               .postTags {
                   @include flexStyle($gap: 8px);
                   margin-top: 15px;
                   flex-wrap: wrap;
 
                   button {
-                     @include makeButton($padding: 6px 8px, $rounded: 3px);
-                     background-color: lighten(themed("primary"), 55%);
+                     @include makeButton($padding: 6px 8px, $rounded: 3px, $bg: lighten(themed("primary"), 55%), $color: #272d3e);
 
                      &:hover {
                         background-color: lighten(themed("primary"), 50%);
@@ -135,7 +122,7 @@
                   }
                }
 
-               .userInfo {
+               .postUserInfo {
                   @include flexStyle($align: center, $gap: 10px);
                   margin-left: auto;
                   font-size: 14px;

@@ -2,60 +2,87 @@
 
 .detail {
    @include themify($themes) {
-      min-height: calc(100vh - 80px);
-      padding: 30px 20px 30px 30px;
-      color: themed("font");
-      background-color: themed("bg");
+      @include pages(30px 20px 50px 30px);
+
+      @include tabletVersion {
+         padding: 30px 20px 20px 20px;
+      }
+
+      @include mobileVersion {
+         padding: 20px 20px 60px 20px;
+      }
 
       .detailWrapper {
-         .top {
+         .detailHead {
             @include flexStyle($direction: column, $gap: 10px);
             padding-bottom: 20px;
 
             h1 {
                line-height: 38px;
+
+               @include tabletVersion {
+                  font-size: 30px;
+               }
+
+               @include mobileVersion {
+                  font-size: 26px;
+               }
             }
 
-            .userInfo {
+            .detailUserInfo {
                @include flexStyle($align: center, $gap: 10px);
 
                img {
                   @include profilePicture(20px);
+
+                  @include tabletVersion {
+                     @include profilePicture(18px);
+                  }
                }
 
                span {
-                  font-size: 18px;
-                  font-weight: 600;
-                  color: themed("primary");
-                  cursor: pointer;
+                  &.name {
+                     @include typoGraphy($fontSize: 18px, $weight: 600, $color: themed("primary"));
+                     cursor: pointer;
+
+                     @include tabletVersion {
+                        @include typoGraphy($fontSize: 16px, $weight: 600, $color: themed("primary"));
+                     }
+                  }
 
                   &.date {
-                     font-weight: normal;
-                     color: rgb(172, 172, 172);
-                     font-size: 16px;
+                     @include typoGraphy($fontSize: 16px, $weight: 500, $color: rgb(172, 172, 172));
                      cursor: auto;
+
+                     @include mobileVersion {
+                        @include typoGraphy($fontSize: 14px, $weight: 500, $color: rgb(172, 172, 172));
+                     }
                   }
                }
             }
          }
 
-         .details {
-            border-bottom: 1px solid themed("border");
+         .detailContent {
             border-top: 1px solid themed("border");
             padding: 20px 0;
 
-            .description {
+            .detailDesc {
                line-height: 28px;
+               font-weight: 500;
+
+               @include mobileVersion {
+                  @include typoGraphy($fontSize: 15px, $lineHeight: 26px, $weight: 500);
+               }
             }
 
-            .allTags {
-               margin: 20px 0;
+            .detailAllTags {
+               margin: 20px 0 40px 0;
+               flex-wrap: wrap;
                @include flexStyle($align: center, $gap: 10px);
 
                button {
-                  @include makeButton($padding: 4px 8px, $rounded: 4px);
-                  background-color: lighten(themed("primary"), 55%);
                   font-size: 12px;
+                  @include makeButton($padding: 4px 8px, $rounded: 4px, $bg: lighten(themed("primary"), 55%), $color: #272d3e);
 
                   &:hover {
                      background-color: lighten(themed("primary"), 40%);
@@ -63,28 +90,46 @@
                }
             }
 
-            .actions {
+            .detailActions {
                @include flexStyle($align: center, $gap: 30px);
 
-               .item {
-                  @include flexStyle($align: center, $gap: 10px);
+               .detailItem {
                   font-weight: 600;
+                  @include flexStyle($align: center, $gap: 10px);
 
                   .icons {
                      width: 24px;
                   }
                }
+            }
+         }
 
-               button {
+         .yourAnswer {
+            h2 {
+               padding: 40px 0;
+
+               @include mobileVersion {
+                  font-size: 22px;
+               }
+            }
+
+            form {
+               @include flexStyle($direction: column, $gap: 30px);
+
+               .submit {
+                  width: fit-content;
                   margin-left: auto;
-                  font-size: 13px;
-                  background-color: themed("primary");
-                  color: #fff;
-                  transition: 0.2s;
-                  @include makeButton($padding: 4px 16px, $rounded: 4px);
+                  box-shadow: themed("shadow");
+                  @include makeButton($padding: 10px 20px, $rounded: 8px, $bg: themed("primary"));
+                  @include typoGraphy($fontSize: 14px, $weight: 600, $color: #fff);
 
                   &:hover {
-                     box-shadow: 0px 0px 18px rgba(0, 186, 199, 0.6);
+                     background-color: darken(themed("primary"), 10%);
+                  }
+
+                  @include mobileVersion {
+                     font-size: 13px;
+                     padding: 8px 16px;
                   }
                }
             }
