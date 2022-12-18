@@ -7,22 +7,16 @@ import { AuthContext } from "../../context/authContext";
 import { ThemeContext } from "../../context/themeContext";
 import "./header.scss";
 
-const DarkModeToggle = ({ darkMode, themeHandler, className }) => {
-   return (
-      <>
-         {darkMode ?
-            <SunIcon className={className} onClick={themeHandler} /> :
-            <MoonIcon className={className} onClick={themeHandler} />}
-      </>
-   )
-}
-
 const Header = () => {
-   const [showNav, setShowNav] = useState(false);
-
    const navigate = useNavigate();
-   const { darkMode, themeHandler } = useContext(ThemeContext);
+   const [showNav, setShowNav] = useState(false);
+   const { darkMode, themeHandler, themeClicked } = useContext(ThemeContext);
    const { currentUser } = useContext(AuthContext);
+
+   const toggleHandler = () => {
+      themeHandler();
+      themeClicked();
+   }
 
    return (
       <div className="header">
@@ -30,7 +24,10 @@ const Header = () => {
          <Link className="left brands" to="/forum/questions">
             <p>a<span className="logo">?</span>k<span>.</span>UST</p>
          </Link>
-         <DarkModeToggle darkMode={darkMode} themeHandler={themeHandler} className="mobileIcons" />
+         {darkMode ?
+            <SunIcon className="mobileIcons" onClick={toggleHandler} /> :
+            <MoonIcon className="mobileIcons" onClick={toggleHandler} />
+         }
          <div className="searchBar">
             <MagnifyingGlassIcon className="icons" />
             <input placeholder="Cari pertanyaan disini..." />
@@ -38,7 +35,10 @@ const Header = () => {
          <div className="right">
             <button onClick={() => navigate("/forum/create")}>Buat Pertanyaan</button>
             <HomeIcon className="icons" onClick={() => navigate("/forum/questions")} />
-            <DarkModeToggle darkMode={darkMode} themeHandler={themeHandler} className="icons mobile" />
+            {darkMode ?
+               <SunIcon className="icons mobile" onClick={toggleHandler} /> :
+               <MoonIcon className="icons mobile" onClick={toggleHandler} />
+            }
             <BellIcon className="icons" onClick={() => navigate("/forum/notification")} />
             <img src={currentUser.profilPic} alt="" onClick={() => navigate(`/forum/users/${currentUser.id}`)} />
          </div>

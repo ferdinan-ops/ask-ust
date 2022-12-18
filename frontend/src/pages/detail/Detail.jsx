@@ -1,14 +1,17 @@
 import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 
-import { Answers, More, TextEditor } from "../../components";
+import { Answers, More, TextEditor, Warning } from "../../components";
+import { AuthContext } from "../../context/authContext";
 import { postDummy } from "../../utils/dummy";
 import "./detail.scss";
 
 const Detail = () => {
-   const { id } = useParams();
    const [post, setPost] = useState({});
+
+   const { id } = useParams();
+   const { currentUser } = useContext(AuthContext);
 
    useEffect(() => {
       const getDetailPost = postDummy.filter((post) => post.id === parseInt(id));
@@ -22,6 +25,7 @@ const Detail = () => {
    return (
       <div className="detail">
          <div className="detailWrapper">
+            <Warning name={currentUser.name} />
             <div className="detailHead">
                <h1>{post.title}</h1>
                <div className="detailUserInfo">

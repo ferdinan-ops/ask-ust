@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 
+import { AuthContext } from "../../context/authContext";
+import { Modal, TextEditor, Warning } from "../../components";
 import "./create.scss";
-import { Modal, TextEditor } from "../../components";
 
 const Create = () => {
    const [isModalShow, setIsModalShow] = useState(false);
+   const { currentUser } = useContext(AuthContext);
 
    const modalShowHandler = (e) => {
       e.preventDefault();
@@ -16,6 +18,7 @@ const Create = () => {
       <div className="create">
          <TagsModals isModalShow={isModalShow} setIsModalShow={setIsModalShow} />
          <div className="createContainer">
+            <Warning name={currentUser.name} />
             <h1>Ayo buat pertanyaan 😀</h1>
             <form>
                <div className="createInput">
@@ -23,9 +26,11 @@ const Create = () => {
                   <input placeholder="e.g. Bagaimana cara untuk custom margin pada ms.word?" />
                </div>
                <div className="createInput">
-                  <div className="tags">
+                  <div className="createTags">
                      <span>Tags</span>
-                     <button className="primary-button" onClick={modalShowHandler}><PlusCircleIcon className="icons" />Tags baru</button>
+                     <button className="primary-button" onClick={modalShowHandler}>
+                        <PlusCircleIcon className="icons" />Tags baru
+                     </button>
                   </div>
                   <input placeholder="e.g. ms-word" />
                </div>

@@ -2,46 +2,22 @@
 
 .tagsPages {
    @include themify($themes) {
-      min-height: calc(100vh - 80px);
-      background: themed("bg");
+      @include pages(30px 20px 30px 30px);
 
-      .container {
-         padding: 30px 20px 30px 30px;
+      @include tabletVersion {
+         padding: 30px 20px 20px 20px;
+      }
 
-         @include tabletVersion {
-            padding: 30px 20px 20px 20px;
-         }
+      @include mobileVersion {
+         padding: 30px 20px 60px 20px;
+      }
 
-         @include mobileVersion {
-            padding: 30px 20px 60px 20px;
-         }
-
-         .heading {
-            @include flexStyle($direction: column);
-            color: themed("font");
-
-            @include mobileVersion {
-               font-size: 12px;
-            }
-
-            h1 {
-               margin-bottom: 20px;
-               font-size: 36px;
-
-               @include mobileVersion {
-                  font-size: 28px;
-                  margin-bottom: 10px;
-               }
-            }
-         }
-
-         .searchBar {
-            @include flexStyle($align: center, $gap: 16px);
-            background-color: themed("searchBg");
-            padding: 10px 18px;
-            border-radius: 8px;
+      .tagsContainer {
+         .tagsSearchBar {
             width: 100%;
             margin-top: 30px;
+            @include flexStyle($align: center, $gap: 16px);
+            @include makeButton($bg: themed("searchBg"), $padding: 10px 18px, $rounded: 8px);
 
             @include mobileVersion {
                padding: 8px 16px;
@@ -49,11 +25,8 @@
 
             input {
                width: 100%;
-               border: none;
-               font-weight: 500;
-               background-color: transparent;
-               font-size: 15px;
-               color: themed("font");
+               @include input($bg: transparent);
+               @include typoGraphy($weight: 500, $fontSize: 15px, $color: themed("font"));
 
                @include mobileVersion {
                   font-size: 14px;
@@ -71,14 +44,58 @@
             }
          }
 
-         .content {
+         .tagsContent {
             margin-top: 30px;
-            display: flex;
             flex-wrap: wrap;
-            gap: 3.1%;
+            @include flexStyle($gap: 3.1%);
 
             @include tabletVersion {
                justify-content: space-between;
+            }
+
+            .tag {
+               @include flexStyle($direction: column, $gap: 10px);
+               @include makeButton($padding: 16px, $bg: themed("contentBg"), $rounded: 8px);
+               width: 268px;
+               transition: 0.3s;
+               margin-bottom: 3.1%;
+               border: 2px solid themed("contentBorder");
+
+               &:hover {
+                  border: 2px solid themed("primary");
+               }
+
+               @include tabletVersion {
+                  width: 286.4px;
+               }
+
+               @include mobileVersion {
+                  width: 100%;
+               }
+
+               span {
+                  @include truncate(4);
+                  @include typoGraphy($color: themed("font"), $fontSize: 14px);
+
+                  @include mobileVersion {
+                     font-size: 13px;
+                  }
+               }
+
+               button {
+                  width: fit-content;
+                  @include makeButton($padding: 4px 8px, $rounded: 6px, $color: #272d3e, $bg: lighten(themed("primary"), 55%));
+                  @include typoGraphy($weight: 500, $fontSize: 12px);
+
+                  &:hover {
+                     background-color: lighten(themed("primary"), 50%);
+                  }
+
+                  @include mobileVersion {
+                     padding: 3px 6px;
+                     font-size: 11px;
+                  }
+               }
             }
          }
       }

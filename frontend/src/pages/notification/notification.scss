@@ -45,12 +45,10 @@
                   }
 
                   img {
-                     @include profilePicture(45px);
-                     border-radius: 8px;
+                     @include profilePicture(45px, $rounded: 8px);
 
                      @include mobileVersion {
-                        width: 40px;
-                        height: 40px;
+                        @include profilePicture(40px, $rounded: 8px);
                      }
                   }
 

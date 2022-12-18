@@ -82,20 +82,7 @@
                   }
                }
 
-               textarea {
-                  min-height: 320px;
-                  background-color: themed("bg");
-
-                  @include tabletVersion {
-                     min-height: 300px;
-                  }
-
-                  @include mobileVersion {
-                     min-height: 280px;
-                  }
-               }
-
-               .tags {
+               .createTags {
                   @include flexStyle($justify: space-between, $align: center);
 
                   button {

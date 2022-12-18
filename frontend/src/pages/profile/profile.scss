@@ -2,9 +2,7 @@
 
 .profile {
    @include themify($themes) {
-      min-height: calc(100vh - 80px);
-      background: themed("bg");
-      padding: 30px 20px 30px 30px;
+      @include pages(30px 20px 30px 30px);
 
       @include tabletVersion {
          padding: 30px 20px 20px 20px;
@@ -14,43 +12,9 @@
          padding: 30px 20px 60px 20px;
       }
 
-      .profileForm {
-         @include flexStyle($direction: column, $gap: 30px);
-
-         label {
-            @include flexStyle($direction: column, $gap: 10px);
-            font-weight: 600;
-
-            input,
-            textarea {
-               padding: 18px;
-               font-size: 15px;
-               border: 2px solid lighten(themed("searchBg"), 15%);
-               font-weight: 500;
-               color: themed("font");
-               border-radius: 8px;
-               background-color: themed("searchBg");
-
-               @include tabletVersion {
-                  font-size: 14px;
-                  padding: 17px;
-               }
-
-               @include mobileVersion {
-                  font-size: 13px;
-                  padding: 16px;
-               }
-            }
-
-            textarea {
-               height: 120px;
-            }
-         }
-      }
-
-      .wrapper {
-         .heading {
-            .userInfo {
+      .profileWrapper {
+         .profileHeading {
+            .profileUserInfo {
                @include flexStyle($direction: column, $align: center);
                color: themed("font");
 
@@ -69,11 +33,8 @@
                }
 
                span {
+                  @include typoGraphy($weight: bold, $fontSize: 32px, $align: center, $lineHeight: 36px);
                   margin-bottom: 20px;
-                  font-weight: bold;
-                  font-size: 32px;
-                  text-align: center;
-                  line-height: 36px;
 
                   @include tabletVersion {
                      font-size: 30px;
@@ -85,9 +46,7 @@
                }
 
                p {
-                  text-align: center;
-                  font-size: 14px;
-                  color: rgb(142, 142, 142);
+                  @include typoGraphy($align: center, $fontSize: 14px, $color: rgb(142, 142, 142));
 
                   @include tabletVersion {
                      font-size: 13px;
@@ -99,7 +58,7 @@
                }
             }
 
-            .buttons {
+            .profileButtons {
                @include flexStyle($gap: 30px, $justify: center);
                margin-top: 30px;
 
@@ -108,11 +67,9 @@
                }
 
                button {
-                  @include makeButton($padding: 12px 0, $rounded: 8px);
+                  @include makeButton($padding: 12px 0, $rounded: 8px, $bg: themed("bg"), $color: themed("font"));
+                  @include typoGraphy($weight: bold, $fontSize: 16px, $align: center);
                   width: 200px;
-                  font-weight: bold;
-                  font-size: 16px;
-                  background-color: themed("bg");
 
                   @include tabletVersion {
                      padding: 11px 0;
@@ -127,7 +84,6 @@
 
                   &:first-child {
                      border: 2px solid themed("border");
-                     color: themed("font");
 
                      &:hover {
                         background-color: darken(themed("bg"), 5%);
@@ -148,14 +104,14 @@
             }
          }
 
-         .contents {
+         .profileContents {
             margin-top: 50px;
 
             @include mobileVersion {
                margin-top: 36px;
             }
 
-            .tabs {
+            .profileTabs {
                @include flexStyle($align: center, $justify: center);
                margin-bottom: 20px;
 
@@ -165,10 +121,8 @@
 
                button {
                   @include flexStyle($align: center, $flex: 1, $justify: center);
-                  @include makeButton($padding: 12px 0 10px 0);
-                  background-color: transparent;
+                  @include makeButton($padding: 12px 0 10px 0, $bg: transparent);
                   border-bottom: 2px solid themed("border");
-                  cursor: auto;
 
                   &.active {
                      border-bottom: 2px solid themed("primary");

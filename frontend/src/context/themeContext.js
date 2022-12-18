@@ -8,16 +8,28 @@ export const ThemeContextProvider = ({ children }) => {
       JSON.parse(localStorage.getItem("darkMode")) || false
    );
 
+   const [isThemeClicked, setIsThemeClicked] = useState(false);
+
    const themeHandler = () => {
       setDarkMode(!darkMode);
    };
+
+   const themeClicked = () => {
+      setIsThemeClicked(true);
+   }
+
+   useEffect(() => {
+      setIsThemeClicked(false);
+   }, []);
 
    useEffect(() => {
       localStorage.setItem("darkMode", darkMode);
    }, [darkMode]);
 
+   const value = { themeHandler, darkMode, themeClicked, isThemeClicked }
+
    return (
-      <ThemeContext.Provider value={{ themeHandler, darkMode }}>
+      <ThemeContext.Provider value={value}>
          {children}
       </ThemeContext.Provider>
    );

@@ -10,6 +10,10 @@
    line-height: 22px;
 }
 
+html {
+   scroll-behavior: smooth;
+}
+
 .icons {
    width: 24px;
    cursor: pointer;
@@ -66,10 +70,10 @@ $themes: (
    @return map-get($theme-map, $key);
 }
 
-@mixin profilePicture($size: 30px) {
+@mixin profilePicture($size: 30px, $rounded: 50%) {
    width: $size;
    height: $size;
-   border-radius: 50%;
+   border-radius: $rounded;
    object-fit: cover;
    cursor: pointer;
 }
