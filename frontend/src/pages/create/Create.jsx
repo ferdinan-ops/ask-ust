@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 
 import { AuthContext } from "../../context/authContext";
@@ -9,6 +9,10 @@ const Create = () => {
    const [isModalShow, setIsModalShow] = useState(false);
    const { currentUser } = useContext(AuthContext);
 
+   useEffect(() => {
+      document.title = "Ayo buat pertanyaan 😀 | ask.UST"
+   }, []);
+
    const modalShowHandler = (e) => {
       e.preventDefault();
       setIsModalShow(true);
@@ -16,10 +20,23 @@ const Create = () => {
 
    return (
       <div className="create">
-         <TagsModals isModalShow={isModalShow} setIsModalShow={setIsModalShow} />
+         <Modal title="Buat Tag Baru" isModalShow={isModalShow} setIsModalShow={setIsModalShow}>
+            <div className="modalWrapper">
+               <label>
+                  <span>Nama tags</span>
+                  <input placeholder="ms-word" />
+               </label>
+               <label>
+                  <span>Deskripsi tags</span>
+                  <textarea placeholder="Jelaskan sedikit mengenai tag baru ini" />
+               </label>
+            </div>
+         </Modal>
+
          <div className="createContainer">
             <Warning name={currentUser.name} />
             <h1>Ayo buat pertanyaan 😀</h1>
+
             <form>
                <div className="createInput">
                   <span>Judul</span>
@@ -40,26 +57,10 @@ const Create = () => {
                </div>
                <button className="primary-button">Kirim Pertanyaan</button>
             </form>
+
          </div>
       </div>
    );
 };
-
-const TagsModals = ({ isModalShow, setIsModalShow }) => {
-   return (
-      <Modal title="Buat Tag Baru" isModalShow={isModalShow} setIsModalShow={setIsModalShow}>
-         <div className="modalWrapper">
-            <label>
-               <span>Nama tags</span>
-               <input placeholder="ms-word" />
-            </label>
-            <label>
-               <span>Deskripsi tags</span>
-               <textarea placeholder="Jelaskan sedikit mengenai tag baru ini" />
-            </label>
-         </div>
-      </Modal>
-   )
-}
 
 export default Create;

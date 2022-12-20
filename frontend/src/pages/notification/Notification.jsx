@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/authContext';
 import "./notification.scss";
 
 const Notification = () => {
    const { currentUser } = useContext(AuthContext);
+   useEffect(() => {
+      document.title = "Notifikasi | ask.UST"
+   }, []);
+
    return (
       <div className='notification'>
          <div className="notifWrapper">

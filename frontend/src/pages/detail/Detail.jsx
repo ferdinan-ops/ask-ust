@@ -19,7 +19,7 @@ const Detail = () => {
    }, [id]);
 
    useEffect(() => {
-      document.title = post.title + " | ask.UST";
+      document.title = post.title + " | ask.UST"
    }, [post]);
 
    return (

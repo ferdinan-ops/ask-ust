@@ -1,0 +1,503 @@
+@import "../../style.scss";
+
+$theme-map: null;
+$primary: #00bac7;
+$font: #272d3e;
+
+a {
+   text-decoration: none;
+}
+
+.container {
+   width: 1168px;
+   margin: 0 auto;
+   padding: 60px 0;
+
+   @include tabletVersion {
+      width: 640px;
+      padding: 56px 0;
+   }
+
+   @include mobileVersion {
+      width: 100%;
+      padding: 46px 20px;
+   }
+}
+
+.top {
+   @include typoGraphy($align: center, $color: $font);
+   margin-bottom: 90px;
+
+   @include tabletVersion {
+      margin-bottom: 80px;
+      font-size: 14px;
+   }
+
+   @include mobileVersion {
+      margin-bottom: 70px;
+   }
+
+   h1 {
+      color: $primary;
+      margin-bottom: 13px;
+
+      @include mobileVersion {
+         font-size: 20px;
+      }
+   }
+}
+
+header {
+   $theme-map: null;
+   @include flexStyle($align: center);
+   @include position($position: fixed, $top: 0px, $left: 0, $right: 0, $z: 999);
+   height: 80px;
+   color: $font;
+   background-color: #fff;
+
+   .mobile-nav {
+      display: none;
+      @include position($position: fixed, $top: 0, $left: 0, $right: 0, $bottom: 0, $z: 9999999);
+      padding: 60px 30px 30px 30px;
+      background-color: #fff;
+      font-weight: 600;
+      color: $font;
+      transition: 0.2s;
+
+      .icons {
+         @include position($position: absolute, $top: 16px, $right: 16px);
+         width: 52px;
+      }
+
+      .buttons {
+         @include flexStyle($gap: 20px);
+         margin-top: 30px;
+
+         a {
+            width: 100%;
+            text-align: center;
+            border-radius: 6px;
+
+            &:first-child {
+               border: 1px solid #bbb;
+            }
+         }
+      }
+
+      @include mobileVersion {
+         @include flexStyle($direction: column, $gap: 30px);
+         transform: translateX(-100%);
+
+         &.active {
+            transform: translateX(0);
+         }
+      }
+   }
+
+   .container {
+      @include flexStyle($justify: space-between, $align: center);
+      padding: 0;
+
+      @include mobileVersion {
+         padding: 0 20px;
+      }
+   }
+
+   .icons {
+      width: 28px;
+      display: none;
+
+      @include tabletVersion {
+         display: block;
+      }
+   }
+
+   &.not-top {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: rgba(149, 157, 165, 0.25) 0px 10px 20px;
+   }
+
+   .brand {
+      @include typoGraphy($fontSize: 28px, $weight: 600);
+      text-decoration: none;
+
+      p {
+         display: flex;
+         color: $font;
+
+         span {
+            color: $primary;
+         }
+
+         .logo {
+            padding-top: 4px;
+         }
+      }
+
+      @include mobileVersion {
+         font-size: 24px;
+      }
+   }
+
+   nav {
+      @include flexStyle($gap: 50px);
+      @include typoGraphy($weight: 600, $fontSize: 16px);
+
+      @include tabletVersion {
+         display: none;
+      }
+   }
+
+   .buttons {
+      @include flexStyle($gap: 20px);
+
+      @include tabletVersion {
+         display: none;
+      }
+
+      a {
+         @include makeButton($padding: 8px 20px, $bg: $primary, $color: #fff, $rounded: 30px);
+         box-shadow: 0px 10px 20px rgba(0, 186, 199, 0.25);
+         font-size: 16px;
+
+         &:hover {
+            background-color: darken($primary, 10%);
+         }
+
+         &:first-child {
+            background-color: transparent;
+            box-shadow: none;
+            color: $font;
+         }
+      }
+   }
+}
+
+main {
+   margin-top: 80px;
+
+   .home {
+      .container {
+         @include flexStyle($direction: column, $justify: center, $align: center, $gap: 0px);
+
+         @include mobileVersion {
+            padding-top: 20px;
+         }
+
+         .home-top {
+            @include flexStyle($direction: column, $align: center);
+            text-align: center;
+            width: 1080px;
+            padding: 0 100px;
+            margin-bottom: 90px;
+
+            @include tabletVersion {
+               width: 90%;
+               padding: 0;
+               font-size: 15px;
+               margin-bottom: 60px;
+            }
+
+            @include mobileVersion {
+               font-size: 13px;
+               width: 100%;
+               padding: 0 10px;
+               margin-bottom: 52px;
+            }
+
+            h1 {
+               @include typoGraphy($fontSize: 48px, $lineHeight: 64px, $weight: 700);
+               margin-bottom: 20px;
+
+               @include tabletVersion {
+                  font-size: 40px;
+                  line-height: 56px;
+                  margin-bottom: 16px;
+               }
+
+               @include mobileVersion {
+                  font-size: 28px;
+                  line-height: normal;
+               }
+            }
+
+            a {
+               @include flexStyle($align: center, $gap: 15px);
+               @include makeButton($padding: 12px 24px, $bg: $primary, $rounded: 30px, $color: #fff);
+               box-shadow: 0px 15px 30px rgba(0, 186, 199, 0.33);
+               font-size: 15px;
+               width: fit-content;
+               margin-top: 40px;
+
+               &:hover {
+                  background-color: darken($primary, 10%);
+               }
+
+               @include tabletVersion {
+                  margin-top: 38px;
+                  font-size: 14px;
+                  padding: 11px 22px;
+               }
+
+               @include mobileVersion {
+                  margin-top: 30px;
+                  font-size: 13px;
+                  padding: 10px 20px;
+               }
+            }
+         }
+
+         img {
+            width: 1000px;
+            border-radius: 10px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+
+            @include tabletVersion {
+               width: 100%;
+            }
+         }
+      }
+   }
+
+   .features {
+      background-color: #EDFCFD;
+
+      .container {
+         .bottom {
+            @include flexStyle($gap: 60px);
+            flex-wrap: wrap;
+
+            @include tabletVersion {
+               gap: 40px;
+            }
+
+            .card {
+               @include flexStyle($direction: column, $gap: 30px);
+               flex: 1;
+
+               @include tabletVersion {
+                  flex: unset;
+                  width: 300px;
+               }
+
+               @include mobileVersion {
+                  width: 100%;
+                  align-items: center;
+               }
+
+
+               .card-top {
+                  @include flexStyle($justify: center, $align: center);
+                  width: 60px;
+                  height: 60px;
+                  font-size: 32px;
+                  border-radius: 20px;
+                  background-color: $primary;
+                  box-shadow: 0px 10px 20px rgba(0, 186, 199, 0.33);
+
+                  @include tabletVersion {
+                     font-size: 30px;
+                     width: 58px;
+                     height: 58px;
+                  }
+               }
+
+               .card-bottom {
+                  @include flexStyle($direction: column, $gap: 10px);
+
+                  span {
+                     font-size: 14px;
+
+                     @include tabletVersion {
+                        font-size: 15px;
+                     }
+
+                     @include mobileVersion {
+                        font-size: 14px;
+                     }
+                  }
+
+                  @include tabletVersion {
+                     font-size: 15px;
+                  }
+
+                  @include mobileVersion {
+                     text-align: center;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   .teams {
+      .container {
+         .bottom {
+            @include flexStyle($gap: 60px, $align: center, $justify: center);
+            flex-wrap: wrap;
+            margin: 0 auto;
+            width: 770px;
+
+            @include tabletVersion {
+               width: 100%;
+            }
+
+            .team-card {
+               @include flexStyle($align: center, $justify: center, $direction: column, $gap: 20px);
+
+               .photos {
+                  width: 100px;
+                  height: 100px;
+                  overflow: hidden;
+                  border-radius: 50%;
+
+                  @include tabletVersion {
+                     width: 90px;
+                     height: 90px;
+                  }
+
+                  @include mobileVersion {
+                     width: 80px;
+                     height: 80px;
+                  }
+
+                  img {
+                     width: 100%;
+                     height: 100%;
+                     object-fit: cover;
+                  }
+               }
+
+               span {
+                  font-weight: 600;
+
+                  @include tabletVersion {
+                     font-size: 15px;
+                  }
+
+                  @include mobileVersion {
+                     font-size: 14px;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   .last {
+      background-color: #EDFCFD;
+
+      .container {
+         padding: 100px;
+         text-align: center;
+         @include flexStyle($gap: 20px, $direction: column, $justify: center, $align: center);
+
+         @include tabletVersion {
+            padding: 90px 0;
+         }
+
+         @include mobileVersion {
+            padding: 80px 20px;
+         }
+
+         h1 {
+            @include typoGraphy($fontSize: 34px, $lineHeight: 36px, $weight: bold);
+
+            @include tabletVersion {
+               font-size: 32px;
+            }
+
+            @include mobileVersion {
+               font-size: 28px;
+            }
+         }
+
+         span {
+            font-size: 15px;
+
+            @include tabletVersion {
+               font-size: 14px;
+            }
+
+            @include mobileVersion {
+               font-size: 13px;
+            }
+         }
+
+         a {
+            @include flexStyle($align: center, $gap: 15px);
+            @include makeButton($padding: 12px 24px, $bg: $primary, $rounded: 30px, $color: #fff);
+            box-shadow: 0px 15px 30px rgba(0, 186, 199, 0.33);
+            font-size: 15px;
+            width: fit-content;
+            margin-top: 20px;
+
+            &:hover {
+               background-color: darken($primary, 10%);
+            }
+
+            @include tabletVersion {
+               font-size: 14px;
+               padding: 11px 22px;
+            }
+
+            @include mobileVersion {
+               font-size: 13px;
+               padding: 10px 20px;
+            }
+         }
+      }
+   }
+
+   footer {
+      height: 60px;
+      background-color: $font;
+      @include flexStyle($align: center);
+      @include typoGraphy($color: #ddd, $weight: 600);
+
+      .container {
+         @include flexStyle($justify: space-between, $align: center);
+         padding: 0;
+
+         @include mobileVersion {
+            padding: 0 20px;
+         }
+
+         .brand {
+            font-size: 20px;
+
+            @include mobileVersion {
+               font-size: 18px;
+            }
+
+            p {
+               display: flex;
+               color: #ddd;
+
+               span {
+                  color: $primary;
+               }
+
+               .logo {
+                  padding-top: 2px;
+               }
+            }
+         }
+
+         span {
+            @include mobileVersion {
+               font-size: 13px;
+
+               &.hide {
+                  display: none;
+               }
+            }
+
+            a {
+               @include typoGraphy($color: $primary, $weight: bold);
+            }
+         }
+      }
+   }
+}

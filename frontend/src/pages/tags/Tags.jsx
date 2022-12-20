@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 import "./tags.scss";
 
 const Tags = () => {
    const random = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+   useEffect(() => {
+      document.title = "Tags | ask.UST"
+   }, []);
 
    return (
       <div className="tagsPages">

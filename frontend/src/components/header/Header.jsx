@@ -21,18 +21,18 @@ const Header = () => {
    return (
       <div className="header">
          <Bars3Icon className="mobileIcons" onClick={() => setShowNav(true)} />
-         <Link className="left brands" to="/forum/questions">
+         <Link className="leftHeader brands" to="/forum/questions">
             <p>a<span className="logo">?</span>k<span>.</span>UST</p>
          </Link>
          {darkMode ?
             <SunIcon className="mobileIcons" onClick={toggleHandler} /> :
             <MoonIcon className="mobileIcons" onClick={toggleHandler} />
          }
-         <div className="searchBar">
+         <div className="headerSearchBar">
             <MagnifyingGlassIcon className="icons" />
             <input placeholder="Cari pertanyaan disini..." />
          </div>
-         <div className="right">
+         <div className="headerRight">
             <button onClick={() => navigate("/forum/create")}>Buat Pertanyaan</button>
             <HomeIcon className="icons" onClick={() => navigate("/forum/questions")} />
             {darkMode ?
@@ -43,8 +43,8 @@ const Header = () => {
             <img src={currentUser.profilPic} alt="" onClick={() => navigate(`/forum/users/${currentUser.id}`)} />
          </div>
          <div className={`mobileNav ${showNav ? "active" : ""}`}>
-            <div className="top">
-               <div className="searchBar mobile">
+            <div className="headerTop">
+               <div className="headerSearchBar mobile">
                   <MagnifyingGlassIcon className="icons" />
                   <input placeholder="Cari pertanyaan disini..." />
                </div>
@@ -56,7 +56,7 @@ const Header = () => {
             <Link to="/forum/users" onClick={() => setShowNav(false)}>Pengguna</Link>
             <Link to="/forum/notification" onClick={() => setShowNav(false)}>Notifikasi</Link>
             <Link to={`/forum/users/${currentUser.id}`} onClick={() => setShowNav(false)}>
-               <div className="userInfo">
+               <div className="headerUserInfo">
                   <img src={currentUser.profilPic} alt="" />
                   <span>{currentUser.name}</span>
                </div>
