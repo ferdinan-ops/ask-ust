@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowSmallDownIcon, ArrowSmallUpIcon, CheckIcon } from "@heroicons/react/24/outline";
+import { ArrowSmallDownIcon, ArrowSmallUpIcon } from "@heroicons/react/24/outline";
 
 import More from '../more/More';
 import "./answers.scss";

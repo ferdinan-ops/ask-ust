@@ -22,10 +22,6 @@ const usersSchema = new Schema({
       type: Number,
       default: 0,
    },
-   refreshToken: {
-      type: String,
-      default: "",
-   }
 });
 
 const Users = mongoose.model("Users", usersSchema);

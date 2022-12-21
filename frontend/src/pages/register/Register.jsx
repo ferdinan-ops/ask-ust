@@ -1,12 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Ring } from "@uiball/loaders";
 
 import "./register.scss";
 
 const Register = () => {
+   const [name, setName] = useState("");
+   const [email, setEmail] = useState("");
+   const [password, setPassword] = useState("");
+   const [isLoading, setIsLoading] = useState(false);
+
    useEffect(() => {
       document.title = "Masuk | ask.UST";
    }, []);
+
+   const submitHandler = (e) => {
+      e.preventDefault();
+      setIsLoading(true);
+   }
 
    return (
       <div className="register">
@@ -17,25 +28,24 @@ const Register = () => {
                </div>
                <div className="heading">
                   <h1>Buat akun baru</h1>
-                  <span>
-                     Nggak susah kok, kamu cuma tinggal masukin beberapa data
-                     aja terus langsung jadi deh!
-                  </span>
+                  <span>Nggak susah kok, kamu cuma tinggal masukin beberapa data aja terus langsung jadi deh!</span>
                </div>
-               <form>
+               <form onSubmit={submitHandler}>
                   <label>
                      <span>Username</span>
-                     <input required />
+                     <input required value={name} onChange={(e) => setName(e.target.value)} />
                   </label>
                   <label>
                      <span>Email</span>
-                     <input type="email" required />
+                     <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
                   </label>
                   <label>
                      <span>Kata Sandi</span>
-                     <input type="password" autoComplete="on" required />
+                     <input type="password" autoComplete="on" required value={password} onChange={(e) => setPassword(e.target.value)} />
                   </label>
-                  <button>Mendaftar</button>
+                  <button className={isLoading ? "loading" : ""}>
+                     {isLoading ? <Ring size={22} lineWeight={8} speed={2} color="#fff" /> : "Mendaftar"}
+                  </button>
                </form>
                <p>
                   Udah punya akun? <Link to="/login">Login!</Link>
@@ -50,10 +60,7 @@ const Register = () => {
                <img src="/register.svg" alt="" />
                <div className="desc">
                   <span>ASK-UST.VERCEL.APP</span>
-                  <p>
-                     Ayo mendaftar dan rajin berdiskusi di sini supaya masalah
-                     Anda cepat terselesaikan biar gak stress mulu~
-                  </p>
+                  <p>Ayo mendaftar dan rajin berdiskusi di sini supaya masalah Anda cepat terselesaikan biar gak stress mulu~</p>
                </div>
             </div>
             <div className="rounded"></div>

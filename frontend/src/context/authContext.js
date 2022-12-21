@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { loginAPI } from "../config/api";
 
 export const AuthContext = createContext();
 
@@ -7,12 +8,10 @@ export const AuthContextProvider = ({ children }) => {
       JSON.parse(localStorage.getItem("user") || null)
    );
 
-   const login = () => {
-      setCurrentUser({
-         id: 1,
-         name: "Ferdinan Imanuel Tumanggor",
-         profilPic: "https://source.unsplash.com/random/200x200?computer",
-      });
+   const login = async (fields) => {
+      const { data } = await loginAPI(fields);
+      setCurrentUser(data);
+      return data;
    };
 
    useEffect(() => {

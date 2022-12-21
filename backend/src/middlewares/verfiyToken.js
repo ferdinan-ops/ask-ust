@@ -1,12 +1,11 @@
 const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
-   const authHeader = req.headers["authorization"];
-   const token = authHeader && authHeader.split(" ")[1];
-   if (token === null) return res.sendStatus(401);
-   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decode) => {
-      if (err) return res.sendStatus(403);
-      req.email = decode.email;
+   const { askToken } = req.cookies;
+   if (!askToken) return res.status(401).json({ msg: "Anda tidak memiliki akses" });
+   jwt.verify(askToken, process.env.SECRET_KEY, (err, decode) => {
+      if (err) return res.status(403).json({ msg: "Anda tidak memiliki akses" });
+      req.userInfo = decode;
       next();
    });
 }

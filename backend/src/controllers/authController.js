@@ -29,47 +29,22 @@ const login = async (req, res) => {
       const isMatch = bcrypt.compare(passwordBody, user.password);
       if (!isMatch) return res.status(400).json({ msg: "Password anda salah" });
 
-      const { password, refreshToken: refreshTokenDB, ...others } = user;
-      const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-      const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
-
-      const accessToken = jwt.sign(others, accessTokenSecret, { expiresIn: "20s" });
-      const refreshToken = jwt.sign(others, refreshTokenSecret, { expiresIn: "1d" });
-
-      await Users.findByIdAndUpdate(user._id, { refreshToken });
+      const { password, ...others } = user;
+      const token = jwt.sign(others, process.env.SECRET_KEY);
       const maxAge = new Date(2147483647 * 1000).valueOf();
 
-      res.cookie("refreshToken", refreshToken, { maxAge, httpOnly: true });
-      res.status(200).json({ accessToken });
+      res.cookie("askToken", token, { maxAge, httpOnly: true });
+      res.status(200).json(others);
    } catch (error) {
       res.status(500).json({ error });
    }
 }
 
-const refreshToken = async (req, res) => {
-   try {
-      const { refreshToken } = req.cookie;
-      if (!refreshToken) return res.sendStatus(401);
-      const user = await Users.findOne({ refreshToken });
-      if (!user) return res.sendStatus(403);
-      jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decode) => {
-         if (err) return res.sendStatus(403);
-         const { password, refreshToken, ...others } = user;
-         const accessToken = jwt.sign(others, accessTokenSecret, { expiresIn: "20s" });
-         res.json({ accessToken });
-      })
-   } catch (error) {
-
-   }
-}
-
 const logout = async (req, res) => {
-   const { refreshToken } = req.cookie;
-   if (!refreshToken) return res.sendStatus(204);
-   const user = await Users.findOne({ refreshToken });
-   if (!user) return res.sendStatus(204);
-   await Users.findByIdAndUpdate(user._id, { refreshToken: "" });
-   res.clearCookies("refreshToken").status(200).jso({ msg: "Anda berhasil keluar" });
+   res.clearCookies("askToken", {
+      secure: true,
+      sameSite: "none",
+   }).status(200).json({ msg: "Anda telah logout" });
 }
 
-module.exports = { register, login, logout, refreshToken };
+module.exports = { register, login, logout };
