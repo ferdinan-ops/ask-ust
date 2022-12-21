@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
 
 import { ArrowRightIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/20/solid";
 
-import { features, teams } from "../../utils/dummy";
+import { features, links, teams } from "../../utils/dummy";
 import "./landingPage.scss";
 
 const LandingPage = () => {
@@ -23,35 +24,43 @@ const LandingPage = () => {
 
    return (
       <div>
+         <div className={`mobile-nav ${isShow ? "active" : ""}`} onClick={() => setIsShow(false)}>
+            <XMarkIcon className="icons" onClick={() => setIsShow(false)} />
+            {links.map((item) => (
+               <div className="nav-item" key={item}>
+                  <ScrollLink to={item} activeClass="active" spy={true} smooth={true} offset={-80} duration={100} onClick={() => setIsShow(false)}>
+                     {item}
+                  </ScrollLink>
+               </div>
+            ))}
+            <div className="buttons">
+               <Link to="/register">Sign Up</Link>
+               <Link to="/login">Sign In</Link>
+            </div>
+         </div>
          <header className={!top ? "not-top" : ""}>
             <div className="container">
                <div className="brand">
                   <p>a<span className="logo">?</span>k<span>.</span>UST</p>
                </div>
                <nav>
-                  <span>Home</span>
-                  <span>Features</span>
-                  <span>Teams</span>
+                  {links.map((item) => (
+                     <div className="nav-item" key={item}>
+                        <ScrollLink to={item} activeClass="active" spy={true} smooth={true} offset={-80} duration={100}>
+                           {item}
+                        </ScrollLink>
+                     </div>
+                  ))}
                </nav>
                <div className="buttons">
                   <Link to="/register">Sign Up</Link>
                   <Link to="/login">Sign In</Link>
                </div>
-               <div className={`mobile-nav ${isShow ? "active" : ""}`} onClick={() => setIsShow(false)}>
-                  <XMarkIcon className="icons" onClick={() => setIsShow(false)} />
-                  <Link to="/register" onClick={() => setIsShow(false)}>Home</Link>
-                  <Link to="/login" onClick={() => setIsShow(false)}>Features</Link>
-                  <Link to="/register" onClick={() => setIsShow(false)}>Teams</Link>
-                  <div className="buttons">
-                     <Link to="/register">Sign Up</Link>
-                     <Link to="/login">Sign In</Link>
-                  </div>
-               </div>
                <Bars3Icon className="icons" onClick={() => setIsShow(true)} />
             </div>
          </header>
          <main>
-            <section className="home">
+            <section className="home" id="home">
                <div className="container">
                   <div className="home-top">
                      <h1>Sebuah cara mudah dalam menjawab pertanyaan dan masalah kamu</h1>
@@ -64,7 +73,7 @@ const LandingPage = () => {
                   <img src="/app.png" alt="" />
                </div>
             </section>
-            <section className="features">
+            <section className="features" id="features">
                <div className="container">
                   <div className="top">
                      <h1>Our Features</h1>
@@ -83,7 +92,7 @@ const LandingPage = () => {
                   </div>
                </div>
             </section>
-            <section className="teams">
+            <section className="teams" id="teams">
                <div className="container">
                   <div className="top">
                      <h1>Our Teams</h1>

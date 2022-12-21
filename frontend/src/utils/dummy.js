@@ -87,19 +87,19 @@ export const teams = [
       name: "Ferdinan Tumanggor"
    },
    {
-      img: "/ferdinan.png",
+      img: "https://source.unsplash.com/random/100x100?man",
       name: "Chris Baeha"
    }, {
-      img: "/ferdinan.png",
+      img: "https://source.unsplash.com/random/100x100?student",
       name: "Dionisius Siahaan"
    }, {
-      img: "/ferdinan.png",
+      img: "https://source.unsplash.com/random/100x100?glasses",
       name: "Samuel Manihuruk "
    }, {
       img: "/yosia.jpeg",
       name: "Yosia Silalahi"
    }, {
-      img: "/ferdinan.png",
+      img: "/ferry.jpeg",
       name: "Fery Sirait"
    },
 ]
@@ -123,4 +123,10 @@ export const features = [
       title: "Personal Branding",
       desc: "ask.UST menilai seluruh aktivitas yang kamu lakukan dan menampilkan nilai yang kamu miliki dan dapat dilihat oleh orang lain"
    },
+]
+
+export const links = [
+   "home",
+   "features",
+   "teams"
 ]

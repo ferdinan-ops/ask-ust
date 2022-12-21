@@ -20,10 +20,7 @@ const Login = () => {
                </div>
                <div className="heading">
                   <h1>Masuk ke akun kamu</h1>
-                  <span>
-                     Ajukan pertanyaanmu dengan mudah di ask.UST, mulai temukan
-                     solusi dari masalah kamu!
-                  </span>
+                  <span>Ajukan pertanyaanmu dengan mudah di ask.UST, mulai temukan solusi dari masalah kamu!</span>
                </div>
                <form>
                   <label>
@@ -47,10 +44,7 @@ const Login = () => {
                <img src="/login.svg" alt="" />
                <div className="desc">
                   <span>ASK-UST.VERCEL.APP</span>
-                  <p>
-                     Diskusi secara online semakin mudah – tetap berdiskusi
-                     walaupun pake kuota dari Kemendikbud hehe~
-                  </p>
+                  <p>Diskusi secara online semakin mudah – tetap berdiskusi walaupun pake kuota dari Kemendikbud hehe~</p>
                </div>
             </div>
             <div className="rounded"></div>

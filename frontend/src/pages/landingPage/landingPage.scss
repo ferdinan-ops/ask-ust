@@ -47,6 +47,87 @@ a {
    }
 }
 
+.buttons {
+   @include flexStyle($gap: 20px);
+
+   a {
+      @include makeButton($padding: 8px 20px, $bg: $primary, $rounded: 30px);
+      box-shadow: 0px 10px 20px rgba(0, 186, 199, 0.25);
+      font-size: 16px;
+
+      @include tabletVersion {
+         @include typoGraphy($fontSize: 15px, $align: center, $color: #fff, $weight: 600);
+         border-radius: 6px;
+         padding: 10px 20px;
+         flex: 1;
+      }
+
+
+      &:last-child {
+         color: #fff;
+
+         &:hover {
+            background-color: darken($primary, 10%);
+            color: #fff;
+         }
+      }
+
+      &:first-child {
+         background-color: transparent;
+         box-shadow: none;
+         color: $font;
+
+         &:hover {
+            background-color: darken(#fff, 10%);
+            color: $font;
+         }
+
+         @include tabletVersion {
+            border: 1px solid #bbb;
+         }
+      }
+   }
+}
+
+.mobile-nav {
+   @include position($position: fixed, $top: 0, $left: 0, $right: 0, $bottom: 0, $z: 9999999);
+   display: none;
+   padding: 60px 30px 30px 30px;
+   background-color: #fff;
+   font-weight: 600;
+   transition: 0.2s;
+   text-transform: capitalize;
+
+   a {
+      color: $font;
+      width: fit-content;
+
+      &:hover {
+         color: $primary;
+      }
+   }
+
+   .nav-item>.active {
+      color: $primary;
+      font-weight: bold;
+      border-bottom: 2px solid $primary;
+   }
+
+   .icons {
+      @include position($position: absolute, $top: 16px, $right: 16px);
+      width: 52px;
+   }
+
+   @include tabletVersion {
+      @include flexStyle($direction: column, $gap: 30px);
+      transform: translateX(-100%);
+
+      &.active {
+         transform: translateX(0);
+      }
+   }
+}
+
 header {
    $theme-map: null;
    @include flexStyle($align: center);
@@ -54,45 +135,6 @@ header {
    height: 80px;
    color: $font;
    background-color: #fff;
-
-   .mobile-nav {
-      display: none;
-      @include position($position: fixed, $top: 0, $left: 0, $right: 0, $bottom: 0, $z: 9999999);
-      padding: 60px 30px 30px 30px;
-      background-color: #fff;
-      font-weight: 600;
-      color: $font;
-      transition: 0.2s;
-
-      .icons {
-         @include position($position: absolute, $top: 16px, $right: 16px);
-         width: 52px;
-      }
-
-      .buttons {
-         @include flexStyle($gap: 20px);
-         margin-top: 30px;
-
-         a {
-            width: 100%;
-            text-align: center;
-            border-radius: 6px;
-
-            &:first-child {
-               border: 1px solid #bbb;
-            }
-         }
-      }
-
-      @include mobileVersion {
-         @include flexStyle($direction: column, $gap: 30px);
-         transform: translateX(-100%);
-
-         &.active {
-            transform: translateX(0);
-         }
-      }
-   }
 
    .container {
       @include flexStyle($justify: space-between, $align: center);
@@ -143,6 +185,22 @@ header {
    nav {
       @include flexStyle($gap: 50px);
       @include typoGraphy($weight: 600, $fontSize: 16px);
+      text-transform: capitalize;
+
+      .nav-item {
+         cursor: pointer;
+         color: $font;
+
+         &:hover {
+            color: $primary;
+         }
+
+         &>.active {
+            color: $primary;
+            font-weight: bold;
+            border-bottom: 2px solid $primary;
+         }
+      }
 
       @include tabletVersion {
          display: none;
@@ -150,26 +208,8 @@ header {
    }
 
    .buttons {
-      @include flexStyle($gap: 20px);
-
       @include tabletVersion {
          display: none;
-      }
-
-      a {
-         @include makeButton($padding: 8px 20px, $bg: $primary, $color: #fff, $rounded: 30px);
-         box-shadow: 0px 10px 20px rgba(0, 186, 199, 0.25);
-         font-size: 16px;
-
-         &:hover {
-            background-color: darken($primary, 10%);
-         }
-
-         &:first-child {
-            background-color: transparent;
-            box-shadow: none;
-            color: $font;
-         }
       }
    }
 }
@@ -341,10 +381,17 @@ main {
 
             @include tabletVersion {
                width: 100%;
+               justify-content: space-between;
+               gap: 30px;
             }
 
             .team-card {
                @include flexStyle($align: center, $justify: center, $direction: column, $gap: 20px);
+               width: 22%;
+
+               @include tabletVersion {
+                  width: 160px;
+               }
 
                .photos {
                   width: 100px;
