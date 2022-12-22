@@ -8,3 +8,5 @@ const API = axios.create({
 
 export const loginAPI = (fields) => API.post("/login", fields);
 export const registerAPI = (fields) => API.post("/register", fields);
+
+export const createTagAPI = (fields) => API.post("/create-tag", fields);

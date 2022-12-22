@@ -9,10 +9,21 @@ export const AuthContextProvider = ({ children }) => {
    );
 
    const login = async (fields) => {
+      const now = new Date();
       const { data } = await loginAPI(fields);
-      setCurrentUser(data);
-      return data;
+      let user = data.user;
+      user.maxAge = now.getTime() + data.maxAge;
+      setCurrentUser(user);
+      console.log(user);
    };
+
+   useEffect(() => {
+      const now = new Date();
+      if (now.getTime() > currentUser?.maxAge) {
+         setCurrentUser(null);
+         localStorage.removeItem("user");
+      }
+   }, [currentUser]);
 
    useEffect(() => {
       localStorage.setItem("user", JSON.stringify(currentUser));

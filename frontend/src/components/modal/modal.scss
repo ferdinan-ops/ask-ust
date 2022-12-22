@@ -18,7 +18,7 @@
          padding: 20px;
       }
 
-      .container {
+      .modalsContainer {
          background-color: themed("bg");
          border-radius: 8px;
          min-width: 420px;
@@ -34,7 +34,7 @@
             transform: scale(1);
          }
 
-         .top {
+         .modalsTop {
             padding: 16px;
             border-bottom: 1px solid themed("border");
             @include flexStyle($align: center, $gap: 20px);
@@ -79,7 +79,7 @@
             }
          }
 
-         .bottom {
+         .modalsBottom {
             padding: 16px;
             margin: 0;
 

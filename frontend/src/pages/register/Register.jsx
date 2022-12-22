@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Ring } from "@uiball/loaders";
 
+import { toast } from "react-hot-toast";
+import { registerAPI } from "../../config/api";
 import "./register.scss";
 
 const Register = () => {
@@ -14,9 +16,18 @@ const Register = () => {
       document.title = "Masuk | ask.UST";
    }, []);
 
-   const submitHandler = (e) => {
+   const submitHandler = async (e) => {
       e.preventDefault();
       setIsLoading(true);
+
+      try {
+         const { data } = await registerAPI({ name, email, password });
+         setIsLoading(false);
+         toast.success(data.msg);
+      } catch (error) {
+         setIsLoading(false);
+         toast.error(error.response.data.msg);
+      }
    }
 
    return (
