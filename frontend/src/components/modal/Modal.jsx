@@ -11,7 +11,7 @@ const Modal = ({ children, title, isModalShow, setIsModalShow, modalSubmit, isLo
             <div className="modalsTop">
                <XMarkIcon className='icons' onClick={(e) => setIsModalShow(false)} />
                <span>{title}</span>
-               <button onClick={modalSubmit}>
+               <button onClick={modalSubmit} className={isLoading ? "loading" : ""}>
                   {isLoading ? <Ring size={16} lineWeight={8} speed={2} color="#fff" /> : "Simpan"}
                </button>
             </div>

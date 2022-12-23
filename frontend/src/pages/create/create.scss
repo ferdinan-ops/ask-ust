@@ -133,8 +133,12 @@
 
                   button {
                      @include flexStyle($align: center, $gap: 10px);
-                     box-shadow: none;
-                     padding: 4px 8px;
+                     @include makeButton($padding: 5px 8px, $rounded: 4px, $bg: themed("primary"), $color: #fff);
+                     font-weight: 600;
+
+                     &:hover {
+                        background-color: darken(themed("primary"), 10%);
+                     }
 
                      .icons {
                         width: 18px;
@@ -143,11 +147,13 @@
                }
             }
 
-            .primary-button {
-               @include makeButton($padding: 12px 24px, $rounded: 8px, $bg: themed("primary"));
+            .createButton {
+               @include makeButton($rounded: 8px, $bg: themed("primary"));
                @include typoGraphy($fontSize: 15px, $weight: 700, $color: #fff);
-               width: fit-content;
+               @include flexStyle($align: center, $justify: center);
                margin-left: auto;
+               width: 180px;
+               height: 46px;
                box-shadow: themed("shadow");
 
                &:hover {
@@ -160,7 +166,8 @@
 
                @include mobileVersion {
                   font-size: 13px;
-                  padding: 10px 20px;
+                  width: 160px;
+                  height: 40px;
                }
             }
          }

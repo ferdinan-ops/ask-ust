@@ -8,6 +8,8 @@ import { createTag, getTags } from "../../config/redux/features/tagSlice";
 import { createPost } from "../../config/redux/features/postSlice";
 
 import "./create.scss";
+import { Ring } from "@uiball/loaders";
+import { toast } from "react-hot-toast";
 
 const Create = () => {
    const [isModalShow, setIsModalShow] = useState(false);
@@ -22,6 +24,7 @@ const Create = () => {
    const dispatch = useDispatch();
    const { currentUser } = useContext(AuthContext);
    const { isLoading, tags: tagsData } = useSelector((state) => state.tag);
+   const { isLoading: isLoadingPost } = useSelector((state) => state.post);
 
    useEffect(() => { document.title = "Ayo buat pertanyaan 😀 | ask.UST" }, []);
    useEffect(() => { dispatch(getTags()) }, [dispatch]);
@@ -41,26 +44,26 @@ const Create = () => {
 
    const createTagHandler = (e) => {
       e.preventDefault();
+      if (!nameTag || !descTag) return toast.error("Nama dan deskripsi tag tidak boleh kosong");
       dispatch(createTag({ name: nameTag, desc: descTag }));
       setNameTag("");
       setDescTag("");
-      setIsModalShow(false);
    };
 
-   const addTags = (tag) => {
-      const isSame = tags.some((t) => t.name === tag.name);
-      if (!isSame) setTags([...tags, tag]);
+   const addTags = (name) => {
+      const isSame = tags.some((tag) => tag === name);
+      if (!isSame) setTags([...tags, name]);
       setKeyword("");
    }
 
-   const deleteTags = (_id) => {
-      const newTags = tags.filter((tag) => tag._id !== _id);
+   const deleteTags = (id) => {
+      const newTags = tags.filter((tag) => tag !== id);
       setTags(newTags);
    }
 
    const submitHandler = (e) => {
       e.preventDefault();
-      dispatch(createPost({ title, tags: tags._id, desc }));
+      dispatch(createPost({ title, tags, desc }));
       setTitle("");
       setDesc("");
       setTags([]);
@@ -72,11 +75,11 @@ const Create = () => {
             <div className="modalWrapper">
                <label>
                   <span>Nama tags</span>
-                  <input placeholder="ms-word" required value={nameTag} onChange={(e) => setNameTag(e.target.value)} />
+                  <input placeholder="ms-word" value={nameTag} onChange={(e) => setNameTag(e.target.value)} />
                </label>
                <label>
                   <span>Deskripsi tags</span>
-                  <textarea placeholder="Jelaskan sedikit mengenai tag baru ini, bisa dicari lewat google" required value={descTag} onChange={(e) => setDescTag(e.target.value)} />
+                  <textarea placeholder="Jelaskan sedikit mengenai tag baru ini, bisa dicari lewat google" value={descTag} onChange={(e) => setDescTag(e.target.value)} />
                </label>
             </div>
          </Modal>
@@ -93,7 +96,7 @@ const Create = () => {
                <div className="createInput">
                   <div className="createTags">
                      <span>Tags</span>
-                     <button className="primary-button" onClick={modalShowHandler}>
+                     <button className="tagsButton" onClick={modalShowHandler}>
                         <PlusCircleIcon className="icons" />
                         Tags baru
                      </button>
@@ -101,8 +104,8 @@ const Create = () => {
                   {tags.length > 0 && (
                      <div className="allTags">
                         {tags.map((tag) => (
-                           <span key={tag._id}>
-                              # {tag.name} <XMarkIcon className="icons" onClick={() => deleteTags(tag._id)} />
+                           <span key={tag}>
+                              # {tag} <XMarkIcon className="icons" onClick={() => deleteTags(tag)} />
                            </span>
                         ))}
                      </div>
@@ -111,7 +114,7 @@ const Create = () => {
                   {keyword.length > 0 && (
                      <ul>
                         {listTags.map((tag) => (
-                           <li key={tag._id} onClick={() => addTags(tag)}># {tag.name}</li>
+                           <li key={tag._id} onClick={() => addTags(tag.name)}># {tag.name}</li>
                         ))}
                      </ul>
                   )}
@@ -120,7 +123,9 @@ const Create = () => {
                   <span>Deskripsi</span>
                   <TextEditor setContent={setDesc} content={desc} />
                </div>
-               <button className="primary-button">Kirim Pertanyaan</button>
+               <button className={`createButton ${isLoadingPost ? "loading" : ""}`}>
+                  {isLoadingPost ? <Ring size={16} lineWeight={8} speed={2} color="#fff" /> : "Kirim Pertanyaan"}
+               </button>
             </form>
          </div>
       </div>

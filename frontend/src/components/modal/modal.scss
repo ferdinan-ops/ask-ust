@@ -64,17 +64,21 @@
             }
 
             button {
-               @include makeButton($padding: 4px 16px, $rounded: 30px, $bg: themed("primary"));
-               @include typoGraphy($fontSize: 12px, $color: #fff);
+               @include makeButton($rounded: 30px, $bg: themed("primary"));
+               @include typoGraphy($fontSize: 12px, $color: #fff, $weight: 600);
+               @include flexStyle($justify: center, $align: center);
                margin-left: auto;
+               width: 77px;
+               height: 30px;
 
                &:hover {
                   background-color: darken(themed("primary"), 10%);
                }
 
                @include mobileVersion {
-                  padding: 2px 12px;
                   font-size: 11px;
+                  width: 70px;
+                  height: 27px;
                }
             }
          }

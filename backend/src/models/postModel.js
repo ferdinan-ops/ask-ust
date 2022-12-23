@@ -30,6 +30,10 @@ const postSchema = new Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "answers",
    },
+   bestAnswerId: {
+      type: String,
+      default: "",
+   }
 }, { timestamps: true });
 
 const Posts = mongoose.model("posts", postSchema);

@@ -20,6 +20,14 @@ html {
    cursor: pointer;
 }
 
+.loading {
+   pointer-events: none;
+   background-color: rgba($color: #00bac7, $alpha: 60%) !important;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
 $themes: (
    light: ("primary": #00bac7,
       "font": #272d3e,

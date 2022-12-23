@@ -2,11 +2,12 @@ const Tag = require("../models/tagModel");
 
 const createTag = async (req, res) => {
    const { name, desc } = req.body;
-   if (!name && !desc) return res.status(400).json({
-      msg: "Masukkan seluruh data dengan benar"
-   });
 
    try {
+      const tagName = await Tag.findOne({ name });
+      if (tagName) return res.status(400).json({
+         msg: "Nama tag sudah ada"
+      });
       const data = await Tag.create({ name, desc });
       res.status(200).json(data);
    } catch (error) {
