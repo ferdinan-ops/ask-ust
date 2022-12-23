@@ -3,7 +3,7 @@
 .header {
    @include themify($themes) {
       @include flexStyle($justify: space-between, $align: center);
-      @include position($position: sticky, $z: 9999, $top: 0);
+      @include position($position: sticky, $z: 999, $top: 0);
       height: 80px;
       padding: 0 124px;
       border-bottom: 1px solid themed("border");

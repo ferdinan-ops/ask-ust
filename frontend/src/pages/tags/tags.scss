@@ -55,7 +55,8 @@
 
             .tag {
                @include flexStyle($direction: column, $gap: 10px);
-               @include makeButton($padding: 16px, $bg: themed("contentBg"), $rounded: 8px);
+               @include makeButton($padding: 16px, $bg: themed("contentBg"), $rounded: 8px, $color: #272d3e);
+               cursor: pointer;
                width: 268px;
                transition: 0.3s;
                margin-bottom: 3.1%;

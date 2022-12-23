@@ -1,13 +1,36 @@
-import React, { useEffect } from 'react';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 
+import { getTags, searchTag } from '../../config/redux/features/tagSlice';
 import "./tags.scss";
 
 const Tags = () => {
-   const random = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+   const [keyword, setKeyword] = useState("");
+   const [searchParams] = useSearchParams();
+
+   const navigate = useNavigate();
+   const dispatch = useDispatch();
+   const params = searchParams.get("search");
+   const { tags } = useSelector((state) => state.tag);
+
+   useEffect(() => { document.title = "Tags | ask.UST" }, []);
    useEffect(() => {
-      document.title = "Tags | ask.UST"
-   }, []);
+      if (!params) {
+         dispatch(getTags());
+      } else {
+         dispatch(searchTag(params))
+      }
+   }, [params, dispatch, keyword]);
+
+   const searchHandler = (e) => {
+      e.preventDefault();
+      navigate({
+         pathname: "/forum/tags",
+         search: `?${createSearchParams({ search: keyword })}`
+      });
+   }
 
    return (
       <div className="tagsPages">
@@ -16,15 +39,15 @@ const Tags = () => {
                <h1>Tags</h1>
                <span>Tag adalah kata kunci atau label yang mengkategorikan pertanyaan Anda dengan pertanyaan serupa lainnya. Menggunakan tag yang tepat memudahkan orang lain menemukan dan menjawab pertanyaan Anda.</span>
             </div>
-            <div className="tagsSearchBar">
+            <form className="tagsSearchBar" onSubmit={searchHandler}>
                <MagnifyingGlassIcon className="icons" />
-               <input placeholder="Cari berdasarkan nama tag" />
-            </div>
+               <input placeholder="Cari berdasarkan nama tag" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+            </form>
             <div className="tagsContent">
-               {random.map((item) => (
-                  <div className="tag">
-                     <button># javascript</button>
-                     <span>For questions about programming in ECMAScript (JavaScript/JS) and its different dialects/implementations (except for ActionScript). Keep in mind that JavaScript is NOT the same as Java! Include all labels that are relevant to your question; e.g., [node.js], [jQuery], [JSON], [ReactJS], [angular], [ember.js], [vue.js], [typescript], [svelte], etc.</span>
+               {tags.map((tag) => (
+                  <div className="tag" key={tag._id}>
+                     <button># {tag.name}</button>
+                     <span>{tag.desc}</span>
                   </div>
                ))}
             </div>

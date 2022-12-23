@@ -15,30 +15,27 @@ const createTag = async (req, res) => {
 }
 
 const getTags = async (req, res) => {
+   const { search } = req.query;
+   let data;
+
    try {
-      const data = await Tag.find();
+      if (!search) {
+         data = await Tag.find()
+      } else {
+         data = await Tag.aggregate([
+            {
+               $search: {
+                  index: 'searchTag',
+                  compound: { must: [{ autocomplete: { query: search, path: "name" } }] }
+               }
+            },
+            { $project: { _id: 1, name: 1, desc: 1 } }
+         ]);
+      };
       res.status(200).json(data);
    } catch (error) {
       res.status(500).json({ error });
    }
 }
 
-const searchTags = async (req, res) => {
-   const { keyword } = req.query;
-
-   try {
-      const data = await Tag.aggregate({
-         $search: {
-            index: "searchTag",
-            compound: { must: [{ autocomplete: { query: keyword, path: "name" } }] }
-         },
-         $project: { _id: 1, name: 1 },
-      });
-
-      res.status(200).json(data);
-   } catch (error) {
-      res.status(500).json({ error });
-   }
-}
-
-module.exports = { createTag, getTags, searchTags };
+module.exports = { createTag, getTags };
