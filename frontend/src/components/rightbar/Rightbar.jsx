@@ -1,9 +1,13 @@
-import React from "react";
 import { CheckBadgeIcon, PaperClipIcon, UserIcon } from "@heroicons/react/20/solid";
+import React, { useContext } from "react";
+
+import { AuthContext } from "../../context/authContext";
 import "./rightbar.scss";
 
 const Rightbar = () => {
    const random = "https://source.unsplash.com/random/200x200?profile";
+
+   const { currentUser } = useContext(AuthContext);
 
    return (
       <div className="rightbar">
@@ -13,7 +17,7 @@ const Rightbar = () => {
                <span>Selamat Datang</span>
             </div>
             <div className="rightBottom">
-               Hai Ferdinan, selamat datang di ask.UST, Mau tau kamu bisa apa aja disini 😝 ?
+               Hai {currentUser.name}, selamat datang di ask.UST, Mau tau kamu bisa apa aja disini 😝 ?
                <ul>
                   <li>Kamu bisa membuat pertanyaan</li>
                   <li>Kamu bisa menjawab pertanyaan</li>

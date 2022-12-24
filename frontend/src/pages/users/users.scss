@@ -47,18 +47,18 @@
          .usersContent {
             margin-top: 30px;
             flex-wrap: wrap;
-            @include flexStyle($gap: 3.1%);
+            @include flexStyle($gap: 3.5%);
 
             @include tabletVersion {
                justify-content: space-between;
             }
 
             .user {
-               @include flexStyle($gap: 15px, $align: top);
+               @include flexStyle($gap: 15px, $direction: column);
                @include makeButton($padding: 16px, $bg: themed("contentBg"), $rounded: 8px, $color: themed("font"));
                width: 268px;
                transition: 0.3s;
-               margin-bottom: 3.1%;
+               margin-bottom: 3.5%;
                border: 2px solid themed("contentBorder");
 
                &:hover {
@@ -73,47 +73,51 @@
                   width: 100%;
                }
 
-               img {
-                  @include profilePicture(50px, $rounded: 8px);
+               .userScore {
+                  @include typoGraphy($weight: bold, $fontSize: 20px, $color: themed("primary"));
+                  margin-left: auto;
 
                   @include mobileVersion {
-                     @include profilePicture(46px, $rounded: 8px);
+                     font-size: 16px;
                   }
                }
 
-               .usersDetails {
-                  @include flexStyle($direction: column);
+               .userData {
+                  @include flexStyle($gap: 15px, $align: center);
 
-                  @include mobileVersion {
-                     width: 100%;
+                  img {
+                     @include profilePicture(50px, $rounded: 8px);
+
+                     @include mobileVersion {
+                        @include profilePicture(46px, $rounded: 8px);
+                     }
                   }
 
-                  span {
-                     &:first-child {
-                        font-weight: 600;
-                        @include truncate();
+                  .usersDetails {
+                     @include flexStyle($direction: column);
+                     width: 100%;
 
-                        @include mobileVersion {
-                           font-size: 14px;
-                        }
+                     @include mobileVersion {
+                        width: 100%;
                      }
 
-                     &:nth-child(2) {
-                        font-size: 13px;
-                        @include truncate();
+                     span {
+                        &:first-child {
+                           font-weight: 600;
+                           @include truncate();
 
-                        @include mobileVersion {
-                           font-size: 11px;
+                           @include mobileVersion {
+                              font-size: 14px;
+                           }
                         }
-                     }
 
-                     &:last-child {
-                        @include typoGraphy($weight: bold, $fontSize: 20px, $color: themed("primary"));
-                        margin-top: 15px;
-                        margin-left: auto;
+                        &:last-child {
+                           @include typoGraphy($fontSize: 13px, $color: rgb(117, 117, 117), $weight: 600);
+                           @include truncate();
 
-                        @include mobileVersion {
-                           font-size: 16px;
+                           @include mobileVersion {
+                              font-size: 11px;
+                           }
                         }
                      }
                   }

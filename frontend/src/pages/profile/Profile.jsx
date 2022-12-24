@@ -21,7 +21,7 @@ const Profile = () => {
          <div className="profileWrapper">
             <div className="profileHeading">
                <div className="profileUserInfo">
-                  <img src={currentUser.profilPic} alt="" />
+                  <img src={currentUser.profilPicture || "/profile.svg"} alt="" />
                   <span>{currentUser.name}</span>
                   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex esse rerum vel animi! Aliquam eius debitis odit molestiae repellendus in dolorum excepturi obcaecati ullam, non temporibus labore veniam repellat alias?</p>
                </div>

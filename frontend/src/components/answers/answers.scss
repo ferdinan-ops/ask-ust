@@ -34,9 +34,18 @@
          .descBottom {
             display: none;
 
+            .icons {
+               width: 20px;
+            }
+
             @include mobileVersion {
                display: block;
-               margin-left: auto;
+               // margin: 0 auto;
+               margin: 0;
+
+               span {
+                  @include flexStyle($align: center, $gap: 4px);
+               }
             }
          }
 
@@ -83,9 +92,26 @@
             .itemAction {
                @include flexStyle($gap: 10px, $align: center);
                font-size: 14px;
+               font-weight: 600;
                padding: 4px 13px;
                border-radius: 30px;
-               border: 1px solid themed("border");
+               cursor: pointer;
+               border: 1px solid themed("font");
+
+               &:first-child:hover {
+                  border-color: #13A458;
+                  color: #13A458;
+               }
+
+               &:nth-child(2):hover {
+                  border-color: #f64646;
+                  color: #f64646;
+               }
+
+               &:last-child:hover {
+                  border-color: themed("primary");
+                  color: themed("primary");
+               }
 
                @include mobileVersion {
                   font-size: 13px;

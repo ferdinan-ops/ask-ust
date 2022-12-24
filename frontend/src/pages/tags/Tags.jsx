@@ -2,27 +2,30 @@ import { createSearchParams, useNavigate, useSearchParams } from 'react-router-d
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
+import { Ring } from '@uiball/loaders';
 
 import { getTags, searchTag } from '../../config/redux/features/tagSlice';
 import "./tags.scss";
+import { InfiniteScroll } from '../../components';
 
 const Tags = () => {
    const [keyword, setKeyword] = useState("");
+   const [page, setPage] = useState(9);
    const [searchParams] = useSearchParams();
 
    const navigate = useNavigate();
    const dispatch = useDispatch();
    const params = searchParams.get("search");
-   const { tags } = useSelector((state) => state.tag);
+   const { tags, counts, isLoading } = useSelector((state) => state.tag);
 
    useEffect(() => { document.title = "Tags | ask.UST" }, []);
    useEffect(() => {
       if (!params) {
-         dispatch(getTags());
+         dispatch(getTags(page));
       } else {
-         dispatch(searchTag(params))
+         dispatch(searchTag(params, page))
       }
-   }, [params, dispatch, keyword]);
+   }, [params, dispatch, keyword, page]);
 
    const searchHandler = (e) => {
       e.preventDefault();
@@ -30,6 +33,11 @@ const Tags = () => {
          pathname: "/forum/tags",
          search: `?${createSearchParams({ search: keyword })}`
       });
+   }
+
+   const loadHandler = (e) => {
+      e.preventDefault();
+      setPage(page + 3);
    }
 
    return (
@@ -44,12 +52,21 @@ const Tags = () => {
                <input placeholder="Cari berdasarkan nama tag" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
             </form>
             <div className="tagsContent">
-               {tags.map((tag) => (
-                  <div className="tag" key={tag._id}>
-                     <button># {tag.name}</button>
-                     <span>{tag.desc}</span>
-                  </div>
-               ))}
+               {tags.length > 0 ? tags.map((tag) => (
+                  <>
+                     <div className="tag" key={tag._id}>
+                        <button># {tag.name}</button>
+                        <span>{tag.desc}</span>
+                     </div>
+                  </>
+               )) : (
+                  isLoading ? (
+                     <div className='loadingPage'>
+                        <Ring size={30} lineWeight={8} speed={2} color="#00bac7" />
+                     </div>
+                  ) : (params && <p>Maaf pengguna <b><i>{params}</i></b> tidak ditemukan 😔</p>)
+               )}
+               {tags.length > 9 && <InfiniteScroll counts={counts} dataLength={tags.length} isLoading={isLoading} loadMoreHandler={loadHandler} />}
             </div>
          </div>
       </div>

@@ -11,8 +11,8 @@ const Post = ({ post }) => {
             <div className="info">
                <div className="postWrapper">
                   <p><span>{post?.likes?.length}</span> suka</p>
+                  <p><span>{post?.saved?.length || 0}</span> disimpan</p>
                   <p><span>{post?.answers?.length}</span> jawaban</p>
-                  <p><span>{post?.views?.length}</span> melihat</p>
                </div>
             </div>
             <div className="postContent">

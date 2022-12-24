@@ -7,6 +7,7 @@ export const postDummy = [
       createdAt: "1 min ago",
       views: ["1", "2"],
       likes: [],
+      saved: [],
       user: {
          id: 1,
          name: "techno",
@@ -24,7 +25,19 @@ export const postDummy = [
                id: 3,
                name: "Ferdinan Imanuel Tumanggor",
                profilePic: "https://source.unsplash.com/random/200x200?galaxy"
-            }
+            },
+            comments: [
+               {
+                  id: 1,
+                  desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Et sit ad nesciunt est quaerat reprehenderit tenetur earum, accusamus maiores dolorum? Voluptatum perferendis deserunt asperiores voluptas blanditiis enim iure tempore hic.",
+                  createdAt: "1 jam yang lalu",
+                  user: {
+                     id: 3,
+                     name: "Ferdinan Imanuel Tumanggor",
+                     profilePic: "https://source.unsplash.com/random/200x200?galaxy"
+                  }
+               }
+            ]
          },
          {
             id: 1,
@@ -37,7 +50,8 @@ export const postDummy = [
                id: 3,
                name: "Yami Sukehiro",
                profilePic: "https://source.unsplash.com/random/200x200?earth"
-            }
+            },
+            comments: []
          },
       ],
    },
@@ -87,13 +101,13 @@ export const teams = [
       name: "Ferdinan Tumanggor"
    },
    {
-      img: "https://source.unsplash.com/random/100x100?man",
+      img: "/chris.jpeg",
       name: "Chris Baeha"
    }, {
-      img: "https://source.unsplash.com/random/100x100?student",
+      img: "/dion.jpeg",
       name: "Dionisius Siahaan"
    }, {
-      img: "https://source.unsplash.com/random/100x100?glasses",
+      img: "/samuel.jpeg",
       name: "Samuel Manihuruk "
    }, {
       img: "/yosia.jpeg",

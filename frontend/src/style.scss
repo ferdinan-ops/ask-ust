@@ -28,6 +28,13 @@ html {
    justify-content: center;
 }
 
+.loadingPage {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 100%;
+}
+
 $themes: (
    light: ("primary": #00bac7,
       "font": #272d3e,

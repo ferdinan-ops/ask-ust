@@ -43,15 +43,25 @@
                span {
                   &.name {
                      @include typoGraphy($fontSize: 18px, $weight: 600, $color: themed("primary"));
+                     max-width: 620px;
+                     white-space: nowrap;
+                     overflow: hidden;
+                     text-overflow: ellipsis;
                      cursor: pointer;
 
                      @include tabletVersion {
                         @include typoGraphy($fontSize: 16px, $weight: 600, $color: themed("primary"));
+                        max-width: 300px;
+                     }
+
+                     @include mobileVersion {
+                        max-width: 160px;
                      }
                   }
 
                   &.date {
                      @include typoGraphy($fontSize: 16px, $weight: 500, $color: rgb(172, 172, 172));
+                     @include truncate(1);
                      cursor: auto;
 
                      @include mobileVersion {

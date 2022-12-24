@@ -8,9 +8,11 @@ const cors = require("cors");
 const path = require("path");
 
 /* Routes */
+const answerRoutes = require("./src/routes/answerRoute");
 const postRoutes = require("./src/routes/postRoute");
 const authRoutes = require("./src/routes/authRoute");
 const tagRoutes = require("./src/routes/tagRoute");
+const userRoutes = require("./src/routes/userRoute");
 
 /* CONFIGURATIONS */
 dotenv.config();
@@ -26,9 +28,11 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 
 /* Router */
+app.use("/api/v1", answerRoutes);
 app.use("/api/v1", postRoutes);
 app.use("/api/v1", authRoutes);
 app.use("/api/v1", tagRoutes);
+app.use("/api/v1", userRoutes);
 app.use("/api/v1/assets", express.static(path.join(__dirname, "assets")));
 
 mongoose.connect(process.env.MONGO_URI).then((conn) => {

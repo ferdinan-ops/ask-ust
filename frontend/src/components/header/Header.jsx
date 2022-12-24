@@ -40,7 +40,7 @@ const Header = () => {
                <MoonIcon className="icons mobile" onClick={toggleHandler} />
             }
             <BellIcon className="icons" onClick={() => navigate("/forum/notification")} />
-            <img src={currentUser.profilPic} alt="" onClick={() => navigate(`/forum/users/${currentUser.id}`)} />
+            <img src={currentUser.profilPicture || "/profile.svg"} alt="" onClick={() => navigate(`/forum/users/${currentUser.id}`)} />
          </div>
          <div className={`mobileNav ${showNav ? "active" : ""}`}>
             <div className="headerTop">
@@ -57,7 +57,7 @@ const Header = () => {
             <Link to="/forum/notification" onClick={() => setShowNav(false)}>Notifikasi</Link>
             <Link to={`/forum/users/${currentUser.id}`} onClick={() => setShowNav(false)}>
                <div className="headerUserInfo">
-                  <img src={currentUser.profilPic} alt="" />
+                  <img src={currentUser.profilPicture || "/profile.svg"} alt="" />
                   <span>{currentUser.name}</span>
                </div>
             </Link>

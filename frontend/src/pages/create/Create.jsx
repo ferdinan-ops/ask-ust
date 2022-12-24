@@ -63,6 +63,7 @@ const Create = () => {
 
    const submitHandler = (e) => {
       e.preventDefault();
+      if (!title || !desc || tags.length === 0) return toast.error("Judul, deskripsi, dan tags tidak boleh kosong");
       dispatch(createPost({ title, tags, desc }));
       setTitle("");
       setDesc("");

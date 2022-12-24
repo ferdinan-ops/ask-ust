@@ -12,13 +12,13 @@ export const createTag = createAsyncThunk("/tag/create", async (fields, { reject
    }
 });
 
-export const getTags = createAsyncThunk("/tag/get", async () => {
-   const { data } = await getTagsAPI();
+export const getTags = createAsyncThunk("/tag/get", async (page) => {
+   const { data } = await getTagsAPI(page);
    return data;
 });
 
-export const searchTag = createAsyncThunk("tag/search", async (keyword) => {
-   const { data } = await searchTagsAPI(keyword);
+export const searchTag = createAsyncThunk("tag/search", async (keyword, page) => {
+   const { data } = await searchTagsAPI(keyword, page);
    return data;
 });
 
@@ -26,9 +26,9 @@ export const tagSlice = createSlice({
    name: "tag",
    initialState: {
       tags: [],
+      counts: 0,
       isLoading: true,
    },
-   reducers: {},
    extraReducers: (builder) => {
       builder.addCase(createTag.pending, (state) => {
          state.isLoading = true;
@@ -42,12 +42,14 @@ export const tagSlice = createSlice({
       }).addCase(getTags.pending, (state) => {
          state.isLoading = true;
       }).addCase(getTags.fulfilled, (state, { payload }) => {
-         state.tags = payload;
+         state.tags = payload.data;
+         state.counts = payload.counts;
          state.isLoading = false;
       }).addCase(searchTag.pending, (state) => {
          state.isLoading = true;
       }).addCase(searchTag.fulfilled, (state, { payload }) => {
-         state.tags = payload;
+         state.tags = payload.data;
+         state.counts = payload.counts;
          state.isLoading = false;
       })
    }

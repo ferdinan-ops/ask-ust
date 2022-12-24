@@ -16,7 +16,7 @@ const createTag = async (req, res) => {
 }
 
 const getTags = async (req, res) => {
-   const { search } = req.query;
+   const { search, page } = req.query;
    let data;
 
    try {
@@ -33,7 +33,10 @@ const getTags = async (req, res) => {
             { $project: { _id: 1, name: 1, desc: 1 } }
          ]);
       };
-      res.status(200).json(data);
+
+      const counts = data.length;
+      data = data.slice(0, parseInt(page));
+      res.status(200).json({ data, counts });
    } catch (error) {
       res.status(500).json({ error });
    }

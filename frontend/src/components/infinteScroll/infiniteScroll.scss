@@ -1,0 +1,27 @@
+@import "../../style.scss";
+
+.infinite {
+   @include themify($themes) {
+      @include flexStyle($align: center, $justify: center);
+      width: 100%;
+
+      .end {
+         margin: 0 auto;
+         color: themed("font");
+         font-weight: 600;
+         padding: 8px 16px;
+         border: 3px dashed themed("border");
+         border-radius: 8px;
+      }
+
+      .infiniteButton {
+         @include makeButton($padding: 10px 20px, $color: #fff, $bg: themed("primary"), $rounded: 8px);
+         box-shadow: 0px 10px 20px rgba(0, 186, 199, 0.25);
+         font-weight: 600;
+
+         &:hover {
+            background-color: darken(themed("primary"), 15%);
+         }
+      }
+   }
+}
