@@ -42,4 +42,13 @@ const getTags = async (req, res) => {
    }
 }
 
-module.exports = { createTag, getTags };
+const getAllTags = async (req, res) => {
+   try {
+      const data = await Tag.find({}, { name: 1, _id: 0 });
+      res.status(200).json(data);
+   } catch (error) {
+      res.status(500).json({ error })
+   }
+}
+
+module.exports = { createTag, getTags, getAllTags };

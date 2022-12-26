@@ -12,6 +12,38 @@
          padding: 30px 20px 60px 20px;
       }
 
+      .imagesWrapper {
+         width: 100px;
+         margin: 0 auto;
+         position: relative;
+
+         .iconsWrapper {
+            position: absolute;
+            bottom: 0;
+            left: 70px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba($color: lighten(#000, 30%), $alpha: 80%);
+            @include flexStyle($justify: center, $align: center);
+            cursor: pointer;
+
+            &:hover {
+               background-color: lighten(#000, 30%);
+            }
+
+            .icons {
+               width: 22px;
+               color: #fff;
+            }
+         }
+
+         img {
+            @include profilePicture(100%);
+            cursor: pointer;
+         }
+      }
+
       .profileWrapper {
          .profileHeading {
             .profileUserInfo {

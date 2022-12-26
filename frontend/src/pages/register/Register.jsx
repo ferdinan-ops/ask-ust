@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Ring } from "@uiball/loaders";
 
 import { toast } from "react-hot-toast";
@@ -11,6 +11,8 @@ const Register = () => {
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
    const [isLoading, setIsLoading] = useState(false);
+
+   const navigate = useNavigate();
 
    useEffect(() => {
       document.title = "Masuk | ask.UST";
@@ -24,6 +26,12 @@ const Register = () => {
          const { data } = await registerAPI({ name, email, password });
          setIsLoading(false);
          toast.success(data.msg);
+         setName("");
+         setEmail("");
+         setTimeout(() => {
+            toast.success("Silahkan login");
+            navigate("/login");
+         }, 1500);
       } catch (error) {
          setIsLoading(false);
          toast.error(error.response.data.msg);

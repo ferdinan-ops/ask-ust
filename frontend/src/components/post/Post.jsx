@@ -1,5 +1,7 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
+import Moment from "react-moment";
+import React from "react";
+
 import "./post.scss";
 
 const Post = ({ post }) => {
@@ -7,18 +9,18 @@ const Post = ({ post }) => {
 
    return (
       <div className="post">
-         <div className="postContainer" onClick={() => navigate(`/forum/questions/${post.id}`)}>
+         <div className="postContainer" onClick={() => navigate(`/forum/questions/${post._id}`)}>
             <div className="info">
                <div className="postWrapper">
-                  <p><span>{post?.likes?.length}</span> suka</p>
-                  <p><span>{post?.saved?.length || 0}</span> disimpan</p>
-                  <p><span>{post?.answers?.length}</span> jawaban</p>
+                  <p><span>{post?.likesCount}</span> suka</p>
+                  <p><span>{post?.savedCount}</span> disimpan</p>
+                  <p><span>{post?.answersCount}</span> jawaban</p>
                </div>
             </div>
             <div className="postContent">
                <div className="postTop">
                   <h2>{post.title}</h2>
-                  <span>{post.desc}</span>
+                  <div dangerouslySetInnerHTML={{ __html: post.desc }} className="postDesc" />
                </div>
                <div className="postBottom">
                   <div className="postTags">
@@ -27,10 +29,10 @@ const Post = ({ post }) => {
                      ))}
                   </div>
                   <div className="postUserInfo">
-                     <img src={post?.user?.profilePic} alt="" />
+                     <img src={post?.user?.profilePic || "/profile.svg"} alt="" />
                      <span>{post?.user?.name}</span>
                      <span>&bull;</span>
-                     <span>{post.createdAt}</span>
+                     <Moment fromNow>{post.createdAt}</Moment>
                   </div>
                </div>
             </div>

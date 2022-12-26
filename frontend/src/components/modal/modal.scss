@@ -111,10 +111,10 @@
                   }
 
                   textarea {
-                     min-height: 300px;
+                     min-height: 200px;
 
                      @include mobileVersion {
-                        min-height: 200px;
+                        min-height: 100px;
                      }
                   }
                }

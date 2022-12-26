@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { loginAPI } from "../config/api";
+import { loginAPI, logoutAPI } from "../config/api";
 
 export const AuthContext = createContext();
 
@@ -14,8 +14,14 @@ export const AuthContextProvider = ({ children }) => {
       let user = data.user;
       user.maxAge = now.getTime() + data.maxAge;
       setCurrentUser(user);
-      console.log(user);
    };
+
+   const logout = async () => {
+      setCurrentUser(null);
+      localStorage.removeItem("user");
+      const { data } = await logoutAPI();
+      console.log({ data });
+   }
 
    useEffect(() => {
       const now = new Date();
@@ -30,7 +36,7 @@ export const AuthContextProvider = ({ children }) => {
    }, [currentUser]);
 
    return (
-      <AuthContext.Provider value={{ currentUser, login }}>
+      <AuthContext.Provider value={{ currentUser, login, logout }}>
          {children}
       </AuthContext.Provider>
    );

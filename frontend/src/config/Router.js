@@ -74,6 +74,10 @@ const Router = ({ currentUser }) => {
                path: "/forum/create",
                element: <Create />,
             },
+            {
+               path: "/forum/update/:postId",
+               element: <Create />,
+            },
          ]
       },
       {

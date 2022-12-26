@@ -9,14 +9,20 @@ const API = axios.create({
 /* AUTHENTICATION */
 export const loginAPI = (fields) => API.post("/login", fields);
 export const registerAPI = (fields) => API.post("/register", fields);
+export const logoutAPI = () => API.delete("/logout");
 
 /* TAGS */
-export const searchTagsAPI = (keyword, page) => API.get(`/tags?search=${keyword}&page${page}`);
+export const searchTagsAPI = (keyword, page) => API.get(`/tags?search=${keyword}&page=${page}`);
 export const createTagAPI = (fields) => API.post("/tag/create", fields);
 export const getTagsAPI = (page) => API.get(`/tags?page=${page}`);
+export const getAllTagsAPI = () => API.get("/tags/all");
 
 /* POSTS */
-export const createPostAPI = (fields) => API.post("/post/create", fields);
+export const updatePostAPI = (postId, fields) => API.put(`/post/${postId}`, fields);
+export const deletePostAPI = (postId) => API.delete(`/post/${postId}`);
+export const createPostAPI = (fields) => API.post("/post", fields);
+export const getPostsAPI = (page) => API.get(`/posts?page=${page}`);
+export const getPostAPI = (postId) => API.get(`/post/${postId}`);
 
 /* USERS */
 export const searchUserAPI = (keyword) => API.get(`/users?search=${keyword}`);

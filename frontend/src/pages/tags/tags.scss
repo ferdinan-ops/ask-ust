@@ -18,6 +18,7 @@
             margin-top: 30px;
             @include flexStyle($align: center, $gap: 16px);
             @include makeButton($bg: themed("searchBg"), $padding: 10px 18px, $rounded: 8px);
+            cursor: auto;
 
             @include mobileVersion {
                padding: 8px 16px;

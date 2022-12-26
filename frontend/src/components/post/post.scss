@@ -2,7 +2,7 @@
 
 .post {
    @include themify($themes) {
-      margin-bottom: 24px;
+      margin-bottom: 10px;
 
       @include mobileVersion {
          margin-bottom: 0;
@@ -16,6 +16,7 @@
 
       .postContainer {
          @include flexStyle($gap: 24px);
+         max-width: 867px;
          padding: 20px;
          cursor: pointer;
          transition: 0.3s;
@@ -79,6 +80,7 @@
 
                h2 {
                   font-size: 20px;
+                  line-height: 26px;
                   @include truncate(2);
 
                   @include mobileVersion {
@@ -86,9 +88,16 @@
                   }
                }
 
-               span {
-                  font-size: 15px;
+               .postDesc {
+                  font-size: 15px !important;
                   @include truncate(2);
+                  max-height: 44px;
+
+                  pre,
+                  code {
+                     white-space: pre-wrap;
+                     overflow-wrap: break-word;
+                  }
 
                   @include mobileVersion {
                      font-size: 13px;
@@ -97,7 +106,7 @@
             }
 
             .postBottom {
-               @include flexStyle($direction: column, $gap: 8px);
+               @include flexStyle($direction: column);
 
                @include mobileVersion {
                   gap: 14px;

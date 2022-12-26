@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { Ring } from '@uiball/loaders';
 
 import { getTags, searchTag } from '../../config/redux/features/tagSlice';
-import "./tags.scss";
 import { InfiniteScroll } from '../../components';
+import "./tags.scss";
 
 const Tags = () => {
    const [keyword, setKeyword] = useState("");
@@ -23,7 +23,7 @@ const Tags = () => {
       if (!params) {
          dispatch(getTags(page));
       } else {
-         dispatch(searchTag(params, page))
+         dispatch(searchTag({ params, page }))
       }
    }, [params, dispatch, keyword, page]);
 
@@ -33,6 +33,7 @@ const Tags = () => {
          pathname: "/forum/tags",
          search: `?${createSearchParams({ search: keyword })}`
       });
+      setPage(9);
    }
 
    const loadHandler = (e) => {
@@ -53,12 +54,10 @@ const Tags = () => {
             </form>
             <div className="tagsContent">
                {tags.length > 0 ? tags.map((tag) => (
-                  <>
-                     <div className="tag" key={tag._id}>
-                        <button># {tag.name}</button>
-                        <span>{tag.desc}</span>
-                     </div>
-                  </>
+                  <div className="tag" key={tag._id}>
+                     <button># {tag.name}</button>
+                     <span>{tag.desc}</span>
+                  </div>
                )) : (
                   isLoading ? (
                      <div className='loadingPage'>

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createTagAPI, getTagsAPI, searchTagsAPI } from "../../api";
+import { createTagAPI, getAllTagsAPI, getTagsAPI, searchTagsAPI } from "../../api";
 import { toast } from "react-hot-toast";
 
 export const createTag = createAsyncThunk("/tag/create", async (fields, { rejectWithValue }) => {
@@ -17,8 +17,14 @@ export const getTags = createAsyncThunk("/tag/get", async (page) => {
    return data;
 });
 
-export const searchTag = createAsyncThunk("tag/search", async (keyword, page) => {
-   const { data } = await searchTagsAPI(keyword, page);
+export const getAllTags = createAsyncThunk("tag/all", async () => {
+   const { data } = await getAllTagsAPI();
+   return data;
+})
+
+export const searchTag = createAsyncThunk("tag/search", async (fields) => {
+   const { params, page } = fields;
+   const { data } = await searchTagsAPI(params, page);
    return data;
 });
 
@@ -41,15 +47,26 @@ export const tagSlice = createSlice({
          toast.success("Tag berhasil dibuat");
       }).addCase(getTags.pending, (state) => {
          state.isLoading = true;
+      }).addCase(getTags.rejected, (state) => {
+         state.isLoading = false;
       }).addCase(getTags.fulfilled, (state, { payload }) => {
          state.tags = payload.data;
          state.counts = payload.counts;
          state.isLoading = false;
       }).addCase(searchTag.pending, (state) => {
          state.isLoading = true;
+      }).addCase(searchTag.rejected, (state) => {
+         state.isLoading = false;
       }).addCase(searchTag.fulfilled, (state, { payload }) => {
          state.tags = payload.data;
          state.counts = payload.counts;
+         state.isLoading = false;
+      }).addCase(getAllTags.pending, (state) => {
+         state.isLoading = true;
+      }).addCase(getAllTags.rejected, (state) => {
+         state.isLoading = false;
+      }).addCase(getAllTags.fulfilled, (state, { payload }) => {
+         state.tags = payload;
          state.isLoading = false;
       })
    }

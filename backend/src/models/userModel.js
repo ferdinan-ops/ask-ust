@@ -18,6 +18,10 @@ const usersSchema = new Schema({
       type: String,
       default: "",
    },
+   bio: {
+      type: String,
+      default: "",
+   },
    score: {
       type: Number,
       default: 0,

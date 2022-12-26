@@ -19,6 +19,7 @@
       ul {
          list-style: none;
          border-radius: 8px;
+         overflow: hidden;
          transition: 0.2s;
          transform: scale(0);
          transform-origin: top right;

@@ -1,33 +1,46 @@
-import React, { useState, useContext, useEffect } from "react";
 import { PlusCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import React, { useState, useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import { AuthContext } from "../../context/authContext";
-import { Modal, TextEditor, Warning } from "../../components";
-import { createTag, getTags } from "../../config/redux/features/tagSlice";
-import { createPost } from "../../config/redux/features/postSlice";
-
-import "./create.scss";
-import { Ring } from "@uiball/loaders";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { Ring } from "@uiball/loaders";
+
+import { createTag, getAllTags } from "../../config/redux/features/tagSlice";
+import { createPost, getPost, getPosts, updatePost } from "../../config/redux/features/postSlice";
+import { Modal, TextEditor, Warning } from "../../components";
+import { AuthContext } from "../../context/authContext";
+import "./create.scss";
 
 const Create = () => {
    const [isModalShow, setIsModalShow] = useState(false);
+   const [isUpdate, setIsUpdate] = useState(false);
+   const [listTags, setListTags] = useState([]);
    const [nameTag, setNameTag] = useState("");
    const [descTag, setDescTag] = useState("");
    const [keyword, setKeyword] = useState("");
-   const [listTags, setListTags] = useState([]);
-   const [tags, setTags] = useState([]);
    const [title, setTitle] = useState("");
+   const [tags, setTags] = useState([]);
    const [desc, setDesc] = useState("");
 
+   const { postId } = useParams();
+   const navigate = useNavigate();
    const dispatch = useDispatch();
+
    const { currentUser } = useContext(AuthContext);
    const { isLoading, tags: tagsData } = useSelector((state) => state.tag);
-   const { isLoading: isLoadingPost } = useSelector((state) => state.post);
+   const { isLoading: isLoadingPost, post } = useSelector((state) => state.post);
 
-   useEffect(() => { document.title = "Ayo buat pertanyaan 😀 | ask.UST" }, []);
-   useEffect(() => { dispatch(getTags()) }, [dispatch]);
+   useEffect(() => {
+      if (postId) {
+         dispatch(getPost());
+         setTitle(post.title);
+         setTags(post.tags);
+         setDesc(post.desc);
+         setIsUpdate(true);
+      }
+   }, [postId, dispatch, post]);
+   useEffect(() => { document.title = `${isUpdate ? "Ubah" : "Ayo buat"} pertanyaan 😀 | ask.UST` }, [isUpdate]);
+   useEffect(() => { dispatch(getAllTags()) }, [dispatch]);
 
    const handleFilter = (e) => {
       setKeyword(e.target.value);
@@ -64,10 +77,16 @@ const Create = () => {
    const submitHandler = (e) => {
       e.preventDefault();
       if (!title || !desc || tags.length === 0) return toast.error("Judul, deskripsi, dan tags tidak boleh kosong");
-      dispatch(createPost({ title, tags, desc }));
+      if (isUpdate) {
+         dispatch(updatePost({ postId, title, tags, desc }));
+      } else {
+         dispatch(createPost({ title, tags, desc }));
+      }
       setTitle("");
       setDesc("");
       setTags([]);
+      dispatch(getPosts(3));
+      navigate("/forum/questions");
    }
 
    return (
@@ -87,7 +106,7 @@ const Create = () => {
 
          <div className="createContainer">
             <Warning name={currentUser.name} />
-            <h1>Ayo buat pertanyaan 😀</h1>
+            <h1>{isUpdate ? "Ubah" : "Ayo buat"} pertanyaan 😀</h1>
 
             <form className="createForm" onSubmit={submitHandler}>
                <div className="createInput">
@@ -112,11 +131,15 @@ const Create = () => {
                      </div>
                   )}
                   <input placeholder="e.g. ms-word (maks:4)" onChange={handleFilter} value={keyword} disabled={tags.length > 3 && true} />
-                  {keyword.length > 0 && (
+                  {keyword && (
                      <ul>
-                        {listTags.map((tag) => (
-                           <li key={tag._id} onClick={() => addTags(tag.name)}># {tag.name}</li>
-                        ))}
+                        {listTags.length > 0 ? (
+                           listTags.map((tag) => (
+                              <li key={tag.name} onClick={() => addTags(tag.name)}># {tag.name}</li>
+                           ))
+                        ) : (
+                           <li>Maaf tag {keyword} belum ada, silahkan buat tag baru 😢</li>
+                        )}
                      </ul>
                   )}
                </div>
@@ -125,7 +148,7 @@ const Create = () => {
                   <TextEditor setContent={setDesc} content={desc} />
                </div>
                <button className={`createButton ${isLoadingPost ? "loading" : ""}`}>
-                  {isLoadingPost ? <Ring size={16} lineWeight={8} speed={2} color="#fff" /> : "Kirim Pertanyaan"}
+                  {isLoadingPost ? <Ring size={16} lineWeight={8} speed={2} color="#fff" /> : isUpdate ? "Simpan" : "Kirim Pertanyaan"}
                </button>
             </form>
          </div>
