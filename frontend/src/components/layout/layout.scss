@@ -1,10 +1,18 @@
 @import "../../style.scss";
 
 .mainLayout {
-   flex: 6;
+   @include themify($themes) {
+      flex: 6;
 
-   @include tabletVersion {
-      flex: 4.5;
+      @include tabletVersion {
+         flex: 4.5;
+      }
+
+      code.preAndCode-0-2-135 {
+         background-color: rgba($color: darken(themed("font"), 100%), $alpha: 40%) !important;
+         padding: 1px 2px;
+         border-radius: 2px;
+      }
    }
 }
 

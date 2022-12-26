@@ -1,62 +1,52 @@
-import React, { useState } from 'react';
-import { ArrowSmallDownIcon, ArrowSmallUpIcon, ChatBubbleBottomCenterTextIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { Ring } from "@uiball/loaders";
 
-import More from '../more/More';
-import Comments from "../comments/Comments";
+import { createAnswer, getAnswers } from "../../config/redux/features/answerSlice";
+import TextEditor from "../textEditor/TextEditor";
+import Answer from "../answer/Answer";
 import "./answers.scss";
 
-const Answers = ({ post }) => {
-   const [showComment, setShowComment] = useState(false);
+const Answers = ({ postId, bestAnswerId }) => {
+   const [desc, setDesc] = useState("");
 
-   console.log({ post });
+   const dispatch = useDispatch();
+   const { answers, isLoadingPost, isUpdate } = useSelector((state) => state.answer);
+
+   useEffect(() => { dispatch(getAnswers(postId)) }, [dispatch, postId]);
+
+   const submitHandler = (e) => {
+      e.preventDefault();
+      dispatch(createAnswer({ desc, postId }));
+      !isLoadingPost && setDesc("");
+   }
 
    return (
-      <div className="answers">
-         {post?.answers?.length > 0 ? (
+      <>
+         {postId && (
             <>
-               <h3>Semua Jawaban ({post?.answers?.length})</h3>
-               {post?.answers?.map((answer) => (
-                  <div className="answer" key={answer.id}>
-                     <div className="userAnswer">
-                        <img src={answer?.user?.profilePic} alt="" />
-                        <div className="infos">
-                           <span>{answer?.user?.name}</span>
-                           <span>{answer.createdAt}</span>
-                        </div>
-                        <div className="reactions">
-                           {answer.isBestAnswer && <span className="bestAnswer">Jawaban Terbaik</span>}
-                        </div>
-                        <More />
-                     </div>
-                     <div className="reactions descBottom">
-                        {answer.isBestAnswer && (
-                           <span className="bestAnswer">
-                              <InformationCircleIcon className='icons' />Jawaban Terbaik
-                           </span>
-                        )}
-                     </div>
-                     <div className="descAnswer">{answer?.desc}</div>
-                     <div className="answerActions">
-                        <div className="itemAction">
-                           <ArrowSmallUpIcon className="icons" />
-                           <span>{answer?.likes?.length}</span>
-                        </div>
-                        <div className="itemAction">
-                           <ArrowSmallDownIcon className="icons" />
-                           <span>{answer?.dislikes?.length}</span>
-                        </div>
-                        {/* <div className="itemAction" onClick={() => setShowComment(!showComment)}>
-                           <ChatBubbleBottomCenterTextIcon className="icons" />
-                           <span>{answer?.comments?.length || 0}</span>
-                        </div> */}
-                     </div>
-                  </div>
-               ))}
+               <div className="answers">
+                  {answers.length > 0 ? (
+                     <>
+                        <h3>Semua Jawaban ({answers.length})</h3>
+                        {answers.map((answer) => <Answer answer={answer} bestAnswerId={bestAnswerId === answer._id} />)}
+                     </>
+                  ) : (
+                     <h3 className='not'>Belum Ada Jawaban 😔</h3>
+                  )}
+               </div>
+               <div className="yourAnswer">
+                  <h2>Ayo berikan jawaban kamu! 😁</h2>
+                  <form onSubmit={submitHandler}>
+                     <TextEditor content={desc} setContent={setDesc} />
+                     <button className="submit">
+                        {isLoadingPost ? <Ring size={16} lineWeight={8} speed={2} color="#fff" /> : isUpdate ? "Simpan" : "Kirim Jawaban"}
+                     </button>
+                  </form>
+               </div>
             </>
-         ) : (
-            <h3 className='not'>Belum Ada Jawaban 😔</h3>
          )}
-      </div>
+      </>
    )
 }
 

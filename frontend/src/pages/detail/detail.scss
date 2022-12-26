@@ -19,16 +19,6 @@
             @include flexStyle($direction: column, $gap: 10px);
             padding-bottom: 20px;
 
-            time {
-               @include typoGraphy($fontSize: 16px, $weight: 500, $color: rgb(172, 172, 172));
-               @include truncate(1);
-               cursor: auto;
-
-               @include mobileVersion {
-                  @include typoGraphy($fontSize: 14px, $weight: 500, $color: rgb(172, 172, 172));
-               }
-            }
-
             h1 {
                line-height: 38px;
 
@@ -49,6 +39,16 @@
 
                   @include tabletVersion {
                      @include profilePicture(18px);
+                  }
+               }
+
+               time {
+                  @include typoGraphy($fontSize: 16px, $weight: 500, $color: rgb(172, 172, 172));
+                  @include truncate(1);
+                  cursor: auto;
+
+                  @include mobileVersion {
+                     @include typoGraphy($fontSize: 14px, $weight: 500, $color: rgb(172, 172, 172));
                   }
                }
 
@@ -79,16 +79,9 @@
             padding: 20px 0;
 
             .descWrapper {
-
                .detailDesc {
                   line-height: 28px;
                   font-weight: 500;
-
-                  pre,
-                  code {
-                     white-space: pre-wrap;
-                     overflow-wrap: break-word;
-                  }
 
                   ul {
                      padding-left: 32px;
@@ -122,39 +115,16 @@
                   font-weight: 600;
                   @include flexStyle($align: center, $gap: 10px);
 
-                  .icons {
-                     width: 24px;
-                  }
-               }
-            }
-         }
+                  .detailIconWrapper {
+                     @include flexStyle($align: center, $justify: center);
 
-         .yourAnswer {
-            h2 {
-               padding: 40px 0;
+                     .icons {
+                        width: 24px;
 
-               @include mobileVersion {
-                  font-size: 22px;
-               }
-            }
-
-            form {
-               @include flexStyle($direction: column, $gap: 30px);
-
-               .submit {
-                  width: fit-content;
-                  margin-left: auto;
-                  box-shadow: themed("shadow");
-                  @include makeButton($padding: 10px 20px, $rounded: 8px, $bg: themed("primary"));
-                  @include typoGraphy($fontSize: 14px, $weight: 600, $color: #fff);
-
-                  &:hover {
-                     background-color: darken(themed("primary"), 10%);
-                  }
-
-                  @include mobileVersion {
-                     font-size: 13px;
-                     padding: 8px 16px;
+                        &.liked {
+                           color: lightcoral;
+                        }
+                     }
                   }
                }
             }

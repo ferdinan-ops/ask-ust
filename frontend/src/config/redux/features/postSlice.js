@@ -1,6 +1,6 @@
+import { createPostAPI, deletePostAPI, getPostAPI, getPostsAPI, updatePostAPI } from "../../api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-hot-toast";
-import { createPostAPI, deletePostAPI, getPostAPI, getPostsAPI, updatePostAPI } from "../../api";
 
 export const createPost = createAsyncThunk("/post/create", async (fields) => {
    const { data } = await createPostAPI(fields);

@@ -4,12 +4,12 @@ const { createPost, updatePost, deletePost, likePost, savePost, getPosts, getPos
 
 const router = express.Router();
 
+router.get("/posts", verifyToken, getPosts);
+router.get("/post/:postId", verifyToken, getPost);
 router.post("/post", verifyToken, createPost);
 router.put("/post/:postId", verifyToken, updatePost);
 router.delete("/post/:postId", verifyToken, deletePost);
-router.put("/post/like", verifyToken, likePost);
-router.put("/post/save", verifyToken, savePost);
-router.get("/posts", verifyToken, getPosts);
-router.get("/post/:postId", verifyToken, getPost);
+router.put("/post/like/:postId", verifyToken, likePost);
+router.put("/post/save/:postId", verifyToken, savePost);
 
 module.exports = router;

@@ -1,0 +1,125 @@
+@import "../../style.scss";
+
+.answer {
+   @include themify($themes) {
+      @include flexStyle($gap: 24px, $direction: column);
+      padding: 20px 0;
+      border-bottom: 1px solid themed("border");
+
+      &:last-child {
+         border-bottom: 0;
+      }
+
+      .reactions,
+      .descBottom {
+         margin-left: 10px;
+         align-self: flex-start;
+
+         .bestAnswer {
+            @include makeButton($bg: #EDF8EB, $padding: 4px 8px, $rounded: 30px);
+            @include typoGraphy($fontSize: 12px, $weight: 600, $color: #20830c);
+            cursor: auto;
+         }
+
+         @include mobileVersion {
+            display: none;
+         }
+      }
+
+      .descBottom {
+         display: none;
+
+         .icons {
+            width: 20px;
+         }
+
+         @include mobileVersion {
+            display: block;
+            // margin: 0 auto;
+            margin: 0;
+
+            span {
+               @include flexStyle($align: center, $gap: 4px);
+            }
+         }
+      }
+
+      .userAnswer {
+         @include flexStyle($gap: 10px, $align: center);
+
+         img {
+            @include profilePicture(45px);
+
+            @include mobileVersion {
+               @include profilePicture(40px);
+            }
+         }
+
+         .infos {
+            @include flexStyle($direction: column);
+
+            span:first-child {
+               font-weight: 600;
+               @include truncate(1);
+
+               @include mobileVersion {
+                  font-size: 15px;
+               }
+            }
+
+            span:last-child {
+               @include typoGraphy($fontSize: 13px, $color: rgb(172, 172, 172), $weight: 600);
+
+               @include mobileVersion {
+                  font-size: 12px;
+               }
+            }
+         }
+      }
+
+      .descAnswer {
+         @include typoGraphy($lineHeight: 25px, $fontSize: 15px, $weight: 500);
+      }
+
+      .answerActions {
+         @include flexStyle($gap: 20px, $align: center);
+
+         .itemAction {
+            @include flexStyle($gap: 10px, $align: center);
+            font-size: 14px;
+            font-weight: 600;
+            padding: 4px 13px;
+            border-radius: 30px;
+            cursor: pointer;
+            border: 1px solid themed("font");
+
+            &:first-child:hover {
+               border-color: #13A458;
+               color: #13A458;
+            }
+
+            &:nth-child(2):hover {
+               border-color: #f64646;
+               color: #f64646;
+            }
+
+            // &:last-child:hover {
+            //    border-color: themed("primary");
+            //    color: themed("primary");
+            // }
+
+            @include mobileVersion {
+               font-size: 13px;
+            }
+
+            .icons {
+               width: 20px;
+
+               @include mobileVersion {
+                  width: 19px;
+               }
+            }
+         }
+      }
+   }
+}

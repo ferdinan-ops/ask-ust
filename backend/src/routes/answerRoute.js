@@ -4,11 +4,11 @@ const { createAnswer, updateAnswer, deleteAnswer, likeAnswer, dislikeAnswer, get
 
 const router = express.Router();
 
-router.post("/answer/create", verifyToken, createAnswer);
-router.put("/answer/update", verifyToken, updateAnswer);
-router.delete("/answer/delete", verifyToken, deleteAnswer);
+router.get("/answers/:postId", verifyToken, getAnswers);
+router.post("/answer", verifyToken, createAnswer);
+router.put("/answer/:id", verifyToken, updateAnswer);
+router.delete("/answer/:id", verifyToken, deleteAnswer);
 router.put("/answer/like", verifyToken, likeAnswer);
 router.put("/answer/dislike", verifyToken, dislikeAnswer);
-router.get("/answers", verifyToken, getAnswers);
 
 module.exports = router;

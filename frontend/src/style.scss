@@ -20,6 +20,12 @@ code>* {
    font-weight: normal;
 }
 
+pre,
+code {
+   white-space: pre-wrap;
+   overflow-wrap: break-word;
+}
+
 html {
    scroll-behavior: smooth;
 }

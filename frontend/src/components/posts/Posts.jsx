@@ -40,18 +40,12 @@ const Posts = () => {
       setPage(page + 3);
    }
 
-   console.log({ posts });
-
    return (
       <div className="posts">
          <div className="postsWrapper">
             <div className="postsTabs">
-               <button className={isNew ? "active" : ""} onClick={setTabs}>
-                  Terbaru
-               </button>
-               <button className={!isNew ? "active" : ""} onClick={setTabs}>
-                  Belum terjawab
-               </button>
+               <button className={isNew ? "active" : ""} onClick={setTabs}>Terbaru</button>
+               <button className={!isNew ? "active" : ""} onClick={setTabs}>Belum terjawab</button>
             </div>
             <div className="postWrapper">
                {posts.map((post) => (<Post post={post} key={post._id} />))}

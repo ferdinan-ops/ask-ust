@@ -107,7 +107,7 @@ const deletePost = async (req, res) => {
 }
 
 const likePost = async (req, res) => {
-   const { postId } = req.body;
+   const { postId } = req.params;
    const { userId } = req.userInfo;
 
    try {
@@ -124,7 +124,7 @@ const likePost = async (req, res) => {
 }
 
 const savePost = async (req, res) => {
-   const { postId } = req.body;
+   const { postId } = req.params;
    const { userId } = req.userInfo;
 
    try {

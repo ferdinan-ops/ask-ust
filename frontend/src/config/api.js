@@ -23,6 +23,8 @@ export const deletePostAPI = (postId) => API.delete(`/post/${postId}`);
 export const createPostAPI = (fields) => API.post("/post", fields);
 export const getPostsAPI = (page) => API.get(`/posts?page=${page}`);
 export const getPostAPI = (postId) => API.get(`/post/${postId}`);
+export const likePostAPI = (postId) => API.put(`/post/like/${postId}`);
+export const savePostAPI = (postId) => API.put(`/post/save/${postId}`);
 
 /* USERS */
 export const searchUserAPI = (keyword) => API.get(`/users?search=${keyword}`);
@@ -30,3 +32,6 @@ export const getMySavedPostsAPI = () => API.get("/user/saved-posts");
 export const getUserAPI = (userId) => API.get(`/user/${userId}`);
 export const getUsersAPI = () => API.get("/users");
 
+/* ANSWERS */
+export const getAnswersAPI = (id) => API.get(`/answers/${id}`);
+export const createAnswerAPI = (fields) => API.post("/answer", fields);

@@ -1,13 +1,10 @@
 const Answers = require("../models/answerModel");
+const mongoose = require("mongoose");
 
 const createAnswer = async (req, res) => {
    const { desc, postId } = req.body;
    const { userId } = req.userInfo;
-
-   if (!desc || !postId) return res.status(400).json({
-      msg: "Masukkan seluruh data dengan benar"
-   });
-
+   if (!desc) return res.status(400).json({ msg: "Masukkan seluruh data dengan benar" });
    try {
       const data = await Answers.create({ desc, postId, userId });
       res.status(200).json(data);
@@ -17,10 +14,22 @@ const createAnswer = async (req, res) => {
 }
 
 const getAnswers = async (req, res) => {
-   const { postId } = req.query;
+   const { postId } = req.params;
 
    try {
-      const data = await Answers.find({ postId });
+      const data = await Answers.aggregate([
+         { $match: { postId: mongoose.Types.ObjectId(postId) } },
+         {
+            $lookup: {
+               from: "users", localField: "userId", foreignField: "_id",
+               pipeline: [{ $project: { _id: 1, name: 1, profilePicture: 1 } }],
+               as: "user"
+            }
+         },
+         { $set: { user: { $arrayElemAt: ["$user", 0] } } },
+         { $project: { _id: 1, user: 1, desc: 1, createdAt: 1, likes: 1, dislikes: 1 } }
+      ]);
+      console.log({ postId, data });
       res.status(200).json(data);
    } catch (error) {
       res.status(500).json({ error });
@@ -28,10 +37,11 @@ const getAnswers = async (req, res) => {
 }
 
 const updateAnswer = async (req, res) => {
-   const { desc, answerId } = req.body;
+   const { desc } = req.body;
+   const { id } = req.params;
 
    try {
-      const data = await Answers.findByIdAndUpdate(answerId, { desc });
+      const data = await Answers.findByIdAndUpdate(id, { desc });
       res.status(200).json(data);
    } catch (error) {
       res.status(500).json({ error });
@@ -39,10 +49,10 @@ const updateAnswer = async (req, res) => {
 }
 
 const deleteAnswer = async (req, res) => {
-   const { answerId } = req.query;
+   const { id } = req.params;
 
    try {
-      await Answers.findByIdAndDelete(answerId);
+      await Answers.findByIdAndDelete(id);
       res.status(200).json({ msg: "Berhasil menghapus jawaban" });
    } catch (error) {
       res.status(500).json({ error });
