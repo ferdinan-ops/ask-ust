@@ -67,7 +67,7 @@
                }
             }
 
-            span:last-child {
+            time {
                @include typoGraphy($fontSize: 13px, $color: rgb(172, 172, 172), $weight: 600);
 
                @include mobileVersion {
@@ -92,6 +92,16 @@
             border-radius: 30px;
             cursor: pointer;
             border: 1px solid themed("font");
+
+            &.up {
+               border-color: #13A458;
+               color: #13A458;
+            }
+
+            &.down {
+               border-color: #f64646;
+               color: #f64646;
+            }
 
             &:first-child:hover {
                border-color: #13A458;

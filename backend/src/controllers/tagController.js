@@ -20,9 +20,7 @@ const getTags = async (req, res) => {
    let data;
 
    try {
-      if (!search) {
-         data = await Tag.find()
-      } else {
+      if (search) {
          data = await Tag.aggregate([
             {
                $search: {
@@ -32,6 +30,8 @@ const getTags = async (req, res) => {
             },
             { $project: { _id: 1, name: 1, desc: 1 } }
          ]);
+      } else {
+         data = await Tag.find()
       };
 
       const counts = data.length;

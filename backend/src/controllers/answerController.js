@@ -1,11 +1,14 @@
 const Answers = require("../models/answerModel");
 const mongoose = require("mongoose");
+const Users = require("../models/userModel");
 
 const createAnswer = async (req, res) => {
    const { desc, postId } = req.body;
    const { userId } = req.userInfo;
    if (!desc) return res.status(400).json({ msg: "Masukkan seluruh data dengan benar" });
+
    try {
+      await Users.findByIdAndUpdate(userId, { $inc: { score: +5 } });
       const data = await Answers.create({ desc, postId, userId });
       res.status(200).json(data);
    } catch (error) {
@@ -29,7 +32,16 @@ const getAnswers = async (req, res) => {
          { $set: { user: { $arrayElemAt: ["$user", 0] } } },
          { $project: { _id: 1, user: 1, desc: 1, createdAt: 1, likes: 1, dislikes: 1 } }
       ]);
-      console.log({ postId, data });
+      res.status(200).json(data);
+   } catch (error) {
+      res.status(500).json({ error });
+   }
+}
+
+const getAnswer = async (req, res) => {
+   const { id } = req.params;
+   try {
+      const data = await Answers.findById(id, { desc: 1 });
       res.status(200).json(data);
    } catch (error) {
       res.status(500).json({ error });
@@ -50,8 +62,10 @@ const updateAnswer = async (req, res) => {
 
 const deleteAnswer = async (req, res) => {
    const { id } = req.params;
+   const { userId } = req.userInfo;
 
    try {
+      await Users.findByIdAndUpdate(userId, { $inc: { score: -5 } });
       await Answers.findByIdAndDelete(id);
       res.status(200).json({ msg: "Berhasil menghapus jawaban" });
    } catch (error) {
@@ -60,21 +74,21 @@ const deleteAnswer = async (req, res) => {
 }
 
 const likeAnswer = async (req, res) => {
-   const { answerId } = req.body;
+   const { id } = req.params;
    const { userId } = req.userInfo;
 
    try {
-      const answer = await Answers.findById(answerId);
+      const answer = await Answers.findById(id);
       const isLiked = answer.likes.includes(userId);
       const isDisliked = answer.dislikes.includes(userId);
 
       if (isLiked) {
-         await Answers.findByIdAndUpdate(answerId, { $pull: { likes: userId } });
+         await Answers.findByIdAndUpdate(id, { $pull: { likes: userId } });
       } else if (isDisliked) {
-         await Answers.findByIdAndUpdate(answerId, { $pull: { dislikes: userId } });
-         await Answers.findByIdAndUpdate(answerId, { $push: { likes: userId } });
+         await Answers.findByIdAndUpdate(id, { $pull: { dislikes: userId } });
+         await Answers.findByIdAndUpdate(id, { $push: { likes: userId } });
       } else {
-         await Answers.findByIdAndUpdate(answerId, { $push: { likes: userId } });
+         await Answers.findByIdAndUpdate(id, { $push: { likes: userId } });
       }
 
       res.status(200).json({ msg: "Berhasil like jawaban" });
@@ -84,21 +98,21 @@ const likeAnswer = async (req, res) => {
 }
 
 const dislikeAnswer = async (req, res) => {
-   const { answerId } = req.body;
+   const { id } = req.params;
    const { userId } = req.userInfo;
 
    try {
-      const answer = await Answers.findById(answerId);
+      const answer = await Answers.findById(id);
       const isLikes = answer.likes.includes(userId);
       const isDislikes = answer.dislikes.includes(userId);
 
-      if (isLikes) {
-         await Answers.findByIdAndUpdate(answerId, { $pull: { likes: userId } });
-         await Answers.findByIdAndUpdate(answerId, { $push: { dislikes: userId } });
-      } else if (isDislikes) {
-         await Answers.findByIdAndUpdate(answerId, { $pull: { dislikes: userId } });
+      if (isDislikes) {
+         await Answers.findByIdAndUpdate(id, { $pull: { dislikes: userId } });
+      } else if (isLikes) {
+         await Answers.findByIdAndUpdate(id, { $pull: { likes: userId } });
+         await Answers.findByIdAndUpdate(id, { $push: { dislikes: userId } });
       } else {
-         await Answers.findByIdAndUpdate(answerId, { $push: { dislikes: userId } });
+         await Answers.findByIdAndUpdate(id, { $push: { dislikes: userId } });
       }
       res.status(200).json({ msg: "Berhasil dislike jawaban" });
    } catch (error) {
@@ -106,4 +120,4 @@ const dislikeAnswer = async (req, res) => {
    }
 }
 
-module.exports = { createAnswer, updateAnswer, deleteAnswer, getAnswers, likeAnswer, dislikeAnswer };
+module.exports = { createAnswer, updateAnswer, deleteAnswer, getAnswers, likeAnswer, dislikeAnswer, getAnswer };

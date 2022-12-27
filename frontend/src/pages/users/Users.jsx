@@ -5,26 +5,28 @@ import React, { useEffect, useState } from 'react';
 import { Ring } from '@uiball/loaders';
 
 import { getUsers, searchUser } from '../../config/redux/features/userSlice';
+import { InfiniteScroll } from '../../components';
 import "./users.scss";
 
 const Users = () => {
    const [searchParams] = useSearchParams();
    const [keyword, setKeyword] = useState("");
+   const [page, setPage] = useState(9);
 
    const navigate = useNavigate();
    const dispatch = useDispatch();
    const params = searchParams.get("search");
 
-   const { users, isLoading } = useSelector((state) => state.user);
+   const { users, isLoading, counts } = useSelector((state) => state.user);
 
    useEffect(() => { document.title = "Pengguna | ask.UST" }, []);
    useEffect(() => {
       if (!params) {
-         dispatch(getUsers());
+         dispatch(getUsers(page));
       } else {
-         dispatch(searchUser(params));
+         dispatch(searchUser({ params, page }));
       }
-   }, [dispatch, params]);
+   }, [dispatch, params, page]);
 
    const submitHandler = (e) => {
       e.preventDefault();
@@ -32,7 +34,15 @@ const Users = () => {
          pathname: "/forum/users",
          search: `?${createSearchParams({ search: keyword })}`
       });
+      setPage(9)
    }
+
+   const loadHandler = (e) => {
+      e.preventDefault();
+      setPage(page + 3);
+   }
+
+   console.log({ params });
 
    return (
       <div className="users">
@@ -68,6 +78,7 @@ const Users = () => {
                      params && <p>Maaf pengguna <b><i>{params}</i></b> tidak ditemukan 😔</p>
                   )
                )}
+               {users.length > 9 && <InfiniteScroll counts={counts} dataLength={users.length} isLoading={isLoading} loadMoreHandler={loadHandler} />}
             </div>
          </div>
       </div>

@@ -97,8 +97,10 @@ const updatePost = async (req, res) => {
 
 const deletePost = async (req, res) => {
    const { postId } = req.params;
+   const { userId } = req.userInfo;
 
    try {
+      await Users.findByIdAndUpdate(userId, { $inc: { score: -3 } });
       await Posts.findByIdAndDelete(postId);
       res.status(200).json({ msg: "Pertanyaan anda berhasil dihapus" });
    } catch (error) {

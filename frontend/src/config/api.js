@@ -27,11 +27,17 @@ export const likePostAPI = (postId) => API.put(`/post/like/${postId}`);
 export const savePostAPI = (postId) => API.put(`/post/save/${postId}`);
 
 /* USERS */
-export const searchUserAPI = (keyword) => API.get(`/users?search=${keyword}`);
+export const searchUserAPI = (keyword, page) => API.get(`/users?search=${keyword}&page=${page}`);
 export const getMySavedPostsAPI = () => API.get("/user/saved-posts");
 export const getUserAPI = (userId) => API.get(`/user/${userId}`);
-export const getUsersAPI = () => API.get("/users");
+export const getUsersAPI = (page) => API.get(`/users?page=${page}`);
+export const getActiveUserAPI = () => API.get("/users/active");
 
 /* ANSWERS */
-export const getAnswersAPI = (id) => API.get(`/answers/${id}`);
+export const getAnswersAPI = (postId) => API.get(`/answers/${postId}`);
+export const getAnswerAPI = (id) => API.get(`/answer/${id}`);
 export const createAnswerAPI = (fields) => API.post("/answer", fields);
+export const updateAnswerAPI = (id, fields) => API.put(`/answer/${id}`, fields);
+export const deleteAnswerAPI = (id) => API.delete(`/answer/${id}`);
+export const likeAnswerAPI = (answerId) => API.put(`/answer/like/${answerId}`);
+export const dislikeAnswerAPI = (answerId) => API.put(`/answer/dislike/${answerId}`);

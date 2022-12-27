@@ -73,6 +73,10 @@
                   img {
                      @include profilePicture(30px);
                   }
+
+                  span {
+                     @include truncate(1);
+                  }
                }
             }
          }

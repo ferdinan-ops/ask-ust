@@ -32,21 +32,13 @@ const Detail = () => {
    useEffect(() => { setIsSaved((post?.saved?.findIndex((id) => id === String(userId))) !== -1) }, [post, userId]);
 
    const likeHandler = async () => {
-      try {
-         await likePostAPI(id);
-         dispatch(getPost(id));
-      } catch (error) {
-         console.log({ error });
-      }
+      await likePostAPI(id);
+      dispatch(getPost(id));
    }
 
    const saveHandler = async () => {
-      try {
-         await savePostAPI(id);
-         dispatch(getPost(id));
-      } catch (error) {
-         console.log({ error });
-      }
+      await savePostAPI(id);
+      dispatch(getPost(id));
    }
 
    return (
@@ -87,7 +79,7 @@ const Detail = () => {
                   </div>
                </div>
             </div>
-            <Answers postId={post._id} bestAnswerId={post.bestAnswerId} />
+            <Answers postId={post._id} bestAnswerId={post.bestAnswerId} userPostId={post?.user?._id} />
          </div>
       </div >
    );

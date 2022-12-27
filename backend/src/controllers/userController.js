@@ -1,7 +1,7 @@
 const Users = require("../models/userModel");
 
 const getUsers = async (req, res) => {
-   const { search } = req.query;
+   const { search, page } = req.query;
    let data;
 
    try {
@@ -9,7 +9,7 @@ const getUsers = async (req, res) => {
          data = await Users.aggregate([
             {
                $search: {
-                  index: "searchUser",
+                  index: 'searchUser',
                   compound: { must: [{ autocomplete: { query: search, path: "name" } }] }
                }
             },
@@ -21,10 +21,12 @@ const getUsers = async (req, res) => {
                   as: "posts"
                }
             },
-            { $project: { _id: 1, name: 1, score: 1, postsCount: { $size: "$posts" } } }
+            { $sort: { score: -1 } },
+            { $project: { _id: 1, name: 1, score: 1, postsCount: { $size: "$posts" } } },
          ]);
       } else {
          data = await Users.aggregate([
+            { $sort: { score: -1 } },
             {
                $lookup: {
                   from: "posts",
@@ -36,7 +38,10 @@ const getUsers = async (req, res) => {
             { $project: { _id: 1, name: 1, score: 1, postsCount: { $size: "$posts" } } }
          ]);
       }
-      res.status(200).json(data);
+
+      const counts = data.length;
+      data = data.slice(0, parseInt(page));
+      res.status(200).json({ data, counts });
    } catch (error) {
       res.status(500).json({ error });
    }
@@ -47,6 +52,15 @@ const getUser = async (req, res) => {
 
    try {
       const data = await Users.findById(userId, { password: 0, __v: 0 });
+      res.status(200).json(data);
+   } catch (error) {
+      res.status(500).json({ error });
+   }
+}
+
+const getActiveUser = async (req, res) => {
+   try {
+      const data = await Users.find().sort({ score: -1 }).limit(3);
       res.status(200).json(data);
    } catch (error) {
       res.status(500).json({ error });
@@ -81,4 +95,4 @@ const getMySavedPosts = async (req, res) => {
 }
 
 
-module.exports = { getUsers, getUser, getMySavedPosts };
+module.exports = { getUsers, getUser, getMySavedPosts, getActiveUser };

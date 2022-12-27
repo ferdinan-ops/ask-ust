@@ -1,13 +1,16 @@
 import { CheckBadgeIcon, PaperClipIcon, UserIcon } from "@heroicons/react/20/solid";
-import React, { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useContext, useEffect } from "react";
 
+import { getActiveUser } from "../../config/redux/features/userSlice";
 import { AuthContext } from "../../context/authContext";
 import "./rightbar.scss";
 
 const Rightbar = () => {
-   const random = "https://source.unsplash.com/random/200x200?profile";
-
+   const dispatch = useDispatch();
    const { currentUser } = useContext(AuthContext);
+   const { active } = useSelector((state) => state.user);
+   useEffect(() => { dispatch(getActiveUser()) }, [dispatch]);
 
    return (
       <div className="rightbar">
@@ -32,27 +35,16 @@ const Rightbar = () => {
                <span>Pengguna teraktif</span>
             </div>
             <div className="rightBottom">
-               <div className="rightItem">
-                  <div className="rigthUserInfo">
-                     <img src={random} alt="" />
-                     <span>John Doe</span>
+               {active.map((item) => (
+                  <div className="rightItem" key={item._id}>
+                     <div className="rigthUserInfo">
+                        <img src={item.profilePicture || "/profile.svg"} alt="" />
+                        <span>{item.name}</span>
+                     </div>
+                     <CheckBadgeIcon className="icons" />
                   </div>
-                  <CheckBadgeIcon className="icons" />
-               </div>
-               <div className="rightItem">
-                  <div className="rigthUserInfo">
-                     <img src="https://source.unsplash.com/random/200x200?robot" alt="" />
-                     <span>Rapitch Bick</span>
-                  </div>
-                  <CheckBadgeIcon className="icons" />
-               </div>
-               <div className="rightItem">
-                  <div className="rigthUserInfo">
-                     <img src="https://source.unsplash.com/random/200x200?technology" alt="" />
-                     <span>Boel Boeman</span>
-                  </div>
-                  <CheckBadgeIcon className="icons" />
-               </div>
+               ))
+               }
             </div>
          </div>
       </div>
