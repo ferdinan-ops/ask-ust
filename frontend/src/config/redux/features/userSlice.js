@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getUsersAPI, searchUserAPI, getActiveUserAPI } from "../../api";
+import { getUsersAPI, searchUserAPI, getActiveUserAPI, getUserAPI } from "../../api";
 
 export const getUsers = createAsyncThunk("/users/get", async (page) => {
    const { data } = await getUsersAPI(page);
@@ -17,10 +17,16 @@ export const getActiveUser = createAsyncThunk("/users/active", async () => {
    return data;
 });
 
+export const getUser = createAsyncThunk("/users/detail", async (id) => {
+   const { data } = await getUserAPI(id);
+   return data;
+})
+
 const userSlice = createSlice({
    name: "user",
    initialState: {
       users: [],
+      user: {},
       active: [],
       counts: 0,
       isLoading: false,
@@ -44,6 +50,13 @@ const userSlice = createSlice({
          state.isLoading = false;
       }).addCase(getActiveUser.fulfilled, (state, { payload }) => {
          state.active = payload;
+      }).addCase(getUser.pending, (state) => {
+         state.isLoading = true;
+      }).addCase(getUser.rejected, (state) => {
+         state.isLoading = false;
+      }).addCase(getUser.fulfilled, (state, { payload }) => {
+         state.user = payload;
+         state.isLoading = false;
       })
    }
 });

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createTagAPI, getAllTagsAPI, getTagsAPI, searchTagsAPI } from "../../api";
+import { createTagAPI, getAllTagsAPI, getPostByTagAPI, getTagAPI, getTagsAPI, searchTagsAPI } from "../../api";
 import { toast } from "react-hot-toast";
 
 export const createTag = createAsyncThunk("/tag/create", async (fields, { rejectWithValue }) => {
@@ -28,12 +28,29 @@ export const searchTag = createAsyncThunk("tag/search", async (fields) => {
    return data;
 });
 
+export const getPostByTag = createAsyncThunk("/tag/getPost", async (fields) => {
+   const { tag, page } = fields;
+   const { data } = await getPostByTagAPI(page, tag);
+   return data;
+});
+
+export const getTag = createAsyncThunk("/tag/detail", async (name) => {
+   const { data } = await getTagAPI(name);
+   return data;
+});
+
 export const tagSlice = createSlice({
    name: "tag",
    initialState: {
       tags: [],
       counts: 0,
-      isLoading: true,
+      isLoading: false,
+      tagged: {
+         data: [],
+         isLoading: false,
+         counts: 0,
+      },
+      tag: {},
    },
    extraReducers: (builder) => {
       builder.addCase(createTag.pending, (state) => {
@@ -67,6 +84,21 @@ export const tagSlice = createSlice({
          state.isLoading = false;
       }).addCase(getAllTags.fulfilled, (state, { payload }) => {
          state.tags = payload;
+         state.isLoading = false;
+      }).addCase(getPostByTag.pending, (state) => {
+         state.tagged.isLoading = true;
+      }).addCase(getPostByTag.rejected, (state) => {
+         state.tagged.isLoading = false;
+      }).addCase(getPostByTag.fulfilled, (state, { payload }) => {
+         state.tagged.data = payload.data;
+         state.tagged.counts = payload.counts;
+         state.tagged.counts = false;
+      }).addCase(getTag.pending, (state) => {
+         state.isLoading = true;
+      }).addCase(getTag.rejected, (state) => {
+         state.isLoading = false;
+      }).addCase(getTag.fulfilled, (state, { payload }) => {
+         state.tag = payload;
          state.isLoading = false;
       })
    }

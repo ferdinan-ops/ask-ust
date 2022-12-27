@@ -18,7 +18,10 @@ const Tags = () => {
    const params = searchParams.get("search");
    const { tags, counts, isLoading } = useSelector((state) => state.tag);
 
-   useEffect(() => { document.title = "Tags | ask.UST" }, []);
+   useEffect(() => {
+      document.title = "Tags | ask.UST"
+   }, []);
+
    useEffect(() => {
       if (!params) {
          dispatch(getTags(page));
@@ -50,11 +53,15 @@ const Tags = () => {
             </div>
             <form className="tagsSearchBar" onSubmit={searchHandler}>
                <MagnifyingGlassIcon className="icons" />
-               <input placeholder="Cari berdasarkan nama tag" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+               <input
+                  placeholder="Cari berdasarkan nama tag"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+               />
             </form>
             <div className="tagsContent">
                {tags.length > 0 ? tags.map((tag) => (
-                  <div className="tag" key={tag._id}>
+                  <div className="tag" key={tag._id} onClick={() => navigate(`/forum/tags/${tag.name}`)}>
                      <button># {tag.name}</button>
                      <span>{tag.desc}</span>
                   </div>
@@ -65,7 +72,14 @@ const Tags = () => {
                      </div>
                   ) : (params && <p>Maaf pengguna <b><i>{params}</i></b> tidak ditemukan 😔</p>)
                )}
-               {tags.length > 9 && <InfiniteScroll counts={counts} dataLength={tags.length} isLoading={isLoading} loadMoreHandler={loadHandler} />}
+               {tags.length > 9 && (
+                  <InfiniteScroll
+                     counts={counts}
+                     dataLength={tags.length}
+                     isLoading={isLoading}
+                     loadMoreHandler={loadHandler}
+                  />
+               )}
             </div>
          </div>
       </div>

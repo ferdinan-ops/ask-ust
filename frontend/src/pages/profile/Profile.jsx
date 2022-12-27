@@ -1,9 +1,11 @@
 import { BookmarkIcon, CameraIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Post from '../../components/post/Post';
+import { getUser } from '../../config/redux/features/userSlice';
 import { AuthContext } from '../../context/authContext';
+import Post from '../../components/post/Post';
 import { postDummy } from '../../utils/dummy';
 import { Modal } from "../../components"
 import "./profile.scss";
@@ -11,38 +13,24 @@ import "./profile.scss";
 const Profile = () => {
    const [isSaveTabs, setIsSaveTabs] = useState(false);
    const [isModalShow, setIsModalShow] = useState(false);
-   const [isCurrentUser, setIsCurrentUser] = useState(false);
-   const [user, setUser] = useState({});
 
    const ref = useRef();
-   const navigate = useNavigate();
    const { id } = useParams();
+   const navigate = useNavigate();
+   const dispatch = useDispatch();
+
    const { currentUser, logout } = useContext(AuthContext);
+   const { user } = useSelector((state) => state.user);
 
-   useEffect(() => {
-      if (currentUser._id === id) {
-         setIsCurrentUser(true)
-         setUser(currentUser);
-      } else {
-         setIsCurrentUser(false);
-         setUser(currentUser);
-      }
-   }, [currentUser, id]);
-
-   useEffect(() => {
-      document.title = user.name + " | ask.UST"
-   }, [user]);
+   useEffect(() => { dispatch(getUser(id)) }, [dispatch, id]);
+   useEffect(() => { document.title = user.name + " | ask.UST" }, [user]);
 
    const logoutHandler = async (e) => {
       e.preventDefault();
       const ask = window.confirm("Anda yakin ingin keluar dari aplikasi?");
       if (ask) {
-         try {
-            await logout();
-            navigate("/login");
-         } catch (error) {
-            console.log(error);
-         }
+         await logout();
+         navigate("/login");
       }
    }
 
@@ -56,7 +44,7 @@ const Profile = () => {
                   <p>{user.bio || "Belum memiliki bio"}</p>
                   {/* <p>{user.score}</p> */}
                </div>
-               {isCurrentUser && (
+               {currentUser._id === user._id && (
                   <div className="profileButtons">
                      <button onClick={(e) => { e.preventDefault(); setIsModalShow(true) }}>Ubah Profil</button>
                      <button onClick={logoutHandler}>Keluar</button>
@@ -69,7 +57,7 @@ const Profile = () => {
                   <button className={isSaveTabs ? "" : "active"} onClick={() => setIsSaveTabs(false)}>
                      <QuestionMarkCircleIcon className={isSaveTabs ? "icons" : "icons active"} />
                   </button>
-                  {isCurrentUser && (
+                  {currentUser._id === user._id && (
                      <button className={isSaveTabs ? "active" : ""} onClick={() => setIsSaveTabs(true)}>
                         <BookmarkIcon className={isSaveTabs ? "icons active" : "icons"} />
                      </button>

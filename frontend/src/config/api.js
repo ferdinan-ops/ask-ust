@@ -13,9 +13,11 @@ export const logoutAPI = () => API.delete("/logout");
 
 /* TAGS */
 export const searchTagsAPI = (keyword, page) => API.get(`/tags?search=${keyword}&page=${page}`);
-export const createTagAPI = (fields) => API.post("/tag/create", fields);
+export const createTagAPI = (fields) => API.post("/tag", fields);
 export const getTagsAPI = (page) => API.get(`/tags?page=${page}`);
 export const getAllTagsAPI = () => API.get("/tags/all");
+export const getPostByTagAPI = (page, tag) => API.get(`/tag?tag=${tag}&page=${page}`);
+export const getTagAPI = (name) => API.get(`/tag/${name}`);
 
 /* POSTS */
 export const updatePostAPI = (postId, fields) => API.put(`/post/${postId}`, fields);

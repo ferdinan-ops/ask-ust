@@ -2,7 +2,7 @@ import { BookmarkIcon as BookmarkSolidIcon, HeartIcon as HeartSolidIcon } from "
 import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Moment from "react-moment";
 import Prism from "prismjs";
 
@@ -20,6 +20,7 @@ const Detail = () => {
 
    const { id } = useParams();
    const dispatch = useDispatch();
+   const navigate = useNavigate();
 
    const { currentUser } = useContext(AuthContext);
    const { post } = useSelector((state) => state.post);
@@ -62,7 +63,11 @@ const Detail = () => {
                </div>
 
                <div className="detailAllTags">
-                  {post?.tags?.map((item) => <button key={item}># {item}</button>)}
+                  {post?.tags?.map((item) => (
+                     <button key={item} onClick={() => navigate(`/forum/tags/${item}`)}>
+                        # {item}
+                     </button>
+                  ))}
                </div>
                <div className="detailActions">
                   <div className="detailItem">

@@ -7,6 +7,12 @@ import "./post.scss";
 const Post = ({ post }) => {
    const navigate = useNavigate();
 
+   const tagNavigate = (e, tag) => {
+      e.preventDefault();
+      e.stopPropagation();
+      navigate(`/forum/tags/${tag}`);
+   }
+
    return (
       <div className="post">
          <div className="postContainer" onClick={() => navigate(`/forum/questions/${post._id}`)}>
@@ -25,7 +31,9 @@ const Post = ({ post }) => {
                <div className="postBottom">
                   <div className="postTags">
                      {post?.tags?.map((tag, index) => (
-                        <button key={index}># {tag}</button>
+                        <button key={index} onClick={(e) => tagNavigate(e, tag)}>
+                           # {tag}
+                        </button>
                      ))}
                   </div>
                   <div className="postUserInfo">

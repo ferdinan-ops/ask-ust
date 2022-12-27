@@ -191,6 +191,7 @@ $themes: (
       h1 {
          margin-bottom: 20px;
          font-size: 36px;
+         text-transform: capitalize;
 
          @include mobileVersion {
             font-size: 28px;

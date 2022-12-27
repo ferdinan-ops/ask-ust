@@ -33,12 +33,12 @@ const Posts = () => {
          setPosts(postsData);
          setIsNew(true);
       }
-   }
+   };
 
    const loadHandler = (e) => {
       e.preventDefault();
       setPage(page + 3);
-   }
+   };
 
    return (
       <div className="posts">
@@ -48,8 +48,17 @@ const Posts = () => {
                <button className={!isNew ? "active" : ""} onClick={setTabs}>Belum terjawab</button>
             </div>
             <div className="postWrapper">
-               {posts.map((post) => (<Post post={post} key={post._id} />))}
-               {posts.length > 3 && <InfiniteScroll counts={counts} dataLength={posts.length} isLoading={isLoading} loadMoreHandler={loadHandler} />}
+               {posts.map((post) => (
+                  <Post post={post} key={post._id} />
+               ))}
+               {posts.length > 3 && (
+                  <InfiniteScroll
+                     counts={counts}
+                     dataLength={posts.length}
+                     isLoading={isLoading}
+                     loadMoreHandler={loadHandler}
+                  />
+               )}
             </div>
          </div>
       </div>
