@@ -13,6 +13,10 @@ $theme-map: null;
    line-height: 22px;
 }
 
+h2 {
+   line-height: 32px !important;
+}
+
 code,
 code>* {
    font-family: 'Fira Code', monospace !important;
@@ -22,8 +26,8 @@ code>* {
 
 pre,
 code {
-   white-space: pre-wrap;
-   overflow-wrap: break-word;
+   white-space: pre-wrap !important;
+   overflow-wrap: break-word !important;
 }
 
 html {
@@ -36,8 +40,8 @@ html {
 }
 
 .loading {
-   pointer-events: none;
    background-color: rgba($color: #00bac7, $alpha: 60%) !important;
+   pointer-events: none;
    display: flex;
    align-items: center;
    justify-content: center;

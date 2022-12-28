@@ -148,6 +148,19 @@
             display: none;
          }
 
+         .notifIcon {
+            @include flexStyle($align: center, $justify: center);
+            position: relative;
+
+            .dots {
+               @include position($position: absolute, $top: 1px, $right: 1px);
+               width: 10px;
+               height: 10px;
+               border-radius: 50%;
+               background: themed("primary");
+            }
+         }
+
          .icons {
             color: themed("font");
          }

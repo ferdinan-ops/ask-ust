@@ -16,8 +16,9 @@
          align-self: flex-start;
 
          .bestAnswer {
-            @include makeButton($bg: #EDF8EB, $padding: 4px 8px, $rounded: 30px);
-            @include typoGraphy($fontSize: 12px, $weight: 600, $color: #20830c);
+            @include makeButton($bg: rgba(#00D26A, .15), $padding: 4px 8px, $rounded: 30px);
+            @include typoGraphy($fontSize: 12px, $weight: 600, $color: #00D26A);
+            @include flexStyle($gap: 8px, $align: center);
             cursor: auto;
          }
 
@@ -60,6 +61,7 @@
 
             span:first-child {
                font-weight: 600;
+               cursor: pointer;
                @include truncate(1);
 
                @include mobileVersion {
@@ -78,45 +80,45 @@
       }
 
       .descAnswer {
-         @include typoGraphy($lineHeight: 25px, $fontSize: 15px, $weight: 500);
+         @include typoGraphy($lineHeight: 100px, $fontSize: 15px, $weight: 500);
       }
 
       .answerActions {
          @include flexStyle($gap: 20px, $align: center);
 
          .itemAction {
-            @include flexStyle($gap: 10px, $align: center);
+            @include flexStyle($gap: 10px, $align: center, $justify: center);
             font-size: 14px;
             font-weight: 600;
-            padding: 4px 13px;
+            width: 74px;
+            height: 36px;
             border-radius: 30px;
             cursor: pointer;
             border: 1px solid themed("font");
 
+            p {
+               font-size: 18px;
+            }
+
             &.up {
-               border-color: #13A458;
-               color: #13A458;
+               border-color: #10d070;
+               color: #10d070;
             }
 
             &.down {
-               border-color: #f64646;
-               color: #f64646;
+               border-color: #F92F60;
+               color: #F92F60;
             }
 
             &:first-child:hover {
-               border-color: #13A458;
-               color: #13A458;
+               border-color: #10d070;
+               color: #10d070;
             }
 
             &:nth-child(2):hover {
-               border-color: #f64646;
-               color: #f64646;
+               border-color: #F92F60;
+               color: #F92F60;
             }
-
-            // &:last-child:hover {
-            //    border-color: themed("primary");
-            //    color: themed("primary");
-            // }
 
             @include mobileVersion {
                font-size: 13px;

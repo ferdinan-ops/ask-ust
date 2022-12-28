@@ -9,8 +9,14 @@
       }
 
       &:last-child {
-         .container {
+         .postContainer {
             border-bottom-color: transparent;
+         }
+      }
+
+      &:first-child {
+         .postContainer {
+            border-bottom-color: themed("contentBorder");
          }
       }
 
@@ -62,6 +68,10 @@
 
                   span {
                      font-weight: bold;
+                  }
+
+                  &.haveBest {
+                     @include makeButton($padding: 1px 4px, $rounded: 4px, $bg: rgba(#00D26A, .2));
                   }
 
                   @include mobileVersion {
@@ -142,6 +152,26 @@
                      @include mobileVersion {
                         @include profilePicture(16px);
                      }
+                  }
+
+                  .postName {
+                     max-width: 500px;
+                     white-space: nowrap;
+                     overflow: hidden;
+                     text-overflow: ellipsis;
+                     cursor: pointer;
+
+                     @include tabletVersion {
+                        max-width: 300px;
+                     }
+
+                     @include mobileVersion {
+                        max-width: 195px;
+                     }
+                  }
+
+                  time {
+                     @include truncate(1);
                   }
 
                   @include mobileVersion {

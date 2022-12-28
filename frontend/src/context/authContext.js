@@ -23,6 +23,10 @@ export const AuthContextProvider = ({ children }) => {
       console.log({ data });
    }
 
+   const updateUser = (fields) => {
+      setCurrentUser(fields);
+   }
+
    useEffect(() => {
       const now = new Date();
       if (now.getTime() > currentUser?.maxAge) {
@@ -36,7 +40,7 @@ export const AuthContextProvider = ({ children }) => {
    }, [currentUser]);
 
    return (
-      <AuthContext.Provider value={{ currentUser, login, logout }}>
+      <AuthContext.Provider value={{ currentUser, login, logout, updateUser }}>
          {children}
       </AuthContext.Provider>
    );

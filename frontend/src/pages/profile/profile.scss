@@ -14,6 +14,7 @@
 
       .imagesWrapper {
          width: 100px;
+         height: 100px;
          margin: 0 auto;
          position: relative;
 
@@ -141,6 +142,13 @@
 
             @include mobileVersion {
                margin-top: 36px;
+            }
+
+            .profilePosts {
+               .nonePost {
+                  text-align: center;
+                  color: rgba($color: themed("font"), $alpha: 80%);
+               }
             }
 
             .profileTabs {

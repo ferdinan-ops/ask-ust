@@ -1,5 +1,5 @@
+import { getUsersAPI, searchUserAPI, getActiveUserAPI, getUserAPI, getMyPostsAPI, getMySavedPostsAPI } from "../../api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getUsersAPI, searchUserAPI, getActiveUserAPI, getUserAPI } from "../../api";
 
 export const getUsers = createAsyncThunk("/users/get", async (page) => {
    const { data } = await getUsersAPI(page);
@@ -20,16 +20,37 @@ export const getActiveUser = createAsyncThunk("/users/active", async () => {
 export const getUser = createAsyncThunk("/users/detail", async (id) => {
    const { data } = await getUserAPI(id);
    return data;
+});
+
+export const getMyPosts = createAsyncThunk("/users/my-post", async (fields) => {
+   const { page, id } = fields;
+   const { data } = await getMyPostsAPI(page, id);
+   return data;
+});
+
+export const getMySavedPosts = createAsyncThunk("/users/saved-post", async (page) => {
+   const { data } = await getMySavedPostsAPI(page);
+   return data;
 })
 
 const userSlice = createSlice({
    name: "user",
    initialState: {
       users: [],
-      user: {},
-      active: [],
       counts: 0,
       isLoading: false,
+      user: {},
+      active: [],
+      myPosts: {
+         posts: [],
+         isLoading: false,
+         counts: 0,
+      },
+      mySavedPosts: {
+         savedPosts: [],
+         isLoading: false,
+         counts: 0,
+      },
    },
    extraReducers: (builder) => {
       builder.addCase(getUsers.pending, (state) => {
@@ -57,6 +78,22 @@ const userSlice = createSlice({
       }).addCase(getUser.fulfilled, (state, { payload }) => {
          state.user = payload;
          state.isLoading = false;
+      }).addCase(getMyPosts.pending, (state) => {
+         state.myPosts.isLoading = true;
+      }).addCase(getMyPosts.rejected, (state) => {
+         state.myPosts.isLoading = false;
+      }).addCase(getMyPosts.fulfilled, (state, { payload }) => {
+         state.myPosts.posts = payload.data;
+         state.myPosts.counts = payload.counts;
+         state.myPosts.isLoading = false;
+      }).addCase(getMySavedPosts.pending, (state) => {
+         state.mySavedPosts.isLoading = true;
+      }).addCase(getMySavedPosts.rejected, (state) => {
+         state.mySavedPosts.isLoading = false;
+      }).addCase(getMySavedPosts.fulfilled, (state, { payload }) => {
+         state.mySavedPosts.savedPosts = payload.data;
+         state.mySavedPosts.counts = payload.counts;
+         state.mySavedPosts.isLoading = false;
       })
    }
 });

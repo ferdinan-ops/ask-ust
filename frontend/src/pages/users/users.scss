@@ -48,7 +48,7 @@
          .usersContent {
             margin-top: 30px;
             flex-wrap: wrap;
-            @include flexStyle($gap: 3.5%);
+            @include flexStyle($gap: 3.1%);
 
             @include tabletVersion {
                justify-content: space-between;
@@ -59,7 +59,7 @@
                @include makeButton($padding: 16px, $bg: themed("contentBg"), $rounded: 8px, $color: themed("font"));
                width: 268px;
                transition: 0.3s;
-               margin-bottom: 3.5%;
+               margin-bottom: 3.1%;
                border: 2px solid themed("contentBorder");
 
                &:hover {

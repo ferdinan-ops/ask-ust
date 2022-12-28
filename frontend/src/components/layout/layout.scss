@@ -9,8 +9,9 @@
       }
 
       code.preAndCode-0-2-135 {
-         background-color: rgba($color: darken(themed("font"), 100%), $alpha: 40%) !important;
-         padding: 1px 2px;
+         background-color: rgba($color: darken(themed("font"), 100%), $alpha: 20%) !important;
+         font-size: inherit;
+         line-height: 32px;
          border-radius: 2px;
       }
    }

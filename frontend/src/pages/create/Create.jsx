@@ -6,9 +6,10 @@ import { toast } from "react-hot-toast";
 import { Ring } from "@uiball/loaders";
 
 import { createTag, getAllTags } from "../../config/redux/features/tagSlice";
-import { createPost, getPost, getPosts, updatePost } from "../../config/redux/features/postSlice";
+import { createPost, getPosts, updatePost } from "../../config/redux/features/postSlice";
 import { Modal, TextEditor, Warning } from "../../components";
 import { AuthContext } from "../../context/authContext";
+import { getPostAPI } from "../../config/api";
 import "./create.scss";
 
 const Create = () => {
@@ -28,17 +29,21 @@ const Create = () => {
 
    const { currentUser } = useContext(AuthContext);
    const { isLoading, tags: tagsData } = useSelector((state) => state.tag);
-   const { isLoading: isLoadingPost, post } = useSelector((state) => state.post);
+   const { isLoading: isLoadingPost } = useSelector((state) => state.post);
 
    useEffect(() => {
-      if (postId) {
-         dispatch(getPost());
-         setTitle(post.title);
-         setTags(post.tags);
-         setDesc(post.desc);
-         setIsUpdate(true);
+      const getPost = async () => {
+         const { data } = await getPostAPI(postId);
+         setTitle(data.title);
+         setDesc(data.desc);
+         setTags(data.tags);
       }
-   }, [postId, dispatch, post]);
+      if (postId) {
+         setIsUpdate(true);
+         getPost();
+      }
+   }, [postId]);
+
    useEffect(() => { document.title = `${isUpdate ? "Ubah" : "Ayo buat"} pertanyaan 😀 | ask.UST` }, [isUpdate]);
    useEffect(() => { dispatch(getAllTags()) }, [dispatch]);
 

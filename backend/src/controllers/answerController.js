@@ -1,13 +1,20 @@
-const Answers = require("../models/answerModel");
 const mongoose = require("mongoose");
+
+const Answers = require("../models/answerModel");
 const Users = require("../models/userModel");
+const { pushNotification } = require("./notifController");
 
 const createAnswer = async (req, res) => {
-   const { desc, postId } = req.body;
+   const { desc, postId, userPostId } = req.body;
    const { userId } = req.userInfo;
+
    if (!desc) return res.status(400).json({ msg: "Masukkan seluruh data dengan benar" });
+   const message = "Menjawab di pertanyaan Anda";
+   const link = `/forum/questions/${postId}`;
 
    try {
+      if (userId !== userPostId)
+         await pushNotification({ message, userTarget: userPostId, userSender: userId, link });
       await Users.findByIdAndUpdate(userId, { $inc: { score: +5 } });
       const data = await Answers.create({ desc, postId, userId });
       res.status(200).json(data);

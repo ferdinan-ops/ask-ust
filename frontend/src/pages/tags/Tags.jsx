@@ -70,7 +70,7 @@ const Tags = () => {
                      <div className='loadingPage'>
                         <Ring size={30} lineWeight={8} speed={2} color="#00bac7" />
                      </div>
-                  ) : (params && <p>Maaf pengguna <b><i>{params}</i></b> tidak ditemukan 😔</p>)
+                  ) : (params && <p>Maaf tag <b><i>{params}</i></b> tidak ditemukan 😔</p>)
                )}
                {tags.length > 9 && (
                   <InfiniteScroll

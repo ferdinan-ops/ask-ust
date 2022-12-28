@@ -6,6 +6,7 @@ import { Ring } from '@uiball/loaders';
 
 import { getUsers, searchUser } from '../../config/redux/features/userSlice';
 import { InfiniteScroll } from '../../components';
+import { IMG_URI } from '../../utils/dummy';
 import "./users.scss";
 
 const Users = () => {
@@ -42,8 +43,6 @@ const Users = () => {
       setPage(page + 3);
    }
 
-   console.log({ params });
-
    return (
       <div className="users">
          <div className="usersContainer">
@@ -53,14 +52,18 @@ const Users = () => {
             </div>
             <form className="usersSearchBar" onSubmit={submitHandler}>
                <MagnifyingGlassIcon className="icons" />
-               <input placeholder="Cari berdasarkan nama pengguna" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+               <input
+                  placeholder="Cari berdasarkan nama pengguna"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+               />
             </form>
             <div className="usersContent">
                {users.length > 0 ? (
                   users.map((user) => (
                      <div className="user" key={user._id} onClick={() => navigate(`/forum/users/${user._id}`)}>
                         <div className='userData'>
-                           <img src={user.profilPicture || "/profile.svg"} alt="" />
+                           <img src={user.profilePicture ? `${IMG_URI}/${user.profilePicture}` : "/profile.svg"} alt="" />
                            <div className="usersDetails">
                               <span>{user.name}</span>
                               <span>{user.postsCount} pertanyaan</span>
@@ -78,7 +81,14 @@ const Users = () => {
                      params && <p>Maaf pengguna <b><i>{params}</i></b> tidak ditemukan 😔</p>
                   )
                )}
-               {users.length > 9 && <InfiniteScroll counts={counts} dataLength={users.length} isLoading={isLoading} loadMoreHandler={loadHandler} />}
+               {users.length > 9 && (
+                  <InfiniteScroll
+                     counts={counts}
+                     dataLength={users.length}
+                     isLoading={isLoading}
+                     loadMoreHandler={loadHandler}
+                  />
+               )}
             </div>
          </div>
       </div>

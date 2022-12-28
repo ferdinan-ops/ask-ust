@@ -1,17 +1,22 @@
 import { useNavigate } from "react-router-dom";
+import localization from "moment/locale/id";
 import Moment from "react-moment";
+import moment from "moment";
 import React from "react";
 
+import { IMG_URI } from "../../utils/dummy";
 import "./post.scss";
 
 const Post = ({ post }) => {
    const navigate = useNavigate();
+   moment.updateLocale("id", localization);
 
    const tagNavigate = (e, tag) => {
       e.preventDefault();
       e.stopPropagation();
       navigate(`/forum/tags/${tag}`);
    }
+
 
    return (
       <div className="post">
@@ -20,7 +25,9 @@ const Post = ({ post }) => {
                <div className="postWrapper">
                   <p><span>{post?.likesCount}</span> suka</p>
                   <p><span>{post?.savedCount}</span> disimpan</p>
-                  <p><span>{post?.answersCount}</span> jawaban</p>
+                  <p className={post.bestAnswerId ? "haveBest" : ""}>
+                     <span>{post.bestAnswerId && "✅"} {post?.answersCount}</span> jawaban
+                  </p>
                </div>
             </div>
             <div className="postContent">
@@ -37,8 +44,11 @@ const Post = ({ post }) => {
                      ))}
                   </div>
                   <div className="postUserInfo">
-                     <img src={post?.user?.profilePic || "/profile.svg"} alt="" />
-                     <span>{post?.user?.name}</span>
+                     <img
+                        src={post?.user?.profilePicture ? `${IMG_URI}/${post?.user?.profilePicture}` : "/profile.svg"}
+                        alt=""
+                     />
+                     <span className="postName">{post?.user?.name}</span>
                      <span>&bull;</span>
                      <Moment fromNow>{post.createdAt}</Moment>
                   </div>

@@ -83,6 +83,12 @@
                   line-height: 28px;
                   font-weight: 500;
 
+                  pre,
+                  code {
+                     white-space: pre-wrap !important;
+                     overflow-wrap: break-word !important;
+                  }
+
                   ul {
                      padding-left: 32px;
                   }

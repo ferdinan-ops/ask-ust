@@ -1,16 +1,16 @@
-import { EllipsisHorizontalIcon, CheckBadgeIcon, FlagIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { EllipsisHorizontalIcon, CheckBadgeIcon, FlagIcon, PencilIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast } from "react-hot-toast";
 
+import { deletePost, getPost, getPosts } from "../../config/redux/features/postSlice";
 import { getAnswers, setIsUpdate } from "../../config/redux/features/answerSlice";
-import { deletePost, getPosts } from "../../config/redux/features/postSlice";
+import { deleteAnswerAPI, makeBestAnswerAPI } from "../../config/api";
 import { AuthContext } from "../../context/authContext";
-import { deleteAnswerAPI } from "../../config/api";
 import "./more.scss";
 
-const More = ({ isPost, isMine, id, userPostId, postId }) => {
+const More = ({ isPost, isMine, id, userPostId, postId, userAnswerId, bestAnswerId }) => {
    const [isShow, setIsShow] = useState(false);
 
    const navigate = useNavigate();
@@ -39,6 +39,16 @@ const More = ({ isPost, isMine, id, userPostId, postId }) => {
       }
    }
 
+   const setBestAnswerHandler = async () => {
+      try {
+         await makeBestAnswerAPI(postId, { answerId: id, userAnswerId });
+         dispatch(getAnswers(postId));
+         dispatch(getPost(postId));
+      } catch (error) {
+         console.log(error);
+      }
+   }
+
    const canMakeBestAnswer = (userPostId === currentUser._id) && !isPost;
 
    return (
@@ -48,9 +58,9 @@ const More = ({ isPost, isMine, id, userPostId, postId }) => {
          </div>
          <ul className={isShow ? "active" : ""}>
             {canMakeBestAnswer &&
-               <li>
-                  <CheckBadgeIcon className="icons" />
-                  <span>Jadikan jawaban terbaik</span>
+               <li onClick={setBestAnswerHandler} className={bestAnswerId ? "warning" : ""}>
+                  {bestAnswerId ? <XMarkIcon className="icons" /> : <CheckBadgeIcon className="icons" />}
+                  <span>{bestAnswerId ? "Hapus jawaban terbaik" : "Jadikan jawaban terbaik"}</span>
                </li>
             }
             {isMine && (

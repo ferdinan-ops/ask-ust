@@ -13,6 +13,7 @@ import { AuthContext } from "../../context/authContext";
 
 import "prismjs/themes/prism-dracula.css";
 import "./detail.scss";
+import { IMG_URI } from "../../utils/dummy";
 
 const Detail = () => {
    const [isSaved, setIsSaved] = useState(false);
@@ -45,13 +46,19 @@ const Detail = () => {
    return (
       <div className="detail">
          <div className="detailWrapper">
-            <Warning name={name} />
+            {currentUser._id !== post?.user?._id && <Warning name={name} />}
             <div className="detailHead">
                <h1>{post.title}</h1>
                <div className="detailUserInfo">
                   <span>Author: </span>
-                  <img src={post?.user?.profilePicture || "/profile.svg"} alt="" />
-                  <span className="name">{post?.user?.name}</span>
+                  <img
+                     alt=""
+                     src={post?.user?.profilePicture ? `${IMG_URI}/${post?.user?.profilePicture}` : "/profile.svg"}
+                     onClick={() => navigate(`/forum/users/${post?.user?._id}`)}
+                  />
+                  <span className="name" onClick={() => navigate(`/forum/users/${post?.user?._id}`)}>
+                     {post?.user?.name}
+                  </span>
                   &bull;
                   <Moment fromNow>{post?.createdAt}</Moment>
                   <More isPost isMine={userId === post?.user?._id} id={post._id} />

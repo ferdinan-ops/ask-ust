@@ -1,4 +1,4 @@
-import { createPostAPI, deletePostAPI, getPostAPI, getPostsAPI, updatePostAPI } from "../../api";
+import { createPostAPI, deletePostAPI, getPostAPI, getPostsAPI, searchPostAPI, updatePostAPI } from "../../api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-hot-toast";
 
@@ -16,6 +16,12 @@ export const getPost = createAsyncThunk("/post/getDetail", async (id) => {
    const { data } = await getPostAPI(id);
    return data;
 });
+
+export const searchPost = createAsyncThunk("/post/search", async (fields) => {
+   const { keyword, page } = fields;
+   const { data } = await searchPostAPI(keyword, page);
+   return data;
+})
 
 export const updatePost = createAsyncThunk("/post/update", async (formData) => {
    const { postId, ...fields } = formData;
@@ -52,6 +58,15 @@ export const postSlice = createSlice({
          state.posts = payload.data;
          state.counts = payload.counts;
          state.isLoading = false;
+      }).addCase(searchPost.pending, (state) => {
+         state.isLoading = true;
+      }).addCase(searchPost.rejected, (state) => {
+         state.isLoading = false;
+      }).addCase(searchPost.fulfilled, (state, { payload }) => {
+         state.posts = payload.data;
+         state.counts = payload.counts;
+         state.isLoading = false;
+         console.log({ payload });
       }).addCase(getPost.pending, (state) => {
          state.isLoading = true;
       }).addCase(getPost.rejected, (state) => {

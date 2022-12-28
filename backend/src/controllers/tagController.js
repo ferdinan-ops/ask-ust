@@ -25,7 +25,7 @@ const getTags = async (req, res) => {
          data = await Tag.aggregate([
             {
                $search: {
-                  index: 'searchTag',
+                  index: "searchTag",
                   compound: { must: [{ autocomplete: { query: search, path: "name" } }] }
                }
             },
@@ -105,4 +105,4 @@ const getPostByTag = async (req, res) => {
    }
 }
 
-module.exports = { createTag, getTags, getAllTags, getPostByTag, getTag };
+module.exports = { createTag, getTags, getAllTags, getPostByTag, getTag }; 

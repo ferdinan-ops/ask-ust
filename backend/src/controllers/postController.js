@@ -1,6 +1,7 @@
 const Posts = require("../models/postModel");
 const Users = require("../models/userModel");
 const mongoose = require("mongoose");
+const { pushNotification } = require("./notifController");
 
 const createPost = async (req, res) => {
    const { title, tags, desc } = req.body;
@@ -20,40 +21,52 @@ const createPost = async (req, res) => {
 }
 
 const getPosts = async (req, res) => {
-   const { page } = req.query;
+   const { page, search } = req.query;
+   let data;
+
+   const query = [
+      { $sort: { createdAt: - 1 } },
+      {
+         $lookup: {
+            from: "users", localField: "userId", foreignField: "_id", as: "user",
+            pipeline: [{ $project: { _id: 1, name: 1, profilePicture: 1 } }]
+         }
+      },
+      { $set: { user: { $arrayElemAt: ["$user", 0] } } },
+      {
+         $lookup: {
+            from: "answers", let: { postId: "$_id" },
+            pipeline: [{ $match: { $expr: { $eq: ["$postId", "$$postId"] } } }],
+            as: "answers"
+         }
+      },
+      {
+         $project: {
+            _id: 1,
+            title: 1,
+            desc: 1,
+            tags: 1,
+            createdAt: 1,
+            bestAnswerId: 1,
+            likesCount: { $size: "$likes" },
+            savedCount: { $size: "$saved" },
+            answersCount: { $size: "$answers" },
+            user: 1,
+         }
+      }
+   ]
 
    try {
-      let data = await Posts.aggregate([
-         { $sort: { createdAt: - 1 } },
-         {
-            $lookup: {
-               from: "users", localField: "userId", foreignField: "_id", as: "user",
-               pipeline: [{ $project: { _id: 1, name: 1, profilePicture: 1 } }]
+      if (search) {
+         data = await Posts.aggregate([{
+            $search: {
+               index: "searchPost",
+               compound: { must: [{ autocomplete: { query: search, path: "title" } }] }
             }
-         },
-         { $set: { user: { $arrayElemAt: ["$user", 0] } } },
-         {
-            $lookup: {
-               from: "answers", let: { postId: "$_id" },
-               pipeline: [{ $match: { $expr: { $eq: ["$postId", "$$postId"] } } }],
-               as: "answers"
-            }
-         },
-         {
-            $project: {
-               _id: 1,
-               title: 1,
-               desc: 1,
-               tags: 1,
-               createdAt: 1,
-               likesCount: { $size: "$likes" },
-               savedCount: { $size: "$saved" },
-               answersCount: { $size: "$answers" },
-               user: 1,
-            }
-         }
-      ]);
-
+         }, ...query]);
+      } else {
+         data = await Posts.aggregate(query);
+      }
       const counts = data.length;
       data = data.slice(0, parseInt(page));
       res.status(200).json({ data, counts });
@@ -142,4 +155,28 @@ const savePost = async (req, res) => {
    }
 }
 
-module.exports = { createPost, getPosts, getPost, updatePost, deletePost, likePost, savePost };
+
+const makeBestAnswer = async (req, res) => {
+   const { id } = req.params;
+   const { answerId, userAnswerId } = req.body;
+   const { userId } = req.userInfo;
+
+   try {
+      const post = await Posts.findById(id);
+      if (post.bestAnswerId === answerId) {
+         await Users.findByIdAndUpdate(userAnswerId, { $inc: { score: -5 } });
+         await Posts.findByIdAndUpdate(id, { bestAnswerId: "" });
+      } else {
+         const message = "Jawaban anda telah dipilih sebagai jawaban terbaik";
+         const link = `/forum/questions/${id}`;
+         await pushNotification({ message, userTarget: userAnswerId, link, userSender: userId });
+         await Users.findByIdAndUpdate(userAnswerId, { $inc: { score: 5 } });
+         await Posts.findByIdAndUpdate(id, { bestAnswerId: answerId });
+      }
+      res.status(200).json({ msg: "Berhasil membuat jawaban terbaik" });
+   } catch (error) {
+      res.status(500).json({ error });
+   }
+}
+
+module.exports = { createPost, getPosts, getPost, updatePost, deletePost, likePost, savePost, makeBestAnswer };

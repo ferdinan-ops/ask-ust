@@ -12,12 +12,6 @@ const Home = () => {
    return (
       <div className="home">
          <div className="homeWrapper">
-            <div className="pagesTitle">
-               <h1>Semua Pertanyaan</h1>
-               <span>
-                  Kamu bisa mencari seluruh soal yang terbaru dan belum pernah di jawab oleh siapapun disini!
-               </span>
-            </div>
             <Posts />
          </div>
       </div>

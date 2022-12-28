@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Ring } from "@uiball/loaders";
 
 import { getAnswer, getAnswers } from "../../config/redux/features/answerSlice";
 import { createAnswerAPI, updateAnswerAPI } from "../../config/api";
+import { AuthContext } from "../../context/authContext";
 import TextEditor from "../textEditor/TextEditor";
 import Answer from "../answer/Answer";
 import "./answers.scss";
@@ -15,6 +16,7 @@ const Answers = ({ postId, bestAnswerId, userPostId }) => {
 
    const dispatch = useDispatch();
    const { answers, answer, isUpdate } = useSelector((state) => state.answer);
+   const { currentUser } = useContext(AuthContext);
 
    useEffect(() => { dispatch(getAnswers(postId)) }, [dispatch, postId]);
    useEffect(() => { if (isUpdate) dispatch(getAnswer(isUpdate)) }, [isUpdate, dispatch]);
@@ -40,7 +42,7 @@ const Answers = ({ postId, bestAnswerId, userPostId }) => {
    }
 
    const create = async () => {
-      await createAnswerAPI({ desc, postId });
+      await createAnswerAPI({ desc, postId, userPostId });
       dispatch(getAnswers(postId));
       toast.success("Jawaban berhasil dibuat");
    }
@@ -66,15 +68,17 @@ const Answers = ({ postId, bestAnswerId, userPostId }) => {
                   <h3 className='not'>Belum Ada Jawaban 😔</h3>
                )}
             </div>
-            <div className="yourAnswer">
-               <h2>Ayo berikan jawaban kamu! 😁</h2>
-               <form onSubmit={submitHandler}>
-                  <TextEditor content={desc} setContent={setDesc} />
-                  <button className={`submit ${isLoading ? "loading" : ""}`}>
-                     {isLoading ? <Ring size={16} lineWeight={8} speed={2} color="#fff" /> : isUpdate ? "Simpan" : "Kirim Jawaban"}
-                  </button>
-               </form>
-            </div>
+            {currentUser._id !== userPostId && (
+               <div className="yourAnswer">
+                  <h2>Ayo berikan jawaban kamu! 😁</h2>
+                  <form onSubmit={submitHandler}>
+                     <TextEditor content={desc} setContent={setDesc} />
+                     <button className={`submit ${isLoading ? "loading" : ""}`}>
+                        {isLoading ? <Ring size={16} lineWeight={8} speed={2} color="#fff" /> : isUpdate ? "Simpan" : "Kirim Jawaban"}
+                     </button>
+                  </form>
+               </div>
+            )}
          </>
       )
    )

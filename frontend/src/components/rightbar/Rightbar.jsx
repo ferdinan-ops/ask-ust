@@ -5,6 +5,7 @@ import React, { useContext, useEffect } from "react";
 import { getActiveUser } from "../../config/redux/features/userSlice";
 import { AuthContext } from "../../context/authContext";
 import "./rightbar.scss";
+import { IMG_URI } from "../../utils/dummy";
 
 const Rightbar = () => {
    const dispatch = useDispatch();
@@ -38,7 +39,7 @@ const Rightbar = () => {
                {active.map((item) => (
                   <div className="rightItem" key={item._id}>
                      <div className="rigthUserInfo">
-                        <img src={item.profilePicture || "/profile.svg"} alt="" />
+                        <img src={item.profilePicture ? `${IMG_URI}/${item.profilePicture}` : "/profile.svg"} alt="" />
                         <span>{item.name}</span>
                      </div>
                      <CheckBadgeIcon className="icons" />
