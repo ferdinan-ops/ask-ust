@@ -10,10 +10,10 @@ import { getPost } from "../../config/redux/features/postSlice";
 import { likePostAPI, savePostAPI } from "../../config/api";
 import { Answers, More, Warning } from "../../components";
 import { AuthContext } from "../../context/authContext";
-
-import "prismjs/themes/prism-dracula.css";
-import "./detail.scss";
 import { IMG_URI } from "../../utils/dummy";
+
+import "prismjs/themes/prism-laserwave.css";
+import "./detail.scss";
 
 const Detail = () => {
    const [isSaved, setIsSaved] = useState(false);
@@ -61,7 +61,7 @@ const Detail = () => {
                   </span>
                   &bull;
                   <Moment fromNow>{post?.createdAt}</Moment>
-                  <More isPost isMine={userId === post?.user?._id} id={post._id} />
+                  <More isPost isMine={userId === post?.user?._id} id={post._id} userPostId={post?.user?._id} />
                </div>
             </div>
             <div className="detailContent">

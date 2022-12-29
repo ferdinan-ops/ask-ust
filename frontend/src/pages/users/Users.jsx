@@ -63,7 +63,9 @@ const Users = () => {
                   users.map((user) => (
                      <div className="user" key={user._id} onClick={() => navigate(`/forum/users/${user._id}`)}>
                         <div className='userData'>
-                           <img src={user.profilePicture ? `${IMG_URI}/${user.profilePicture}` : "/profile.svg"} alt="" />
+                           <div className="userDataImg">
+                              <img src={user.profilePicture ? `${IMG_URI}/${user.profilePicture}` : "/profile.svg"} alt="" />
+                           </div>
                            <div className="usersDetails">
                               <span>{user.name}</span>
                               <span>{user.postsCount} pertanyaan</span>
@@ -81,7 +83,7 @@ const Users = () => {
                      params && <p>Maaf pengguna <b><i>{params}</i></b> tidak ditemukan 😔</p>
                   )
                )}
-               {users.length > 9 && (
+               {users.length > 8 && (
                   <InfiniteScroll
                      counts={counts}
                      dataLength={users.length}

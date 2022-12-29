@@ -125,7 +125,7 @@ const Profile = () => {
                         )) : (
                            <p className='nonePost'><i>Belum ada pertanyaan</i></p>
                         )}
-                        {posts.length > 3 &&
+                        {posts.length > 2 &&
                            <InfiniteScroll
                               counts={countsPost}
                               dataLength={posts.length}
@@ -142,7 +142,7 @@ const Profile = () => {
                         )) : (
                            <p className='nonePost'><i>Belum ada pertanyaan yang disimpan</i></p>
                         )}
-                        {savedPosts.length > 3 &&
+                        {savedPosts.length > 2 &&
                            <InfiniteScroll
                               counts={countsSaved}
                               dataLength={savedPosts.length}

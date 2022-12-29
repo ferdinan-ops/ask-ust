@@ -11,7 +11,6 @@ const notifSlice = createSlice({
    initialState: {
       notif: [],
       counts: 0,
-      readCount: 0,
       isLoading: false,
    },
    extraReducers: (builder) => {
@@ -20,7 +19,6 @@ const notifSlice = createSlice({
       }).addCase(getNotif.fulfilled, (state, { payload }) => {
          state.notif = payload.data;
          state.counts = payload.counts;
-         state.readCount = payload.data.filter((notif) => !notif.read).length;
          state.isLoading = false;
       }).addCase(getNotif.rejected, (state) => {
          state.isLoading = false;

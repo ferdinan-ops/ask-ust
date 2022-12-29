@@ -7,7 +7,6 @@ import More from "./more/More";
 import Answers from "./answers/Answers";
 import TextEditor from "./textEditor/TextEditor";
 import Warning from "./warning/Warning";
-import Comments from "./comments/Comments";
 import InfiniteScroll from "./infinteScroll/InfiniteScroll";
 
-export { Header, Layout, Posts, Modal, Post, More, Answers, TextEditor, Warning, Comments, InfiniteScroll };
+export { Header, Layout, Posts, Modal, Post, More, Answers, TextEditor, Warning, InfiniteScroll };

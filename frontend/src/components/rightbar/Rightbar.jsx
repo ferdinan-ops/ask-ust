@@ -1,14 +1,17 @@
 import { CheckBadgeIcon, PaperClipIcon, UserIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { getActiveUser } from "../../config/redux/features/userSlice";
 import { AuthContext } from "../../context/authContext";
-import "./rightbar.scss";
 import { IMG_URI } from "../../utils/dummy";
+import "./rightbar.scss";
 
 const Rightbar = () => {
    const dispatch = useDispatch();
+   const navigate = useNavigate();
+
    const { currentUser } = useContext(AuthContext);
    const { active } = useSelector((state) => state.user);
    useEffect(() => { dispatch(getActiveUser()) }, [dispatch]);
@@ -38,7 +41,7 @@ const Rightbar = () => {
             <div className="rightBottom">
                {active.map((item) => (
                   <div className="rightItem" key={item._id}>
-                     <div className="rigthUserInfo">
+                     <div className="rigthUserInfo" onClick={() => navigate(`/forum/users/${item._id}`)}>
                         <img src={item.profilePicture ? `${IMG_URI}/${item.profilePicture}` : "/profile.svg"} alt="" />
                         <span>{item.name}</span>
                      </div>

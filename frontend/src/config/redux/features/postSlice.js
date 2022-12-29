@@ -66,7 +66,6 @@ export const postSlice = createSlice({
          state.posts = payload.data;
          state.counts = payload.counts;
          state.isLoading = false;
-         console.log({ payload });
       }).addCase(getPost.pending, (state) => {
          state.isLoading = true;
       }).addCase(getPost.rejected, (state) => {

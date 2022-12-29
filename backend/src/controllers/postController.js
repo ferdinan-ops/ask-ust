@@ -2,6 +2,7 @@ const Posts = require("../models/postModel");
 const Users = require("../models/userModel");
 const mongoose = require("mongoose");
 const { pushNotification } = require("./notifController");
+const { createReport } = require("./reportController");
 
 const createPost = async (req, res) => {
    const { title, tags, desc } = req.body;
@@ -161,22 +162,46 @@ const makeBestAnswer = async (req, res) => {
    const { answerId, userAnswerId } = req.body;
    const { userId } = req.userInfo;
 
+   const message = "Jawaban anda telah dipilih sebagai jawaban terbaik";
+   const link = `/forum/questions/${id}`;
+
    try {
       const post = await Posts.findById(id);
-      if (post.bestAnswerId === answerId) {
-         await Users.findByIdAndUpdate(userAnswerId, { $inc: { score: -5 } });
-         await Posts.findByIdAndUpdate(id, { bestAnswerId: "" });
-      } else {
-         const message = "Jawaban anda telah dipilih sebagai jawaban terbaik";
-         const link = `/forum/questions/${id}`;
-         await pushNotification({ message, userTarget: userAnswerId, link, userSender: userId });
-         await Users.findByIdAndUpdate(userAnswerId, { $inc: { score: 5 } });
+      if (post.bestAnswerId) {
+         if (post.bestAnswerId == answerId) {
+            await Posts.findByIdAndUpdate(id, { bestAnswerId: "" });
+            await Users.findByIdAndUpdate(userAnswerId, { $inc: { score: -5 } });
+            return res.status(200).json({ msg: "Berhasil menghapus jawaban terbaik" });
+         }
+         await Users.findByIdAndUpdate(post.bestAnswerId, { $inc: { score: -5 } });
          await Posts.findByIdAndUpdate(id, { bestAnswerId: answerId });
+         await Users.findByIdAndUpdate(userAnswerId, { $inc: { score: +5 } });
+         await pushNotification({ message, userTarget: userAnswerId, link, userSender: userId });
+         return res.status(200).json({ msg: "Berhasil mengganti jawaban terbaik" });
       }
+      await Posts.findByIdAndUpdate(id, { bestAnswerId: answerId });
+      await Users.findByIdAndUpdate(userAnswerId, { $inc: { score: +5 } });
+      await pushNotification({ message, userTarget: userAnswerId, link, userSender: userId });
       res.status(200).json({ msg: "Berhasil membuat jawaban terbaik" });
    } catch (error) {
       res.status(500).json({ error });
    }
 }
 
-module.exports = { createPost, getPosts, getPost, updatePost, deletePost, likePost, savePost, makeBestAnswer };
+const reportPost = async (req, res) => {
+   const { postId, message, userPostId } = req.body;
+   const { userId } = req.userInfo;
+   const messageNotif = "Pertanyaan anda telah dilaporkan, silahkan buat pertanyaan yang benar";
+   const link = `/forum/questions/${postId}`;
+   const system = "63ad4799c1ebf859f3011684";
+
+   try {
+      const data = await createReport({ userTarget: userPostId, userSender: userId, postId, message });
+      await pushNotification({ message: messageNotif, userTarget: userPostId, link, userSender: system });
+      res.status(200).json({ msg: "Laporan berhasil dikirim", data });
+   } catch (error) {
+      res.status(500).json({ error });
+   }
+}
+
+module.exports = { createPost, getPosts, getPost, updatePost, deletePost, likePost, savePost, makeBestAnswer, reportPost };;

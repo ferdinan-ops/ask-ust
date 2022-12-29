@@ -32,6 +32,7 @@ export const deletePostAPI = (postId) => API.delete(`/post/${postId}`);
 export const likePostAPI = (postId) => API.put(`/post/like/${postId}`);
 export const savePostAPI = (postId) => API.put(`/post/save/${postId}`);
 export const makeBestAnswerAPI = (id, fields) => API.put(`/post/best-answer/${id}`, fields);
+export const reportPostAPI = (fields) => API.post("/post/report", fields);
 
 /* USERS */
 export const searchUserAPI = (keyword, page) => API.get(`/users?search=${keyword}&page=${page}`);
@@ -50,8 +51,10 @@ export const updateAnswerAPI = (id, fields) => API.put(`/answer/${id}`, fields);
 export const deleteAnswerAPI = (id) => API.delete(`/answer/${id}`);
 export const likeAnswerAPI = (answerId) => API.put(`/answer/like/${answerId}`);
 export const dislikeAnswerAPI = (answerId) => API.put(`/answer/dislike/${answerId}`);
+export const reportAnswerAPI = (fields) => API.post("/answer/report", fields);
 
 /* NOTIFICATION */
 export const getNotificationsAPI = (page) => API.get(`/notif?page=${page}`);
 export const markAllAsReadAPI = () => API.put("/notif/mark-all");
 export const markAsReadAPI = (id) => API.put(`/notif/mark/${id}`);
+export const getReadCountsAPI = () => API.get("/notif/read-count");

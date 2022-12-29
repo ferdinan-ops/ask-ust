@@ -70,3 +70,50 @@
       }
    }
 }
+
+.modalWrapper {
+   @include themify($themes) {
+      padding: 10px;
+
+      @include mobileVersion {
+         padding: 0;
+      }
+
+      .textWrapper {
+         width: 520px;
+
+         p {
+            @include typoGraphy($fontSize: 15px, $weight: 500, $color: themed("font"));
+
+            &:first-child {
+               margin-bottom: 20px;
+            }
+
+            @include mobileVersion {
+               font-size: 14px;
+            }
+         }
+
+         @include mobileVersion {
+            min-width: unset;
+            width: 100%;
+         }
+      }
+
+      label {
+         span {
+            font-weight: bold;
+
+            @include mobileVersion {
+               font-size: 14px;
+            }
+         }
+
+         textarea {
+            @include mobileVersion {
+               min-height: 130px;
+            }
+         }
+      }
+   }
+}

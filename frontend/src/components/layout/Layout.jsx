@@ -1,9 +1,9 @@
+import { ThemeContext } from "../../context/themeContext";
+import Rightbar from "../rightbar/Rightbar";
 import React, { useContext } from "react";
 import { Outlet } from "react-router-dom";
-import { ThemeContext } from "../../context/themeContext";
-import Header from "../header/Header";
 import Leftbar from "../leftbar/Leftbar";
-import Rightbar from "../rightbar/Rightbar";
+import Header from "../header/Header";
 
 import "./layout.scss";
 

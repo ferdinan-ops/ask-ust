@@ -58,7 +58,17 @@ const markAllAsRead = async (req, res) => {
    }
 }
 
-module.exports = { pushNotification, getNotifications, markAsRead, markAllAsRead };
+const getReadCounts = async (req, res) => {
+   const { userId } = req.userInfo;
+   try {
+      const data = await Notification.countDocuments({ userTarget: userId, read: false });
+      res.status(200).json(data);
+   } catch (error) {
+      res.status(500).json({ error });
+   }
+}
+
+module.exports = { pushNotification, getNotifications, markAsRead, markAllAsRead, getReadCounts };
 
 
 

@@ -86,11 +86,13 @@
                .userData {
                   @include flexStyle($gap: 15px, $align: center);
 
-                  img {
-                     @include profilePicture(50px, $rounded: 8px);
+                  .userDataImg {
+                     img {
+                        @include profilePicture($size: 50px, $rounded: 8px);
 
-                     @include mobileVersion {
-                        @include profilePicture(46px, $rounded: 8px);
+                        @include mobileVersion {
+                           @include profilePicture(46px, $rounded: 8px);
+                        }
                      }
                   }
 

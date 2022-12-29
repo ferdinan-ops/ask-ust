@@ -51,6 +51,7 @@
             font-size: 15px;
 
             @include tabletVersion {
+               width: 100%;
                margin-top: 0;
             }
 
@@ -60,6 +61,7 @@
 
                @include tabletVersion {
                   flex-direction: row;
+                  margin-left: 0;
                }
 
                p {

@@ -34,7 +34,7 @@ const Tagged = () => {
                   (data.map((post) => <Post post={post} key={post._id} />)) :
                   (<p className="nonePost">Maaf belum ada pertanyaan dengan tag <b>{tag}</b> 😔</p>)
                }
-               {data.length > 3 && (
+               {data.length > 2 && (
                   <InfiniteScroll
                      counts={counts}
                      dataLength={data.length}

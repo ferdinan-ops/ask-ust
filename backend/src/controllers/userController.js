@@ -1,11 +1,14 @@
 const Users = require("../models/userModel");
 const Posts = require("../models/postModel");
 const mongoose = require("mongoose");
+const path = require("path");
+const fs = require("fs");
 
 const getUsers = async (req, res) => {
    const { search, page } = req.query;
    let data;
    const query = [
+      { $match: { isAdmin: false } },
       { $sort: { score: -1 } },
       {
          $lookup: {
@@ -148,13 +151,22 @@ const getMySavedPosts = async (req, res) => {
 const updateUser = async (req, res) => {
    const { name, bio, profilePicture } = req.body;
    const { userId } = req.userInfo;
+
    try {
+      const user = await Users.findById(userId);
+      if (user.profilePicture)
+         if (user.profilePicture !== profilePicture) deleteImage(user.profilePicture);
       const data = await Users.findByIdAndUpdate(userId, { name, bio, profilePicture });
-      const { password, email, __v, ...others } = data._doc;
+      const { password, email, __v, isAdmin, ...others } = data._doc;
       res.status(200).json(others);
    } catch (error) {
       res.status(500).json({ error });
    }
 }
+
+const deleteImage = (filePath) => {
+   filePath = path.join(__dirname, "../../assets", filePath);
+   fs.unlinkSync(filePath, (err) => console.log(err));
+};
 
 module.exports = { getUsers, getUser, getActiveUser, getMyPosts, getMySavedPosts, updateUser };

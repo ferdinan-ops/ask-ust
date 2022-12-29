@@ -72,7 +72,7 @@ const Tags = () => {
                      </div>
                   ) : (params && <p>Maaf tag <b><i>{params}</i></b> tidak ditemukan 😔</p>)
                )}
-               {tags.length > 9 && (
+               {tags.length > 8 && (
                   <InfiniteScroll
                      counts={counts}
                      dataLength={tags.length}

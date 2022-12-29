@@ -1,6 +1,6 @@
 const express = require("express");
 const { verifyToken } = require("../middlewares/verfiyToken")
-const { createPost, updatePost, deletePost, likePost, savePost, getPosts, getPost, makeBestAnswer } = require("../controllers/postController");
+const { createPost, updatePost, deletePost, likePost, savePost, getPosts, getPost, makeBestAnswer, reportPost } = require("../controllers/postController");
 
 const router = express.Router();
 
@@ -12,5 +12,6 @@ router.delete("/post/:postId", verifyToken, deletePost);
 router.put("/post/like/:postId", verifyToken, likePost);
 router.put("/post/save/:postId", verifyToken, savePost);
 router.put("/post/best-answer/:id", verifyToken, makeBestAnswer);
+router.post("/post/report", verifyToken, reportPost);
 
 module.exports = router;

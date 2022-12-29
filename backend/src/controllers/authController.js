@@ -29,7 +29,7 @@ const login = async (req, res) => {
       const isMatch = bcrypt.compareSync(passwordBody, user.password);
       if (!isMatch) return res.status(400).json({ msg: "Password anda salah" });
 
-      const { password, __v, email, ...other } = user._doc;
+      const { password, __v, email, isAdmin, ...other } = user._doc;
       const token = jwt.sign({ userId: user.id }, process.env.TOKEN_SECRET);
       const maxAge = new Date(2147483647 * 1000).valueOf();
 

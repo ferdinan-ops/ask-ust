@@ -26,6 +26,10 @@ const usersSchema = new Schema({
       type: Number,
       default: 0,
    },
+   isAdmin: {
+      type: Boolean,
+      default: false,
+   },
 });
 
 const Users = mongoose.model("Users", usersSchema);

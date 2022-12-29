@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Ring } from "@uiball/loaders";
+import { useSWRConfig } from "swr";
 
 import { getAnswer, getAnswers } from "../../config/redux/features/answerSlice";
 import { createAnswerAPI, updateAnswerAPI } from "../../config/api";
@@ -15,6 +16,7 @@ const Answers = ({ postId, bestAnswerId, userPostId }) => {
    const [isLoading, setIsLoading] = useState(false);
 
    const dispatch = useDispatch();
+   const { mutate } = useSWRConfig();
    const { answers, answer, isUpdate } = useSelector((state) => state.answer);
    const { currentUser } = useContext(AuthContext);
 
@@ -45,6 +47,7 @@ const Answers = ({ postId, bestAnswerId, userPostId }) => {
       await createAnswerAPI({ desc, postId, userPostId });
       dispatch(getAnswers(postId));
       toast.success("Jawaban berhasil dibuat");
+      mutate("notif");
    }
 
    return (

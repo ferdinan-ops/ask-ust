@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Ring } from "@uiball/loaders";
+import { useSWRConfig } from "swr";
 import Moment from "react-moment";
 
 import { markAllAsReadAPI, markAsReadAPI } from "../../config/api";
-import { IMG_URI } from "../../utils/dummy";
-import "./notification.scss";
 import { getNotif } from "../../config/redux/features/notifSlice";
 import { InfiniteScroll } from "../../components";
-import { Ring } from "@uiball/loaders";
+import { IMG_URI } from "../../utils/dummy";
+import "./notification.scss";
 
 const Notification = () => {
    const [page, setPage] = useState(6);
@@ -17,20 +18,17 @@ const Notification = () => {
    const dispatch = useDispatch();
    const navigate = useNavigate();
 
+   const { mutate } = useSWRConfig();
    const { notif, counts, isLoading } = useSelector((state) => state.notif);
 
-   useEffect(() => {
-      document.title = "Notifikasi | ask.UST";
-   }, []);
-
-   useEffect(() => {
-      dispatch(getNotif(page));
-   }, [dispatch, page]);
+   useEffect(() => { document.title = "Notifikasi | ask.UST" }, []);
+   useEffect(() => { dispatch(getNotif(page)) }, [dispatch, page]);
 
    const readHandler = async (id, link) => {
       try {
          await markAsReadAPI(id);
          navigate(link);
+         mutate("notif");
       } catch (error) {
          console.log(error);
       }
@@ -41,6 +39,7 @@ const Notification = () => {
          setLoadingBtn(true);
          await markAllAsReadAPI();
          dispatch(getNotif(page));
+         mutate("notif");
          setLoadingBtn(false);
       } catch (error) {
          console.log(error);
@@ -96,7 +95,7 @@ const Notification = () => {
                      </div>
                   </div>
                ))}
-               {notif.length > 6 && (
+               {notif.length > 5 && (
                   <InfiniteScroll
                      counts={counts}
                      dataLength={notif.length}

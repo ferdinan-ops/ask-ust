@@ -66,7 +66,7 @@ const Posts = () => {
                      {posts.map((post) => (
                         <Post post={post} key={post._id} />
                      ))}
-                     {posts.length > 3 && (
+                     {posts.length > 2 && (
                         <InfiniteScroll
                            counts={counts}
                            dataLength={posts.length}

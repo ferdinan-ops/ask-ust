@@ -1,7 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import localization from "moment/locale/id";
 import Moment from "react-moment";
-import moment from "moment";
 import React from "react";
 
 import { IMG_URI } from "../../utils/dummy";
@@ -9,7 +7,6 @@ import "./post.scss";
 
 const Post = ({ post }) => {
    const navigate = useNavigate();
-   moment.updateLocale("id", localization);
 
    const tagNavigate = (e, tag) => {
       e.preventDefault();

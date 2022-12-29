@@ -1,6 +1,6 @@
 const express = require("express");
 const { verifyToken } = require("../middlewares/verfiyToken");
-const { createAnswer, updateAnswer, deleteAnswer, likeAnswer, dislikeAnswer, getAnswers, getAnswer } = require("../controllers/answerController");
+const { createAnswer, updateAnswer, deleteAnswer, likeAnswer, dislikeAnswer, getAnswers, getAnswer, reportAnswer } = require("../controllers/answerController");
 
 const router = express.Router();
 
@@ -11,5 +11,6 @@ router.put("/answer/:id", verifyToken, updateAnswer);
 router.delete("/answer/:id", verifyToken, deleteAnswer);
 router.put("/answer/like/:id", verifyToken, likeAnswer);
 router.put("/answer/dislike/:id", verifyToken, dislikeAnswer);
+router.post("/answer/report", verifyToken, reportAnswer);
 
 module.exports = router;

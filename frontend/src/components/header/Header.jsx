@@ -1,13 +1,12 @@
 import { MagnifyingGlassIcon, BellIcon, MoonIcon, SunIcon, Bars3Icon, HomeIcon } from "@heroicons/react/24/outline";
-import { XMarkIcon } from "@heroicons/react/24/solid";
-import React, { useContext, useState } from "react";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { createSearchParams, Link, useNavigate } from "react-router-dom";
-import { getNotif } from "../../config/redux/features/notifSlice";
+import React, { useContext, useState } from "react";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+import useSWR from "swr";
 
 import { AuthContext } from "../../context/authContext";
 import { ThemeContext } from "../../context/themeContext";
+import { getReadCountsAPI } from "../../config/api";
 import { IMG_URI } from "../../utils/dummy";
 import "./header.scss";
 
@@ -15,16 +14,17 @@ const Header = () => {
    const [showNav, setShowNav] = useState(false);
    const [keyword, setKeyword] = useState("");
 
-   const dispatch = useDispatch();
    const navigate = useNavigate();
    const { currentUser } = useContext(AuthContext);
    const { darkMode, themeHandler, themeClicked } = useContext(ThemeContext);
-   const { readCount, counts } = useSelector((state) => state.notif);
    const { _id, name, profilePicture } = currentUser;
 
-   useEffect(() => {
-      dispatch(getNotif(counts));
-   }, [dispatch, counts]);
+   const getCounts = async () => {
+      const { data } = await getReadCountsAPI();
+      return data;
+   }
+
+   const { data } = useSWR("notif", getCounts);
 
    const toggleHandler = () => {
       themeHandler();
@@ -70,7 +70,7 @@ const Header = () => {
             }
             <div className="notifIcon">
                <BellIcon className="icons" onClick={() => navigate("/forum/notification")} />
-               {readCount > 0 && <div className="dots"></div>}
+               {data > 0 && <div className="dots"></div>}
             </div>
             <img
                alt=""

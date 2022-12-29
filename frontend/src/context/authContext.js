@@ -19,8 +19,7 @@ export const AuthContextProvider = ({ children }) => {
    const logout = async () => {
       setCurrentUser(null);
       localStorage.removeItem("user");
-      const { data } = await logoutAPI();
-      console.log({ data });
+      await logoutAPI();
    }
 
    const updateUser = (fields) => {

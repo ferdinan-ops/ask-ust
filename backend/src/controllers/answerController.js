@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
-
 const Answers = require("../models/answerModel");
 const Users = require("../models/userModel");
+const Posts = require("../models/postModel");
+
 const { pushNotification } = require("./notifController");
+const { createReport } = require("./reportController");
 
 const createAnswer = async (req, res) => {
    const { desc, postId, userPostId } = req.body;
@@ -72,6 +74,8 @@ const deleteAnswer = async (req, res) => {
    const { userId } = req.userInfo;
 
    try {
+      const post = await Posts.findOne({ bestAnswerId: id });
+      await Posts.findByIdAndUpdate(post._id, { bestAnswerId: "" });
       await Users.findByIdAndUpdate(userId, { $inc: { score: -5 } });
       await Answers.findByIdAndDelete(id);
       res.status(200).json({ msg: "Berhasil menghapus jawaban" });
@@ -127,4 +131,20 @@ const dislikeAnswer = async (req, res) => {
    }
 }
 
-module.exports = { createAnswer, updateAnswer, deleteAnswer, getAnswers, likeAnswer, dislikeAnswer, getAnswer };
+const reportAnswer = async (req, res) => {
+   const { postId, message, userAnswerId } = req.body;
+   const { userId } = req.userInfo;
+   const messageNotif = "Jawaban anda telah dilaporkan, silahkan buat jawaban yang baik & benar";
+   const link = `/forum/questions/${postId}`;
+   const system = "63ad4799c1ebf859f3011684";
+
+   try {
+      await createReport({ message, postId, userSender: userId, userTarget: userAnswerId });
+      await pushNotification({ message: messageNotif, userTarget: userAnswerId, link, userSender: system });
+      res.status(200).json({ msg: "Berhasil melaporkan jawaban" });
+   } catch (error) {
+      res.status(500).json({ error });
+   }
+}
+
+module.exports = { createAnswer, updateAnswer, deleteAnswer, getAnswers, likeAnswer, dislikeAnswer, getAnswer, reportAnswer };
