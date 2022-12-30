@@ -16,7 +16,7 @@
 
             button {
                @include makeButton($padding: 10px 30px, $rounded: 6px 6px 0 0, $bg: transparent);
-               @include typoGraphy($fontSize: 16px, $color: themed("font"));
+               @include typoGraphy($fontSize: 16px, $color: themed("font"), $weight: 500);
                border-bottom: 5px solid transparent;
 
                @include mobileVersion {

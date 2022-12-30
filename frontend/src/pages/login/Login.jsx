@@ -25,6 +25,7 @@ const Login = () => {
       try {
          await login({ email, password });
          setIsLoading(false);
+         toast.success("Berhasil masuk!");
          navigate("/forum/questions");
       } catch (error) {
          setIsLoading(false);

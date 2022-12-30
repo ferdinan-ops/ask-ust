@@ -64,46 +64,52 @@ const Notification = () => {
                   <b>Klik notifikasinya untuk menuju ke topik.</b>
                </p>
             </div>
-            <button className={`allRead ${loadingBtn ? "loading" : ""}`} onClick={readAllHandler}>
-               {loadingBtn ? <Ring size={16} lineWeight={8} speed={2} color="#fff" /> : "Tandai Sudah dibaca"}
-            </button>
-            <div className="notifContent">
-               {notif.map((item) => (
-                  <div
-                     className={`notifCard ${item.read ? "read" : ""}`}
-                     key={item._id}
-                     onClick={() => readHandler(item._id, item.link)}
-                  >
-                     <div className="notifUserInfo">
-                        <img
-                           alt=""
-                           src={
-                              item?.userSender?.profilePicture
-                                 ? `${IMG_URI}/${item?.userSender?.profilePicture}`
-                                 : "/profile.svg"
-                           }
-                        />
-                        <div className="notifDetails">
-                           <span>
-                              {item?.userSender?.name}
-                              <span className="notifDesc"> {item.message}</span>
-                           </span>
-                           <Moment className="notifDate" fromNow>
-                              {item.createdAt}
-                           </Moment>
+            {notif.length > 0 ? (
+               <>
+                  <button className={`allRead ${loadingBtn ? "loading" : ""}`} onClick={readAllHandler}>
+                     {loadingBtn ? <Ring size={16} lineWeight={8} speed={2} color="#fff" /> : "Tandai Sudah dibaca"}
+                  </button>
+                  <div className="notifContent">
+                     {notif.map((item) => (
+                        <div
+                           className={`notifCard ${item.read ? "read" : ""}`}
+                           key={item._id}
+                           onClick={() => readHandler(item._id, item.link)}
+                        >
+                           <div className="notifUserInfo">
+                              <img
+                                 alt=""
+                                 src={
+                                    item?.userSender?.profilePicture
+                                       ? `${IMG_URI}/${item?.userSender?.profilePicture}`
+                                       : "/profile.svg"
+                                 }
+                              />
+                              <div className="notifDetails">
+                                 <span>
+                                    {item?.userSender?.name}
+                                    <span className="notifDesc"> {item.message}</span>
+                                 </span>
+                                 <Moment className="notifDate" fromNow>
+                                    {item.createdAt}
+                                 </Moment>
+                              </div>
+                           </div>
                         </div>
-                     </div>
+                     ))}
+                     {notif.length > 5 && (
+                        <InfiniteScroll
+                           counts={counts}
+                           dataLength={notif.length}
+                           isLoading={isLoading}
+                           loadMoreHandler={loadHandler}
+                        />
+                     )}
                   </div>
-               ))}
-               {notif.length > 5 && (
-                  <InfiniteScroll
-                     counts={counts}
-                     dataLength={notif.length}
-                     isLoading={isLoading}
-                     loadMoreHandler={loadHandler}
-                  />
-               )}
-            </div>
+               </>
+            ) : (
+               <h4 className="noNotif">Belum ada notifikasi</h4>
+            )}
          </div>
       </div>
    );

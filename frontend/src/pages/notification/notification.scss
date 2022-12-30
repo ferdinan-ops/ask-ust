@@ -16,6 +16,13 @@
          width: 100%;
       }
 
+      .noNotif {
+         text-align: center;
+         font-style: italic;
+         color: rgba($color: themed("font"), $alpha: .5);
+         margin-top: 20px;
+      }
+
       .notifWrapper {
          .pagesTitle {
             gap: 10px;

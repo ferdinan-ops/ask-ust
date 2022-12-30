@@ -48,20 +48,20 @@ const Posts = () => {
    };
 
    return (
-      posts.length > 0 ? (
-         <>
-            <div className="pagesTitle">
-               <h1>{params ? `Pencarian: ${params}` : "Semua Pertanyaan"}</h1>
-               <span>
-                  Kamu bisa mencari seluruh soal yang terbaru dan belum pernah di jawab oleh siapapun disini!
-               </span>
-            </div>
-            <div className="posts">
-               <div className="postsWrapper">
-                  <div className="postsTabs">
-                     <button className={isNew ? "active" : ""} onClick={setTabs}>Terbaru</button>
-                     <button className={!isNew ? "active" : ""} onClick={setTabs}>Belum terjawab</button>
-                  </div>
+      <>
+         <div className="pagesTitle">
+            <h1>{params ? `Pencarian: ${params}` : "Semua Pertanyaan"}</h1>
+            <span>
+               Kamu bisa mencari seluruh soal yang terbaru dan belum pernah di jawab oleh siapapun disini!
+            </span>
+         </div>
+         <div className="posts">
+            <div className="postsWrapper">
+               <div className="postsTabs">
+                  <button className={isNew ? "active" : ""} onClick={setTabs}>Terbaru</button>
+                  <button className={!isNew ? "active" : ""} onClick={setTabs}>Belum terjawab</button>
+               </div>
+               {posts.length > 0 ? (
                   <div className="postWrapper">
                      {posts.map((post) => (
                         <Post post={post} key={post._id} />
@@ -75,15 +75,15 @@ const Posts = () => {
                         />
                      )}
                   </div>
-               </div>
+               ) : (
+                  params ? (
+                     <h4>Tidak dapat menemukan pertanyaan dengan kata kunci: {params} 😕</h4>
+                  ) : (
+                     <h4>Tidak ada pertanyaan yang belum terjawab 😕</h4>
+                  ))}
             </div>
-         </>
-      ) : (
-         params && (
-            <h2 className="noPost">
-               Tidak dapat menemukan pertanyaan dengan kata kunci: {params} 😕
-            </h2>
-         ))
+         </div>
+      </>
    );
 };
 

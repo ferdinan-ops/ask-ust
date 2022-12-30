@@ -75,7 +75,7 @@ const deleteAnswer = async (req, res) => {
 
    try {
       const post = await Posts.findOne({ bestAnswerId: id });
-      await Posts.findByIdAndUpdate(post._id, { bestAnswerId: "" });
+      if (post) await Posts.findByIdAndUpdate(post._id, { bestAnswerId: "" });
       await Users.findByIdAndUpdate(userId, { $inc: { score: -5 } });
       await Answers.findByIdAndDelete(id);
       res.status(200).json({ msg: "Berhasil menghapus jawaban" });
