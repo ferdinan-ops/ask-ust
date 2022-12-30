@@ -23,10 +23,10 @@ dotenv.config();
 mongoose.set("strictQuery", false);
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 5000;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({ credentials: true, origin: process.env.ORIGIN }));
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
@@ -71,7 +71,5 @@ app.use("/api/v1/assets", express.static(path.join(__dirname, "assets")));
 /* CONNECT */
 mongoose.connect(process.env.MONGO_URI).then((conn) => {
    console.log(`MongoDB connected: ${conn.connection.host}`);
-   app.listen(process.env.PORT, () => {
-      console.log(`Server running on port ${process.env.PORT}`);
-   });
+   app.listen(port, () => console.log(`Server is running on port ${port}`));
 }).catch((err) => console.log(err));
