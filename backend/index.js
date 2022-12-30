@@ -71,5 +71,4 @@ app.use("/api/v1/assets", express.static(path.join(__dirname, "assets")));
 /* CONNECT */
 mongoose.connect(process.env.MONGO_URI).then((conn) => {
    console.log(`MongoDB connected: ${conn.connection.host}`);
-   app.listen(port, () => console.log(`Server is running on port ${port}`));
 }).catch((err) => console.log(err));
