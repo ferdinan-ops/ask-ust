@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-   baseURL: process.env.REACT_APP_API_URI,
+   baseURL: "https://ask-ust-api.vercel.app/api/v1",
    withCredentials: true,
    headers: { "Content-Type": "Application/json" },
 });
