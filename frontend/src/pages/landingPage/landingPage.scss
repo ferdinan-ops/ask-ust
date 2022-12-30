@@ -386,12 +386,20 @@ main {
                gap: 30px;
             }
 
+            @include mobileVersion {
+               gap: 15px;
+            }
+
             .team-card {
                @include flexStyle($align: center, $justify: center, $direction: column, $gap: 20px);
                width: 22%;
 
                @include tabletVersion {
                   width: 160px;
+               }
+
+               @include mobileVersion {
+                  width: 150px;
                }
 
                .photos {
