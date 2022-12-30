@@ -12,7 +12,7 @@ import { Answers, More, Warning } from "../../components";
 import { AuthContext } from "../../context/authContext";
 import { IMG_URI } from "../../utils/dummy";
 
-import "prismjs/themes/prism-laserwave.css";
+import "../../prism-laserwave.css";
 import "./detail.scss";
 
 const Detail = () => {

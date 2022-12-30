@@ -11,7 +11,7 @@ import { AuthContext } from "../../context/authContext";
 import { IMG_URI } from "../../utils/dummy";
 import More from "../more/More";
 
-import "prismjs/themes/prism-laserwave.css";
+import "../../prism-laserwave.css";
 import "./answer.scss";
 
 const Answer = ({ answer, bestAnswerId, userPostId, postId }) => {
