@@ -29,8 +29,11 @@
             width: fit-content;
             margin-left: auto;
             box-shadow: themed("shadow");
-            @include makeButton($padding: 10px 20px, $rounded: 8px, $bg: themed("primary"));
+            width: 144px;
+            height: 42px;
+            @include makeButton($padding: 0, $rounded: 8px, $bg: themed("primary"));
             @include typoGraphy($fontSize: 14px, $weight: 600, $color: #fff);
+            @include flexStyle($align: center, $justify: center);
 
             &:hover {
                background-color: darken(themed("primary"), 10%);
@@ -38,7 +41,8 @@
 
             @include mobileVersion {
                font-size: 13px;
-               padding: 8px 16px;
+               width: 120px;
+               height: 36px;
             }
          }
       }

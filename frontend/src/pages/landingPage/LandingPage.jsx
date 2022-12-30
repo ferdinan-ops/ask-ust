@@ -24,7 +24,7 @@ const LandingPage = () => {
 
    return (
       <div>
-         <div className={`mobile-nav ${isShow ? "active" : ""}`} onClick={() => setIsShow(false)}>
+         <div className={`mobile-nav ${isShow ? "active" : ""}`}>
             <XMarkIcon className="icons" onClick={() => setIsShow(false)} />
             {links.map((item) => (
                <div className="nav-item" key={item}>

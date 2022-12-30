@@ -111,6 +111,27 @@
                      overflow-wrap: break-word;
                   }
 
+                  p>a {
+                     display: inline-block;
+                     max-width: 640px;
+                     color: themed("primary");
+                     white-space: nowrap;
+                     overflow: hidden;
+                     text-overflow: ellipsis;
+
+                     @include tabletVersion {
+                        max-width: 500px;
+                     }
+
+                     @include mobileVersion {
+                        max-width: 300px;
+                     }
+                  }
+
+                  img {
+                     display: none;
+                  }
+
                   @include mobileVersion {
                      font-size: 13px;
                   }

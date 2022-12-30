@@ -5,8 +5,10 @@ const mongoose = require("mongoose");
 const express = require("express");
 const dotenv = require("dotenv");
 const multer = require("multer");
+const sharp = require("sharp");
 const cors = require("cors");
 const path = require("path");
+const fs = require("fs");
 
 /* ROUTES */
 const answerRoutes = require("./src/routes/answerRoute");
@@ -32,7 +34,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 /* UPLOAD CONFIG */
 const storage = multer.diskStorage({
    destination: (req, file, cb) => {
-      cb(null, "assets");
+      cb(null, "uploads");
    },
    filename: (req, file, cb) => {
       cb(null, Date.now() + " - " + file.originalname);
@@ -51,8 +53,18 @@ app.use("/api/v1", notifRoutes);
 
 /* UPLOAD ROUTES */
 app.use("/api/v1/upload", upload.single("file"), (req, res) => {
-   const { file } = req;
-   res.status(200).json(file.filename);
+   const { filename } = req.file;
+   const compressedPath = path.join(__dirname, "assets", filename);
+
+   sharp(req.file.path)
+      .resize(200, 200)
+      .jpeg({ quality: 90, chromaSubsampling: '4:4:4' })
+      .toFile(compressedPath, (err, info) => {
+         if (info) {
+            fs.unlinkSync(req.file.path);
+            res.status(200).json(filename);
+         }
+      });
 });
 app.use("/api/v1/assets", express.static(path.join(__dirname, "assets")));
 

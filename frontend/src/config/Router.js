@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 import React from "react";
 
 import { Layout } from "../components";
-import { Home, Login, Register, Create, Tags, Users, Profile, Notification, Detail, LandingPage, Tagged } from "../pages";
+import { Home, Login, Register, Create, Tags, Users, Profile, Notification, Detail, LandingPage, Tagged, NotFound } from "../pages";
 
 const Router = ({ currentUser }) => {
    const ProtectedRoute = ({ children }) => {
@@ -100,6 +100,10 @@ const Router = ({ currentUser }) => {
             </ProtectedAuth>
          ),
       },
+      {
+         path: "*",
+         element: <NotFound />,
+      }
    ]);
 
    return (

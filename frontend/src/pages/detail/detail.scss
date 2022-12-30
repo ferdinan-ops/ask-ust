@@ -89,6 +89,35 @@
                      overflow-wrap: break-word !important;
                   }
 
+                  p>a {
+                     display: inline-block;
+                     max-width: 857px;
+                     color: themed("primary");
+                     white-space: nowrap;
+                     overflow: hidden;
+                     text-overflow: ellipsis;
+
+                     @include tabletVersion {
+                        max-width: 500px;
+                     }
+
+                     @include mobileVersion {
+                        max-width: 300px;
+                     }
+                  }
+
+                  img {
+                     max-width: 857px;
+
+                     @include tabletVersion {
+                        max-width: 591px;
+                     }
+
+                     @include mobileVersion {
+                        width: 100%;
+                     }
+                  }
+
                   ul,
                   ol {
                      padding-left: 32px;

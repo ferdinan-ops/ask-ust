@@ -228,6 +228,7 @@ main {
          .home-top {
             @include flexStyle($direction: column, $align: center);
             text-align: center;
+            color: $font;
             width: 1080px;
             padding: 0 100px;
             margin-bottom: 90px;
@@ -247,7 +248,7 @@ main {
             }
 
             h1 {
-               @include typoGraphy($fontSize: 48px, $lineHeight: 64px, $weight: 700);
+               @include typoGraphy($fontSize: 48px, $lineHeight: 64px, $weight: 700, $color: $font);
                margin-bottom: 20px;
 
                @include tabletVersion {

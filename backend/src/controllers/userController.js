@@ -110,7 +110,7 @@ const getMySavedPosts = async (req, res) => {
 
    try {
       let data = await Posts.aggregate([
-         { $match: { saved: [userId] } },
+         { $match: { saved: { $in: [userId] } } },
          { $sort: { createdAt: - 1 } },
          {
             $lookup: {

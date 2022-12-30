@@ -8,7 +8,6 @@
          .postsTabs {
             display: flex;
             margin: 50px 0 10px 0;
-            // margin-top: 50px; 
             border-bottom: 2px solid themed("border");
 
             @include mobileVersion {

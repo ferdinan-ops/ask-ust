@@ -67,7 +67,7 @@ const getPostByTag = async (req, res) => {
 
    try {
       let data = await Posts.aggregate([
-         { $match: { tags: [tag] } },
+         { $match: { tags: { $elemMatch: { $in: [tag] } } } },
          { $sort: { createdAt: - 1 } },
          {
             $lookup: {

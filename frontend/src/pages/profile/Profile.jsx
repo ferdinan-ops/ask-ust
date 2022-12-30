@@ -83,7 +83,7 @@ const Profile = () => {
             toast.success("Data anda berhasil di ubah");
             updateUser({ ...currentUser, ...fields });
             setIsLoading(false);
-         }, 1500);
+         }, 1000);
       } catch (error) {
          console.log(error);
       }
