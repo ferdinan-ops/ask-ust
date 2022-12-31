@@ -68,6 +68,18 @@ app.use("/api/v1/upload", upload.single("file"), (req, res) => {
 });
 app.use("/api/v1/assets", express.static(path.join(__dirname, "assets")));
 
+/* SERVING THE FRONTEND */
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("*", function (_, res) {
+   res.sendFile(
+      path.join(__dirname, "../frontend/build/index.html"),
+      function (err) {
+         res.status(500).send(err);
+      }
+   );
+});
+
 /* CONNECT */
 mongoose.connect(process.env.MONGO_URI).then((conn) => {
    console.log(`MongoDB connected: ${conn.connection.host}`);
