@@ -7,7 +7,7 @@ import { useSWRConfig } from "swr";
 
 import { deleteAnswerAPI, makeBestAnswerAPI, reportAnswerAPI, reportPostAPI } from "../../config/api";
 import { deletePost, getPost, getPosts } from "../../config/redux/features/postSlice";
-import { getAnswers, setIsUpdate } from "../../config/redux/features/answerSlice";
+import { getAnswers, setIsUpdate, setLoadingBest } from "../../config/redux/features/answerSlice";
 import { AuthContext } from "../../context/authContext";
 import Modal from "../modal/Modal";
 import "./more.scss";
@@ -50,10 +50,12 @@ const More = ({ isPost, isMine, id, userPostId, postId, userAnswerId, bestAnswer
 
    const setBestAnswerHandler = async () => {
       try {
+         setLoadingBest(true);
          await makeBestAnswerAPI(postId, { answerId: id, userAnswerId });
          mutate("notif");
          dispatch(getAnswers(postId));
          dispatch(getPost(postId));
+         setLoadingBest(false);
       } catch (error) {
          console.log(error);
       }

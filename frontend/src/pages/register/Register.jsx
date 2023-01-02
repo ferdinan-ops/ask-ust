@@ -76,7 +76,7 @@ const Register = () => {
                a<span className="logo">?</span>k<span>.</span>UST
             </div>
             <div className="wrapper">
-               <img src="/register.svg" alt="" />
+               <img src="/images/register.svg" alt="" />
                <div className="desc">
                   <span>ASK-UST.VERCEL.APP</span>
                   <p>Ayo mendaftar dan rajin berdiskusi di sini supaya masalah Anda cepat terselesaikan biar gak stress mulu~</p>

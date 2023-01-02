@@ -1,7 +1,8 @@
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Ring } from "@uiball/loaders";
 import Moment from "react-moment";
 import Prism from "prismjs";
 
@@ -21,6 +22,7 @@ const Answer = ({ answer, bestAnswerId, userPostId, postId }) => {
    const dispatch = useDispatch();
    const navigate = useNavigate();
    const { currentUser } = useContext(AuthContext);
+   const { loadingBest } = useSelector((state) => state.answer);
    const { _id: userId } = currentUser;
 
    useEffect(() => { Prism.highlightAll() });
@@ -54,7 +56,9 @@ const Answer = ({ answer, bestAnswerId, userPostId, postId }) => {
                <Moment fromNow>{answer.createdAt}</Moment>
             </div>
             <div className="reactions">
-               {bestAnswerId && <span className="bestAnswer">Jawaban Terbaik</span>}
+               {loadingBest ? (
+                  <Ring size={20} lineWeight={8} speed={2} color="#00bac7" />
+               ) : (bestAnswerId && <span className="bestAnswer">Jawaban Terbaik</span>)}
             </div>
             <More
                id={answer._id}

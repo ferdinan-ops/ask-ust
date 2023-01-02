@@ -34,7 +34,7 @@ const Router = ({ currentUser }) => {
          children: [
             {
                path: "/forum",
-               element: <AutoNavigate />
+               element: <AutoNavigate />,
             },
             {
                path: "/forum/questions",

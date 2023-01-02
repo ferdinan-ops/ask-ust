@@ -70,7 +70,7 @@ const LandingPage = () => {
                         <ArrowRightIcon className="icons" />
                      </Link>
                   </div>
-                  <img src="/app.png" alt="" />
+                  <img src="/images/app.png" alt="" />
                </div>
             </section>
             <section className="features" id="features">

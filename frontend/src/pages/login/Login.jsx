@@ -66,7 +66,7 @@ const Login = () => {
          </div>
          <div className="right">
             <div className="wrapper">
-               <img src="/login.svg" alt="" />
+               <img src="/images/login.svg" alt="" />
                <div className="desc">
                   <span>ASK-UST.VERCEL.APP</span>
                   <p>Diskusi secara online semakin mudah – tetap berdiskusi walaupun pake kuota dari Kemendikbud hehe~</p>

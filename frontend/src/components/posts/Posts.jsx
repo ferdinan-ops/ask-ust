@@ -6,6 +6,7 @@ import { getPosts, searchPost } from "../../config/redux/features/postSlice";
 import { InfiniteScroll } from "../../components";
 import Post from "../post/Post";
 import "./posts.scss";
+import { Ring } from "@uiball/loaders";
 
 const Posts = () => {
    const [isNew, setIsNew] = useState(true);
@@ -76,11 +77,16 @@ const Posts = () => {
                      )}
                   </div>
                ) : (
-                  params ? (
+                  !isLoading ? params ? (
                      <h4>Tidak dapat menemukan pertanyaan dengan kata kunci: {params} 😕</h4>
                   ) : (
                      <h4>Tidak ada pertanyaan yang belum terjawab 😕</h4>
-                  ))}
+                  ) : (
+                     <div className="loadingPage">
+                        <Ring size={40} lineWeight={8} speed={2} color="#00bac7" />
+                     </div>
+                  )
+               )}
             </div>
          </div>
       </>

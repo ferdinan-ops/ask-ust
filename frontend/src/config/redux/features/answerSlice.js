@@ -16,12 +16,16 @@ export const answerSlice = createSlice({
    initialState: {
       answers: [],
       answer: {},
+      loadingBest: false,
       isUpdate: false,
       isLoading: false,
    },
    reducers: {
       setIsUpdate: (state, { payload }) => {
          state.isUpdate = payload;
+      },
+      setLoadingBest: (state, { payload }) => {
+         state.loadingBest = payload;
       }
    },
    extraReducers: (builder) => {
@@ -41,5 +45,5 @@ export const answerSlice = createSlice({
    }
 });
 
-export const { setIsUpdate } = answerSlice.actions;
+export const { setIsUpdate, setLoadingBest } = answerSlice.actions;
 export default answerSlice.reducer;

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { Ring } from '@uiball/loaders';
 
-import { getUsers, searchUser } from '../../config/redux/features/userSlice';
+import { getUsers, searchUser, setIsLoading } from '../../config/redux/features/userSlice';
 import { InfiniteScroll } from '../../components';
 import { IMG_URI } from '../../utils/dummy';
 import "./users.scss";
@@ -35,6 +35,7 @@ const Users = () => {
          pathname: "/forum/users",
          search: `?${createSearchParams({ search: keyword })}`
       });
+      setIsLoading(true);
       setPage(9)
    }
 

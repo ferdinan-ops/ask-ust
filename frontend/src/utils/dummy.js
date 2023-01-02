@@ -2,23 +2,23 @@ export const IMG_URI = process.env.REACT_APP_IMG_URI;
 
 export const teams = [
    {
-      img: "/ferdinan.png",
+      img: "/images/ferdinan.png",
       name: "Ferdinan Tumanggor"
    },
    {
-      img: "/chris.jpeg",
+      img: "/images/chris.jpeg",
       name: "Chris Baeha"
    }, {
-      img: "/dion.jpeg",
+      img: "/images/dion.jpeg",
       name: "Dionisius Siahaan"
    }, {
-      img: "/samuel.jpeg",
+      img: "/images/samuel.jpeg",
       name: "Samuel Manihuruk "
    }, {
-      img: "/yosia.jpeg",
+      img: "/images/yosia.jpeg",
       name: "Yosia Silalahi"
    }, {
-      img: "/ferry.jpeg",
+      img: "/images/ferry.jpeg",
       name: "Fery Sirait"
    },
 ]

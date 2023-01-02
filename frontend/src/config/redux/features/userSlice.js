@@ -52,6 +52,11 @@ const userSlice = createSlice({
          counts: 0,
       },
    },
+   reducers: {
+      setIsLoading: (state, { payload }) => {
+         state.isLoading = payload;
+      }
+   },
    extraReducers: (builder) => {
       builder.addCase(getUsers.pending, (state) => {
          state.isLoading = true;
@@ -98,4 +103,5 @@ const userSlice = createSlice({
    }
 });
 
+export const { setIsLoading } = userSlice.actions;
 export default userSlice.reducer;

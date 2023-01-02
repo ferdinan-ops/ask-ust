@@ -52,6 +52,11 @@ export const tagSlice = createSlice({
       },
       tag: {},
    },
+   reducers: {
+      setIsLoading: (state, { payload }) => {
+         state.isLoading = payload;
+      }
+   },
    extraReducers: (builder) => {
       builder.addCase(createTag.pending, (state) => {
          state.isLoading = true;
@@ -104,4 +109,5 @@ export const tagSlice = createSlice({
    }
 });
 
+export const { setIsLoading } = tagSlice.actions;
 export default tagSlice.reducer;

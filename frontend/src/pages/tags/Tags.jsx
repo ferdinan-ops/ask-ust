@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { Ring } from '@uiball/loaders';
 
-import { getTags, searchTag } from '../../config/redux/features/tagSlice';
+import { getTags, searchTag, setIsLoading } from '../../config/redux/features/tagSlice';
 import { InfiniteScroll } from '../../components';
 import "./tags.scss";
 
@@ -36,6 +36,7 @@ const Tags = () => {
          pathname: "/forum/tags",
          search: `?${createSearchParams({ search: keyword })}`
       });
+      setIsLoading(true);
       setPage(9);
    }
 
@@ -68,9 +69,11 @@ const Tags = () => {
                )) : (
                   isLoading ? (
                      <div className='loadingPage'>
-                        <Ring size={30} lineWeight={8} speed={2} color="#00bac7" />
+                        <Ring size={30} lineWeight={4} speed={2} color="#00bac7" />
                      </div>
-                  ) : (params && <p>Maaf tag <b><i>{params}</i></b> tidak ditemukan 😔</p>)
+                  ) : (
+                     params && <p>Maaf tag <b><i>{params}</i></b> tidak ditemukan 😔</p>
+                  )
                )}
                {tags.length > 8 && (
                   <InfiniteScroll

@@ -84,12 +84,17 @@
                   font-weight: 500;
 
                   pre,
-                  code {
+                  code,
+                  code>span {
                      white-space: pre-wrap !important;
                      overflow-wrap: break-word !important;
+
+                     @include mobileVersion {
+                        width: 100% !important;
+                     }
                   }
 
-                  p>a {
+                  a {
                      display: inline-block;
                      max-width: 857px;
                      color: themed("primary");

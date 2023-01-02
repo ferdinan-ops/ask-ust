@@ -67,7 +67,7 @@ const Notification = () => {
             {notif.length > 0 ? (
                <>
                   <button className={`allRead ${loadingBtn ? "loading" : ""}`} onClick={readAllHandler}>
-                     {loadingBtn ? <Ring size={16} lineWeight={8} speed={2} color="#fff" /> : "Tandai Sudah dibaca"}
+                     {loadingBtn ? <Ring size={16} lineWeight={4} speed={2} color="#fff" /> : "Tandai Sudah dibaca"}
                   </button>
                   <div className="notifContent">
                      {notif.map((item) => (
@@ -108,7 +108,13 @@ const Notification = () => {
                   </div>
                </>
             ) : (
-               <h4 className="noNotif">Belum ada notifikasi</h4>
+               !isLoading ? (
+                  <h4 className="noNotif">Belum ada notifikasi</h4>
+               ) : (
+                  <div className="loadingPage">
+                     <Ring size={40} lineWeight={4} speed={2} color="#00bac7" />
+                  </div>
+               )
             )}
          </div>
       </div>
