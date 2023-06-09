@@ -106,7 +106,11 @@ const Profile = () => {
                      <div className="profileUserInfo">
                         <img src={user.profilePicture ? `${IMG_URI}/${user.profilePicture}` : "/profile.svg"} alt="" />
                         <span>{user.name}</span>
-                        <p>{user.bio || "Belum memiliki bio"}</p>
+                        <p>{user.bio ? user.bio : "Belum memiliki bio"}</p>
+                        <div className='userPoint'>
+                           <span>⭐ </span>
+                           <span>{user.score}</span>
+                        </div>
                      </div>
                      {currentUserId === id && (
                         <div className="profileButtons">

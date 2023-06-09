@@ -1,105 +1,118 @@
 @import "../../style.scss";
 
 .tagsPages {
-   @include themify($themes) {
-      @include pages(30px 20px 30px 30px);
+  @include themify($themes) {
+    @include pages(30px 20px 30px 30px);
 
-      @include tabletVersion {
-         padding: 30px 20px 20px 20px;
+    @include tabletVersion {
+      padding: 30px 20px 20px 20px;
+    }
+
+    @include mobileVersion {
+      padding: 30px 20px 60px 20px;
+    }
+
+    .tagsContainer {
+      .tagsSearchBar {
+        width: 100%;
+        margin-top: 30px;
+        @include flexStyle($align: center, $gap: 16px);
+        @include makeButton(
+          $bg: themed("searchBg"),
+          $padding: 10px 18px,
+          $rounded: 8px
+        );
+        cursor: auto;
+
+        @include mobileVersion {
+          padding: 8px 16px;
+        }
+
+        input {
+          width: 100%;
+          @include input($bg: transparent);
+          @include typoGraphy(
+            $weight: 500,
+            $fontSize: 15px,
+            $color: themed("font")
+          );
+
+          @include mobileVersion {
+            font-size: 14px;
+          }
+        }
+
+        .icons {
+          width: 22px;
+          color: #757575;
+          cursor: auto;
+
+          @include mobileVersion {
+            width: 20px;
+          }
+        }
       }
 
-      @include mobileVersion {
-         padding: 30px 20px 60px 20px;
-      }
+      .tagsContent {
+        margin-top: 30px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
 
-      .tagsContainer {
-         .tagsSearchBar {
-            width: 100%;
-            margin-top: 30px;
-            @include flexStyle($align: center, $gap: 16px);
-            @include makeButton($bg: themed("searchBg"), $padding: 10px 18px, $rounded: 8px);
-            cursor: auto;
+        @include tabletVersion {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include mobileVersion {
+          grid-template-columns: repeat(1, 1fr);
+        }
+
+        .tag {
+          @include flexStyle($direction: column, $gap: 10px);
+          @include makeButton(
+            $padding: 16px,
+            $bg: themed("contentBg"),
+            $rounded: 8px,
+            $color: #272d3e
+          );
+          cursor: pointer;
+          transition: 0.3s ease-in-out border;
+          border: 2px solid themed("contentBorder");
+
+          &:hover {
+            border: 2px solid themed("primary");
+          }
+
+          span {
+            @include truncate(4);
+            @include typoGraphy($color: themed("font"), $fontSize: 14px);
 
             @include mobileVersion {
-               padding: 8px 16px;
+              font-size: 13px;
+            }
+          }
+
+          button {
+            width: fit-content;
+            @include makeButton(
+              $padding: 4px 8px,
+              $rounded: 6px,
+              $color: #272d3e,
+              $bg: lighten(themed("primary"), 55%)
+            );
+            @include typoGraphy($weight: 500, $fontSize: 12px);
+
+            &:hover {
+              background-color: lighten(themed("primary"), 50%);
             }
 
-            input {
-               width: 100%;
-               @include input($bg: transparent);
-               @include typoGraphy($weight: 500, $fontSize: 15px, $color: themed("font"));
-
-               @include mobileVersion {
-                  font-size: 14px;
-               }
+            @include mobileVersion {
+              padding: 3px 6px;
+              font-size: 11px;
             }
-
-            .icons {
-               width: 22px;
-               color: #757575;
-               cursor: auto;
-
-               @include mobileVersion {
-                  width: 20px;
-               }
-            }
-         }
-
-         .tagsContent {
-            margin-top: 30px;
-            flex-wrap: wrap;
-            @include flexStyle($gap: 3.1%);
-
-            @include tabletVersion {
-               justify-content: space-between;
-            }
-
-            .tag {
-               @include flexStyle($direction: column, $gap: 10px);
-               @include makeButton($padding: 16px, $bg: themed("contentBg"), $rounded: 8px, $color: #272d3e);
-               cursor: pointer;
-               width: 268px;
-               transition: 0.3s;
-               margin-bottom: 3.1%;
-               border: 2px solid themed("contentBorder");
-
-               &:hover {
-                  border: 2px solid themed("primary");
-               }
-
-               @include tabletVersion {
-                  width: 286.4px;
-               }
-
-               @include mobileVersion {
-                  width: 100%;
-               }
-
-               span {
-                  @include truncate(4);
-                  @include typoGraphy($color: themed("font"), $fontSize: 14px);
-
-                  @include mobileVersion {
-                     font-size: 13px;
-                  }
-               }
-
-               button {
-                  width: fit-content;
-                  @include makeButton($padding: 4px 8px, $rounded: 6px, $color: #272d3e, $bg: lighten(themed("primary"), 55%));
-                  @include typoGraphy($weight: 500, $fontSize: 12px);
-
-                  &:hover {
-                     background-color: lighten(themed("primary"), 50%);
-                  }
-
-                  @include mobileVersion {
-                     padding: 3px 6px;
-                     font-size: 11px;
-                  }
-               }
-            }
-         }
+          }
+        }
       }
-   }
+    }
+  }
 }

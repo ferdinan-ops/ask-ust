@@ -26,10 +26,10 @@ const Rightbar = () => {
             <div className="rightBottom">
                Hai {currentUser.name}, selamat datang di ask.UST, Mau tau kamu bisa apa aja disini 😝 ?
                <ul>
-                  <li>Kamu bisa membuat pertanyaan</li>
-                  <li>Kamu bisa menjawab pertanyaan</li>
-                  <li>Kamu bisa mencari pertanyaan</li>
-                  <li>Dan masih banyak lagi</li>
+                  <li><span>🤔</span>Buat pertanyaan</li>
+                  <li><span>😎</span>Jawab pertanyaan</li>
+                  <li><span>🧐</span>Cari pertanyaan</li>
+                  <li><span>😲</span>Dan masih banyak lagi</li>
                </ul>
             </div>
          </div>

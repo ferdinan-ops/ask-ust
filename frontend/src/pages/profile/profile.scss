@@ -1,189 +1,235 @@
 @import "../../style.scss";
 
 .profile {
-   @include themify($themes) {
-      @include pages(30px 20px 30px 30px);
+  @include themify($themes) {
+    @include pages(30px 20px 30px 30px);
+    position: relative;
 
-      @include tabletVersion {
-         padding: 30px 20px 20px 20px;
+    @include tabletVersion {
+      padding: 30px 20px 20px 20px;
+    }
+
+    @include mobileVersion {
+      padding: 30px 20px 60px 20px;
+    }
+
+    .imagesWrapper {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto;
+      position: relative;
+
+      .iconsWrapper {
+        position: absolute;
+        bottom: 0;
+        left: 70px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba($color: lighten(#000, 30%), $alpha: 80%);
+        @include flexStyle($justify: center, $align: center);
+        cursor: pointer;
+
+        &:hover {
+          background-color: lighten(#000, 30%);
+        }
+
+        .icons {
+          width: 22px;
+          color: #fff;
+        }
       }
 
-      @include mobileVersion {
-         padding: 30px 20px 60px 20px;
+      img {
+        @include profilePicture(100%);
+        cursor: pointer;
       }
+    }
 
-      .imagesWrapper {
-         width: 100px;
-         height: 100px;
-         margin: 0 auto;
-         position: relative;
+    .profileWrapper {
+      .profileHeading {
+        .profileUserInfo {
+          @include flexStyle($direction: column, $align: center);
+          color: themed("font");
 
-         .iconsWrapper {
+          .userPoint {
             position: absolute;
-            bottom: 0;
-            left: 70px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: rgba($color: lighten(#000, 30%), $alpha: 80%);
-            @include flexStyle($justify: center, $align: center);
-            cursor: pointer;
+            top: 30px;
+            right: 30px;
+            background-color: #fcb900;
+            padding: 16px 36px;
+            border-radius: 300px;
+            box-shadow: 0px 10px 20px rgba(252, 185, 0, 0.4);
 
-            &:hover {
-               background-color: lighten(#000, 30%);
+            span {
+              @include typoGraphy(
+                $weight: bold,
+                $fontSize: 20px,
+                $align: center,
+                $lineHeight: 18px,
+                $color: #272d3e
+              );
+
+              @include tabletVersion {
+                font-size: 15px;
+              }
+
+              @include mobileVersion {
+                font-size: 14px;
+              }
+
+              &:first-child {
+                margin-right: 6px;
+              }
+            }
+          }
+
+          img {
+            @include profilePicture(130px);
+            box-shadow: 0px 0px 30px rgba(0, 186, 199, 0.5);
+            margin-bottom: 30px;
+
+            @include tabletVersion {
+              @include profilePicture(120px);
+            }
+
+            @include mobileVersion {
+              @include profilePicture(100px);
+            }
+          }
+
+          span {
+            @include typoGraphy(
+              $weight: bold,
+              $fontSize: 32px,
+              $align: center,
+              $lineHeight: 36px
+            );
+            margin-bottom: 20px;
+
+            @include tabletVersion {
+              font-size: 30px;
+            }
+
+            @include mobileVersion {
+              font-size: 28px;
+            }
+          }
+
+          p {
+            @include typoGraphy(
+              $align: center,
+              $fontSize: 14px,
+              $color: rgb(142, 142, 142)
+            );
+
+            @include tabletVersion {
+              font-size: 13px;
+            }
+
+            @include mobileVersion {
+              font-size: 12px;
+            }
+          }
+        }
+
+        .profileButtons {
+          @include flexStyle($gap: 30px, $justify: center);
+          margin-top: 30px;
+
+          @include mobileVersion {
+            gap: 16px;
+          }
+
+          button {
+            @include makeButton(
+              $padding: 12px 0,
+              $rounded: 8px,
+              $bg: themed("bg"),
+              $color: themed("font")
+            );
+            @include typoGraphy($weight: bold, $fontSize: 16px, $align: center);
+            width: 200px;
+
+            @include tabletVersion {
+              padding: 11px 0;
+              font-size: 15px;
+            }
+
+            @include mobileVersion {
+              width: 100%;
+              font-size: 14px;
+              padding: 10px 0;
+            }
+
+            &:first-child {
+              border: 2px solid themed("border");
+
+              &:hover {
+                background-color: darken(themed("bg"), 5%);
+              }
+            }
+
+            &:last-child {
+              border: 2px solid #eb5757;
+              background-color: #eb5757;
+              color: #fff;
+
+              &:hover {
+                background-color: darken(#eb5757, 10%);
+              }
+            }
+          }
+        }
+      }
+
+      .profileContents {
+        margin-top: 50px;
+
+        @include mobileVersion {
+          margin-top: 36px;
+        }
+
+        .profilePosts {
+          .nonePost {
+            text-align: center;
+            color: rgba($color: themed("font"), $alpha: 80%);
+          }
+        }
+
+        .profileTabs {
+          @include flexStyle($align: center, $justify: center);
+          margin-bottom: 20px;
+
+          @include mobileVersion {
+            margin-bottom: 0;
+          }
+
+          button {
+            @include flexStyle($align: center, $flex: 1, $justify: center);
+            @include makeButton($padding: 12px 0 10px 0, $bg: transparent);
+            border-bottom: 2px solid themed("border");
+
+            &.active {
+              border-bottom: 2px solid themed("primary");
             }
 
             .icons {
-               width: 22px;
-               color: #fff;
-            }
-         }
+              cursor: pointer;
+              color: rgb(142, 142, 142);
+              width: 28px;
 
-         img {
-            @include profilePicture(100%);
-            cursor: pointer;
-         }
+              &.active {
+                color: themed("primary");
+              }
+
+              @include mobileVersion {
+                width: 24px;
+              }
+            }
+          }
+        }
       }
-
-      .profileWrapper {
-         .profileHeading {
-            .profileUserInfo {
-               @include flexStyle($direction: column, $align: center);
-               color: themed("font");
-
-               img {
-                  @include profilePicture(130px);
-                  box-shadow: 0px 0px 30px rgba(0, 186, 199, 0.5);
-                  margin-bottom: 30px;
-
-                  @include tabletVersion {
-                     @include profilePicture(120px);
-                  }
-
-                  @include mobileVersion {
-                     @include profilePicture(100px);
-                  }
-               }
-
-               span {
-                  @include typoGraphy($weight: bold, $fontSize: 32px, $align: center, $lineHeight: 36px);
-                  margin-bottom: 20px;
-
-                  @include tabletVersion {
-                     font-size: 30px;
-                  }
-
-                  @include mobileVersion {
-                     font-size: 28px;
-                  }
-               }
-
-               p {
-                  @include typoGraphy($align: center, $fontSize: 14px, $color: rgb(142, 142, 142));
-
-                  @include tabletVersion {
-                     font-size: 13px;
-                  }
-
-                  @include mobileVersion {
-                     font-size: 12px;
-                  }
-               }
-            }
-
-            .profileButtons {
-               @include flexStyle($gap: 30px, $justify: center);
-               margin-top: 30px;
-
-               @include mobileVersion {
-                  gap: 16px;
-               }
-
-               button {
-                  @include makeButton($padding: 12px 0, $rounded: 8px, $bg: themed("bg"), $color: themed("font"));
-                  @include typoGraphy($weight: bold, $fontSize: 16px, $align: center);
-                  width: 200px;
-
-                  @include tabletVersion {
-                     padding: 11px 0;
-                     font-size: 15px;
-                  }
-
-                  @include mobileVersion {
-                     width: 100%;
-                     font-size: 14px;
-                     padding: 10px 0;
-                  }
-
-                  &:first-child {
-                     border: 2px solid themed("border");
-
-                     &:hover {
-                        background-color: darken(themed("bg"), 5%);
-                     }
-                  }
-
-                  &:last-child {
-                     border: 2px solid #EB5757;
-                     background-color: #EB5757;
-                     color: #fff;
-
-                     &:hover {
-                        background-color: darken(#EB5757, 10%);
-                     }
-                  }
-
-               }
-            }
-         }
-
-         .profileContents {
-            margin-top: 50px;
-
-            @include mobileVersion {
-               margin-top: 36px;
-            }
-
-            .profilePosts {
-               .nonePost {
-                  text-align: center;
-                  color: rgba($color: themed("font"), $alpha: 80%);
-               }
-            }
-
-            .profileTabs {
-               @include flexStyle($align: center, $justify: center);
-               margin-bottom: 20px;
-
-               @include mobileVersion {
-                  margin-bottom: 0;
-               }
-
-               button {
-                  @include flexStyle($align: center, $flex: 1, $justify: center);
-                  @include makeButton($padding: 12px 0 10px 0, $bg: transparent);
-                  border-bottom: 2px solid themed("border");
-
-                  &.active {
-                     border-bottom: 2px solid themed("primary");
-                  }
-
-                  .icons {
-                     cursor: pointer;
-                     color: rgb(142, 142, 142);
-                     width: 28px;
-
-                     &.active {
-                        color: themed("primary");
-                     }
-
-                     @include mobileVersion {
-                        width: 24px;
-                     }
-                  }
-               }
-            }
-         }
-      }
-   }
+    }
+  }
 }
