@@ -33,7 +33,7 @@ const login = async (req, res) => {
       const token = jwt.sign({ userId: user.id }, process.env.TOKEN_SECRET);
       const maxAge = new Date(2147483647 * 1000).valueOf();
 
-      res.cookie("askToken", token, { maxAge, httpOnly: true });
+      res.cookie("askToken", token, { maxAge, httpOnly: true, sameSite: "none", secure: true });
       res.status(200).json({ user: other, maxAge });
    } catch (error) {
       res.status(500).json({ error });
@@ -42,8 +42,9 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
    res.clearCookie("askToken", {
-      secure: true,
+      httpOnly: true,
       sameSite: "none",
+      secure: true,
    }).status(200).json({ msg: "Anda telah logout" });
 }
 
