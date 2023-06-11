@@ -1,175 +1,187 @@
 @import "../../style.scss";
 
 .detail {
-   @include themify($themes) {
-      @include pages(30px 20px 50px 30px);
+  @include themify($themes) {
+    //  @include pages(30px 20px 50px 30px);
+    padding: 20px;
 
-      @include tabletVersion {
-         padding: 30px 20px 20px 20px;
+    //  @include tabletVersion {
+    //    padding: 30px 20px 20px 20px;
+    //  }
+
+    //  @include mobileVersion {
+    //    padding: 20px 20px 60px 20px;
+    //  }
+
+    .detailWrapper {
+      width: 100%;
+
+      .detailHead {
+        @include flexStyle($direction: column, $gap: 10px);
+        padding-bottom: 20px;
+
+        h1 {
+          line-height: 38px;
+
+          @include tabletVersion {
+            font-size: 30px;
+          }
+
+          @include mobileVersion {
+            font-size: 26px;
+          }
+        }
+
+        .detailUserInfo {
+          @include flexStyle($align: center, $gap: 10px);
+
+          img {
+            @include profilePicture(20px);
+
+            @include tabletVersion {
+              @include profilePicture(18px);
+            }
+          }
+
+          time {
+            @include typoGraphy(
+              $fontSize: 16px,
+              $weight: 500,
+              $color: rgb(172, 172, 172)
+            );
+            @include truncate(1);
+            cursor: auto;
+
+            @include mobileVersion {
+              @include typoGraphy(
+                $fontSize: 14px,
+                $weight: 500,
+                $color: rgb(172, 172, 172)
+              );
+            }
+          }
+
+          span {
+            &:first-child {
+              @include mobileVersion {
+                display: none;
+              }
+            }
+            &.name {
+              @include typoGraphy(
+                $fontSize: 18px,
+                $weight: 600,
+                $color: themed("primary")
+              );
+              @include truncate(1);
+              cursor: pointer;
+
+              @include tabletVersion {
+                @include typoGraphy(
+                  $fontSize: 16px,
+                  $weight: 600,
+                  $color: themed("primary")
+                );
+              }
+            }
+          }
+        }
       }
 
-      @include mobileVersion {
-         padding: 20px 20px 60px 20px;
+      .detailContent {
+        border-top: 1px solid themed("border");
+        padding: 20px 0;
+
+        .descWrapper {
+          .detailDesc {
+            line-height: 28px;
+            font-weight: 500;
+
+            a {
+              display: inline-block;
+              max-width: 857px;
+              color: themed("primary");
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+
+              @include tabletVersion {
+                max-width: 500px;
+              }
+
+              @include mobileVersion {
+                max-width: 300px;
+              }
+            }
+
+            img {
+              max-width: 857px;
+
+              @include tabletVersion {
+                max-width: 591px;
+              }
+
+              @include mobileVersion {
+                width: 100%;
+              }
+            }
+
+            ul,
+            ol {
+              padding-left: 32px;
+            }
+
+            @include mobileVersion {
+              @include typoGraphy(
+                $fontSize: 15px,
+                $lineHeight: 26px,
+                $weight: 500
+              );
+            }
+          }
+        }
+
+        .detailAllTags {
+          margin: 20px 0 40px 0;
+          flex-wrap: wrap;
+          @include flexStyle($align: center, $gap: 10px);
+
+          button {
+            font-size: 12px;
+            @include makeButton(
+              $padding: 4px 8px,
+              $rounded: 4px,
+              $bg: lighten(themed("primary"), 55%),
+              $color: #272d3e
+            );
+
+            &:hover {
+              background-color: lighten(themed("primary"), 40%);
+            }
+          }
+        }
+
+        .detailActions {
+          @include flexStyle($align: center, $gap: 30px);
+
+          .detailItem {
+            font-weight: 600;
+            @include flexStyle($align: center, $gap: 10px);
+
+            .detailIconWrapper {
+              @include flexStyle($align: center, $justify: center);
+
+              .icons {
+                width: 24px;
+
+                &.liked {
+                  color: lightcoral;
+                }
+              }
+            }
+          }
+        }
       }
-
-      .detailWrapper {
-         width: 100%;
-
-         .detailHead {
-            @include flexStyle($direction: column, $gap: 10px);
-            padding-bottom: 20px;
-
-            h1 {
-               line-height: 38px;
-
-               @include tabletVersion {
-                  font-size: 30px;
-               }
-
-               @include mobileVersion {
-                  font-size: 26px;
-               }
-            }
-
-            .detailUserInfo {
-               @include flexStyle($align: center, $gap: 10px);
-
-               img {
-                  @include profilePicture(20px);
-
-                  @include tabletVersion {
-                     @include profilePicture(18px);
-                  }
-               }
-
-               time {
-                  @include typoGraphy($fontSize: 16px, $weight: 500, $color: rgb(172, 172, 172));
-                  @include truncate(1);
-                  cursor: auto;
-
-                  @include mobileVersion {
-                     @include typoGraphy($fontSize: 14px, $weight: 500, $color: rgb(172, 172, 172));
-                  }
-               }
-
-               span {
-                  &.name {
-                     @include typoGraphy($fontSize: 18px, $weight: 600, $color: themed("primary"));
-                     max-width: 620px;
-                     white-space: nowrap;
-                     overflow: hidden;
-                     text-overflow: ellipsis;
-                     cursor: pointer;
-
-                     @include tabletVersion {
-                        @include typoGraphy($fontSize: 16px, $weight: 600, $color: themed("primary"));
-                        max-width: 300px;
-                     }
-
-                     @include mobileVersion {
-                        max-width: 160px;
-                     }
-                  }
-               }
-            }
-         }
-
-         .detailContent {
-            border-top: 1px solid themed("border");
-            padding: 20px 0;
-
-            .descWrapper {
-               .detailDesc {
-                  line-height: 28px;
-                  font-weight: 500;
-
-                  pre,
-                  code,
-                  code>span {
-                     white-space: pre-wrap !important;
-                     overflow-wrap: break-word !important;
-
-                     @include mobileVersion {
-                        width: 100% !important;
-                     }
-                  }
-
-                  a {
-                     display: inline-block;
-                     max-width: 857px;
-                     color: themed("primary");
-                     white-space: nowrap;
-                     overflow: hidden;
-                     text-overflow: ellipsis;
-
-                     @include tabletVersion {
-                        max-width: 500px;
-                     }
-
-                     @include mobileVersion {
-                        max-width: 300px;
-                     }
-                  }
-
-                  img {
-                     max-width: 857px;
-
-                     @include tabletVersion {
-                        max-width: 591px;
-                     }
-
-                     @include mobileVersion {
-                        width: 100%;
-                     }
-                  }
-
-                  ul,
-                  ol {
-                     padding-left: 32px;
-                  }
-
-                  @include mobileVersion {
-                     @include typoGraphy($fontSize: 15px, $lineHeight: 26px, $weight: 500);
-                  }
-               }
-            }
-
-            .detailAllTags {
-               margin: 20px 0 40px 0;
-               flex-wrap: wrap;
-               @include flexStyle($align: center, $gap: 10px);
-
-               button {
-                  font-size: 12px;
-                  @include makeButton($padding: 4px 8px, $rounded: 4px, $bg: lighten(themed("primary"), 55%), $color: #272d3e);
-
-                  &:hover {
-                     background-color: lighten(themed("primary"), 40%);
-                  }
-               }
-            }
-
-            .detailActions {
-               @include flexStyle($align: center, $gap: 30px);
-
-               .detailItem {
-                  font-weight: 600;
-                  @include flexStyle($align: center, $gap: 10px);
-
-                  .detailIconWrapper {
-                     @include flexStyle($align: center, $justify: center);
-
-                     .icons {
-                        width: 24px;
-
-                        &.liked {
-                           color: lightcoral;
-                        }
-                     }
-                  }
-               }
-            }
-         }
-      }
-   }
+    }
+  }
 }

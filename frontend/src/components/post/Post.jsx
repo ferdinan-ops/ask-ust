@@ -16,30 +16,18 @@ const Post = ({ post }) => {
 
   return (
     <div className="post">
-      <div
-        className="postContainer"
-        onClick={() => navigate(`/forum/questions/${post._id}`)}
-      >
+      <div className="postContainer" onClick={() => navigate(`/forum/questions/${post._id}`)}>
         <div className="info">
           <div className="postWrapper">
-            <p>
-              <span>{post?.likesCount}</span> suka
-            </p>
-            <p>
-              <span>{post?.savedCount}</span> disimpan
-            </p>
-            <p className={post.bestAnswerId ? "haveBest" : ""}>
-              <span>{post?.answersCount}</span> jawaban
-            </p>
+            <p><span>{post?.likesCount}</span> suka</p>
+            <p><span>{post?.savedCount}</span> disimpan</p>
+            <p className={post.bestAnswerId ? "haveBest" : ""}><span>{post?.answersCount}</span> jawaban</p>
           </div>
         </div>
         <div className="postContent">
           <div className="postTop">
             <h2>{post.title}</h2>
-            <div
-              dangerouslySetInnerHTML={{ __html: post.desc }}
-              className="postDesc"
-            />
+            <div dangerouslySetInnerHTML={{ __html: post.desc }} className="postDesc" />
           </div>
           <div className="postBottom">
             <div className="postTags">
@@ -50,14 +38,7 @@ const Post = ({ post }) => {
               ))}
             </div>
             <div className="postUserInfo">
-              <img
-                src={
-                  post?.user?.profilePicture
-                    ? `${IMG_URI}/${post?.user?.profilePicture}`
-                    : "/profile.svg"
-                }
-                alt=""
-              />
+              <img src={post?.user?.profilePicture ? `${IMG_URI}/${post?.user?.profilePicture}` : "/profile.svg"} alt="" />
               <span className="postName">{post?.user?.name}</span>
               <span>&bull;</span>
               <Moment fromNow>{post.createdAt}</Moment>

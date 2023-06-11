@@ -1,25 +1,32 @@
 @import "../../style.scss";
 
 .mainLayout {
-   @include themify($themes) {
-      flex: 6;
+  @include themify($themes) {
+    flex: 6;
 
-      @include tabletVersion {
-         flex: 4.5;
-      }
+    @include tabletVersion {
+      flex: 4.5;
+    }
 
-      code.preAndCode-0-2-135 {
-         background-color: rgba($color: darken(themed("font"), 100%), $alpha: 20%) !important;
-         font-size: inherit;
-         line-height: 32px;
-         border-radius: 2px;
-      }
-   }
+    @include mobileVersion {
+      flex: 1;
+    }
+
+    code.preAndCode-0-2-135 {
+      background-color: rgba(
+        $color: darken(themed("font"), 100%),
+        $alpha: 20%
+      ) !important;
+      font-size: inherit;
+      line-height: 32px;
+      border-radius: 2px;
+    }
+  }
 }
 
 .otherMain {
-   @include themify($themes) {
-      flex: 1;
-      background-color: themed("bg");
-   }
+  @include themify($themes) {
+    flex: 1;
+    background-color: themed("bg");
+  }
 }

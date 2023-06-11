@@ -7,7 +7,6 @@ $theme-map: null;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  outline: none;
   font-family: "Quicksand", sans-serif;
   letter-spacing: 0.3px;
   line-height: 22px;
@@ -39,9 +38,20 @@ html {
   cursor: pointer;
 }
 
-table.mceLayout,
-textarea.tinyMCE {
+.mceEditor table {
+  max-width: none; /* Bug in computation of fullscreen */
+}
+
+.mceEditor table.mceLayout {
   width: 100% !important;
+  height: auto !important;
+}
+
+table.mceToolbar {
+  float: left;
+}
+body .mceToolbar div {
+  white-space: normal;
 }
 
 .loading {
