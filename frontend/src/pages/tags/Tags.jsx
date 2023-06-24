@@ -69,7 +69,7 @@ const Tags = () => {
                )) : (
                   isLoading ? (
                      <div className='loadingPage'>
-                        <Ring size={30} lineWeight={4} speed={2} color="#00bac7" />
+                        <Ring size={30} lineWeight={6} speed={2} color="#00bac7" />
                      </div>
                   ) : (
                      params && <p>Maaf tag <b><i>{params}</i></b> tidak ditemukan 😔</p>

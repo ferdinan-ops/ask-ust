@@ -55,7 +55,7 @@
                margin-top: 0;
             }
 
-            .postWrapper {
+            .postDetailInfo {
                @include flexStyle($direction: column, $gap: 15px);
                margin-left: auto;
 

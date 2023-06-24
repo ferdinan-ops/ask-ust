@@ -1,4 +1,4 @@
-import { BookmarkIcon, CameraIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
+import { BookmarkIcon, CameraIcon, QuestionMarkCircleIcon, StarIcon } from '@heroicons/react/24/outline';
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -108,8 +108,8 @@ const Profile = () => {
                         <span>{user.name}</span>
                         <p>{user.bio ? user.bio : "Belum memiliki bio"}</p>
                         <div className='userPoint'>
-                           <span>⭐ </span>
-                           <span>{user.score}</span>
+                           <StarIcon className='userPoint-icon' />
+                           <p>{user.score}</p>
                         </div>
                      </div>
                      {currentUserId === id && (

@@ -18,7 +18,7 @@ const Post = ({ post }) => {
     <div className="post">
       <div className="postContainer" onClick={() => navigate(`/forum/questions/${post._id}`)}>
         <div className="info">
-          <div className="postWrapper">
+          <div className="postDetailInfo">
             <p><span>{post?.likesCount}</span> suka</p>
             <p><span>{post?.savedCount}</span> disimpan</p>
             <p className={post.bestAnswerId ? "haveBest" : ""}><span>{post?.answersCount}</span> jawaban</p>

@@ -1,40 +1,40 @@
 @import "../../style.scss";
 
 .posts {
-   @include themify($themes) {
-      @include flexStyle($direction: column);
+  @include themify($themes) {
+    @include flexStyle($direction: column);
 
-      .postsWrapper {
-         .postsTabs {
-            display: flex;
-            margin: 50px 0 10px 0;
-            border-bottom: 2px solid themed("border");
+    .postsWrapper {
+      .postsTabs {
+        display: flex;
+        margin: 50px 0 10px 0;
+        border-bottom: 2px solid themed("border");
 
-            @include mobileVersion {
-               margin: 40px 0 0 0;
-            }
+        @include mobileVersion {
+          margin: 40px 0 0 0;
+        }
 
-            button {
-               @include makeButton($padding: 10px 30px, $rounded: 6px 6px 0 0, $bg: transparent);
-               @include typoGraphy($fontSize: 16px, $color: themed("font"), $weight: 500);
-               border-bottom: 5px solid transparent;
+        button {
+          @include makeButton($padding: 10px 30px, $rounded: 6px 6px 0 0, $bg: transparent);
+          @include typoGraphy($fontSize: 16px, $color: themed("font"), $weight: 500);
+          border-bottom: 5px solid transparent;
 
-               @include mobileVersion {
-                  font-size: 14px;
-                  padding: 8px 28px;
-               }
-            }
+          @include mobileVersion {
+            font-size: 14px;
+            padding: 8px 28px;
+          }
+        }
 
-            button.active {
-               font-weight: bold;
-               background-color: themed("activeBg");
-               border-bottom: 5px solid themed("primary");
-            }
-         }
-
-         .postWrapper {
-            @include flexStyle($direction: column);
-         }
+        button.active {
+          font-weight: bold;
+          background-color: themed("activeBg");
+          border-bottom: 5px solid themed("primary");
+        }
       }
-   }
+
+      .postWrapper {
+        @include flexStyle($direction: column);
+      }
+    }
+  }
 }

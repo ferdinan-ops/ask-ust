@@ -2,7 +2,7 @@ import { BookmarkIcon as BookmarkSolidIcon, HeartIcon as HeartSolidIcon } from "
 import { BookmarkIcon, HeartIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Navigate } from "react-router-dom";
 import Moment from "react-moment";
 import Prism from "prismjs";
 
@@ -24,7 +24,7 @@ const Detail = () => {
    const navigate = useNavigate();
 
    const { currentUser } = useContext(AuthContext);
-   const { post } = useSelector((state) => state.post);
+   const { post, isLoading } = useSelector((state) => state.post);
    const { _id: userId, name } = currentUser;
 
    useEffect(() => { Prism.highlightAll() });
@@ -41,6 +41,10 @@ const Detail = () => {
    const saveHandler = async () => {
       await savePostAPI(id);
       dispatch(getPost(id));
+   }
+
+   if (!post && !isLoading) {
+      return <Navigate to="/404" />;
    }
 
    return (

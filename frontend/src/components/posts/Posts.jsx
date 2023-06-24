@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Ring } from "@uiball/loaders";
 
 import { getPosts, searchPost } from "../../config/redux/features/postSlice";
 import { InfiniteScroll } from "../../components";
 import Post from "../post/Post";
 import "./posts.scss";
-import { Ring } from "@uiball/loaders";
 
 const Posts = () => {
    const [isNew, setIsNew] = useState(true);
@@ -48,6 +48,34 @@ const Posts = () => {
       setPage(page + 3);
    };
 
+   let content = null;
+   if (!isLoading && posts.length === 0 && params) {
+      content = <h4>Tidak dapat menemukan pertanyaan dengan kata kunci: {params} 😕</h4>
+   } else if (!isLoading && posts.length === 0) {
+      content = <h4>Tidak ada pertanyaan yang belum terjawab 😕</h4>
+   } else if (isLoading) {
+      content = (
+         <div className="loadingPage">
+            <Ring size={40} lineWeight={6} speed={1} color="#00bac7" />
+         </div>
+      )
+   } else if (posts.length > 0 && !isLoading) {
+      content = (
+         <>
+            {posts.map((post) => <Post post={post} key={post._id} />)}
+            {posts.length > 2 && (
+               <InfiniteScroll
+                  counts={counts}
+                  dataLength={posts.length}
+                  isLoading={isLoading}
+                  loadMoreHandler={loadHandler}
+               />
+            )}
+         </>
+      )
+   }
+
+
    return (
       <>
          <div className="pagesTitle">
@@ -62,31 +90,9 @@ const Posts = () => {
                   <button className={isNew ? "active" : ""} onClick={setTabs}>Terbaru</button>
                   <button className={!isNew ? "active" : ""} onClick={setTabs}>Belum terjawab</button>
                </div>
-               {posts.length > 0 ? (
-                  <div className="postWrapper">
-                     {posts.map((post) => (
-                        <Post post={post} key={post._id} />
-                     ))}
-                     {posts.length > 2 && (
-                        <InfiniteScroll
-                           counts={counts}
-                           dataLength={posts.length}
-                           isLoading={isLoading}
-                           loadMoreHandler={loadHandler}
-                        />
-                     )}
-                  </div>
-               ) : (
-                  !isLoading ? params ? (
-                     <h4>Tidak dapat menemukan pertanyaan dengan kata kunci: {params} 😕</h4>
-                  ) : (
-                     <h4>Tidak ada pertanyaan yang belum terjawab 😕</h4>
-                  ) : (
-                     <div className="loadingPage">
-                        <Ring size={40} lineWeight={8} speed={2} color="#00bac7" />
-                     </div>
-                  )
-               )}
+               <div className="postWrapper">
+                  {content}
+               </div>
             </div>
          </div>
       </>

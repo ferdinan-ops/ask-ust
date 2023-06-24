@@ -112,7 +112,7 @@ const Notification = () => {
                   <h4 className="noNotif">Belum ada notifikasi</h4>
                ) : (
                   <div className="loadingPage">
-                     <Ring size={40} lineWeight={4} speed={2} color="#00bac7" />
+                     <Ring size={40} lineWeight={6} speed={1} color="#00bac7" />
                   </div>
                )
             )}
