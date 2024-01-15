@@ -6,7 +6,7 @@ export default function ProfileLayout() {
   const navigate = useNavigate()
   return (
     <>
-      <div className="h-28 w-full bg-[url('@/assets/images/profile-bg.svg')] bg-cover xl:h-48" />
+      <div className="h-28 w-full bg-[url('@/assets/images/profile-bg.webp')] bg-cover xl:h-48" />
       <div className="relative mx-auto flex flex-col gap-5 border-b px-4 pb-5 dark:border-white/10 md:px-6 xl:w-10/12 xl:px-7">
         <Button
           variant="outline"

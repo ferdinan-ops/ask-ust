@@ -1,8 +1,5 @@
-import LoginBg from './images/login-bg.svg'
-import RegisterBg from './images/register-bg.svg'
-import ResetPasswordBg from './images/reset-password-bg.svg'
-import VerifyEmailBg from './images/verify-email-bg.svg'
 import Logo from './icons/logo.svg'
+
 import Profile1 from './images/profile-1.png'
 import Profile2 from './images/profile-2.png'
 import Profile3 from './images/profile-3.png'
@@ -11,6 +8,11 @@ import Profile5 from './images/profile-5.png'
 import Profile6 from './images/profile-6.png'
 import Profile7 from './images/profile-7.png'
 import Profile8 from './images/profile-8.png'
+
+import LoginBg from './images/login-bg.webp'
+import RegisterBg from './images/register-bg.webp'
+import VerifyEmailBg from './images/verify-email-bg.webp'
+import ResetPasswordBg from './images/reset-password-bg.webp'
 
 export {
   LoginBg,
