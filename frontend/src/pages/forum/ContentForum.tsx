@@ -42,20 +42,18 @@ export default function ContentForum() {
         <div className="flex max-h-[calc(100vh-68px-57px)] flex-col xl:max-h-[calc(100vh-68px-56px-80px)] xl:min-h-[calc(100vh-68px-56px-80px)]">
           <article className="scroll-custom flex flex-col gap-4 overflow-y-scroll p-4 md:gap-5 md:px-5 md:py-7">
             <div className="flex items-start gap-2">
-              <div>
-                <img
-                  src="https://source.unsplash.com/random?man"
-                  alt="profile"
-                  className="h-7 w-7 rounded-full object-cover"
-                />
-              </div>
+              <img
+                src="https://source.unsplash.com/random?man"
+                alt="profile"
+                className="h-7 w-7 rounded-full object-cover"
+              />
               <div className="flex flex-col gap-1 rounded-b-2xl rounded-r-2xl bg-[#E5ECF6] px-3 pb-3 pt-2">
                 <div className="flex items-center gap-2">
                   <p className="truncate-1 text-sm font-bold text-primary">John Doe</p>
                   <p className="text-primary/60">&bull;</p>
                   <p className="text-xs font-medium text-primary/60">21 Agustus 2023, 12:36</p>
                 </div>
-                <span className="max-w-lg text-[15px] font-medium leading-relaxed text-primary/90">
+                <span className="max-w-[calc(100vw-32px-28px-8px-65px)] text-[15px] font-medium leading-relaxed text-primary/90 md:max-w-lg">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod sit, libero temporibus minima labore
                   reiciendis deleniti placeat? <span className="text-xs text-primary/60">(diubah)</span>
                 </span>
@@ -73,7 +71,7 @@ export default function ContentForum() {
                   <p className="text-white/60">&bull;</p>
                   <p className="text-xs font-medium text-white/70">21 Agustus 2023, 12:36</p>
                 </div>
-                <span className="max-w-lg text-[15px] font-medium leading-relaxed text-white/90">
+                <span className="max-w-[calc(100vw-32px-28px-8px-65px)] text-[15px] font-medium leading-relaxed text-white/90 md:max-w-lg">
                   Lorem ipsum dolor sit amet consectetur adipisicing.
                 </span>
               </div>
@@ -90,7 +88,7 @@ export default function ContentForum() {
                   <p className="text-primary/60">&bull;</p>
                   <p className="text-xs font-medium text-primary/60">21 Agustus 2023, 13:40</p>
                 </div>
-                <span className="max-w-lg text-[15px] font-medium leading-relaxed text-primary/90">
+                <span className="max-w-[calc(100vw-32px-28px-8px-65px)] text-[15px] font-medium leading-relaxed text-primary/90 md:max-w-lg">
                   <span className="italic text-primary/60">Pesan ini telah dihapus</span>
                 </span>
               </div>
@@ -107,7 +105,7 @@ export default function ContentForum() {
                   <p className="text-primary/60">&bull;</p>
                   <p className="text-xs font-medium text-primary/60">21 Agustus 2023, 13:50</p>
                 </div>
-                <span className="max-w-lg text-[15px] font-medium leading-relaxed text-primary/90">
+                <span className="max-w-[calc(100vw-32px-28px-8px-65px)] text-[15px] font-medium leading-relaxed text-primary/90 md:max-w-lg">
                   Blanditiis, similique temporibus dolorum ex optio quod enim voluptates officiis, delectus fugit illum
                   suscipit iusto iste, est cumque amet quam praesentium molestias! Nesciunt totam accusantium sequi quis
                   dolore quibusdam perferendis soluta a beatae consequatur unde non, in minima maiores? Fugiat nulla

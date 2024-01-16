@@ -13,7 +13,7 @@ const dummyData = [Profile1, Profile2, Profile3, Profile4, Profile5, Profile6, P
 export default function VideoForum() {
   return (
     <section className="flex flex-col gap-7">
-      <div className="grid min-h-[calc(100vh-68px-56px-40px-28px)] grid-cols-4 grid-rows-2 gap-4">
+      <div className="grid min-h-[calc(100vh-68px-56px-40px-28px)] grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4 xl:grid-rows-2">
         {dummyData.map((item, index) => (
           <div
             className="relative flex-1 overflow-hidden rounded-lg border-2 border-zinc-400 ring-2 ring-zinc-300 dark:border-zinc-900 dark:ring-zinc-700"
