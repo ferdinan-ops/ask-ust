@@ -43,6 +43,7 @@ export default function ReportMember({ className }: ReportMemberProps) {
                 <SelectItem value="Perilaku kebencian">Perilaku kebencian</SelectItem>
                 <SelectItem value="Ancaman kekerasan">Ancaman kekerasan</SelectItem>
                 <SelectItem value="Mencelakai diri sendiri">Mencelakai diri sendiri</SelectItem>
+                <SelectItem value="SPAM">Spam</SelectItem>
               </SelectContent>
             </Select>
           </div>

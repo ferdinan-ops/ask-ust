@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  fullname String
+  username String @unique
+  email    String @unique
+  password String @db.Text
+  photo    String @db.Text
+
+  forums  Forum[]
+  members Member[]
+}
+
+model Forum {
+  id          String @id @default(uuid())
+  title       String @unique
+  description String @db.Text
+  invite_code String @unique
+
+  user_id String
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  members  Member[]
+  reports  Report[]
+  messages Message[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([user_id])
+}
+
+enum MemberRole {
+  ADMIN
+  MODERATOR
+  GUEST
+}
+
+model Member {
+  id   String     @id @default(uuid())
+  role MemberRole @default(GUEST)
+
+  user_id String
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  forum_id String
+  forum    Forum  @relation(fields: [forum_id], references: [id], onDelete: Cascade)
+
+  reports  Report[]
+  messages Message[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([user_id])
+  @@index([forum_id])
+}
+
+enum ReportCategory {
+  POST_PERSONAL_INFORMATION
+  ONLINE_HARASSMENT
+  HATEFUL_BEHAVIOR
+  THREAT_OF_VIOLENCE
+  SELF_HARM
+  SPAM
+}
+
+model Report {
+  id              String         @id @default(uuid())
+  report_category ReportCategory
+
+  member_id String
+  member    Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
+
+  forum_id String
+  forum    Forum  @relation(fields: [forum_id], references: [id], onDelete: Cascade)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([member_id])
+  @@index([forum_id])
+}
+
+model Message {
+  id        String  @id @default(uuid())
+  content   String  @db.Text
+  file_url  String  @db.Text
+  isDeleted Boolean
+
+  member_id String
+  member    Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
+
+  forum_id String
+  forum    Forum  @relation(fields: [forum_id], references: [id], onDelete: Cascade)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([member_id])
+  @@index([forum_id])
+}
