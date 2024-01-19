@@ -11,3 +11,7 @@ export interface ITokenPayload {
 }
 
 export type ILoginPayload = Pick<IUser, 'email' | 'password'>
+
+export interface IVerifyEmailPayload {
+  token: string
+}

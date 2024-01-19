@@ -11,12 +11,14 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  fullname String
-  username String @unique
-  email    String @unique
-  password String @db.Text
-  photo    String @db.Text
+  id                String  @id @default(uuid())
+  fullname          String
+  username          String  @unique
+  email             String  @unique
+  password          String  @db.Text
+  photo             String  @db.Text
+  is_email_verified Boolean @default(false)
+  token             String  @unique
 
   forums  Forum[]
   members Member[]
@@ -94,10 +96,10 @@ model Report {
 }
 
 model Message {
-  id        String  @id @default(uuid())
-  content   String  @db.Text
-  file_url  String  @db.Text
-  isDeleted Boolean
+  id         String  @id @default(uuid())
+  content    String  @db.Text
+  file_url   String  @db.Text
+  is_deleted Boolean
 
   member_id String
   member    Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
