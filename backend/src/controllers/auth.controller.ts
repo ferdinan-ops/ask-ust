@@ -74,8 +74,8 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Email atau password Anda salah' })
     }
 
-    const accessToken = AuthService.accessTokenSign({ userId: user.id })
-    const refreshToken = AuthService.refreshTokenSign({ userId: user.id })
+    const accessToken = AuthService.accessTokenSign({ id: user.id })
+    const refreshToken = AuthService.refreshTokenSign({ id: user.id })
 
     logInfo(req, 'Anda berhasil login')
     res.cookie('ask-ust-refresh-token', refreshToken, {
@@ -119,8 +119,8 @@ export const loginGoogle = async (req: Request, res: Response) => {
       })
     }
 
-    const accessToken = AuthService.accessTokenSign({ userId: user.id })
-    const refreshToken = AuthService.refreshTokenSign({ userId: user.id })
+    const accessToken = AuthService.accessTokenSign({ id: user.id })
+    const refreshToken = AuthService.refreshTokenSign({ id: user.id })
 
     logInfo(req, 'Anda berhasil login')
     res.cookie('ask-ust-refresh-token', refreshToken, {

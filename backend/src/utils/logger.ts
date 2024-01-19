@@ -14,8 +14,8 @@ const logger = pino(
   pretty()
 )
 
-export const logError = (req: Request, error: Joi.ValidationError) => {
-  logger.error(`[${req.method}]: ${req.originalUrl}\t${error.details[0].message}`)
+export const logError = (req: Request, error: Joi.ValidationError | string) => {
+  logger.error(`[${req.method}]: ${req.originalUrl}\t${typeof error === 'string' ? error : error.details[0].message}`)
 }
 
 export const logWarn = (req: Request, message: string) => {

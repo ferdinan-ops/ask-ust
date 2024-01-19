@@ -7,7 +7,7 @@ export interface IUser {
 }
 
 export interface ITokenPayload {
-  userId: string
+  id: string
 }
 
 export type ILoginPayload = Pick<IUser, 'email' | 'password'>
