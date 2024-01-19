@@ -1,11 +1,10 @@
-import crypto from 'crypto'
 import { type Request, type Response } from 'express'
 
 import * as AuthService from '../services/auth.service'
 import { logError, logInfo, logWarn } from '../utils/logger'
-import { validRegister, validVerifyEmail } from '../validations/auth.validation'
+import { validLogin, validRegister, validVerifyEmail } from '../validations/auth.validation'
 
-import { type IVerifyEmailPayload, type IUser } from '../types/user.type'
+import { type IVerifyEmailPayload, type IUser, type ILoginPayload } from '../types/user.type'
 
 export const register = async (req: Request, res: Response) => {
   const { value, error } = validRegister(req.body as IUser)
@@ -21,15 +20,15 @@ export const register = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Email sudah terdaftar' })
     }
 
-    const token = crypto.randomBytes(3).toString('hex')
-    value.password = AuthService.hashing(value.password).toString()
+    const token = AuthService.generateToken()
+    value.password = AuthService.hashing(value.password as string).toString()
     await AuthService.addUser({ ...value, token })
     AuthService.sendVerifyEmail(value.email, token)
 
     logInfo(req, 'Akun anda berhasil terdaftar')
-    return res.status(200).json({ message: 'Akun anda berhasil terdaftar' })
+    res.status(200).json({ message: 'Akun anda berhasil terdaftar' })
   } catch (error) {
-    return res.status(500).json({ error })
+    res.status(500).json({ error })
   }
 }
 
@@ -49,10 +48,89 @@ export const verifyEmail = async (req: Request, res: Response) => {
 
     await AuthService.verifyUserEmail(checkToken.id)
     logInfo(req, 'Email berhasil diverifikasi')
-    return res.status(200).json({ message: 'Email berhasil diverifikasi' })
+    res.status(200).json({ message: 'Email berhasil diverifikasi' })
   } catch (error) {
-    return res.status(500).json({ error })
+    res.status(500).json({ error })
   }
 }
 
-export const login = async (req: Request, res: Response) => {}
+export const login = async (req: Request, res: Response) => {
+  const { value, error } = validLogin(req.body as ILoginPayload)
+  if (error) {
+    logError(req, error)
+    return res.status(400).json({ error: error.details[0].message })
+  }
+
+  try {
+    const user = await AuthService.findUserByEmail(value.email)
+    if (!user) {
+      logWarn(req, 'Email atau password Anda salah')
+      return res.status(400).json({ error: 'Email atau password Anda salah' })
+    }
+
+    const isValidPassword = AuthService.comparePassword(value.password as string, user.password)
+    if (!isValidPassword) {
+      logWarn(req, 'Email atau password Anda salah')
+      return res.status(400).json({ error: 'Email atau password Anda salah' })
+    }
+
+    const accessToken = AuthService.accessTokenSign({ userId: user.id })
+    const refreshToken = AuthService.refreshTokenSign({ userId: user.id })
+
+    logInfo(req, 'Anda berhasil login')
+    res.cookie('ask-ust-refresh-token', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    })
+    res.status(200).json({ accessToken })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const loginGoogle = async (req: Request, res: Response) => {
+  const { value, error } = validVerifyEmail(req.body as IVerifyEmailPayload)
+  if (error) {
+    logError(req, error)
+    return res.status(400).json({ error: error.details[0].message })
+  }
+
+  try {
+    const googleRes = await AuthService.verifyGoogleToken(value.token)
+    if (!googleRes) {
+      logWarn(req, 'Token sudah tidak berlaku')
+      return res.status(400).json({ error: 'Token sudah tidak berlaku' })
+    }
+
+    const { name, email, picture } = googleRes
+    let user = await AuthService.findUserByEmail(email)
+
+    if (!user) {
+      const username = `${AuthService.formatUsername(name)}-${AuthService.generateToken()}`
+      user = await AuthService.addUser({
+        fullname: name,
+        username,
+        email,
+        token: '',
+        photo: picture,
+        is_email_verified: true
+      })
+    }
+
+    const accessToken = AuthService.accessTokenSign({ userId: user.id })
+    const refreshToken = AuthService.refreshTokenSign({ userId: user.id })
+
+    logInfo(req, 'Anda berhasil login')
+    res.cookie('ask-ust-refresh-token', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    })
+    res.status(200).json({ accessToken })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}

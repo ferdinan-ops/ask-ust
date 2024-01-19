@@ -15,10 +15,11 @@ model User {
   fullname          String
   username          String  @unique
   email             String  @unique
-  password          String  @db.Text
-  photo             String  @db.Text
+  password          String  @default("")
+  photo             String  @default("")
   is_email_verified Boolean @default(false)
   token             String  @unique
+  provider          String  @default("email")
 
   forums  Forum[]
   members Member[]

@@ -4,11 +4,15 @@ CREATE TABLE `User` (
     `fullname` VARCHAR(191) NOT NULL,
     `username` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
-    `password` TEXT NOT NULL,
-    `photo` TEXT NOT NULL,
+    `password` VARCHAR(191) NOT NULL DEFAULT '',
+    `photo` VARCHAR(191) NOT NULL DEFAULT '',
+    `is_email_verified` BOOLEAN NOT NULL DEFAULT false,
+    `token` VARCHAR(191) NOT NULL,
+    `provider` VARCHAR(191) NOT NULL DEFAULT 'email',
 
     UNIQUE INDEX `User_username_key`(`username`),
     UNIQUE INDEX `User_email_key`(`email`),
+    UNIQUE INDEX `User_token_key`(`token`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -61,7 +65,7 @@ CREATE TABLE `Message` (
     `id` VARCHAR(191) NOT NULL,
     `content` TEXT NOT NULL,
     `file_url` TEXT NOT NULL,
-    `isDeleted` BOOLEAN NOT NULL,
+    `is_deleted` BOOLEAN NOT NULL,
     `member_id` VARCHAR(191) NOT NULL,
     `forum_id` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),

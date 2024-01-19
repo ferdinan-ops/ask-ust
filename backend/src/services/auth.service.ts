@@ -1,12 +1,13 @@
 import axios from 'axios'
 import bcrypt from 'bcrypt'
+import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 
 import db from '../utils/db'
 import ENV from '../utils/environment'
 import sendMail from '../middlewares/mailer'
 
-import { type ITokenPayload, type IUser } from '../types/user.type'
+import { type IGoogleLogin, type ITokenPayload, type IUser } from '../types/user.type'
 
 export const hashing = (password: string) => {
   return bcrypt.hashSync(password, 10)
@@ -25,17 +26,11 @@ export const refreshTokenSign = (payload: ITokenPayload) => {
 }
 
 export const verifyGoogleToken = async (token: string) => {
-  try {
-    const response = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    console.log(response.data)
-    return response.data
-  } catch (error) {
-    return error
-  }
+  const url = 'https://www.googleapis.com/oauth2/v3/userinfo'
+  const options = { headers: { Authorization: `Bearer ${token}` } }
+  const response = await axios.get<IGoogleLogin>(url, options)
+  console.log(response.data)
+  return response.data
 }
 
 export const sendVerifyEmail = (email: string, token: string) => {
@@ -47,7 +42,20 @@ export const sendVerifyEmail = (email: string, token: string) => {
   })
 }
 
-export const addUser = async (payload: IUser & { token: string }) => {
+export const formatUsername = (username: string) => {
+  return username.replace(/\s/g, '').toLowerCase()
+}
+
+export const generateToken = () => {
+  return crypto.randomBytes(3).toString('hex')
+}
+
+interface IAddUserPayload {
+  token: string
+  is_email_verified?: boolean
+}
+
+export const addUser = async (payload: IUser & IAddUserPayload) => {
   return await db.user.create({ data: payload })
 }
 
