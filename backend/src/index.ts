@@ -8,7 +8,7 @@ import routes from './routes'
 import logger from './utils/logger'
 
 const app: Application = express()
-const port: number = 5000
+const port: number = 3000
 
 app.use(cookieParser())
 app.use(express.json())

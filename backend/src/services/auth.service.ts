@@ -42,6 +42,19 @@ export const sendVerifyEmail = (email: string, token: string) => {
   })
 }
 
+export const sendForgotPasswordEmail = (email: string, token: string) => {
+  sendMail({
+    from: ENV.emailUsername,
+    to: email,
+    subject: 'Reset Password',
+    html: `<p>Berikut ini token untuk reset password anda:</p><h1>${token}</h1>`
+  })
+}
+
+export const updateUserPassword = async (userId: string, password: string) => {
+  return await db.user.update({ where: { id: userId }, data: { password } })
+}
+
 export const formatUsername = (username: string) => {
   return username.replace(/\s/g, '').toLowerCase()
 }
@@ -57,6 +70,10 @@ interface IAddUserPayload {
 
 export const addUser = async (payload: IUser & IAddUserPayload) => {
   return await db.user.create({ data: payload })
+}
+
+export const updateUserToken = async (userId: string, token: string) => {
+  return await db.user.update({ where: { id: userId }, data: { token } })
 }
 
 export const findUserByEmail = async (email: string) => {

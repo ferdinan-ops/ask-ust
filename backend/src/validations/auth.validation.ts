@@ -1,6 +1,11 @@
 import Joi from 'joi'
 
-import { type IVerifyEmailPayload, type ILoginPayload, type IUser } from '../types/user.type'
+import {
+  type IVerifyEmailPayload,
+  type ILoginPayload,
+  type IUser,
+  type IResetPasswordPayload
+} from '../types/user.type'
 
 export const validRegister = (payload: IUser) => {
   const schema = Joi.object<IUser>({
@@ -26,6 +31,14 @@ export const validLogin = (payload: ILoginPayload) => {
 export const validVerifyEmail = (payload: IVerifyEmailPayload) => {
   const schema = Joi.object<IVerifyEmailPayload>({
     token: Joi.string().required()
+  })
+  return schema.validate(payload)
+}
+
+export const validResetPassword = (payload: IResetPasswordPayload) => {
+  const schema = Joi.object<IResetPasswordPayload>({
+    token: Joi.string().required(),
+    password: Joi.string().required()
   })
   return schema.validate(payload)
 }

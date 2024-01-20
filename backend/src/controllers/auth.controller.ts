@@ -2,9 +2,14 @@ import { type Request, type Response } from 'express'
 
 import * as AuthService from '../services/auth.service'
 import { logError, logInfo, logWarn } from '../utils/logger'
-import { validLogin, validRegister, validVerifyEmail } from '../validations/auth.validation'
+import { validLogin, validRegister, validResetPassword, validVerifyEmail } from '../validations/auth.validation'
 
-import { type IVerifyEmailPayload, type IUser, type ILoginPayload } from '../types/user.type'
+import {
+  type IVerifyEmailPayload,
+  type IUser,
+  type ILoginPayload,
+  type IResetPasswordPayload
+} from '../types/user.type'
 
 export const register = async (req: Request, res: Response) => {
   const { value, error } = validRegister(req.body as IUser)
@@ -16,7 +21,7 @@ export const register = async (req: Request, res: Response) => {
   try {
     const isUserExist = await AuthService.findUserByEmail(value.email)
     if (isUserExist) {
-      logWarn(req, 'Email sudah terdaftar')
+      logWarn(req, 'Email is already registered')
       return res.status(400).json({ error: 'Email sudah terdaftar' })
     }
 
@@ -25,7 +30,7 @@ export const register = async (req: Request, res: Response) => {
     await AuthService.addUser({ ...value, token })
     AuthService.sendVerifyEmail(value.email, token)
 
-    logInfo(req, 'Akun anda berhasil terdaftar')
+    logInfo(req, 'User account has been registered')
     res.status(200).json({ message: 'Akun anda berhasil terdaftar' })
   } catch (error) {
     res.status(500).json({ error })
@@ -42,12 +47,12 @@ export const verifyEmail = async (req: Request, res: Response) => {
   try {
     const checkToken = await AuthService.findUserByToken(value.token)
     if (!checkToken) {
-      logWarn(req, 'Token sudah tidak berlaku')
+      logWarn(req, 'Token is not valid')
       return res.status(400).json({ error: 'Token sudah tidak berlaku' })
     }
 
     await AuthService.verifyUserEmail(checkToken.id)
-    logInfo(req, 'Email berhasil diverifikasi')
+    logInfo(req, 'Email has been verified')
     res.status(200).json({ message: 'Email berhasil diverifikasi' })
   } catch (error) {
     res.status(500).json({ error })
@@ -64,20 +69,20 @@ export const login = async (req: Request, res: Response) => {
   try {
     const user = await AuthService.findUserByEmail(value.email)
     if (!user) {
-      logWarn(req, 'Email atau password Anda salah')
+      logWarn(req, 'Email or password is wrong')
       return res.status(400).json({ error: 'Email atau password Anda salah' })
     }
 
     const isValidPassword = AuthService.comparePassword(value.password as string, user.password)
     if (!isValidPassword) {
-      logWarn(req, 'Email atau password Anda salah')
+      logWarn(req, 'Email or password is wrong')
       return res.status(400).json({ error: 'Email atau password Anda salah' })
     }
 
     const accessToken = AuthService.accessTokenSign({ id: user.id })
     const refreshToken = AuthService.refreshTokenSign({ id: user.id })
 
-    logInfo(req, 'Anda berhasil login')
+    logInfo(req, 'User is successfully logged in')
     res.cookie('ask-ust-refresh-token', refreshToken, {
       httpOnly: true,
       secure: true,
@@ -100,7 +105,7 @@ export const loginGoogle = async (req: Request, res: Response) => {
   try {
     const googleRes = await AuthService.verifyGoogleToken(value.token)
     if (!googleRes) {
-      logWarn(req, 'Token sudah tidak berlaku')
+      logWarn(req, 'Token is not valid')
       return res.status(400).json({ error: 'Token sudah tidak berlaku' })
     }
 
@@ -122,7 +127,7 @@ export const loginGoogle = async (req: Request, res: Response) => {
     const accessToken = AuthService.accessTokenSign({ id: user.id })
     const refreshToken = AuthService.refreshTokenSign({ id: user.id })
 
-    logInfo(req, 'Anda berhasil login')
+    logInfo(req, 'User is successfully logged in')
     res.cookie('ask-ust-refresh-token', refreshToken, {
       httpOnly: true,
       secure: true,
@@ -130,6 +135,65 @@ export const loginGoogle = async (req: Request, res: Response) => {
       maxAge: 7 * 24 * 60 * 60 * 1000
     })
     res.status(200).json({ accessToken })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const forgotPassword = async (req: Request, res: Response) => {
+  const { email } = req.body
+  if (!email) {
+    logWarn(req, 'Email is not provided')
+    return res.status(400).json({ error: 'Email tidak tersedia' })
+  }
+
+  try {
+    const user = await AuthService.findUserByEmail(email as string)
+    if (!user) {
+      logWarn(req, 'Email is not registered')
+      return res.status(400).json({ error: 'Email tidak terdaftar' })
+    }
+
+    const token = AuthService.generateToken()
+    await AuthService.updateUserToken(user.id, token)
+    AuthService.sendForgotPasswordEmail(email as string, token)
+
+    logInfo(req, 'Email has been sent')
+    res.status(200).json({ message: 'Email berhasil dikirim' })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const resetPassword = async (req: Request, res: Response) => {
+  const { value, error } = validResetPassword(req.body as IResetPasswordPayload)
+  if (error) {
+    logError(req, error)
+    return res.status(400).json({ error: error.details[0].message })
+  }
+
+  try {
+    const user = await AuthService.findUserByToken(value.token)
+    if (!user) {
+      logWarn(req, 'Token is not valid')
+      return res.status(400).json({ error: 'Token sudah tidak berlaku' })
+    }
+
+    const hashedPassword = AuthService.hashing(value.password)
+    await AuthService.updateUserPassword(user.id, hashedPassword)
+
+    logInfo(req, 'Password has been reset')
+    res.status(200).json({ message: 'Password berhasil direset' })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie('ask-ust-refresh-token')
+    logInfo(req, 'User is successfully logged out')
+    res.status(200).json({ message: 'Anda berhasil logout' })
   } catch (error) {
     res.status(500).json({ error })
   }

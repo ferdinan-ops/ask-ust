@@ -3,9 +3,10 @@ import { type Request, type Response } from 'express'
 import { logError, logInfo, logWarn } from '../utils/logger'
 
 import * as UserService from '../services/user.service'
-import { validUpdateUser } from '../validations/user.validation'
+import * as AuthService from '../services/auth.service'
+import { validChangePassword, validUpdateUser } from '../validations/user.validation'
 
-import { type IUserUpdatePayload } from '../types/user.type'
+import { type IChangePasswordPayload, type IUserUpdatePayload } from '../types/user.type'
 
 export const getMe = async (req: Request, res: Response) => {
   try {
@@ -90,8 +91,28 @@ export const updateMe = async (req: Request, res: Response) => {
     }
 
     const data = await UserService.updateUserById(req.userId as string, value)
+    const { password, ...rest } = data
+
     logInfo(req, 'Updating user data')
-    res.status(200).json({ message: 'Berhasil mengubah data user', data })
+    res.status(200).json({ message: 'Berhasil mengubah data user', data: rest })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const changePassword = async (req: Request, res: Response) => {
+  const { value, error } = validChangePassword(req.body as IChangePasswordPayload)
+  if (error) {
+    logError(req, error)
+    return res.status(400).json({ error: error.details[0].message })
+  }
+
+  try {
+    await AuthService.updateUserPassword(req.userId as string, value.password as string)
+
+    logInfo(req, 'Changing user password')
+    res.clearCookie('ask-ust-refresh-token')
+    res.status(200).json({ message: 'Berhasil mengubah password user' })
   } catch (error) {
     res.status(500).json({ error })
   }
