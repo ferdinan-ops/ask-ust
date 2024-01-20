@@ -1,10 +1,11 @@
 import { type Request, type Response } from 'express'
 
 import { logError, logInfo, logWarn } from '../utils/logger'
+
 import * as UserService from '../services/user.service'
 import { validUpdateUser } from '../validations/user.validation'
 
-import { type IUser } from '../types/user.type'
+import { type IUserUpdatePayload } from '../types/user.type'
 
 export const getMe = async (req: Request, res: Response) => {
   try {
@@ -75,13 +76,19 @@ export const getJoinedForums = async (req: Request, res: Response) => {
 }
 
 export const updateMe = async (req: Request, res: Response) => {
-  const { value, error } = validUpdateUser(req.body as IUser)
+  const { value, error } = validUpdateUser(req.body as IUserUpdatePayload)
   if (error) {
     logError(req, error)
     return res.status(400).json({ error: error.details[0].message })
   }
 
   try {
+    const user = await UserService.getUserByUsername(value.username)
+    if (user) {
+      logWarn(req, 'Username already exists')
+      return res.status(400).json({ message: 'Username sudah dipakai' })
+    }
+
     const data = await UserService.updateUserById(req.userId as string, value)
     logInfo(req, 'Updating user data')
     res.status(200).json({ message: 'Berhasil mengubah data user', data })

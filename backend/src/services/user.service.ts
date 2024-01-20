@@ -1,12 +1,16 @@
 import db from '../utils/db'
 
-import { type IUser } from '../types/user.type'
+import { type IUserUpdatePayload } from '../types/user.type'
 
 export const getUserLogin = async (userId: string) => {
   return await db.user.findUnique({ where: { id: userId } })
 }
 
-export const updateUserById = async (userId: string, payload: IUser) => {
+export const getUserByUsername = async (username: string) => {
+  return await db.user.findUnique({ where: { username } })
+}
+
+export const updateUserById = async (userId: string, payload: IUserUpdatePayload) => {
   return await db.user.update({ where: { id: userId }, data: payload })
 }
 

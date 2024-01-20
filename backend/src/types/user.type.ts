@@ -10,6 +10,8 @@ export interface ITokenPayload {
   id: string
 }
 
+export type IUserUpdatePayload = Omit<IUser, 'email' | 'password' | 'photo'>
+
 export type ILoginPayload = Pick<IUser, 'email' | 'password'>
 
 export interface IVerifyEmailPayload {
