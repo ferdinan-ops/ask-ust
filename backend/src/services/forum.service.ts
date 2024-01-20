@@ -10,10 +10,10 @@ export const deleteForumById = async (forumId: string) => {
   return await db.forum.delete({ where: { id: forumId } })
 }
 
-export const getForumsFromDB = async (page: string, limit: string) => {
+export const getForumsFromDB = async (page: number, limit: number) => {
   return await db.forum.findMany({
-    take: parseInt(limit),
-    skip: (parseInt(page) - 1) * parseInt(limit)
+    take: limit,
+    skip: (page - 1) * limit
   })
 }
 

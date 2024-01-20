@@ -1,7 +1,7 @@
 import { type Response, type Request } from 'express'
 
 import { logError, logInfo } from '../utils/logger'
-import { validForum } from '../validations/forum.type'
+import { validForum } from '../validations/forum.validation'
 import * as ForumService from '../services/forum.service'
 
 import { type IForum } from '../types/forum.type'
@@ -44,18 +44,21 @@ export const deleteForum = async (req: Request, res: Response) => {
 
 export const getForums = async (req: Request, res: Response) => {
   const { page, limit } = req.query
+  const currentPage = Number(page) || 1
+  const perPage = Number(limit) || 10
 
   try {
-    const data = await ForumService.getForumsFromDB(page as string, limit as string)
-    const count = await ForumService.getForumsCount()
+    const data = await ForumService.getForumsFromDB(currentPage, perPage)
+    const total = await ForumService.getForumsCount()
 
     logInfo(req, 'Getting forums')
     res.status(200).json({
       message: 'Berhasil menampilkan seluruh forum',
       data,
       meta: {
-        current_page: page,
-        total: count
+        current_page: currentPage,
+        limit: perPage,
+        total
       }
     })
   } catch (error) {
