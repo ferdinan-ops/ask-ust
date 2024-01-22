@@ -1,5 +1,14 @@
 import express from 'express'
-import { createForum, deleteForum, getForum, getForums, joinForum, leaveForum } from '../controllers/forum.controller'
+import {
+  createForum,
+  createVideoCall,
+  createVoiceCall,
+  deleteForum,
+  getForum,
+  getForums,
+  joinForum,
+  leaveForum
+} from '../controllers/forum.controller'
 
 const forumRoute = express.Router()
 
@@ -11,5 +20,8 @@ forumRoute.post('/join', joinForum)
 
 forumRoute.delete('/leave', leaveForum)
 forumRoute.delete('/:forumId', deleteForum)
+
+forumRoute.put('/video/:forumId', createVideoCall)
+forumRoute.put('/voice/:forumId', createVoiceCall)
 
 export default forumRoute

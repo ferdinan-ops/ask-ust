@@ -118,3 +118,33 @@ export const leaveForum = async (req: Request, res: Response) => {
     res.status(500).json({ error })
   }
 }
+
+export const createVideoCall = async (req: Request, res: Response) => {
+  const forumId = req.params?.forumId
+  const memberId = req.userId as string
+
+  try {
+    const data = await ForumService.enabledVideoCall(forumId, memberId)
+    await ForumService.sendVideoCallInvite(forumId)
+
+    logInfo(req, 'Creating video call')
+    res.status(200).json({ message: 'Berhasil membuat video call', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const createVoiceCall = async (req: Request, res: Response) => {
+  const forumId = req.params?.forumId
+  const memberId = req.userId as string
+
+  try {
+    const data = await ForumService.enabledVoiceCall(forumId, memberId)
+    await ForumService.sendVoiceCallInvite(forumId)
+
+    logInfo(req, 'Creating voice call')
+    res.status(200).json({ message: 'Berhasil membuat voice call', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}

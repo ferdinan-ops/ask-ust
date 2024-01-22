@@ -26,12 +26,10 @@ model User {
 }
 
 model Forum {
-  id                    String  @id @default(uuid())
-  title                 String  @unique
-  description           String  @db.Text
-  invite_code           String  @unique
-  is_video_call_enabled Boolean @default(false)
-  is_voice_call_enabled Boolean @default(false)
+  id          String @id @default(uuid())
+  title       String @unique
+  description String @db.Text
+  invite_code String @unique
 
   user_id String
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
@@ -39,6 +37,8 @@ model Forum {
   members  Member[]
   reports  Report[]
   messages Message[]
+  video    Video?
+  voice    Voice?
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -64,6 +64,8 @@ model Member {
 
   reports  Report[]
   messages Message[]
+  video    Video?
+  voice    Voice?
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -108,6 +110,40 @@ model Message {
   member    Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
 
   forum_id String
+  forum    Forum  @relation(fields: [forum_id], references: [id], onDelete: Cascade)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([member_id])
+  @@index([forum_id])
+}
+
+model Video {
+  id         String  @id @default(uuid())
+  is_enabled Boolean @default(false)
+
+  member_id String @unique
+  member    Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
+
+  forum_id String @unique
+  forum    Forum  @relation(fields: [forum_id], references: [id], onDelete: Cascade)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([member_id])
+  @@index([forum_id])
+}
+
+model Voice {
+  id         String  @id @default(uuid())
+  is_enabled Boolean @default(false)
+
+  member_id String @unique
+  member    Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
+
+  forum_id String @unique
   forum    Forum  @relation(fields: [forum_id], references: [id], onDelete: Cascade)
 
   created_at DateTime @default(now())
