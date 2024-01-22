@@ -26,10 +26,12 @@ model User {
 }
 
 model Forum {
-  id          String @id @default(uuid())
-  title       String @unique
-  description String @db.Text
-  invite_code String @unique
+  id                    String  @id @default(uuid())
+  title                 String  @unique
+  description           String  @db.Text
+  invite_code           String  @unique
+  is_video_call_enabled Boolean @default(false)
+  is_voice_call_enabled Boolean @default(false)
 
   user_id String
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)

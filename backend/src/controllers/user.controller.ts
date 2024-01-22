@@ -1,9 +1,8 @@
 import { type Request, type Response } from 'express'
 
-import { logError, logInfo, logWarn } from '../utils/logger'
-
 import * as UserService from '../services/user.service'
 import * as AuthService from '../services/auth.service'
+import { logError, logInfo, logWarn } from '../utils/logger'
 import { validChangePassword, validUpdateUser } from '../validations/user.validation'
 
 import { type IChangePasswordPayload, type IUserUpdatePayload } from '../types/user.type'
@@ -32,8 +31,7 @@ export const getMyForums = async (req: Request, res: Response) => {
   const perPage = Number(limit) || 10
 
   try {
-    const data = await UserService.getUserLoginForums(userId, currentPage, perPage)
-    const total = await UserService.getUserLoginForumsCount(userId)
+    const { data, count } = await UserService.getUserLoginForums(userId, currentPage, perPage)
 
     logInfo(req, 'Getting user forums')
     res.status(200).json({
@@ -42,7 +40,7 @@ export const getMyForums = async (req: Request, res: Response) => {
       meta: {
         current_page: currentPage,
         limit: perPage,
-        total
+        total: count
       }
     })
   } catch (error) {
@@ -58,8 +56,7 @@ export const getJoinedForums = async (req: Request, res: Response) => {
   const perPage = Number(limit) || 10
 
   try {
-    const data = await UserService.getForumByMemberId(userId, currentPage, perPage)
-    const total = await UserService.getForumByMemberIdCount(userId)
+    const { data, count } = await UserService.getForumByMemberId(userId, currentPage, perPage)
 
     logInfo(req, 'Getting user forums')
     res.status(200).json({
@@ -68,7 +65,7 @@ export const getJoinedForums = async (req: Request, res: Response) => {
       meta: {
         current_page: currentPage,
         limit: perPage,
-        total
+        total: count
       }
     })
   } catch (error) {

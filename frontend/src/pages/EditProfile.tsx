@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
+import { HiOutlineEnvelope } from 'react-icons/hi2'
 
 export default function EditProfile() {
   const forms = useForm()
@@ -18,6 +19,13 @@ export default function EditProfile() {
           </Button>
           <Button variant="destructive">Keluar dari aplikasi</Button>
         </div>
+      </div>
+      <div className="border-b py-7 dark:border-white/10">
+        <h1 className="mb-5 text-lg font-semibold md:text-xl">Provider</h1>
+        <Button variant="secondary" className="gap-3 bg-zinc-200 hover:bg-zinc-300">
+          <HiOutlineEnvelope className="text-xl" />
+          Ubah email Anda
+        </Button>
       </div>
       <h1 className="mb-5 mt-7 text-lg font-semibold md:text-xl">Edit Profil</h1>
       <Form {...forms}>
@@ -43,18 +51,6 @@ export default function EditProfile() {
                   <FormLabel className="font-semibold dark:text-white">Username</FormLabel>
                   <FormControl>
                     <Input {...field} placeholder="john.doe" />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="email"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="email" placeholder="johndoe@email.com" />
                   </FormControl>
                 </FormItem>
               )}

@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 
 const fileFilter = (_req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
   const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp', 'image/svg', 'image/gif']
-  if (allowedTypes.includes(file.mimetype as string)) {
+  if (allowedTypes.includes(file.mimetype)) {
     cb(null, true)
   } else {
     logger.info('File type not supported')

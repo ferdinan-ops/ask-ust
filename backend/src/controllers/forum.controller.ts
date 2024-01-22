@@ -16,7 +16,7 @@ export const createForum = async (req: Request, res: Response) => {
   try {
     const data = await ForumService.addNewForum({
       ...value,
-      user_id: req.userId as string
+      userId: req.userId as string
     })
 
     logInfo(req, 'Creating new forum')
@@ -32,8 +32,11 @@ export const deleteForum = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Forum id is not provided' })
   }
 
+  const forumId = req.body.forumId as string
+  const userId = req.userId as string
+
   try {
-    const data = await ForumService.deleteForumById(req.body.forumId as string)
+    const data = await ForumService.deleteForumById(forumId, userId)
 
     logInfo(req, 'Deleting forum')
     res.status(200).json({ message: 'Forum berhasil dihapus', data })
@@ -43,13 +46,13 @@ export const deleteForum = async (req: Request, res: Response) => {
 }
 
 export const getForums = async (req: Request, res: Response) => {
-  const { page, limit } = req.query
+  const { page, limit, q } = req.query
   const currentPage = Number(page) || 1
   const perPage = Number(limit) || 10
+  const search = String(q) || ''
 
   try {
-    const data = await ForumService.getForumsFromDB(currentPage, perPage)
-    const total = await ForumService.getForumsCount()
+    const { data, count } = await ForumService.getForumsFromDB(currentPage, perPage, search)
 
     logInfo(req, 'Getting forums')
     res.status(200).json({
@@ -58,7 +61,7 @@ export const getForums = async (req: Request, res: Response) => {
       meta: {
         current_page: currentPage,
         limit: perPage,
-        total
+        total: count
       }
     })
   } catch (error) {
@@ -77,6 +80,40 @@ export const getForum = async (req: Request, res: Response) => {
 
     logInfo(req, 'Getting forum')
     res.status(200).json({ message: 'Berhasil menampilkan detail forum', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const joinForum = async (req: Request, res: Response) => {
+  if (req.body?.forumId) {
+    logError(req, 'Forum id is not provided')
+    return res.status(400).json({ message: 'Forum id is not provided' })
+  }
+
+  try {
+    const { forumId } = req.body
+    const data = await ForumService.addMemberToForum(forumId as string, req.userId as string)
+
+    logInfo(req, 'Joining forum')
+    res.status(200).json({ message: 'Berhasil join forum', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const leaveForum = async (req: Request, res: Response) => {
+  if (req.body?.forumId) {
+    logError(req, 'Forum id is not provided')
+    return res.status(400).json({ message: 'Forum id is not provided' })
+  }
+
+  try {
+    const { forumId } = req.body
+    const data = await ForumService.removeMemberFromForum(forumId as string, req.userId as string)
+
+    logInfo(req, 'Leaving forum')
+    res.status(200).json({ message: 'Berhasil keluar forum', data })
   } catch (error) {
     res.status(500).json({ error })
   }

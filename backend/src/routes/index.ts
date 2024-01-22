@@ -3,11 +3,13 @@ import { type Application, type Router } from 'express'
 import authRoute from './auth.route'
 import forumRoute from './forum.route'
 import userRoute from './user.route'
+import memberRoute from './member.route'
 
 const _routes = [
   ['/auth', authRoute],
   ['/forums', forumRoute],
-  ['/user', userRoute]
+  ['/users', userRoute],
+  ['/members', memberRoute]
 ]
 
 const routes = (app: Application) => {
