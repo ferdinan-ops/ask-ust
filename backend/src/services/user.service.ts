@@ -1,6 +1,8 @@
 import db from '../utils/db'
 
 import { type IUserUpdatePayload } from '../types/user.type'
+import { deleteFile, compressedFile } from '../utils/fileSettings'
+import logger from '../utils/logger'
 
 export const getUserLogin = async (userId: string) => {
   return await db.user.findUnique({ where: { id: userId } })
@@ -63,4 +65,25 @@ export const getForumByMemberId = async (userId: string, page: number, limit: nu
   ])
 
   return { data, count }
+}
+
+export const processPhoto = async (oldPhoto: string, filename: string) => {
+  if (oldPhoto !== '') await deleteFile(oldPhoto)
+  const compressedPhoto = await compressedFile(filename)
+  if (compressedPhoto) {
+    return compressedPhoto
+  } else {
+    logger.error('Gagal mengubah foto')
+    return oldPhoto
+  }
+}
+
+export const updatePhoto = async (userId: string, filename: string) => {
+  const user = await db.user.findUnique({ where: { id: userId } })
+  if (!user) throw new Error('User tidak ditemukan')
+
+  const oldPhoto = user.photo
+  const newPhoto = await processPhoto(oldPhoto, filename)
+
+  return await db.user.update({ where: { id: userId }, data: { photo: newPhoto } })
 }

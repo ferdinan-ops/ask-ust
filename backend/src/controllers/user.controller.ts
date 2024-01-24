@@ -114,3 +114,19 @@ export const changePassword = async (req: Request, res: Response) => {
     res.status(500).json({ error })
   }
 }
+
+export const changeProfilePicture = async (req: Request, res: Response) => {
+  if (!req.file) {
+    logWarn(req, 'No file uploaded')
+    return res.status(400).json({ message: 'Tidak ada file yang diupload' })
+  }
+
+  try {
+    const data = await UserService.updatePhoto(req.userId as string, req.file.filename)
+
+    logInfo(req, 'Changing user profile picture')
+    res.status(200).json({ message: 'Berhasil mengubah foto profil user', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
