@@ -90,3 +90,7 @@ export const verifyUserEmail = async (userId: string) => {
     data: { token: '', is_email_verified: true }
   })
 }
+
+export const findUserById = async (userId: string) => {
+  return await db.user.findUnique({ where: { id: userId } })
+}

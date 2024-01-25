@@ -1,31 +1,36 @@
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { yupResolver } from '@hookform/resolvers/yup'
 
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { AuthLayout } from '@/components/layouts'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
+import { RegisterType, registerValidation } from '@/lib/validations/auth.validation'
 import { RegisterBg } from '@/assets'
 import { useTitle } from '@/hooks'
+import { useRegister } from '@/store/server/useAuth'
 
 const description =
   'Ayo mendaftar dan rajin berdiskusi di sini supaya masalah Anda cepat terselesaikan biar gak stress mulu~'
 
-type FormValues = {
-  fullname: string
-  username: string
-  email: string
-  password: string
-  confirmPassword: string
-}
-
 export default function Register() {
   useTitle('Daftar')
-  const forms = useForm<FormValues>({ mode: 'onTouched' })
+  const navigate = useNavigate()
+  const { mutate: register, isLoading } = useRegister()
 
-  const onSubmit = async (values: FormValues) => {
-    console.log(values)
+  const forms = useForm<RegisterType>({
+    mode: 'onTouched',
+    resolver: yupResolver(registerValidation)
+  })
+
+  const onSubmit = async (values: RegisterType) => {
+    register(values, {
+      onSuccess: () => {
+        navigate('/verify-email')
+      }
+    })
   }
 
   return (
@@ -49,6 +54,7 @@ export default function Register() {
                     <FormControl>
                       <Input {...field} placeholder="John Doe" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -61,6 +67,7 @@ export default function Register() {
                     <FormControl>
                       <Input {...field} placeholder="john.doe" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -74,6 +81,7 @@ export default function Register() {
                   <FormControl>
                     <Input {...field} type="email" placeholder="johndoe@email.com" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -86,6 +94,7 @@ export default function Register() {
                   <FormControl>
                     <Input {...field} type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -98,10 +107,13 @@ export default function Register() {
                   <FormControl>
                     <Input {...field} type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className="font-semibold">Daftar</Button>
+            <Button className="font-semibold" type="submit" loading={isLoading}>
+              Daftar
+            </Button>
           </form>
         </Form>
         <p className="mt-7 text-center text-[15px] font-semibold text-zinc-500 dark:text-zinc-400">

@@ -4,6 +4,7 @@ import {
   login,
   loginGoogle,
   logout,
+  refreshToken,
   register,
   resetPassword,
   verifyEmail
@@ -18,5 +19,6 @@ authRoute.post('/google', loginGoogle)
 authRoute.post('/forgot-password', forgotPassword)
 authRoute.post('/reset-password', resetPassword)
 authRoute.post('/logout', logout)
+authRoute.get('/refresh', refreshToken)
 
 export default authRoute

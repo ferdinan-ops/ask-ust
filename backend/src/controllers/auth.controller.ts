@@ -1,5 +1,7 @@
 import { type Request, type Response } from 'express'
+import jwt from 'jsonwebtoken'
 
+import ENV from '../utils/environment'
 import * as AuthService from '../services/auth.service'
 import { logError, logInfo, logWarn } from '../utils/logger'
 import { validLogin, validRegister, validResetPassword, validVerifyEmail } from '../validations/auth.validation'
@@ -89,7 +91,7 @@ export const login = async (req: Request, res: Response) => {
       sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000
     })
-    res.status(200).json({ accessToken })
+    res.status(200).json({ access_token: accessToken })
   } catch (error) {
     res.status(500).json({ error })
   }
@@ -134,7 +136,7 @@ export const loginGoogle = async (req: Request, res: Response) => {
       sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000
     })
-    res.status(200).json({ accessToken })
+    res.status(200).json({ access_token: accessToken })
   } catch (error) {
     res.status(500).json({ error })
   }
@@ -194,6 +196,36 @@ export const logout = async (req: Request, res: Response) => {
     res.clearCookie('ask-ust-refresh-token')
     logInfo(req, 'User is successfully logged out')
     res.status(200).json({ message: 'Anda berhasil logout' })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const refreshToken = async (req: Request, res: Response) => {
+  const refreshToken = req.cookies['ask-ust-refresh-token']
+  if (!refreshToken) {
+    logWarn(req, 'Refresh token is not provided')
+    return res.status(401).json({ error: 'Unauthorized' })
+  }
+
+  try {
+    jwt.verify(refreshToken as string, ENV.refreshTokenSecret as string, async (error, decoded) => {
+      const { id } = decoded as { id: string }
+      if (error) {
+        logError(req, 'Refresh token is invalid/Forbidden')
+        return res.status(403).json({ error: 'Forbidden' })
+      }
+
+      const user = await AuthService.findUserById(id)
+      if (!user) {
+        logWarn(req, 'User is not found')
+        return res.status(401).json({ error: 'Unauthorized' })
+      }
+
+      const accessToken = AuthService.accessTokenSign({ id: user.id })
+      logInfo(req, 'Access token is successfully refreshed')
+      res.status(200).json({ access_token: accessToken })
+    })
   } catch (error) {
     res.status(500).json({ error })
   }
