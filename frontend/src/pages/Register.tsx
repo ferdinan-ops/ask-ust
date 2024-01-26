@@ -2,15 +2,18 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { AuthLayout } from '@/components/layouts'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 
-import { RegisterType, registerValidation } from '@/lib/validations/auth.validation'
-import { RegisterBg } from '@/assets'
+import { Password } from '@/components/atoms'
+import { AuthLayout } from '@/components/layouts'
+
 import { useTitle } from '@/hooks'
+import { RegisterBg } from '@/assets'
 import { useRegister } from '@/store/server/useAuth'
+import { registerDefaultValues } from '@/lib/defaultValues'
+import { RegisterType, registerValidation } from '@/lib/validations/auth.validation'
 
 const description =
   'Ayo mendaftar dan rajin berdiskusi di sini supaya masalah Anda cepat terselesaikan biar gak stress mulu~'
@@ -22,13 +25,16 @@ export default function Register() {
 
   const forms = useForm<RegisterType>({
     mode: 'onTouched',
-    resolver: yupResolver(registerValidation)
+    resolver: yupResolver(registerValidation),
+    defaultValues: registerDefaultValues
   })
 
   const onSubmit = async (values: RegisterType) => {
     register(values, {
       onSuccess: () => {
-        navigate('/verify-email')
+        setTimeout(() => {
+          navigate('/login')
+        }, 1000)
       }
     })
   }
@@ -92,7 +98,7 @@ export default function Register() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Kata Sandi</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+                    <Password {...field} placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -105,7 +111,7 @@ export default function Register() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Konfirmasi Kata Sandi</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+                    <Password {...field} placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

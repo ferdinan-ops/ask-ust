@@ -19,5 +19,12 @@ export const refreshTokenFn = async (): Promise<AuthResponseType> => {
 }
 
 export const registerFn = async (payload: RegisterType) => {
-  return await apiPublic.post('/auth/register', payload)
+  const { confirmPassword, ...rest } = payload
+  if (confirmPassword) {
+    return await apiPublic.post('/auth/register', rest)
+  }
+}
+
+export const verifyEmailFn = async (token: string) => {
+  return await apiPublic.post('/auth/verify-email', { token })
 }

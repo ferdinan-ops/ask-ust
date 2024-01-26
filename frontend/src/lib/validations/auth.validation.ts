@@ -17,3 +17,9 @@ export const registerValidation = Yup.object({
 })
 
 export type RegisterType = Yup.InferType<typeof registerValidation>
+
+export const verifyEmailValidation = Yup.object({
+  token: Yup.string().required('Kode verifikasi harus diisi')
+})
+
+export type VerifyEmailType = Yup.InferType<typeof verifyEmailValidation>

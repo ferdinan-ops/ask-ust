@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
@@ -5,21 +6,27 @@ import { AuthLayout } from '@/components/layouts'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
+import { VerifyEmailType } from '@/lib/validations/auth.validation'
+import { useVerifyEmail } from '@/store/server/useAuth'
 import { VerifyEmailBg } from '@/assets'
 import { useTitle } from '@/hooks'
 
 const description = 'Selamat datang! Kami perlu memastikan bahwa akun ini benar-benar milik kamu, supaya aman hehe~'
 
-type FormValues = {
-  codeVerification: string
-}
-
 export default function VerifyEmail() {
   useTitle('Verifikasi Email')
-  const forms = useForm<FormValues>({ mode: 'onTouched' })
+  const navigate = useNavigate()
+  const { mutate: verifyEmail, isLoading } = useVerifyEmail()
+  const forms = useForm<VerifyEmailType>({ mode: 'onTouched' })
 
-  const onSubmit = async (values: FormValues) => {
-    console.log(values)
+  const onSubmit = async (values: VerifyEmailType) => {
+    verifyEmail(values.token, {
+      onSuccess: () => {
+        setTimeout(() => {
+          navigate('/login')
+        }, 1000)
+      }
+    })
   }
 
   return (
@@ -34,7 +41,7 @@ export default function VerifyEmail() {
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="mt-8 flex flex-col gap-5">
             <FormField
-              name="codeVerification"
+              name="token"
               control={forms.control}
               render={({ field }) => (
                 <FormItem className="flex-1">
@@ -46,7 +53,9 @@ export default function VerifyEmail() {
               )}
             />
 
-            <Button className="font-semibold">Verifikasi</Button>
+            <Button className="font-semibold" type="submit" loading={isLoading}>
+              Verifikasi
+            </Button>
           </form>
         </Form>
       </section>
