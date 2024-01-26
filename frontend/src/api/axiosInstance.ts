@@ -15,10 +15,10 @@ api.defaults.headers.post['Content-Type'] = 'application/json'
 
 api.interceptors.request.use(
   (config) => {
-    const token = useToken.getState().token
+    const accessToken = useToken.getState().accessToken
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`
     }
 
     return config
@@ -34,13 +34,15 @@ api.interceptors.response.use(
     if (originalConfig.url !== '/login' && error.response) {
       if (error.response.status === 403) {
         originalConfig._retry = true
+        const refreshToken = useToken.getState().refreshToken
 
         try {
-          const response = await refreshTokenFn()
-          useToken.getState().storeToken(response.access_token)
+          const response = await refreshTokenFn(refreshToken)
+          useToken.getState().storeAccessToken(response.access_token)
           return api(originalConfig)
         } catch (error) {
-          useToken.getState().removeToken()
+          useToken.getState().removeAccessToken()
+          useToken.getState().removeRefreshToken()
           window.location.href = '/login'
           return Promise.reject(error)
         }

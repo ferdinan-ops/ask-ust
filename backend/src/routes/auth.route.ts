@@ -19,6 +19,6 @@ authRoute.post('/google', loginGoogle)
 authRoute.post('/forgot-password', forgotPassword)
 authRoute.post('/reset-password', resetPassword)
 authRoute.post('/logout', logout)
-authRoute.get('/refresh', refreshToken)
+authRoute.post('/refresh', refreshToken)
 
 export default authRoute

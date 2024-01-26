@@ -1,12 +1,30 @@
 import { create } from 'zustand'
 interface TokenStore {
-  token: string
-  storeToken: (token: string) => void
-  removeToken: () => void
+  accessToken: string
+  storeAccessToken: (token: string) => void
+  removeAccessToken: () => void
+  refreshToken: string
+  storeRefreshToken: (token: string) => void
+  removeRefreshToken: () => void
 }
 
 export const useToken = create<TokenStore>((set) => ({
-  token: JSON.parse(localStorage.getItem('token') ?? '""'),
-  storeToken: (token) => set({ token }),
-  removeToken: () => set({ token: '' })
+  accessToken: JSON.parse(localStorage.getItem('ask-ust-access-token') ?? '""'),
+  storeAccessToken: (accessToken) => {
+    localStorage.setItem('ask-ust-access-token', JSON.stringify(accessToken))
+    set({ accessToken })
+  },
+  removeAccessToken: () => {
+    localStorage.removeItem('ask-ust-access-token')
+    set({ accessToken: '' })
+  },
+  refreshToken: JSON.parse(localStorage.getItem('ask-ust-refresh-token') ?? '""'),
+  storeRefreshToken: (refreshToken) => {
+    localStorage.setItem('ask-ust-refresh-token', JSON.stringify(refreshToken))
+    set({ refreshToken })
+  },
+  removeRefreshToken: () => {
+    localStorage.removeItem('ask-ust-refresh-token')
+    set({ refreshToken: '' })
+  }
 }))

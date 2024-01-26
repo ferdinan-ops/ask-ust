@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
@@ -6,7 +7,7 @@ import { AuthLayout } from '@/components/layouts'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-import { VerifyEmailType } from '@/lib/validations/auth.validation'
+import { VerifyEmailType, verifyEmailValidation } from '@/lib/validations/auth.validation'
 import { useVerifyEmail } from '@/store/server/useAuth'
 import { VerifyEmailBg } from '@/assets'
 import { useTitle } from '@/hooks'
@@ -17,14 +18,19 @@ export default function VerifyEmail() {
   useTitle('Verifikasi Email')
   const navigate = useNavigate()
   const { mutate: verifyEmail, isLoading } = useVerifyEmail()
-  const forms = useForm<VerifyEmailType>({ mode: 'onTouched' })
+
+  const forms = useForm<VerifyEmailType>({
+    mode: 'onTouched',
+    resolver: yupResolver(verifyEmailValidation),
+    defaultValues: { token: '' }
+  })
 
   const onSubmit = async (values: VerifyEmailType) => {
     verifyEmail(values.token, {
       onSuccess: () => {
         setTimeout(() => {
           navigate('/login')
-        }, 1000)
+        }, 1500)
       }
     })
   }

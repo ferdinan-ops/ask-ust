@@ -23,3 +23,10 @@ export const verifyEmailValidation = Yup.object({
 })
 
 export type VerifyEmailType = Yup.InferType<typeof verifyEmailValidation>
+
+export const loginValidation = Yup.object({
+  email: Yup.string().email('Email tidak valid').required('Email harus diisi'),
+  password: Yup.string().required('Kata sandi harus diisi')
+})
+
+export type LoginType = Yup.InferType<typeof loginValidation>

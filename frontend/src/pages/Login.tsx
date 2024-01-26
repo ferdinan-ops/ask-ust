@@ -1,3 +1,5 @@
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { FcGoogle } from 'react-icons/fc'
 
@@ -6,23 +8,33 @@ import { AuthLayout } from '@/components/layouts'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-import { LoginBg } from '@/assets'
-import { Link } from 'react-router-dom'
+import { LoginType, loginValidation } from '@/lib/validations/auth.validation'
+import { loginDefaultValues } from '@/lib/defaultValues'
+import { useLogin } from '@/store/server/useAuth'
 import { useTitle } from '@/hooks'
+import { LoginBg } from '@/assets'
 
 const description = 'Diskusi secara online semakin mudah – tetap berdiskusi walaupun pake kuota dari Kemendikbud hehe ~'
 
-type FormValues = {
-  email: string
-  password: string
-}
-
 export default function Login() {
   useTitle('Masuk')
-  const forms = useForm<FormValues>({ mode: 'onTouched' })
+  const navigate = useNavigate()
+  const { mutate: login, isLoading } = useLogin()
 
-  const onSubmit = async (values: FormValues) => {
-    console.log(values)
+  const forms = useForm<LoginType>({
+    mode: 'onTouched',
+    resolver: yupResolver(loginValidation),
+    defaultValues: loginDefaultValues
+  })
+
+  const onSubmit = async (values: LoginType) => {
+    login(values, {
+      onSuccess: () => {
+        setTimeout(() => {
+          navigate('/dashboard')
+        }, 1500)
+      }
+    })
   }
 
   return (
@@ -69,7 +81,9 @@ export default function Login() {
                 </FormItem>
               )}
             />
-            <Button className="font-semibold">Masuk</Button>
+            <Button className="font-semibold" type="submit" loading={isLoading}>
+              Masuk
+            </Button>
           </form>
         </Form>
         <p className="mt-7 text-center text-[15px] font-semibold text-zinc-500 dark:text-zinc-400">

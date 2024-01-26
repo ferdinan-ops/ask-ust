@@ -85,13 +85,13 @@ export const login = async (req: Request, res: Response) => {
     const refreshToken = AuthService.refreshTokenSign({ id: user.id })
 
     logInfo(req, 'User is successfully logged in')
-    res.cookie('ask-ust-refresh-token', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    })
-    res.status(200).json({ access_token: accessToken })
+    // res.cookie('ask-ust-refresh-token', refreshToken, {
+    //   httpOnly: true,
+    //   sameSite: 'none',
+    //   secure: true,
+    //   maxAge: 7 * 24 * 60 * 60 * 1000
+    // })
+    res.status(200).json({ access_token: accessToken, refresh_token: refreshToken })
   } catch (error) {
     res.status(500).json({ error })
   }
@@ -130,13 +130,13 @@ export const loginGoogle = async (req: Request, res: Response) => {
     const refreshToken = AuthService.refreshTokenSign({ id: user.id })
 
     logInfo(req, 'User is successfully logged in')
-    res.cookie('ask-ust-refresh-token', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    })
-    res.status(200).json({ access_token: accessToken })
+    // res.cookie('ask-ust-refresh-token', refreshToken, {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: 'none',
+    //   maxAge: 7 * 24 * 60 * 60 * 1000
+    // })
+    res.status(200).json({ access_token: accessToken, refresh_token: refreshToken })
   } catch (error) {
     res.status(500).json({ error })
   }
@@ -193,16 +193,16 @@ export const resetPassword = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   try {
-    res.clearCookie('ask-ust-refresh-token')
     logInfo(req, 'User is successfully logged out')
-    res.status(200).json({ message: 'Anda berhasil logout' })
+    res.clearCookie('ask-ust-refresh-token')
+    res.status(200).json({ message: 'Berhasil logout' })
   } catch (error) {
     res.status(500).json({ error })
   }
 }
 
 export const refreshToken = async (req: Request, res: Response) => {
-  const refreshToken = req.cookies['ask-ust-refresh-token']
+  const refreshToken = req.body?.refresh_token
   if (!refreshToken) {
     logWarn(req, 'Refresh token is not provided')
     return res.status(401).json({ error: 'Unauthorized' })

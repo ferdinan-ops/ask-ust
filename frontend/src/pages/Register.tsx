@@ -34,7 +34,7 @@ export default function Register() {
       onSuccess: () => {
         setTimeout(() => {
           navigate('/login')
-        }, 1000)
+        }, 1500)
       }
     })
   }
