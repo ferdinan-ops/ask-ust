@@ -1,6 +1,6 @@
 import { type Request } from 'express'
 import multer from 'multer'
-import uuid from 'uuid'
+import { v4 } from 'uuid'
 
 import logger from '../utils/logger'
 
@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
     cb(null, 'uploads')
   },
   filename: (_req, file, cb) => {
-    cb(null, uuid.v4() + '-' + file.originalname)
+    cb(null, v4() + '-' + file.originalname)
   }
 })
 

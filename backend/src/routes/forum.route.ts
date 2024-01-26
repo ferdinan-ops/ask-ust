@@ -1,4 +1,5 @@
 import express from 'express'
+
 import {
   createForum,
   createVideoCall,
@@ -9,19 +10,20 @@ import {
   joinForum,
   leaveForum
 } from '../controllers/forum.controller'
+import verifyJwt from '../middlewares/verifyJwt'
 
 const forumRoute = express.Router()
 
-forumRoute.get('/', getForums)
-forumRoute.get('/:forumId', getForum)
+forumRoute.get('/', verifyJwt, getForums)
+forumRoute.get('/:forumId', verifyJwt, getForum)
 
-forumRoute.post('/', createForum)
-forumRoute.post('/join', joinForum)
+forumRoute.post('/', verifyJwt, createForum)
+forumRoute.post('/join', verifyJwt, joinForum)
 
-forumRoute.delete('/leave', leaveForum)
-forumRoute.delete('/:forumId', deleteForum)
+forumRoute.delete('/leave', verifyJwt, leaveForum)
+forumRoute.delete('/:forumId', verifyJwt, deleteForum)
 
-forumRoute.put('/video/:forumId', createVideoCall)
-forumRoute.put('/voice/:forumId', createVoiceCall)
+forumRoute.put('/video/:forumId', verifyJwt, createVideoCall)
+forumRoute.put('/voice/:forumId', verifyJwt, createVoiceCall)
 
 export default forumRoute

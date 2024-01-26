@@ -29,9 +29,10 @@ export default function Register() {
     defaultValues: registerDefaultValues
   })
 
-  const onSubmit = async (values: RegisterType) => {
+  const onSubmit = (values: RegisterType) => {
     register(values, {
       onSuccess: () => {
+        forms.reset(registerDefaultValues)
         setTimeout(() => {
           navigate('/login')
         }, 1500)

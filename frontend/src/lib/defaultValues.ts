@@ -10,3 +10,8 @@ export const loginDefaultValues = {
   email: '',
   password: ''
 }
+
+export const forumDefaultValues = {
+  title: '',
+  description: ''
+}

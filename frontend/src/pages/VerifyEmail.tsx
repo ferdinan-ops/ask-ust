@@ -25,9 +25,10 @@ export default function VerifyEmail() {
     defaultValues: { token: '' }
   })
 
-  const onSubmit = async (values: VerifyEmailType) => {
+  const onSubmit = (values: VerifyEmailType) => {
     verifyEmail(values.token, {
       onSuccess: () => {
+        forms.reset({ token: '' })
         setTimeout(() => {
           navigate('/login')
         }, 1500)

@@ -1,13 +1,35 @@
-import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+
+import { useCreateForum } from '@/store/server/useForum'
+import { forumDefaultValues } from '@/lib/defaultValues'
+import { ForumType, forumValidation } from '@/lib/validations/forum.validation'
 
 export default function CreateForum() {
-  const forms = useForm()
+  const navigate = useNavigate()
+  const { mutate: createForum, isLoading } = useCreateForum()
+  const forms = useForm<ForumType>({
+    mode: 'onTouched',
+    resolver: yupResolver(forumValidation),
+    defaultValues: forumDefaultValues
+  })
 
-  const onSubmit = () => {}
+  const onSubmit = (data: ForumType) => {
+    createForum(data, {
+      onSuccess: () => {
+        forms.reset(forumDefaultValues)
+        setTimeout(() => {
+          navigate('/forum')
+        }, 1500)
+      }
+    })
+  }
 
   return (
     <section className="mx-auto w-8/12">
@@ -43,7 +65,9 @@ export default function CreateForum() {
               </FormItem>
             )}
           />
-          <Button className="ml-auto w-fit font-semibold">Submit</Button>
+          <Button className="ml-auto w-fit font-semibold" type="submit" loading={isLoading}>
+            Submit
+          </Button>
         </form>
       </Form>
     </section>

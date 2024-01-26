@@ -27,9 +27,10 @@ export default function Login() {
     defaultValues: loginDefaultValues
   })
 
-  const onSubmit = async (values: LoginType) => {
+  const onSubmit = (values: LoginType) => {
     login(values, {
       onSuccess: () => {
+        forms.reset(loginDefaultValues)
         setTimeout(() => {
           navigate('/dashboard')
         }, 1500)

@@ -1,4 +1,4 @@
-import uuid from 'uuid'
+import { v4 } from 'uuid'
 import { MemberRole } from '@prisma/client'
 
 import db from '../utils/db'
@@ -9,12 +9,13 @@ import { type IForum } from '../types/forum.type'
 
 export const addNewForum = async (payload: IForum & { userId: string }) => {
   const { userId, title, description } = payload
+
   return await db.forum.create({
     data: {
       user_id: userId,
       title,
       description,
-      invite_code: uuid.v4(),
+      invite_code: v4(),
       members: {
         create: [{ user_id: userId, role: MemberRole.ADMIN }]
       }

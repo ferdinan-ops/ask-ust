@@ -20,6 +20,8 @@ import {
   AlertDialogTrigger
 } from '../ui/alert-dialog'
 import { cn } from '@/lib/utils'
+import { useGetMe } from '@/store/server/useUser'
+import { Skeleton } from '../ui/skeleton'
 
 interface LeftbarProps {
   isShow: boolean
@@ -31,6 +33,8 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
 
   useDisableBodyScroll(isShow)
   const ref = useOutsideClick(() => setIsShow(false))
+
+  const { data: user, isLoading } = useGetMe()
 
   const handleClose = () => {
     setIsShow(false)
@@ -92,10 +96,17 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
 
         <div className="sticky bottom-0 top-full border-t border-[#E9E9E9] px-4 py-5 dark:border-white/10">
           <div className="flex items-center justify-between gap-3">
-            <div className="flex flex-col">
-              <p className="max-w-[160px] truncate text-sm font-bold">Ferdinan Imanuel Tumanggor</p>
-              <p className="text-xs font-semibold text-zinc-400">@ferdinan-ops</p>
-            </div>
+            {isLoading ? (
+              <div className="flex flex-col gap-1">
+                <Skeleton className="h-3 w-[160px]" />
+                <Skeleton className="h-2 w-[90px]" />
+              </div>
+            ) : (
+              <div className="flex flex-col">
+                <p className="max-w-[160px] truncate text-sm font-bold">{user?.fullname}</p>
+                <p className="text-xs font-semibold text-zinc-400">@{user?.username}</p>
+              </div>
+            )}
 
             <AlertDialog>
               <AlertDialogTrigger asChild>
