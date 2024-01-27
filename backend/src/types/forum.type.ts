@@ -1,4 +1,4 @@
 export interface IForum {
-  title: string
+  title?: string
   description: string
 }

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { HiArrowLeftOnRectangle, HiHashtag, HiPlus, HiXMark } from 'react-icons/hi2'
 
 import { useDisableBodyScroll, useOutsideClick } from '@/hooks'
-import { MAIN_MENU, MENU_FORUMS } from '@/lib/data'
+import { MAIN_MENU } from '@/lib/data'
 import { Logo } from '@/assets'
 
 import { ActiveLink, BgAbsolute, Search } from '../atoms'
@@ -22,6 +22,7 @@ import {
 import { cn } from '@/lib/utils'
 import { useGetMe } from '@/store/server/useUser'
 import { Skeleton } from '../ui/skeleton'
+import { useGetForum } from '@/store/server/useForum'
 
 interface LeftbarProps {
   isShow: boolean
@@ -35,8 +36,14 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
   const ref = useOutsideClick(() => setIsShow(false))
 
   const { data: user, isLoading } = useGetMe()
+  const { data: forums, isSuccess } = useGetForum()
 
   const handleClose = () => {
+    setIsShow(false)
+  }
+
+  const handleCreate = () => {
+    navigate('/forum/create')
     setIsShow(false)
   }
 
@@ -65,13 +72,7 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
           </Link>
           <div className="flex flex-col gap-3 xl:hidden">
             <Search className="w-full" action={() => setIsShow(false)} />
-            <Button
-              className="h-fit w-full gap-2 p-0 px-3 py-2 text-xs"
-              onClick={() => {
-                navigate('/forum/create')
-                setIsShow(false)
-              }}
-            >
+            <Button className="h-fit w-full gap-2 p-0 px-3 py-2 text-xs" onClick={handleCreate}>
               <HiPlus className="text-lg" />
               <span>Forum baru</span>
             </Button>
@@ -84,14 +85,27 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
               ))}
             </div>
           </div>
-          <div className="flex flex-col gap-2">
-            <span className="px-3 py-1 text-xs font-semibold uppercase text-black/40 dark:text-white/40">Diikuti</span>
-            <div className="flex flex-col gap-1 text-primary dark:text-white">
-              {MENU_FORUMS.map((menu, index) => (
-                <ActiveLink href={menu.href} name={menu.name} icon={HiHashtag} key={index} action={handleClose} />
-              ))}
+          {isSuccess && (
+            <div className="flex flex-col gap-2">
+              <span className="px-3 py-1 text-xs font-semibold uppercase text-black/40 dark:text-white/40">
+                Diikuti
+              </span>
+              <div className="flex flex-col gap-1 text-primary dark:text-white">
+                {forums.data.map((forum) => (
+                  <ActiveLink
+                    href={`/forum/${forum.id}`}
+                    name={forum.title}
+                    icon={HiHashtag}
+                    key={forum.id}
+                    action={handleClose}
+                  />
+                ))}
+                {/* {MENU_FORUMS.map((menu, index) => (
+                  <ActiveLink href={menu.href} name={menu.name} icon={HiHashtag} key={index} action={handleClose} />
+                ))} */}
+              </div>
             </div>
-          </div>
+          )}
         </nav>
 
         <div className="sticky bottom-0 top-full border-t border-[#E9E9E9] px-4 py-5 dark:border-white/10">

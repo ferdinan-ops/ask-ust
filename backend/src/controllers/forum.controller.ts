@@ -1,7 +1,7 @@
 import { type Response, type Request } from 'express'
 
 import { logError, logInfo } from '../utils/logger'
-import { validForum } from '../validations/forum.validation'
+import { validForum, validUpdateForum } from '../validations/forum.validation'
 import * as ForumService from '../services/forum.service'
 
 import { type IForum } from '../types/forum.type'
@@ -49,10 +49,9 @@ export const getForums = async (req: Request, res: Response) => {
   const { page, limit, q } = req.query
   const currentPage = Number(page) || 1
   const perPage = Number(limit) || 10
-  const search = String(q) || ''
 
   try {
-    const { data, count } = await ForumService.getForumsFromDB(currentPage, perPage, search)
+    const { data, count } = await ForumService.getForumsFromDB(currentPage, perPage, q as string)
 
     logInfo(req, 'Getting forums')
     res.status(200).json({
@@ -70,7 +69,7 @@ export const getForums = async (req: Request, res: Response) => {
 }
 
 export const getForum = async (req: Request, res: Response) => {
-  if (req.params?.forumId) {
+  if (!req.params?.forumId) {
     logError(req, 'Forum id is not provided')
     return res.status(400).json({ message: 'Forum id is not provided' })
   }
@@ -85,8 +84,30 @@ export const getForum = async (req: Request, res: Response) => {
   }
 }
 
+export const updateForum = async (req: Request, res: Response) => {
+  const { value, error } = validUpdateForum(req.body as IForum)
+  if (error) {
+    logError(req, error)
+    return res.status(400).json({ error: error.details[0].message })
+  }
+
+  if (!req.params?.forumId) {
+    logError(req, 'Forum id is not provided')
+    return res.status(400).json({ message: 'Forum id is not provided' })
+  }
+
+  try {
+    const data = await ForumService.updateForumById(req.params.forumId, req.userId as string, value)
+
+    logInfo(req, 'Updating forum')
+    res.status(200).json({ message: 'Berhasil mengubah detail forum', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
 export const joinForum = async (req: Request, res: Response) => {
-  if (req.body?.forumId) {
+  if (!req.body?.forumId) {
     logError(req, 'Forum id is not provided')
     return res.status(400).json({ message: 'Forum id is not provided' })
   }
@@ -103,7 +124,7 @@ export const joinForum = async (req: Request, res: Response) => {
 }
 
 export const leaveForum = async (req: Request, res: Response) => {
-  if (req.body?.forumId) {
+  if (!req.body?.forumId) {
     logError(req, 'Forum id is not provided')
     return res.status(400).json({ message: 'Forum id is not provided' })
   }

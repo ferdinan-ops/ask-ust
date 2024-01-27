@@ -3,6 +3,7 @@ import { ReportMember, UploadFile } from '@/components/organism'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { MEMBERS } from '@/lib/data'
+import { defaultPhotoUrl } from '@/lib/defaultValues'
 import {
   HiHashtag,
   HiOutlinePaperAirplane,
@@ -151,11 +152,7 @@ export default function ContentForum() {
             {MEMBERS.map((item, i) => (
               <div className="flex items-center justify-between" key={i}>
                 <div className="flex items-start gap-3">
-                  <img
-                    src={`https://ui-avatars.com/api/?background=E8E8E9&color=363E4D&bold=true&name=${item}`}
-                    alt="profile"
-                    className="h-6 w-6 rounded-lg"
-                  />
+                  <img src={`${defaultPhotoUrl}${item}`} alt="profile" className="h-6 w-6 rounded-lg" />
                   <div className="flex flex-col">
                     <p className="truncate-1 text-sm font-medium">{item}</p>
                     <span className="text-xs font-medium text-zinc-400 dark:text-white/40">

@@ -19,16 +19,17 @@ const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
   }
 
   const token = authHeader.split(' ')[1]
-  const decoded = jwt.verify(token, ENV.accessTokenSecret as string)
-  const { id } = decoded as DecodedToken
+  jwt.verify(token, ENV.accessTokenSecret as string, (error, decoded) => {
+    if (error) {
+      logWarn(req, 'Token is invalid/Forbidden')
+      return res.status(403).json({ message: 'Forbidden' })
+    }
 
-  if (!decoded) {
-    logWarn(req, 'Token is invalid/Forbidden')
-    return res.status(403).json({ message: 'Forbidden' })
-  }
+    const { id } = decoded as DecodedToken
 
-  req.userId = id
-  next()
+    req.userId = id
+    next()
+  })
 }
 
 export default verifyJwt

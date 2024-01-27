@@ -8,6 +8,7 @@ const routes = [
   { path: '/forums', breadcrumb: 'Forum' },
   { path: '/notification', breadcrumb: 'Notifikasi' },
   { path: '/me', breadcrumb: 'Profil' },
+  { path: '/forum/edit/:slug', breadcrumb: 'Ubah Forum' },
   { path: '/forum/:slug', breadcrumb: 'Detail' },
   { path: '/forum/:slug/content', breadcrumb: 'Konten' },
   { path: '/forum/create', breadcrumb: 'Buka forum baru' }

@@ -8,7 +8,8 @@ import {
   getForum,
   getForums,
   joinForum,
-  leaveForum
+  leaveForum,
+  updateForum
 } from '../controllers/forum.controller'
 import verifyJwt from '../middlewares/verifyJwt'
 
@@ -23,6 +24,7 @@ forumRoute.post('/join', verifyJwt, joinForum)
 forumRoute.delete('/leave', verifyJwt, leaveForum)
 forumRoute.delete('/:forumId', verifyJwt, deleteForum)
 
+forumRoute.put('/:forumId', verifyJwt, updateForum)
 forumRoute.put('/video/:forumId', verifyJwt, createVideoCall)
 forumRoute.put('/voice/:forumId', verifyJwt, createVoiceCall)
 

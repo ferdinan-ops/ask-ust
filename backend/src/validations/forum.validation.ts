@@ -9,3 +9,11 @@ export const validForum = (payload: IForum) => {
 
   return schema.validate(payload)
 }
+
+export const validUpdateForum = (payload: IForum) => {
+  const schema = Joi.object<IForum>({
+    description: Joi.string()
+  })
+
+  return schema.validate(payload)
+}

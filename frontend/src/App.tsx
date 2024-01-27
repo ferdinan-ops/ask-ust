@@ -37,6 +37,7 @@ export default function App() {
               <Route path=":slug/video" element={<VideoForum />} />
               <Route path=":slug/voice" element={<VoiceForum />} />
               <Route path="create" element={<CreateForum />} />
+              <Route path="edit/:id" element={<CreateForum />} />
             </Route>
           </Route>
           <Route path="/forum/:slug/content" element={<ContentForum />} />
