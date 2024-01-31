@@ -85,9 +85,12 @@ export const findUserByToken = async (token: string) => {
 }
 
 export const verifyUserEmail = async (userId: string) => {
+  console.log(userId)
   return await db.user.update({
     where: { id: userId },
-    data: { token: '', is_email_verified: true }
+    data: {
+      is_email_verified: true
+    }
   })
 }
 

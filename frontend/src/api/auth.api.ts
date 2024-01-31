@@ -3,6 +3,7 @@ import axios from 'axios'
 import ENV from '@/lib/environment'
 import { AuthResponseType } from '@/lib/types/auth.type'
 import { LoginType, RegisterType } from '@/lib/validations/auth.validation'
+import api from './axiosInstance'
 
 const apiPublic = axios.create({
   baseURL: ENV.apiUrl,
@@ -32,4 +33,8 @@ export const verifyEmailFn = async (token: string) => {
 export const loginFn = async (payload: LoginType): Promise<AuthResponseType> => {
   const response = await apiPublic.post('/auth/login', payload)
   return response.data
+}
+
+export const logoutFn = async () => {
+  return await api.delete('/auth/logout')
 }

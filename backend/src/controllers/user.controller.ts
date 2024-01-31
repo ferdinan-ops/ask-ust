@@ -84,7 +84,7 @@ export const updateMe = async (req: Request, res: Response) => {
     const user = await UserService.getUserByUsername(value.username)
     if (user) {
       logWarn(req, 'Username already exists')
-      return res.status(400).json({ message: 'Username sudah dipakai' })
+      return res.status(400).json({ error: 'Username sudah dipakai' })
     }
 
     const data = await UserService.updateUserById(req.userId as string, value)
@@ -118,7 +118,7 @@ export const changePassword = async (req: Request, res: Response) => {
 export const changeProfilePicture = async (req: Request, res: Response) => {
   if (!req.file) {
     logWarn(req, 'No file uploaded')
-    return res.status(400).json({ message: 'Tidak ada file yang diupload' })
+    return res.status(400).json({ error: 'Tidak ada file yang diupload' })
   }
 
   try {

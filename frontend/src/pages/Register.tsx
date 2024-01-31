@@ -34,7 +34,7 @@ export default function Register() {
       onSuccess: () => {
         forms.reset(registerDefaultValues)
         setTimeout(() => {
-          navigate('/login')
+          navigate('/verify-email')
         }, 1500)
       }
     })

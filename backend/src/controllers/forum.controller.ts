@@ -27,16 +27,18 @@ export const createForum = async (req: Request, res: Response) => {
 }
 
 export const deleteForum = async (req: Request, res: Response) => {
-  if (req.body?.forumId) {
+  if (!req.params?.forumId) {
     logError(req, 'Forum id is not provided')
-    return res.status(400).json({ message: 'Forum id is not provided' })
+    return res.status(400).json({ error: 'Forum id is not provided' })
   }
 
-  const forumId = req.body.forumId as string
+  const forumId = req.params.forumId
   const userId = req.userId as string
 
   try {
     const data = await ForumService.deleteForumById(forumId, userId)
+
+    console.log('jalan 2')
 
     logInfo(req, 'Deleting forum')
     res.status(200).json({ message: 'Forum berhasil dihapus', data })
@@ -71,7 +73,7 @@ export const getForums = async (req: Request, res: Response) => {
 export const getForum = async (req: Request, res: Response) => {
   if (!req.params?.forumId) {
     logError(req, 'Forum id is not provided')
-    return res.status(400).json({ message: 'Forum id is not provided' })
+    return res.status(400).json({ error: 'Forum id is not provided' })
   }
 
   try {
@@ -93,7 +95,7 @@ export const updateForum = async (req: Request, res: Response) => {
 
   if (!req.params?.forumId) {
     logError(req, 'Forum id is not provided')
-    return res.status(400).json({ message: 'Forum id is not provided' })
+    return res.status(400).json({ error: 'Forum id is not provided' })
   }
 
   try {
@@ -107,13 +109,13 @@ export const updateForum = async (req: Request, res: Response) => {
 }
 
 export const joinForum = async (req: Request, res: Response) => {
-  if (!req.body?.forumId) {
+  if (!req.body?.forum_id) {
     logError(req, 'Forum id is not provided')
-    return res.status(400).json({ message: 'Forum id is not provided' })
+    return res.status(400).json({ error: 'Forum id is not provided' })
   }
 
   try {
-    const { forumId } = req.body
+    const { forum_id: forumId } = req.body
     const data = await ForumService.addMemberToForum(forumId as string, req.userId as string)
 
     logInfo(req, 'Joining forum')
@@ -124,13 +126,13 @@ export const joinForum = async (req: Request, res: Response) => {
 }
 
 export const leaveForum = async (req: Request, res: Response) => {
-  if (!req.body?.forumId) {
+  if (!req.body?.forum_id) {
     logError(req, 'Forum id is not provided')
-    return res.status(400).json({ message: 'Forum id is not provided' })
+    return res.status(400).json({ error: 'Forum id is not provided' })
   }
 
   try {
-    const { forumId } = req.body
+    const { forum_id: forumId } = req.body
     const data = await ForumService.removeMemberFromForum(forumId as string, req.userId as string)
 
     logInfo(req, 'Leaving forum')

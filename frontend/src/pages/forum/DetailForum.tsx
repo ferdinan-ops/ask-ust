@@ -1,8 +1,3 @@
-import { Button } from '@/components/ui/button'
-import { useTitle } from '@/hooks'
-import { useGetDetailForum } from '@/store/server/useForum'
-import { useGetMe } from '@/store/server/useUser'
-import * as React from 'react'
 import {
   HiOutlineArrowLeftOnRectangle,
   HiOutlineArrowRightOnRectangle,
@@ -11,16 +6,58 @@ import {
   HiOutlineUserGroup,
   HiTrash
 } from 'react-icons/hi2'
+import * as React from 'react'
 import { LiaDoorOpenSolid } from 'react-icons/lia'
 import { useNavigate, useParams } from 'react-router-dom'
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
+
+import { useTitle } from '@/hooks'
+import { useGetMe } from '@/store/server/useUser'
+import { useDeleteForum, useGetDetailForum, useJoinForum, useLeaveForum } from '@/store/server/useForum'
 
 export default function DetailForum() {
   const navigate = useNavigate()
   const { slug } = useParams<{ slug: string }>()
 
-  const { data: forum, isLoading } = useGetDetailForum(slug as string)
   const { data: user, isLoading: isLoadingUser } = useGetMe()
+  const { data: forum, isLoading } = useGetDetailForum(slug as string)
+  const { mutate: joinForum, isLoading: isLoadingJoin } = useJoinForum()
+  const { mutate: leaveForum, isLoading: isLoadingLeave } = useLeaveForum()
+  const { mutate: deleteForum, isLoading: isLoadingDelete } = useDeleteForum()
+
   useTitle(`Forum - ${forum?.title}`)
+
+  const handleDelete = () => {
+    deleteForum(slug as string, {
+      onSuccess: () => {
+        navigate('/forums')
+      }
+    })
+  }
+
+  const handleJoin = () => {
+    joinForum(slug as string, {
+      onSuccess: () => {
+        navigate(`/forum/${slug}/content`)
+      }
+    })
+  }
+
+  const handleLeave = () => {
+    leaveForum(slug as string)
+  }
 
   if (isLoading || isLoadingUser) {
     return <p>loading....</p>
@@ -44,31 +81,80 @@ export default function DetailForum() {
       </div>
       <h1 className="my-5 text-lg font-semibold">Aksi</h1>
       <div className="flex flex-col gap-4 md:flex-row md:items-center">
-        <Button className="gap-2" onClick={() => navigate(`/forum/${slug}/content`)}>
-          <LiaDoorOpenSolid className="text-lg" />
-          <span>Masuk ke Forum</span>
-        </Button>
+        {forum?.members.filter((member) => member.user_id === user?.id).length !== 0 && (
+          <Button className="gap-2" onClick={() => navigate(`/forum/${slug}/content`)}>
+            <LiaDoorOpenSolid className="text-lg" />
+            <span>Masuk ke Forum</span>
+          </Button>
+        )}
         {user?.id === forum?.user_id ? (
           <React.Fragment>
             <Button variant="outline" className="gap-2 border-zinc-300" onClick={() => navigate(`/forum/edit/${slug}`)}>
               <HiOutlinePencilSquare className="text-lg" />
               <span>Update Forum</span>
             </Button>
-            <Button variant="destructive" className="gap-2">
-              <HiTrash className="text-lg" />
-              <span>Hapus Forum</span>
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button className="gap-2" variant="destructive" loading={isLoadingDelete}>
+                  <HiTrash className="text-lg" />
+                  <span>Hapus Forum</span>
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Anda yakin untuk menghapus forum?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Tindakan ini tidak dapat dibatalkan. Tindakan ini akan menghapus forum ini secara permanen dari
+                    sistem.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel className="text-xs">Batal</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleDelete}
+                    className="bg-red-500 text-xs hover:bg-red-600 dark:bg-red-900 dark:text-zinc-50 dark:hover:bg-red-900/90"
+                  >
+                    Ya, Hapus forum
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <Button className="gap-2 border-zinc-300" onClick={() => navigate(`/forum/${slug}/content`)}>
-              <HiOutlineArrowLeftOnRectangle className="text-lg" />
-              <span>Bergabung dengan forum</span>
-            </Button>
-            <Button variant="destructive" className="gap-2">
-              <HiOutlineArrowRightOnRectangle className="text-lg" />
-              <span>Tinggalkan Forum</span>
-            </Button>
+            {forum?.members.filter((member) => member.user_id === user?.id).length !== 0 ? (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" className="gap-2" loading={isLoadingLeave}>
+                    <HiOutlineArrowRightOnRectangle className="text-lg" />
+                    <span>Tinggalkan Forum</span>
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Anda yakin keluar dari forum?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Tindakan ini tidak dapat dibatalkan. Tindakan ini akan mengeluarkan Anda secara permanen dari
+                      forum ini.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="text-xs">Batal</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleLeave}
+                      className="bg-red-500 text-xs hover:bg-red-600 dark:bg-red-900 dark:text-zinc-50 dark:hover:bg-red-900/90"
+                    >
+                      Ya, Keluar
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            ) : (
+              <Button className="gap-2 border-zinc-300" loading={isLoadingJoin} onClick={handleJoin}>
+                <HiOutlineArrowLeftOnRectangle className="text-lg" />
+                <span>Bergabung dengan forum</span>
+              </Button>
+            )}
           </React.Fragment>
         )}
       </div>

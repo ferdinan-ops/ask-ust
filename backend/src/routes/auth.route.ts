@@ -9,6 +9,7 @@ import {
   resetPassword,
   verifyEmail
 } from '../controllers/auth.controller'
+import verifyJwt from '../middlewares/verifyJwt'
 
 const authRoute = express.Router()
 
@@ -18,7 +19,7 @@ authRoute.post('/login', login)
 authRoute.post('/google', loginGoogle)
 authRoute.post('/forgot-password', forgotPassword)
 authRoute.post('/reset-password', resetPassword)
-authRoute.post('/logout', logout)
+authRoute.delete('/logout', verifyJwt, logout)
 authRoute.post('/refresh', refreshToken)
 
 export default authRoute

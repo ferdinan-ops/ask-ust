@@ -1,4 +1,12 @@
-import { addForumFn, getForumByIdFn, getForumsFn, updateForumByIdFn } from '@/api/forum.api'
+import {
+  addForumFn,
+  deleteForumByIdFn,
+  getForumByIdFn,
+  getForumsFn,
+  joinForumFn,
+  leaveForumFn,
+  updateForumByIdFn
+} from '@/api/forum.api'
 import { toast } from '@/components/ui/use-toast'
 import { handleOnError } from '@/lib/services/handleToast'
 import { AxiosError } from 'axios'
@@ -25,7 +33,7 @@ export const useGetForum = () => {
 }
 
 export const useGetDetailForum = (forumId: string) => {
-  return useQuery(['forums', forumId], async () => await getForumByIdFn(forumId))
+  return useQuery(['forums', forumId], async () => await getForumByIdFn(forumId), { enabled: !!forumId })
 }
 
 export const useUpdateForum = () => {
@@ -39,6 +47,54 @@ export const useUpdateForum = () => {
       toast({
         title: 'Forum berhasil diupdate',
         description: 'Forum anda berhasil diupdate dan dapat dilihat oleh semua orang'
+      })
+    }
+  })
+}
+
+export const useDeleteForum = () => {
+  const queryClient = useQueryClient()
+  return useMutation(deleteForumByIdFn, {
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['forums', data.id])
+      toast({
+        title: 'Forum berhasil dihapus',
+        description: 'Forum anda berhasil dihapus secara permanen dari sistem'
+      })
+    }
+  })
+}
+
+export const useJoinForum = () => {
+  const queryClient = useQueryClient()
+  return useMutation(joinForumFn, {
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['forums', data.id])
+      toast({
+        title: 'Anda berhasil bergabung',
+        description: 'Anda berhasil bergabung dengan forum ini'
+      })
+    }
+  })
+}
+
+export const useLeaveForum = () => {
+  const queryClient = useQueryClient()
+  return useMutation(leaveForumFn, {
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['forums', data.id])
+      toast({
+        title: 'Anda berhasil keluar',
+        description: 'Anda berhasil keluar dari forum ini'
       })
     }
   })

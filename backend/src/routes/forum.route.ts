@@ -20,8 +20,8 @@ forumRoute.get('/:forumId', verifyJwt, getForum)
 
 forumRoute.post('/', verifyJwt, createForum)
 forumRoute.post('/join', verifyJwt, joinForum)
+forumRoute.post('/leave', verifyJwt, leaveForum)
 
-forumRoute.delete('/leave', verifyJwt, leaveForum)
 forumRoute.delete('/:forumId', verifyJwt, deleteForum)
 
 forumRoute.put('/:forumId', verifyJwt, updateForum)

@@ -73,6 +73,7 @@ export const getForumById = async (forumId: string) => {
   return await db.forum.findUnique({
     where: { id: forumId },
     include: {
+      members: true,
       _count: {
         select: { messages: true, members: true }
       }

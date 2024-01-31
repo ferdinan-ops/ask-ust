@@ -17,7 +17,7 @@ export type MetaType = {
 }
 
 type ForumListType = ForumType & { members: MemberType[] }
-export type ForumDetailType = ForumType & {
+export type ForumDetailType = ForumListType & {
   _count: {
     messages: number
     members: number

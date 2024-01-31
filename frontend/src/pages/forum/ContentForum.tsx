@@ -2,19 +2,29 @@ import { SearchMember } from '@/components/atoms'
 import { ReportMember, UploadFile } from '@/components/organism'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useTitle } from '@/hooks'
 import { MEMBERS } from '@/lib/data'
 import { defaultPhotoUrl } from '@/lib/defaultValues'
+import { useGetDetailForum } from '@/store/server/useForum'
 import {
   HiHashtag,
   HiOutlinePaperAirplane,
-  // HiOutlinePaperClip,
   HiOutlinePhone,
   HiOutlineShare,
   HiOutlineVideoCamera
 } from 'react-icons/hi2'
-// import { PiMagnifyingGlass } from 'react-icons/pi'
+import { useParams } from 'react-router-dom'
 
 export default function ContentForum() {
+  const { slug } = useParams<{ slug: string }>()
+  const { data: forum, isLoading } = useGetDetailForum(slug as string)
+
+  useTitle(`Forum - ${forum?.title}`)
+
+  if (isLoading) {
+    return <p>loading...</p>
+  }
+
   return (
     <section className="flex flex-col justify-between gap-7 xl:flex-row xl:p-7">
       <section className="rounded-lg border-[#E9E9E9] dark:border-white/10 dark:bg-primary xl:max-h-[calc(100vh-68px-56px)] xl:min-h-[calc(100vh-68px-56px)] xl:w-9/12 xl:border">
@@ -24,8 +34,12 @@ export default function ContentForum() {
               <HiHashtag className="m-auto text-lg md:text-xl" />
             </div>
             <div className="flex flex-col">
-              <p className="text-base font-bold md:text-lg">Teknologi</p>
-              <p className="text-[11px] font-medium text-zinc-600 md:text-[13px]">100+ Pesan telah masuk</p>
+              <p className="text-base font-bold md:text-lg">{forum?.title}</p>
+              <p className="text-[11px] font-medium text-zinc-600 md:text-[13px]">
+                {forum?._count.messages === 0
+                  ? 'Belum ada pesan yang masuk'
+                  : `${forum?._count.messages} Pesan telah masuk`}
+              </p>
             </div>
           </article>
           <article className="flex items-center gap-0 md:gap-2">
@@ -136,17 +150,8 @@ export default function ContentForum() {
       <section className="hidden max-h-[calc(100vh-68px-56px)] min-h-[calc(100vh-68px-56px)] w-3/12 overflow-hidden rounded-lg border border-[#E9E9E9] dark:border-white/10 xl:block">
         <article className="flex flex-col">
           <div className="flex items-center justify-between border-b border-[#E9E9E9] p-4 dark:border-white/10">
-            <h4 className="text-sm font-semibold">30 Anggota Forum</h4>
-            <div>
-              {/* <Button
-                variant="secondary"
-                size="icon"
-                className="w-8 h-8 bg-black/5 dark:bg-white/10 px-2 py-1 rounded-lg cursor-pointer hover:bg-black/10 dark:hover:bg-white/5"
-              >
-                <PiMagnifyingGlass className="text-lg text-black/40 dark:text-white" />
-              </Button> */}
-              <SearchMember />
-            </div>
+            <h4 className="text-sm font-semibold">{forum?._count.members} Anggota Forum</h4>
+            <SearchMember />
           </div>
           <div className="scroll-custom flex max-h-[calc(100vh-68px-56px-67px)] min-h-[calc(100vh-68px-56px-67px)] flex-col gap-4 overflow-y-scroll p-4">
             {MEMBERS.map((item, i) => (

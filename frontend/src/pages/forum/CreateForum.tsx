@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 
 import { useTitle } from '@/hooks'
+import { ForumType } from '@/lib/types/forum.type'
 import { forumDefaultValues } from '@/lib/defaultValues'
 import { useCreateForum, useGetDetailForum, useUpdateForum } from '@/store/server/useForum'
 import { ForumInputType, addForumValidation, updateForumValidation } from '@/lib/validations/forum.validation'
@@ -34,10 +35,10 @@ export default function CreateForum() {
     }
   }, [isSuccess, forms, forum?.description])
 
-  const onSuccess = () => {
+  const onSuccess = (data: ForumType) => {
     forms.reset(forumDefaultValues)
     setTimeout(() => {
-      navigate(`/forum/${id}`)
+      navigate(`/forum/${data.id}`)
     }, 1500)
   }
 

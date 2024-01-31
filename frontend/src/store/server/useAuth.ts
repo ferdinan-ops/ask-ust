@@ -1,9 +1,9 @@
-import { loginFn, registerFn, verifyEmailFn } from '@/api/auth.api'
+import { loginFn, logoutFn, registerFn, verifyEmailFn } from '@/api/auth.api'
 import { toast } from '@/components/ui/use-toast'
 import { handleOnError } from '@/lib/services/handleToast'
 
 import { AxiosError } from 'axios'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { useToken } from '../client'
 
 export const useRegister = () => {
@@ -45,6 +45,24 @@ export const useLogin = () => {
       toast({
         title: 'Login berhasil',
         description: 'Selamat datang di aplikasi kami'
+      })
+    }
+  })
+}
+
+export const useLogout = () => {
+  const queryClient = useQueryClient()
+  return useMutation(logoutFn, {
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    },
+    onSuccess: () => {
+      queryClient.clear()
+      useToken.getState().removeAccessToken()
+      useToken.getState().removeRefreshToken()
+      toast({
+        title: 'Logout berhasil',
+        description: 'Anda telah keluar dari aplikasi'
       })
     }
   })

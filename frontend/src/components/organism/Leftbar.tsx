@@ -23,6 +23,7 @@ import { cn } from '@/lib/utils'
 import { useGetMe } from '@/store/server/useUser'
 import { Skeleton } from '../ui/skeleton'
 import { useGetForum } from '@/store/server/useForum'
+import { useLogout } from '@/store/server/useAuth'
 
 interface LeftbarProps {
   isShow: boolean
@@ -37,6 +38,7 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
 
   const { data: user, isLoading } = useGetMe()
   const { data: forums, isSuccess } = useGetForum()
+  const { mutateAsync: logout } = useLogout()
 
   const handleClose = () => {
     setIsShow(false)
@@ -45,6 +47,11 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
   const handleCreate = () => {
     navigate('/forum/create')
     setIsShow(false)
+  }
+
+  const handleLogout = async () => {
+    await logout()
+    navigate('/login')
   }
 
   return (
@@ -85,7 +92,7 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
               ))}
             </div>
           </div>
-          {isSuccess && (
+          {isSuccess && forums.data.length !== 0 && (
             <div className="flex flex-col gap-2">
               <span className="px-3 py-1 text-xs font-semibold uppercase text-black/40 dark:text-white/40">
                 Diikuti
@@ -135,11 +142,11 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  {/* <AlertDialogTitle>Anda yakin keluar dari aplikasi?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Tindakan ini akan mengeluarkan akun Anda dari aplikasi kami. Namun Anda bisa kembali lagi dengan
-                  login.
-                </AlertDialogDescription> */}
+                  <AlertDialogTitle>Anda yakin keluar dari aplikasi?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Tindakan ini akan mengeluarkan akun Anda dari aplikasi kami. Namun Anda bisa kembali lagi dengan
+                    login.
+                  </AlertDialogDescription>
                   {/* <AlertDialogTitle>Anda yakin menghapus pesan?</AlertDialogTitle>
                 <AlertDialogDescription>
                   Tindakan ini tidak dapat dibatalkan. Tindakan ini akan menghapus pesan Anda secara permanen dan
@@ -150,17 +157,20 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
                   Tindakan ini tidak dapat dibatalkan. Tindakan ini akan mengeluarkan Anda secara permanen dari forum
                   ini.
                 </AlertDialogDescription> */}
-                  <AlertDialogTitle>Anda yakin mengeluarkannya dari forum?</AlertDialogTitle>
+                  {/* <AlertDialogTitle>Anda yakin mengeluarkannya dari forum?</AlertDialogTitle>
                   <AlertDialogDescription>
                     Tindakan ini tidak dapat dibatalkan. Tindakan ini akan mengeluarkan anggota ini secara permanen dari
                     forum ini.
-                  </AlertDialogDescription>
+                  </AlertDialogDescription> */}
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel className="text-xs">Batal</AlertDialogCancel>
                   {/* <AlertDialogAction className="text-xs bg-red-500 hover:bg-red-600">Ya, Keluar</AlertDialogAction> */}
                   {/* <AlertDialogAction className="text-xs bg-red-500 hover:bg-red-600">Ya, Hapus pesan</AlertDialogAction> */}
-                  <AlertDialogAction className="bg-red-500 text-xs hover:bg-red-600 dark:bg-red-900 dark:text-zinc-50 dark:hover:bg-red-900/90">
+                  <AlertDialogAction
+                    onClick={handleLogout}
+                    className="bg-red-500 text-xs hover:bg-red-600 dark:bg-red-900 dark:text-zinc-50 dark:hover:bg-red-900/90"
+                  >
                     Ya, Keluarkan
                   </AlertDialogAction>
                 </AlertDialogFooter>

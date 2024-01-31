@@ -42,7 +42,7 @@ export const kickMember = async (req: Request, res: Response) => {
   const { memberId } = req.params
   if (req.body?.forumId) {
     logError(req, 'Forum id is not provided')
-    return res.status(400).json({ message: 'Forum id masih kosong' })
+    return res.status(400).json({ error: 'Forum id masih kosong' })
   }
 
   try {
