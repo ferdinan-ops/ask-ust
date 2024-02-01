@@ -55,11 +55,11 @@ export default function CreateForum() {
   }
 
   return (
-    <section className="mx-auto w-8/12">
-      <h1 className="mb-5 text-2xl font-bold">{id ? 'Ubah Forum' : 'Buka Forum Baru'}</h1>
-      <p className="-mt-3 text-[15px]">Silahkan isi seluruh form yang disediakan yah...</p>
+    <section className="mx-auto w-full md:w-8/12">
+      <h1 className="mb-4 text-xl font-bold md:mb-5 md:text-2xl">{id ? 'Ubah Forum' : 'Buka Forum Baru'}</h1>
+      <p className="-mt-3 text-[13px] md:text-[15px]">Silahkan isi seluruh form yang disediakan yah...</p>
       <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="mt-8 flex flex-col gap-5">
+        <form onSubmit={forms.handleSubmit(onSubmit)} className="mt-6 flex flex-col gap-5 md:mt-8">
           {!id && (
             <FormField
               name="title"

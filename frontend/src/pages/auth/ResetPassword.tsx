@@ -13,27 +13,47 @@ import { useTitle } from '@/hooks'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { resetPasswordDefaultValues } from '@/lib/defaultValues'
 import { useResetPassword } from '@/store/server/useAuth'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { changePasswordValidation } from '@/lib/validations/user.validation'
+import { useChangePassword } from '@/store/server/useUser'
 
 const description = 'Biar nanti nggak lupa lagi sama kata sandinya, disimpen di password manager ya, bang!'
+const CHANGE_PASSWORD = '/me/change-password'
 
 export default function ResetPassword() {
   useTitle('Ubah Kata Sandi')
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const isChangePassword = location.pathname === CHANGE_PASSWORD
   const { mutate: resetPassword, isLoading } = useResetPassword()
+  const { mutate: changePassword, isLoading: isLoadingChange } = useChangePassword()
 
   const forms = useForm<ResetPasswordType>({
     mode: 'onTouched',
-    resolver: yupResolver(resetPasswordValidation),
-    defaultValues: resetPasswordDefaultValues
+    defaultValues: resetPasswordDefaultValues,
+    resolver: yupResolver(isChangePassword ? changePasswordValidation : resetPasswordValidation)
   })
 
   const onSubmit = async (values: ResetPasswordType) => {
-    resetPassword(values, {
+    if (!isChangePassword) {
+      const data = { token: values.token as string, password: values.password }
+      return resetPassword(data, {
+        onSuccess: () => {
+          forms.reset(resetPasswordDefaultValues)
+          setTimeout(() => {
+            navigate('/login')
+          }, 1500)
+        }
+      })
+    }
+
+    const data = { password: values.password, confirmPassword: values.confirmPassword }
+    return changePassword(data, {
       onSuccess: () => {
         forms.reset(resetPasswordDefaultValues)
         setTimeout(() => {
-          navigate('/login')
+          navigate('/me')
         }, 1500)
       }
     })
@@ -50,19 +70,21 @@ export default function ResetPassword() {
         </div>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="mt-8 flex flex-col gap-5">
-            <FormField
-              name="token"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Kode Verifikasi</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="76d67hi" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {!isChangePassword && (
+              <FormField
+                name="token"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold dark:text-white">Kode Verifikasi</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="76d67hi" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               name="password"
               control={forms.control}
@@ -89,7 +111,7 @@ export default function ResetPassword() {
                 </FormItem>
               )}
             />
-            <Button className="font-semibold" type="submit" loading={isLoading}>
+            <Button className="font-semibold" type="submit" loading={isLoading || isLoadingChange}>
               Atur ulang
             </Button>
           </form>

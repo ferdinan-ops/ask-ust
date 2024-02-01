@@ -23,3 +23,8 @@ export const resetPasswordDefaultValues = {
   password: '',
   confirmPassword: ''
 }
+
+export const editProfileDefaultValues = {
+  fullname: '',
+  username: ''
+}

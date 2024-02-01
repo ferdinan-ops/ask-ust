@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from 'react-router-dom'
-import { HiOutlineCog6Tooth } from 'react-icons/hi2'
+import { HiCamera, HiOutlineCog6Tooth } from 'react-icons/hi2'
 
 import { useGetMe } from '@/store/server/useUser'
 import { Button } from '../ui/button'
@@ -22,11 +22,14 @@ export default function ProfileLayout() {
           <HiOutlineCog6Tooth className="text-lg" />
           <p className="hidden md:flex">Pengaturan</p>
         </Button>
-        <div className="-mt-12 h-24 w-24 overflow-hidden rounded-full border-4 border-white dark:border-white/50 xl:-mt-[72px] xl:h-36 xl:w-36">
+        <div className="group relative -mt-12 h-24 w-24 cursor-pointer overflow-hidden rounded-full border-4 border-white dark:border-white/50 xl:-mt-[72px] xl:h-36 xl:w-36">
+          <div className="absolute inset-0 z-20 flex bg-primary/60 opacity-0 transition-opacity group-hover:opacity-100">
+            <HiCamera className="m-auto text-4xl text-white" />
+          </div>
           <img
             src={user?.photo || 'https://github.com/shadcn.png'}
             alt={user?.fullname}
-            className="h-full w-full object-cover"
+            className="relative z-10 h-full w-full object-cover"
           />
         </div>
         <div className="flex flex-col">

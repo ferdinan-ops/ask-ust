@@ -7,12 +7,25 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 import { LogoutAlert } from '@/components/organism'
-import { useGetMe } from '@/store/server/useUser'
+import { useGetMe, useUpdateMe } from '@/store/server/useUser'
+import { EditUserType, editUserValidation } from '@/lib/validations/user.validation'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useNavigate } from 'react-router-dom'
+import { useTitle } from '@/hooks'
+import { editProfileDefaultValues } from '@/lib/defaultValues'
 
 export default function EditProfile() {
-  const { data: user, isSuccess } = useGetMe()
+  useTitle('Pengaturan')
+  const navigate = useNavigate()
 
-  const forms = useForm()
+  const { data: user, isSuccess } = useGetMe()
+  const { mutate: updateMe, isLoading } = useUpdateMe()
+
+  const forms = useForm<EditUserType>({
+    mode: 'onTouched',
+    resolver: yupResolver(editUserValidation),
+    defaultValues: editProfileDefaultValues
+  })
 
   React.useEffect(() => {
     if (isSuccess) {
@@ -21,7 +34,9 @@ export default function EditProfile() {
     }
   }, [user, isSuccess, forms])
 
-  const onSubmit = () => {}
+  const onSubmit = (values: EditUserType) => {
+    updateMe(values)
+  }
 
   if (!isSuccess) return <p>Loading...</p>
 
@@ -30,7 +45,7 @@ export default function EditProfile() {
       <div className="border-b pb-7 dark:border-white/10">
         <h1 className="mb-5 text-lg font-semibold md:text-xl">Pengaturan Profil</h1>
         <div className="flex items-center gap-5">
-          <Button variant="outline" className="border-primary">
+          <Button variant="outline" className="border-primary" onClick={() => navigate('/me/change-password')}>
             Atur ulang kata sandi
           </Button>
           <LogoutAlert>
@@ -74,7 +89,7 @@ export default function EditProfile() {
               )}
             />
           </div>
-          <Button className="my-5 self-end font-semibold" type="submit">
+          <Button className="my-5 self-end font-semibold" type="submit" loading={isLoading}>
             Ubah data profil
           </Button>
         </form>

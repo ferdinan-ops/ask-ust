@@ -91,7 +91,7 @@ export const updateMe = async (req: Request, res: Response) => {
     }
 
     const data = await UserService.updateUserById(req.userId as string, value)
-    const { password, ...rest } = data
+    const { password, token, is_email_verified: isEmailVerif, ...rest } = data
 
     logInfo(req, 'Updating user data')
     res.status(200).json({ message: 'Berhasil mengubah data user', data: rest })

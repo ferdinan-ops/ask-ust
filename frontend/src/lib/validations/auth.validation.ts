@@ -51,4 +51,8 @@ export const resetPasswordValidation = Yup.object({
     .oneOf([Yup.ref('password')], 'Kata sandi harus cocok')
 })
 
-export type ResetPasswordType = Yup.InferType<typeof resetPasswordValidation>
+export type ResetPasswordType = {
+  token?: string
+  password: string
+  confirmPassword: string
+}
