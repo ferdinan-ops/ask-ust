@@ -32,7 +32,7 @@ api.interceptors.response.use(
     const originalConfig = error.config
 
     if (originalConfig.url !== '/login' && error.response) {
-      if (error.response.status === 403) {
+      if (error.response.status === 401) {
         originalConfig._retry = true
         const refreshToken = useToken.getState().refreshToken
 

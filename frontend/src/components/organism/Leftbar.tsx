@@ -1,29 +1,18 @@
-import * as React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
 import { HiArrowLeftOnRectangle, HiHashtag, HiPlus, HiXMark } from 'react-icons/hi2'
+import { Link, useNavigate } from 'react-router-dom'
+import * as React from 'react'
 
 import { useDisableBodyScroll, useOutsideClick } from '@/hooks'
-import { MAIN_MENU } from '@/lib/data'
-import { Logo } from '@/assets'
-
 import { ActiveLink, BgAbsolute, Search } from '../atoms'
-import { Button } from '../ui/button'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
-} from '../ui/alert-dialog'
-import { cn } from '@/lib/utils'
-import { useGetMe } from '@/store/server/useUser'
-import { Skeleton } from '../ui/skeleton'
 import { useGetForum } from '@/store/server/useForum'
-import { useLogout } from '@/store/server/useAuth'
+import { useGetMe } from '@/store/server/useUser'
+import { MAIN_MENU } from '@/lib/data'
+import { cn } from '@/lib/utils'
+import { Logo } from '@/assets'
+import { LogoutAlert } from '.'
+
+import { Skeleton } from '../ui/skeleton'
+import { Button } from '../ui/button'
 
 interface LeftbarProps {
   isShow: boolean
@@ -38,20 +27,14 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
 
   const { data: user, isLoading } = useGetMe()
   const { data: forums, isSuccess } = useGetForum()
-  const { mutateAsync: logout } = useLogout()
 
   const handleClose = () => {
     setIsShow(false)
   }
 
   const handleCreate = () => {
-    navigate('/forum/create')
+    navigate('/forums/create')
     setIsShow(false)
-  }
-
-  const handleLogout = async () => {
-    await logout()
-    navigate('/login')
   }
 
   return (
@@ -100,7 +83,7 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
               <div className="flex flex-col gap-1 text-primary dark:text-white">
                 {forums.data.map((forum) => (
                   <ActiveLink
-                    href={`/forum/${forum.id}`}
+                    href={`/forums/${forum.id}`}
                     name={forum.title}
                     icon={HiHashtag}
                     key={forum.id}
@@ -129,53 +112,16 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
               </div>
             )}
 
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  onClick={handleClose}
-                  size="icon"
-                  variant="ghost"
-                  className="h-8 w-8 rounded-full bg-red-500 hover:bg-red-600 dark:hover:bg-red-600"
-                >
-                  <HiArrowLeftOnRectangle className="text-white" />
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Anda yakin keluar dari aplikasi?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Tindakan ini akan mengeluarkan akun Anda dari aplikasi kami. Namun Anda bisa kembali lagi dengan
-                    login.
-                  </AlertDialogDescription>
-                  {/* <AlertDialogTitle>Anda yakin menghapus pesan?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Tindakan ini tidak dapat dibatalkan. Tindakan ini akan menghapus pesan Anda secara permanen dan
-                  menghapus pesan Anda dari server kami.
-                </AlertDialogDescription> */}
-                  {/* <AlertDialogTitle>Anda yakin keluar dari forum?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Tindakan ini tidak dapat dibatalkan. Tindakan ini akan mengeluarkan Anda secara permanen dari forum
-                  ini.
-                </AlertDialogDescription> */}
-                  {/* <AlertDialogTitle>Anda yakin mengeluarkannya dari forum?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Tindakan ini tidak dapat dibatalkan. Tindakan ini akan mengeluarkan anggota ini secara permanen dari
-                    forum ini.
-                  </AlertDialogDescription> */}
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel className="text-xs">Batal</AlertDialogCancel>
-                  {/* <AlertDialogAction className="text-xs bg-red-500 hover:bg-red-600">Ya, Keluar</AlertDialogAction> */}
-                  {/* <AlertDialogAction className="text-xs bg-red-500 hover:bg-red-600">Ya, Hapus pesan</AlertDialogAction> */}
-                  <AlertDialogAction
-                    onClick={handleLogout}
-                    className="bg-red-500 text-xs hover:bg-red-600 dark:bg-red-900 dark:text-zinc-50 dark:hover:bg-red-900/90"
-                  >
-                    Ya, Keluarkan
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+            <LogoutAlert>
+              <Button
+                onClick={handleClose}
+                size="icon"
+                variant="ghost"
+                className="h-8 w-8 rounded-full bg-red-500 hover:bg-red-600 dark:hover:bg-red-600"
+              >
+                <HiArrowLeftOnRectangle className="text-white" />
+              </Button>
+            </LogoutAlert>
           </div>
         </div>
       </aside>

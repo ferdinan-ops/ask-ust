@@ -1,9 +1,10 @@
-import * as React from 'react'
 import { PiCommand, PiMagnifyingGlass } from 'react-icons/pi'
+import { HiHashtag } from 'react-icons/hi2'
+import { CommandSeparator } from 'cmdk'
+import * as React from 'react'
+
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command'
 import { MENU_FORUMS } from '@/lib/data'
-import { CommandSeparator } from 'cmdk'
-import { HiHashtag } from 'react-icons/hi2'
 import { cn } from '@/lib/utils'
 
 interface SearchProps {

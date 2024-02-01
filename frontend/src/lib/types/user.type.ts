@@ -5,4 +5,8 @@ export type UserType = {
   email: string
   photo?: string
   provider?: string
+  _count: {
+    forums: number
+    joined_forum: number
+  }
 }

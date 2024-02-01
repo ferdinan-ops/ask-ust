@@ -4,9 +4,11 @@ import { useForm } from 'react-hook-form'
 import { FcGoogle } from 'react-icons/fc'
 
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { AuthLayout } from '@/components/layouts'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+
+import { AuthLayout } from '@/components/layouts'
+import { Password } from '@/components/atoms'
 
 import { LoginType, loginValidation } from '@/lib/validations/auth.validation'
 import { loginDefaultValues } from '@/lib/defaultValues'
@@ -65,7 +67,7 @@ export default function Login() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Email</FormLabel>
                   <FormControl>
-                    <Input {...field} type="email" placeholder="Masukkan email kamu" />
+                    <Input {...field} type="email" placeholder="johndoe@email.com" />
                   </FormControl>
                 </FormItem>
               )}
@@ -75,9 +77,17 @@ export default function Login() {
               control={forms.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-semibold dark:text-white">Kata Sandi</FormLabel>
+                  <div className="flex items-center justify-between">
+                    <FormLabel className="font-semibold dark:text-white">Kata Sandi</FormLabel>
+                    <Link
+                      to="/forgot-password"
+                      className="text-xs font-bold text-primary hover:underline dark:text-white"
+                    >
+                      Lupa kata sandi?
+                    </Link>
+                  </div>
                   <FormControl>
-                    <Input {...field} type="password" placeholder="Masukkan password kamu" />
+                    <Password {...field} placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
                   </FormControl>
                 </FormItem>
               )}

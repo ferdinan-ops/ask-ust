@@ -4,5 +4,6 @@ import Search from './Search'
 import SearchMember from './SearchMember'
 import BgAbsolute from './BgAbsolute'
 import Password from './Password'
+import Pagination from './Pagination'
 
-export { ActiveLink, Breadcrumbs, Search, SearchMember, BgAbsolute, Password }
+export { ActiveLink, Breadcrumbs, Search, SearchMember, BgAbsolute, Password, Pagination }

@@ -1,14 +1,9 @@
-// import { PiBell, PiCommand, PiMagnifyingGlass, PiSidebar } from 'react-icons/pi'
 import { HiOutlineHome, HiPlus } from 'react-icons/hi2'
 import { Link, useNavigate } from 'react-router-dom'
 
+import { Breadcrumbs, Search } from '../atoms'
 import { ModeToggle } from '../mode-toggle'
 import { Button } from '../ui/button'
-import { Breadcrumbs, Search } from '../atoms'
-
-// interface HeaderProps {
-//   rightbarAction?: () => void
-// }
 
 export default function Header() {
   const navigate = useNavigate()
@@ -29,7 +24,7 @@ export default function Header() {
           <ModeToggle />
           <Search />
           <div className="flex items-center">
-            <Button className="h-fit gap-2 p-0 px-3 py-2 text-xs" onClick={() => navigate('/forum/create')}>
+            <Button className="h-fit gap-2 p-0 px-3 py-2 text-xs" onClick={() => navigate('/forums/create')}>
               <HiPlus className="text-lg" />
               <span>Forum baru</span>
             </Button>

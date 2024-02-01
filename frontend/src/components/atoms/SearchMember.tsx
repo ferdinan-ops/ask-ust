@@ -1,12 +1,22 @@
-import * as React from 'react'
-import { Button } from '../ui/button'
 import { PiMagnifyingGlass } from 'react-icons/pi'
+import * as React from 'react'
+
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command'
-import { MEMBERS } from '@/lib/data'
+import { Button } from '../ui/button'
+
+import { useGetMembers } from '@/store/server/useMember'
 import { ReportMember } from '../organism'
 
-export default function SearchMember() {
+interface SearchMemberProps {
+  forumId: string
+}
+
+export default function SearchMember({ forumId }: SearchMemberProps) {
   const [isOpen, setIsOpen] = React.useState(false)
+  const { data: members, isLoading } = useGetMembers(forumId)
+
+  if (isLoading) return <p>Loading...</p>
+
   return (
     <React.Fragment>
       <Button
@@ -22,14 +32,14 @@ export default function SearchMember() {
         <CommandList className="scroll-custom">
           <CommandEmpty>Tidak ada hasil yang dapat ditemukan</CommandEmpty>
           <CommandGroup>
-            {MEMBERS.map((menu, index) => (
+            {members?.map((member, index) => (
               <CommandItem className="flex items-center gap-3.5" key={index}>
                 <img
-                  src={`https://ui-avatars.com/api/?background=E8E8E9&color=363E4D&bold=true&name=${menu}`}
-                  alt={menu}
+                  src={member.user.photo || 'https://github.com/shadcn.png'}
+                  alt={member.user.fullname}
                   className="h-5 w-5 rounded-full"
                 />
-                <span className="text-sm font-medium">{menu}</span>
+                <span className="text-sm font-medium">{member.user.fullname}</span>
                 <div className="ml-auto">
                   <ReportMember />
                 </div>

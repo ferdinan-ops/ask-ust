@@ -29,36 +29,23 @@ export const deleteForumById = async (forumId: string, userId: string) => {
   return await db.forum.delete({ where: { id: forumId, user_id: userId } })
 }
 
-export const getForumsFromDB = async (page: number, limit: number, search?: string) => {
+export const getForumsFromDB = async (page: number, limit: number, search: string) => {
   const [data, count] = await db.$transaction([
-    search
-      ? db.forum.findMany({
-          where: {
-            OR: [{ title: { contains: search } }, { description: { contains: search } }]
-          },
-          skip: (page - 1) * limit,
-          take: limit,
+    db.forum.findMany({
+      where: {
+        OR: [{ title: { contains: search } }, { description: { contains: search } }]
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+      include: {
+        members: {
           include: {
-            members: {
-              include: {
-                user: userSelect
-              }
-            }
-          },
-          orderBy: { created_at: 'desc' }
-        })
-      : db.forum.findMany({
-          skip: (page - 1) * limit,
-          take: limit,
-          include: {
-            members: {
-              include: {
-                user: userSelect
-              }
-            }
-          },
-          orderBy: { created_at: 'desc' }
-        }),
+            user: userSelect
+          }
+        }
+      },
+      orderBy: { created_at: 'desc' }
+    }),
     db.forum.count({
       where: {
         OR: [{ title: { contains: search } }, { description: { contains: search } }]
@@ -73,7 +60,11 @@ export const getForumById = async (forumId: string) => {
   return await db.forum.findUnique({
     where: { id: forumId },
     include: {
-      members: true,
+      members: {
+        include: {
+          user: userSelect
+        }
+      },
       _count: {
         select: { messages: true, members: true }
       }

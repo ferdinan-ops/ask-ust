@@ -53,7 +53,7 @@ export const getForums = async (req: Request, res: Response) => {
   const perPage = Number(limit) || 10
 
   try {
-    const { data, count } = await ForumService.getForumsFromDB(currentPage, perPage, q as string)
+    const { data, count } = await ForumService.getForumsFromDB(currentPage, perPage, (q as string) ?? '')
 
     logInfo(req, 'Getting forums')
     res.status(200).json({

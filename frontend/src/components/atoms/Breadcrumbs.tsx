@@ -1,17 +1,17 @@
-import { cn } from '@/lib/utils'
-import * as React from 'react'
-import { Link, useLocation } from 'react-router-dom'
 import useBreadcrumbs from 'use-react-router-breadcrumbs'
+import { Link, useLocation } from 'react-router-dom'
+import * as React from 'react'
+
+import { cn } from '@/lib/utils'
 
 const routes = [
   { path: '/dashboard', breadcrumb: 'Dashboard' },
   { path: '/forums', breadcrumb: 'Forum' },
-  { path: '/notification', breadcrumb: 'Notifikasi' },
   { path: '/me', breadcrumb: 'Profil' },
-  { path: '/forum/edit/:slug', breadcrumb: 'Ubah Forum' },
-  { path: '/forum/:slug', breadcrumb: 'Detail' },
-  { path: '/forum/:slug/content', breadcrumb: 'Konten' },
-  { path: '/forum/create', breadcrumb: 'Buka forum baru' }
+  { path: '/forums/edit/:slug', breadcrumb: 'Ubah Forum' },
+  { path: '/forums/:slug', breadcrumb: 'Detail' },
+  { path: '/forums/:slug/content', breadcrumb: 'Konten' },
+  { path: '/forums/create', breadcrumb: 'Buka forum baru' }
 ]
 
 export default function Breadcrumbs() {

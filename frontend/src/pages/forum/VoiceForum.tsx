@@ -1,6 +1,7 @@
-import { Button } from '@/components/ui/button'
 import { HiArrowRightOnRectangle, HiChatBubbleBottomCenterText, HiMicrophone } from 'react-icons/hi2'
 import { FaUserAlt } from 'react-icons/fa'
+
+import { Button } from '@/components/ui/button'
 
 export default function VoiceForum() {
   return (

@@ -1,18 +1,18 @@
-import * as React from 'react'
-import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
+import * as React from 'react'
 
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
-import { useTitle } from '@/hooks'
-import { ForumType } from '@/lib/types/forum.type'
-import { forumDefaultValues } from '@/lib/defaultValues'
-import { useCreateForum, useGetDetailForum, useUpdateForum } from '@/store/server/useForum'
 import { ForumInputType, addForumValidation, updateForumValidation } from '@/lib/validations/forum.validation'
+import { useCreateForum, useGetDetailForum, useUpdateForum } from '@/store/server/useForum'
+import { forumDefaultValues } from '@/lib/defaultValues'
+import { ForumType } from '@/lib/types/forum.type'
+import { useTitle } from '@/hooks'
 
 export default function CreateForum() {
   const navigate = useNavigate()
@@ -38,7 +38,7 @@ export default function CreateForum() {
   const onSuccess = (data: ForumType) => {
     forms.reset(forumDefaultValues)
     setTimeout(() => {
-      navigate(`/forum/${data.id}`)
+      navigate(`/forums/${data.id}`)
     }, 1500)
   }
 

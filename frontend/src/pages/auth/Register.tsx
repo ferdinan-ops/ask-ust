@@ -1,19 +1,19 @@
-import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Link, useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
 
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
-import { Password } from '@/components/atoms'
 import { AuthLayout } from '@/components/layouts'
+import { Password } from '@/components/atoms'
 
-import { useTitle } from '@/hooks'
-import { RegisterBg } from '@/assets'
-import { useRegister } from '@/store/server/useAuth'
-import { registerDefaultValues } from '@/lib/defaultValues'
 import { RegisterType, registerValidation } from '@/lib/validations/auth.validation'
+import { registerDefaultValues } from '@/lib/defaultValues'
+import { useRegister } from '@/store/server/useAuth'
+import { RegisterBg } from '@/assets'
+import { useTitle } from '@/hooks'
 
 const description =
   'Ayo mendaftar dan rajin berdiskusi di sini supaya masalah Anda cepat terselesaikan biar gak stress mulu~'

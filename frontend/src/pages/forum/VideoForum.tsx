@@ -1,5 +1,3 @@
-import { Profile1, Profile2, Profile3, Profile4, Profile5, Profile6, Profile7, Profile8 } from '@/assets'
-import { Button } from '@/components/ui/button'
 import {
   HiArrowRightOnRectangle,
   HiChatBubbleBottomCenterText,
@@ -7,6 +5,9 @@ import {
   HiMicrophone,
   HiVideoCamera
 } from 'react-icons/hi2'
+
+import { Profile1, Profile2, Profile3, Profile4, Profile5, Profile6, Profile7, Profile8 } from '@/assets'
+import { Button } from '@/components/ui/button'
 
 const dummyData = [Profile1, Profile2, Profile3, Profile4, Profile5, Profile6, Profile7, Profile8]
 

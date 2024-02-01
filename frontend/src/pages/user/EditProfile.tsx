@@ -1,13 +1,29 @@
-import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { useForm } from 'react-hook-form'
 import { HiOutlineEnvelope } from 'react-icons/hi2'
+import { useForm } from 'react-hook-form'
+import * as React from 'react'
+
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+
+import { LogoutAlert } from '@/components/organism'
+import { useGetMe } from '@/store/server/useUser'
 
 export default function EditProfile() {
+  const { data: user, isSuccess } = useGetMe()
+
   const forms = useForm()
 
+  React.useEffect(() => {
+    if (isSuccess) {
+      forms.setValue('fullname', user?.fullname)
+      forms.setValue('username', user?.username)
+    }
+  }, [user, isSuccess, forms])
+
   const onSubmit = () => {}
+
+  if (!isSuccess) return <p>Loading...</p>
 
   return (
     <>
@@ -17,7 +33,9 @@ export default function EditProfile() {
           <Button variant="outline" className="border-primary">
             Atur ulang kata sandi
           </Button>
-          <Button variant="destructive">Keluar dari aplikasi</Button>
+          <LogoutAlert>
+            <Button variant="destructive">Keluar dari aplikasi</Button>
+          </LogoutAlert>
         </div>
       </div>
       <div className="border-b py-7 dark:border-white/10">
@@ -56,7 +74,9 @@ export default function EditProfile() {
               )}
             />
           </div>
-          <Button className="my-5 self-end font-semibold">Ubah data profil</Button>
+          <Button className="my-5 self-end font-semibold" type="submit">
+            Ubah data profil
+          </Button>
         </form>
       </Form>
     </>

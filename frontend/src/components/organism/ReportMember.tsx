@@ -1,10 +1,12 @@
-import * as React from 'react'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
-import { Button } from '../ui/button'
-import { cn } from '@/lib/utils'
-import { Label } from '../ui/label'
 import { HiOutlineEllipsisHorizontal } from 'react-icons/hi2'
+import * as React from 'react'
+
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+import { Button } from '../ui/button'
+import { Label } from '../ui/label'
+
+import { cn } from '@/lib/utils'
 
 interface ReportMemberProps {
   className?: string

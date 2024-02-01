@@ -16,8 +16,11 @@ export const getMe = async (req: Request, res: Response) => {
     }
 
     const { password, ...rest } = data
+    const joinedForumCount = await UserService.getUserJoinForumsCount(req.userId as string)
+    const results = { ...rest, _count: { forums: rest._count.forums, joined_forum: joinedForumCount } }
+
     logInfo(req, 'Getting user data')
-    res.status(200).json({ message: 'Berhasil menampilkan data user', data: rest })
+    res.status(200).json({ message: 'Berhasil menampilkan data user', data: results })
   } catch (error) {
     res.status(500).json({ error })
   }

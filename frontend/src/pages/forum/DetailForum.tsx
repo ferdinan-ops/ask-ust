@@ -6,9 +6,9 @@ import {
   HiOutlineUserGroup,
   HiTrash
 } from 'react-icons/hi2'
-import * as React from 'react'
-import { LiaDoorOpenSolid } from 'react-icons/lia'
 import { useNavigate, useParams } from 'react-router-dom'
+import { LiaDoorOpenSolid } from 'react-icons/lia'
+import * as React from 'react'
 
 import {
   AlertDialog,
@@ -23,9 +23,9 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 
-import { useTitle } from '@/hooks'
-import { useGetMe } from '@/store/server/useUser'
 import { useDeleteForum, useGetDetailForum, useJoinForum, useLeaveForum } from '@/store/server/useForum'
+import { useGetMe } from '@/store/server/useUser'
+import { useTitle } from '@/hooks'
 
 export default function DetailForum() {
   const navigate = useNavigate()
@@ -50,7 +50,7 @@ export default function DetailForum() {
   const handleJoin = () => {
     joinForum(slug as string, {
       onSuccess: () => {
-        navigate(`/forum/${slug}/content`)
+        navigate(`/forums/${slug}/content`)
       }
     })
   }
@@ -82,14 +82,18 @@ export default function DetailForum() {
       <h1 className="my-5 text-lg font-semibold">Aksi</h1>
       <div className="flex flex-col gap-4 md:flex-row md:items-center">
         {forum?.members.filter((member) => member.user_id === user?.id).length !== 0 && (
-          <Button className="gap-2" onClick={() => navigate(`/forum/${slug}/content`)}>
+          <Button className="gap-2" onClick={() => navigate(`/forums/${slug}/content`)}>
             <LiaDoorOpenSolid className="text-lg" />
             <span>Masuk ke Forum</span>
           </Button>
         )}
         {user?.id === forum?.user_id ? (
           <React.Fragment>
-            <Button variant="outline" className="gap-2 border-zinc-300" onClick={() => navigate(`/forum/edit/${slug}`)}>
+            <Button
+              variant="outline"
+              className="gap-2 border-zinc-300"
+              onClick={() => navigate(`/forums/edit/${slug}`)}
+            >
               <HiOutlinePencilSquare className="text-lg" />
               <span>Update Forum</span>
             </Button>

@@ -1,7 +1,8 @@
-import * as React from 'react'
-import { cn } from '@/lib/utils'
-import { IconType } from 'react-icons'
 import { NavLink } from 'react-router-dom'
+import { IconType } from 'react-icons'
+import * as React from 'react'
+
+import { cn } from '@/lib/utils'
 
 interface ActiveLinkProps {
   name: string

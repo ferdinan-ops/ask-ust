@@ -1,9 +1,10 @@
-import * as React from 'react'
-import { cn } from '@/lib/utils'
 import { HiEye, HiEyeSlash } from 'react-icons/hi2'
+import * as React from 'react'
 
 import { Button } from '../ui/button'
 import { Input, InputProps } from '../ui/input'
+
+import { cn } from '@/lib/utils'
 
 const Password = React.forwardRef<HTMLInputElement, InputProps>(({ className, ...props }, ref) => {
   const [showPassword, setShowPassword] = React.useState(false)

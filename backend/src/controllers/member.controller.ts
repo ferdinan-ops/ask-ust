@@ -13,7 +13,7 @@ export const getMembers = async (req: Request, res: Response) => {
 
   const currentPage = Number(page) || 1
   const perPage = Number(limit) || 30
-  const search = String(q) || ''
+  const search = (q as string) ?? ''
 
   try {
     const { data, count } = await MemberService.getMembersByForumId({

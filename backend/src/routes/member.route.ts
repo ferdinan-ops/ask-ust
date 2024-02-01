@@ -5,7 +5,7 @@ import { getMembers, kickMember, reportMember, updateMember } from '../controlle
 
 const memberRoute = express.Router()
 
-memberRoute.get('/', verifyJwt, getMembers)
+memberRoute.get('/forum/:forumId', verifyJwt, getMembers)
 memberRoute.post('/report', verifyJwt, reportMember)
 memberRoute.put('/:memberId', verifyJwt, updateMember)
 memberRoute.delete('/:memberId', verifyJwt, kickMember)

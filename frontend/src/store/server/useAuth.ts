@@ -1,4 +1,4 @@
-import { loginFn, logoutFn, registerFn, verifyEmailFn } from '@/api/auth.api'
+import { forgotPasswordFn, loginFn, logoutFn, registerFn, resetPasswordFn, verifyEmailFn } from '@/api/auth.api'
 import { toast } from '@/components/ui/use-toast'
 import { handleOnError } from '@/lib/services/handleToast'
 
@@ -63,6 +63,50 @@ export const useLogout = () => {
       toast({
         title: 'Logout berhasil',
         description: 'Anda telah keluar dari aplikasi'
+      })
+    }
+  })
+}
+
+export const useForgotPassword = () => {
+  return useMutation(forgotPasswordFn, {
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Email berhasil dikirim',
+        description: 'Silahkan cek email anda untuk melakukan reset password'
+      })
+    }
+  })
+}
+
+export const useResetPassword = () => {
+  return useMutation(resetPasswordFn, {
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Password berhasil direset',
+        description: 'Silahkan login untuk melanjutkan'
+      })
+    }
+  })
+}
+
+export const useLoginGoogle = () => {
+  return useMutation(loginFn, {
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    },
+    onSuccess: (data) => {
+      useToken.getState().storeAccessToken(data.access_token)
+      useToken.getState().storeRefreshToken(data.refresh_token)
+      toast({
+        title: 'Login berhasil',
+        description: 'Selamat datang di aplikasi kami'
       })
     }
   })

@@ -1,7 +1,9 @@
-import * as React from 'react'
-import { Button } from '../ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
 import { HiOutlineCloudArrowUp, HiOutlinePaperClip } from 'react-icons/hi2'
+import * as React from 'react'
+
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
+import { Button } from '../ui/button'
+
 import { cn } from '@/lib/utils'
 
 interface UploadFileProps {

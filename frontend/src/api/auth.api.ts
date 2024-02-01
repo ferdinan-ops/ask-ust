@@ -35,6 +35,18 @@ export const loginFn = async (payload: LoginType): Promise<AuthResponseType> => 
   return response.data
 }
 
+export const forgotPasswordFn = async (email: string) => {
+  return await apiPublic.post('/auth/forgot-password', { email })
+}
+
+export const resetPasswordFn = async (payload: { token: string; password: string }) => {
+  return await apiPublic.post('/auth/reset-password', { token: payload.token, password: payload.password })
+}
+
+export const loginGoogleFn = async (payload: { token: string }) => {
+  return await apiPublic.post('/auth/google', payload)
+}
+
 export const logoutFn = async () => {
   return await api.delete('/auth/logout')
 }

@@ -1,5 +1,5 @@
 import {
-  HiOutlineBell,
+  // HiOutlineBell,
   // HiOutlineChatBubbleLeftRight,
   HiOutlineInbox,
   // HiOutlineInboxStack,
@@ -42,23 +42,23 @@ export const MAIN_MENU = [
 
 export const MENU_FORUMS = [
   {
-    href: '/forum/teknologi',
+    href: '/forums/teknologi',
     name: 'Teknologi'
   },
   {
-    href: '/forum/olahraga',
+    href: '/forums/olahraga',
     name: 'Olahraga'
   },
   {
-    href: '/forum/musik',
+    href: '/forums/musik',
     name: 'Musik'
   },
   {
-    href: '/forum/gaming',
+    href: '/forums/gaming',
     name: 'Gaming'
   },
   {
-    href: '/forum/sosial',
+    href: '/forums/sosial',
     name: 'Sosial'
   }
 ]

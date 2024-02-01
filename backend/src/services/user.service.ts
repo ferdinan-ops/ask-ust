@@ -5,7 +5,31 @@ import { deleteFile, compressedFile } from '../utils/fileSettings'
 import logger from '../utils/logger'
 
 export const getUserLogin = async (userId: string) => {
-  return await db.user.findUnique({ where: { id: userId } })
+  return await db.user.findUnique({
+    where: { id: userId },
+    include: {
+      _count: {
+        select: {
+          forums: true
+        }
+      }
+    }
+  })
+}
+
+export const getUserJoinForumsCount = async (userId: string) => {
+  return await db.forum.count({
+    where: {
+      members: {
+        some: {
+          user_id: userId,
+          role: {
+            in: ['GUEST', 'MODERATOR']
+          }
+        }
+      }
+    }
+  })
 }
 
 export const getUserByUsername = async (username: string) => {
@@ -41,7 +65,10 @@ export const getForumByMemberId = async (userId: string, page: number, limit: nu
       where: {
         members: {
           some: {
-            id: userId
+            user_id: userId,
+            role: {
+              in: ['GUEST', 'MODERATOR']
+            }
           }
         }
       },
@@ -57,7 +84,7 @@ export const getForumByMemberId = async (userId: string, page: number, limit: nu
       where: {
         members: {
           some: {
-            id: userId
+            user_id: userId
           }
         }
       }

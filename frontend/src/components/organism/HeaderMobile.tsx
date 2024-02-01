@@ -1,7 +1,8 @@
-import { Logo } from '@/assets'
 import { HiBars3 } from 'react-icons/hi2'
 import { Link } from 'react-router-dom'
+
 import { ModeToggle } from '../mode-toggle'
+import { Logo } from '@/assets'
 
 interface HeaderMobileProps {
   action?: () => void

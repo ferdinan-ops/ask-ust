@@ -1,11 +1,3 @@
-import { SearchMember } from '@/components/atoms'
-import { ReportMember, UploadFile } from '@/components/organism'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { useTitle } from '@/hooks'
-import { MEMBERS } from '@/lib/data'
-import { defaultPhotoUrl } from '@/lib/defaultValues'
-import { useGetDetailForum } from '@/store/server/useForum'
 import {
   HiHashtag,
   HiOutlinePaperAirplane,
@@ -14,6 +6,15 @@ import {
   HiOutlineVideoCamera
 } from 'react-icons/hi2'
 import { useParams } from 'react-router-dom'
+
+import { ReportMember, UploadFile } from '@/components/organism'
+import { SearchMember } from '@/components/atoms'
+
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+
+import { useGetDetailForum } from '@/store/server/useForum'
+import { useTitle } from '@/hooks'
 
 export default function ContentForum() {
   const { slug } = useParams<{ slug: string }>()
@@ -151,17 +152,21 @@ export default function ContentForum() {
         <article className="flex flex-col">
           <div className="flex items-center justify-between border-b border-[#E9E9E9] p-4 dark:border-white/10">
             <h4 className="text-sm font-semibold">{forum?._count.members} Anggota Forum</h4>
-            <SearchMember />
+            <SearchMember forumId={slug as string} />
           </div>
           <div className="scroll-custom flex max-h-[calc(100vh-68px-56px-67px)] min-h-[calc(100vh-68px-56px-67px)] flex-col gap-4 overflow-y-scroll p-4">
-            {MEMBERS.map((item, i) => (
+            {forum?.members.map((member, i) => (
               <div className="flex items-center justify-between" key={i}>
                 <div className="flex items-start gap-3">
-                  <img src={`${defaultPhotoUrl}${item}`} alt="profile" className="h-6 w-6 rounded-lg" />
+                  <img
+                    src={member.user.photo || 'https://github.com/shadcn.png'}
+                    alt="profile"
+                    className="h-6 w-6 rounded-lg"
+                  />
                   <div className="flex flex-col">
-                    <p className="truncate-1 text-sm font-medium">{item}</p>
+                    <p className="truncate-1 text-sm font-medium">{member.user.fullname}</p>
                     <span className="text-xs font-medium text-zinc-400 dark:text-white/40">
-                      @{item.toLocaleLowerCase().replace(/\s+/g, '-')}
+                      @{member.user.username}
                     </span>
                   </div>
                 </div>
