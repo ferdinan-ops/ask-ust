@@ -144,8 +144,9 @@ export const changeEmail = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Email sudah dipakai' })
     }
 
-    await UserService.updateEmail(req.userId as string, email as string)
-
+    const token = AuthService.generateToken()
+    await UserService.updateEmail(req.userId as string, email as string, token)
+    AuthService.sendVerifyEmail(email as string, token)
     logInfo(req, 'Changing user email')
     res.status(200).json({ message: 'Berhasil mengubah email user' })
   } catch (error) {

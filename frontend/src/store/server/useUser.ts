@@ -1,4 +1,12 @@
-import { changePasswordFn, getJoinedForumsFn, getMeFn, getMyForumFn, updateEmailFn, updateMeFn } from '@/api/user.api'
+import {
+  changePasswordFn,
+  getJoinedForumsFn,
+  getMeFn,
+  getMyForumFn,
+  updateEmailFn,
+  updateMeFn,
+  uploadProfilePicFn
+} from '@/api/user.api'
 import { toast } from '@/components/ui/use-toast'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
@@ -46,6 +54,19 @@ export const useUpdateEmail = () => {
       toast({
         title: 'Berhasil mengupdate email',
         description: 'Email anda berhasil diupdate'
+      })
+    }
+  })
+}
+
+export const useUpdateProfilePic = () => {
+  const queryClient = useQueryClient()
+  return useMutation(uploadProfilePicFn, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('me')
+      toast({
+        title: 'Berhasil mengupdate foto profil',
+        description: 'Foto profil anda berhasil diupdate'
       })
     }
   })

@@ -1,3 +1,4 @@
 import { useToken } from './useToken'
+import { usePreviewImage } from './usePreviewImage'
 
-export { useToken }
+export { useToken, usePreviewImage }

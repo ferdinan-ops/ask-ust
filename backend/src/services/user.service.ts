@@ -95,6 +95,7 @@ export const getForumByMemberId = async (userId: string, page: number, limit: nu
 }
 
 export const processPhoto = async (oldPhoto: string, filename: string) => {
+  console.log({ oldPhoto, filename })
   if (oldPhoto !== '') await deleteFile(oldPhoto)
   const compressedPhoto = await compressedFile(filename)
   if (compressedPhoto) {
@@ -119,6 +120,6 @@ export const getUserByEmail = async (email: string) => {
   return await db.user.findUnique({ where: { email } })
 }
 
-export const updateEmail = async (userId: string, email: string) => {
-  return await db.user.update({ where: { id: userId }, data: { email, is_email_verified: false } })
+export const updateEmail = async (userId: string, email: string, token: string) => {
+  return await db.user.update({ where: { id: userId }, data: { email, is_email_verified: false, token } })
 }

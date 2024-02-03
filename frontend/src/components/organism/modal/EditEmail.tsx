@@ -11,11 +11,13 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { UpdateEmailType, updateEmailValidation } from '@/lib/validations/user.validation'
+import { useToken } from '@/store/client'
 import { useUpdateEmail } from '@/store/server/useUser'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { HiOutlineEnvelope } from 'react-icons/hi2'
+import { useNavigate } from 'react-router-dom'
 
 interface EditEmailProps {
   email: string
@@ -23,8 +25,14 @@ interface EditEmailProps {
 }
 
 export default function EditEmail({ email, className }: EditEmailProps) {
+  const navigate = useNavigate()
   const [open, setOpen] = React.useState(false)
   const { mutate: updateEmail, isLoading } = useUpdateEmail()
+
+  const { removeAccessToken, removeRefreshToken } = useToken((state) => ({
+    removeAccessToken: state.removeAccessToken,
+    removeRefreshToken: state.removeRefreshToken
+  }))
 
   const forms = useForm<UpdateEmailType>({
     mode: 'onTouched',
@@ -40,7 +48,11 @@ export default function EditEmail({ email, className }: EditEmailProps) {
     updateEmail(values.email, {
       onSuccess: () => {
         setOpen(false)
-        forms.setValue('email', email)
+        navigate('/verify-email')
+        setTimeout(() => {
+          removeAccessToken()
+          removeRefreshToken()
+        }, 2000)
       }
     })
   }

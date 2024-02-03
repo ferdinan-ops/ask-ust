@@ -5,6 +5,7 @@ import BgAbsolute from './BgAbsolute'
 import ActiveLink from './ActiveLink'
 import Pagination from './Pagination'
 import Breadcrumbs from './Breadcrumbs'
+import ServerImage from './ServerImage'
 import SearchMember from './SearchMember'
 
-export { ActiveLink, Breadcrumbs, Search, SearchMember, BgAbsolute, Password, Pagination, Dropzone }
+export { ActiveLink, Breadcrumbs, Search, SearchMember, BgAbsolute, Password, Pagination, Dropzone, ServerImage }

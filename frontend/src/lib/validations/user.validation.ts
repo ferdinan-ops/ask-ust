@@ -27,3 +27,9 @@ export const updateEmailValidation = Yup.object({
 })
 
 export type UpdateEmailType = Yup.InferType<typeof updateEmailValidation>
+
+export const changeProfilePicValidation = Yup.object({
+  photo: Yup.mixed().required('Foto profil wajib diisi')
+})
+
+export type ChangeProfilePicType = Yup.InferType<typeof changeProfilePicValidation>

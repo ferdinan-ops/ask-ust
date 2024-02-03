@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
 
-import { HiOutlineChatBubbleBottomCenterText, HiOutlinePaperClip } from 'react-icons/hi2'
+import { HiOutlineChatBubbleBottomCenterText, HiOutlineUserGroup } from 'react-icons/hi2'
 import { ForumResponseType } from '@/lib/types/forum.type'
 import { cn } from '@/lib/utils'
+import { ServerImage } from '@/components/atoms'
 
 interface CardForumProps {
   forums: ForumResponseType
@@ -25,10 +26,10 @@ export default function CardForum({ forums }: CardForumProps) {
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 {forum.members.slice(0, 3).map((member, index) => (
-                  <img
+                  <ServerImage
                     key={member.id}
-                    alt="profile"
-                    src={member.user.photo || 'https://github.com/shadcn.png'}
+                    src={member.user.photo}
+                    alt={member.user.fullname}
                     className={cn(
                       index !== 0 && '-ml-3',
                       'h-6 w-6 rounded-full border-2 border-[#F7F9FB] dark:border-black'
@@ -38,8 +39,8 @@ export default function CardForum({ forums }: CardForumProps) {
               </div>
               <div className="flex items-center gap-4 text-black/40 dark:text-white/40">
                 <div className="flex items-center gap-1">
-                  <HiOutlinePaperClip />
-                  <span className="text-xs">6</span>
+                  <HiOutlineUserGroup />
+                  <span className="text-xs">{forum.members.length}</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-black/40 dark:text-white/40">
                   <HiOutlineChatBubbleBottomCenterText />

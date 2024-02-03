@@ -1,7 +1,7 @@
 import { UserType } from '@/lib/types/user.type'
 import api from './axiosInstance'
 import { ForumResponseType } from '@/lib/types/forum.type'
-import { ChangePasswordType, EditUserType } from '@/lib/validations/user.validation'
+import { ChangePasswordType, ChangeProfilePicType, EditUserType } from '@/lib/validations/user.validation'
 
 export const getMeFn = async (): Promise<UserType> => {
   const response = await api.get('/users')
@@ -31,4 +31,13 @@ export const changePasswordFn = async (data: ChangePasswordType) => {
 
 export const updateEmailFn = async (email: string) => {
   return await api.put('/users/change-email', { email })
+}
+
+export const uploadProfilePicFn = async (data: ChangeProfilePicType) => {
+  const formData = new FormData()
+  if (Array.isArray(data.photo) && data.photo.length > 0) {
+    formData.append('photo', data.photo[0])
+  }
+
+  return await api.put('/users/change-photo', formData)
 }

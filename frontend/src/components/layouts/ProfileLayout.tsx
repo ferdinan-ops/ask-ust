@@ -25,16 +25,6 @@ export default function ProfileLayout() {
           <HiOutlineCog6Tooth className="text-lg" />
           <p className="hidden md:flex">Pengaturan</p>
         </Button>
-        {/* <div className="group relative -mt-12 h-24 w-24 cursor-pointer overflow-hidden rounded-full border-4 border-white dark:border-white/50 xl:-mt-[72px] xl:h-36 xl:w-36">
-          <div className="absolute inset-0 z-[2] flex bg-primary/60 opacity-0 transition-opacity group-hover:opacity-100">
-            <HiCamera className="m-auto text-4xl text-white" />
-          </div>
-          <img
-            src={user?.photo || 'https://github.com/shadcn.png'}
-            alt={user?.fullname}
-            className="relative z-[1] h-full w-full object-cover"
-          />
-        </div> */}
         <UploadPhoto user={user as UserType} />
         <div className="flex flex-col">
           <p className="text-xl font-bold text-primary dark:text-white md:text-2xl">{user?.fullname}</p>
