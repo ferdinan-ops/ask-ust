@@ -114,3 +114,11 @@ export const updatePhoto = async (userId: string, filename: string) => {
 
   return await db.user.update({ where: { id: userId }, data: { photo: newPhoto } })
 }
+
+export const getUserByEmail = async (email: string) => {
+  return await db.user.findUnique({ where: { email } })
+}
+
+export const updateEmail = async (userId: string, email: string) => {
+  return await db.user.update({ where: { id: userId }, data: { email, is_email_verified: false } })
+}

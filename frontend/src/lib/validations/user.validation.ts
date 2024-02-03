@@ -21,3 +21,9 @@ export const changePasswordValidation = Yup.object({
 })
 
 export type ChangePasswordType = Yup.InferType<typeof changePasswordValidation>
+
+export const updateEmailValidation = Yup.object({
+  email: Yup.string().email('Email tidak valid').required('Email wajib diisi')
+})
+
+export type UpdateEmailType = Yup.InferType<typeof updateEmailValidation>

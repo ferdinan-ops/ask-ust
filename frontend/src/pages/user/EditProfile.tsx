@@ -1,4 +1,3 @@
-import { HiOutlineEnvelope } from 'react-icons/hi2'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
 
@@ -6,7 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-import { LogoutAlert } from '@/components/organism'
+import { EditEmail, LogoutAlert } from '@/components/organism'
 import { useGetMe, useUpdateMe } from '@/store/server/useUser'
 import { EditUserType, editUserValidation } from '@/lib/validations/user.validation'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -55,10 +54,7 @@ export default function EditProfile() {
       </div>
       <div className="border-b py-7 dark:border-white/10">
         <h1 className="mb-5 text-lg font-semibold md:text-xl">Provider</h1>
-        <Button variant="secondary" className="gap-3 bg-zinc-200 hover:bg-zinc-300">
-          <HiOutlineEnvelope className="text-xl" />
-          Ubah email Anda
-        </Button>
+        <EditEmail email={user.email} />
       </div>
       <h1 className="mb-5 mt-7 text-lg font-semibold md:text-xl">Edit Profil</h1>
       <Form {...forms}>

@@ -1,4 +1,4 @@
-import { changePasswordFn, getJoinedForumsFn, getMeFn, getMyForumFn, updateMeFn } from '@/api/user.api'
+import { changePasswordFn, getJoinedForumsFn, getMeFn, getMyForumFn, updateEmailFn, updateMeFn } from '@/api/user.api'
 import { toast } from '@/components/ui/use-toast'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
@@ -33,6 +33,19 @@ export const useChangePassword = () => {
       toast({
         title: 'Berhasil mengupdate kata sandi',
         description: 'Kata sandi anda berhasil diupdate'
+      })
+    }
+  })
+}
+
+export const useUpdateEmail = () => {
+  const queryClient = useQueryClient()
+  return useMutation(updateEmailFn, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('me')
+      toast({
+        title: 'Berhasil mengupdate email',
+        description: 'Email anda berhasil diupdate'
       })
     }
   })

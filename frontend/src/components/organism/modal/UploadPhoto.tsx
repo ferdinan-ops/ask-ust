@@ -1,0 +1,71 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog'
+import * as React from 'react'
+import { HiCamera } from 'react-icons/hi2'
+
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { UserType } from '@/lib/types/user.type'
+import { Dropzone } from '@/components/atoms'
+import { useForm } from 'react-hook-form'
+import { Form, FormField } from '@/components/ui/form'
+
+interface UploadPhotoProps {
+  user: UserType
+  className?: string
+}
+
+export default function UploadPhoto({ user, className }: UploadPhotoProps) {
+  const [open, setOpen] = React.useState(false)
+
+  const forms = useForm()
+  const onSubmit = () => {}
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <div className="group relative -mt-12 h-24 w-24 cursor-pointer overflow-hidden rounded-full border-4 border-white dark:border-white/50 xl:-mt-[72px] xl:h-36 xl:w-36">
+          <div className="absolute inset-0 z-[2] flex bg-primary/60 opacity-0 transition-opacity group-hover:opacity-100">
+            <HiCamera className="m-auto text-4xl text-white" />
+          </div>
+          <img
+            src={user?.photo || 'https://github.com/shadcn.png'}
+            alt={user?.fullname}
+            className="relative z-[1] h-full w-full object-cover"
+          />
+        </div>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-xl">
+        <DialogHeader>
+          <DialogTitle className="text-xl font-bold text-primary dark:text-white">Ganti foto profil</DialogTitle>
+          <DialogDescription className="text-[13px] font-medium">
+            Seret dan jatuhkan file atau tekan kolom dibawah ini. Tekan Kirim setelah Anda selesai.
+          </DialogDescription>
+        </DialogHeader>
+        <Form {...forms}>
+          <form className={cn('mt-2 grid items-start gap-4', className)} onSubmit={forms.handleSubmit(onSubmit)}>
+            <FormField
+              name="photo"
+              control={forms.control}
+              render={({ field }) => (
+                <Dropzone
+                  id="photo"
+                  setValue={field.onChange}
+                  fileValue={field.value}
+                  accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
+                />
+              )}
+            />
+            <Button type="submit">Upload</Button>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  )
+}

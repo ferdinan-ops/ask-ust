@@ -1,8 +1,11 @@
 import { Outlet, useNavigate } from 'react-router-dom'
-import { HiCamera, HiOutlineCog6Tooth } from 'react-icons/hi2'
+import { HiOutlineCog6Tooth } from 'react-icons/hi2'
 
-import { useGetMe } from '@/store/server/useUser'
 import { Button } from '../ui/button'
+
+import { UploadPhoto } from '../organism'
+import { UserType } from '@/lib/types/user.type'
+import { useGetMe } from '@/store/server/useUser'
 
 export default function ProfileLayout() {
   const navigate = useNavigate()
@@ -22,16 +25,17 @@ export default function ProfileLayout() {
           <HiOutlineCog6Tooth className="text-lg" />
           <p className="hidden md:flex">Pengaturan</p>
         </Button>
-        <div className="group relative -mt-12 h-24 w-24 cursor-pointer overflow-hidden rounded-full border-4 border-white dark:border-white/50 xl:-mt-[72px] xl:h-36 xl:w-36">
-          <div className="absolute inset-0 z-20 flex bg-primary/60 opacity-0 transition-opacity group-hover:opacity-100">
+        {/* <div className="group relative -mt-12 h-24 w-24 cursor-pointer overflow-hidden rounded-full border-4 border-white dark:border-white/50 xl:-mt-[72px] xl:h-36 xl:w-36">
+          <div className="absolute inset-0 z-[2] flex bg-primary/60 opacity-0 transition-opacity group-hover:opacity-100">
             <HiCamera className="m-auto text-4xl text-white" />
           </div>
           <img
             src={user?.photo || 'https://github.com/shadcn.png'}
             alt={user?.fullname}
-            className="relative z-10 h-full w-full object-cover"
+            className="relative z-[1] h-full w-full object-cover"
           />
-        </div>
+        </div> */}
+        <UploadPhoto user={user as UserType} />
         <div className="flex flex-col">
           <p className="text-xl font-bold text-primary dark:text-white md:text-2xl">{user?.fullname}</p>
           <p className="text-sm font-medium text-zinc-400 md:text-base">@{user?.username}</p>

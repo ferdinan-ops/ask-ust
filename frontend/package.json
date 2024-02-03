@@ -28,6 +28,7 @@
     "lucide-react": "^0.288.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.47.0",
     "react-icons": "^4.11.0",
     "react-query": "^3.39.3",

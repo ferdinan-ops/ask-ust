@@ -28,3 +28,7 @@ export const changePasswordFn = async (data: ChangePasswordType) => {
     return await api.put('/users/change-password', data)
   }
 }
+
+export const updateEmailFn = async (email: string) => {
+  return await api.put('/users/change-email', { email })
+}

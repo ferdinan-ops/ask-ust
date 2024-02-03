@@ -1,5 +1,6 @@
 import express from 'express'
 import {
+  changeEmail,
   changePassword,
   changeProfilePicture,
   getJoinedForums,
@@ -17,6 +18,7 @@ userRoute.put('/', verifyJwt, updateMe)
 userRoute.get('/forums', verifyJwt, getMyForums)
 userRoute.get('/forums/joined', verifyJwt, getJoinedForums)
 userRoute.put('/change-password', verifyJwt, changePassword)
+userRoute.put('/change-email', verifyJwt, changeEmail)
 userRoute.put('/change-photo', upload.single('photo'), verifyJwt, changeProfilePicture)
 
 export default userRoute

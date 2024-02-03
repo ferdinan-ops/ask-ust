@@ -133,3 +133,22 @@ export const changeProfilePicture = async (req: Request, res: Response) => {
     res.status(500).json({ error })
   }
 }
+
+export const changeEmail = async (req: Request, res: Response) => {
+  const { email } = req.body
+
+  try {
+    const user = await UserService.getUserByEmail(email as string)
+    if (user) {
+      logWarn(req, 'Email already exists')
+      return res.status(400).json({ error: 'Email sudah dipakai' })
+    }
+
+    await UserService.updateEmail(req.userId as string, email as string)
+
+    logInfo(req, 'Changing user email')
+    res.status(200).json({ message: 'Berhasil mengubah email user' })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
