@@ -4,12 +4,14 @@ import authRoute from './auth.route'
 import forumRoute from './forum.route'
 import userRoute from './user.route'
 import memberRoute from './member.route'
+import searchRoute from './search.route'
 
 const _routes = [
   ['/auth', authRoute],
   ['/forums', forumRoute],
   ['/users', userRoute],
-  ['/members', memberRoute]
+  ['/members', memberRoute],
+  ['/search', searchRoute]
 ]
 
 const routes = (app: Application) => {

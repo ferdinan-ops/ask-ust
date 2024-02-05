@@ -8,7 +8,7 @@ import {
 import { useParams } from 'react-router-dom'
 
 import { ReportMember, UploadFile } from '@/components/organism'
-import { SearchMember } from '@/components/atoms'
+import { SearchMember, ServerImage } from '@/components/atoms'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -158,11 +158,7 @@ export default function ContentForum() {
             {forum?.members.map((member, i) => (
               <div className="flex items-center justify-between" key={i}>
                 <div className="flex items-start gap-3">
-                  <img
-                    src={member.user.photo || 'https://github.com/shadcn.png'}
-                    alt="profile"
-                    className="h-6 w-6 rounded-lg"
-                  />
+                  <ServerImage src={member.user.photo} alt={member.user.fullname} className="h-6 w-6 rounded-lg" />
                   <div className="flex flex-col">
                     <p className="truncate-1 text-sm font-medium">{member.user.fullname}</p>
                     <span className="text-xs font-medium text-zinc-400 dark:text-white/40">

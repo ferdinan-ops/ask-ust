@@ -4,8 +4,7 @@ import * as React from 'react'
 
 import { useDisableBodyScroll, useOutsideClick } from '@/hooks'
 import { ActiveLink, BgAbsolute, Search } from '../atoms'
-import { useGetForum } from '@/store/server/useForum'
-import { useGetMe } from '@/store/server/useUser'
+import { useGetJoinedForums, useGetMe } from '@/store/server/useUser'
 import { MAIN_MENU } from '@/lib/data'
 import { cn } from '@/lib/utils'
 import { Logo } from '@/assets'
@@ -26,7 +25,7 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
   const ref = useOutsideClick(() => setIsShow(false))
 
   const { data: user, isLoading } = useGetMe()
-  const { data: forums, isSuccess } = useGetForum()
+  const { data: joinedForums, isSuccess } = useGetJoinedForums(1)
 
   const handleClose = () => {
     setIsShow(false)
@@ -75,13 +74,13 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
               ))}
             </div>
           </div>
-          {isSuccess && forums.data.length !== 0 && (
+          {isSuccess && joinedForums.data.length !== 0 && (
             <div className="flex flex-col gap-2">
               <span className="px-3 py-1 text-xs font-semibold uppercase text-black/40 dark:text-white/40">
                 Diikuti
               </span>
               <div className="flex flex-col gap-1 text-primary dark:text-white">
-                {forums.data.map((forum) => (
+                {joinedForums.data.map((forum) => (
                   <ActiveLink
                     href={`/forums/${forum.id}`}
                     name={forum.title}

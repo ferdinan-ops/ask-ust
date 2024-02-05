@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/indent */
+import { userSelect } from '../utils/service'
 import { type IUpdateMemberParams, type IMembersParams, type IReportMemberPayload } from '../types/member.type'
 
 import db from '../utils/db'
@@ -16,7 +17,7 @@ export const getMembersByForumId = async ({ forumId, page, limit, search }: IMem
       },
       skip: (page - 1) * limit,
       take: limit,
-      include: { user: true }
+      include: { user: userSelect }
     }),
     db.member.count({
       where: {

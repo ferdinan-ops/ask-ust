@@ -28,8 +28,8 @@ export default function CardForum({ forums }: CardForumProps) {
                 {forum.members.slice(0, 3).map((member, index) => (
                   <ServerImage
                     key={member.id}
-                    src={member.user.photo}
-                    alt={member.user.fullname}
+                    src={member?.user?.photo}
+                    alt={member?.user?.fullname}
                     className={cn(
                       index !== 0 && '-ml-3',
                       'h-6 w-6 rounded-full border-2 border-[#F7F9FB] dark:border-black'
@@ -40,11 +40,11 @@ export default function CardForum({ forums }: CardForumProps) {
               <div className="flex items-center gap-4 text-black/40 dark:text-white/40">
                 <div className="flex items-center gap-1">
                   <HiOutlineUserGroup />
-                  <span className="text-xs">{forum.members.length}</span>
+                  <span className="text-xs">{forum._count.members}</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-black/40 dark:text-white/40">
                   <HiOutlineChatBubbleBottomCenterText />
-                  <span className="text-xs">19</span>
+                  <span className="text-xs">{forum._count.messages}</span>
                 </div>
               </div>
             </div>

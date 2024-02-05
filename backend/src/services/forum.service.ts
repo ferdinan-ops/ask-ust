@@ -42,6 +42,9 @@ export const getForumsFromDB = async (page: number, limit: number, search: strin
           include: {
             user: userSelect
           }
+        },
+        _count: {
+          select: { messages: true, members: true }
         }
       },
       orderBy: { created_at: 'desc' }
@@ -142,14 +145,14 @@ export const sendVideoCallInvite = async (forumId: string) => {
         include: {
           member: {
             include: {
-              user: true
+              user: userSelect
             }
           }
         }
       },
       members: {
         include: {
-          user: true
+          user: userSelect
         }
       }
     }
@@ -186,14 +189,14 @@ export const sendVoiceCallInvite = async (forumId: string) => {
         include: {
           member: {
             include: {
-              user: true
+              user: userSelect
             }
           }
         }
       },
       members: {
         include: {
-          user: true
+          user: userSelect
         }
       }
     }

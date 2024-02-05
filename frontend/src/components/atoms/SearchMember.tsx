@@ -4,8 +4,10 @@ import * as React from 'react'
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command'
 import { Button } from '../ui/button'
 
-import { useGetMembers } from '@/store/server/useMember'
 import { ReportMember } from '../organism'
+import { ServerImage } from '.'
+import { useSearchMembers } from '@/store/server/useSearch'
+import { useDebounce } from '@/hooks'
 
 interface SearchMemberProps {
   forumId: string
@@ -13,7 +15,10 @@ interface SearchMemberProps {
 
 export default function SearchMember({ forumId }: SearchMemberProps) {
   const [isOpen, setIsOpen] = React.useState(false)
-  const { data: members, isLoading } = useGetMembers(forumId)
+  const [keyword, setKeyword] = React.useState('')
+
+  const debounceKeyword = useDebounce(keyword, 500)
+  const { data: members, isLoading } = useSearchMembers(debounceKeyword, forumId, isOpen)
 
   if (isLoading) return <p>Loading...</p>
 
@@ -28,23 +33,27 @@ export default function SearchMember({ forumId }: SearchMemberProps) {
         <PiMagnifyingGlass className="text-lg text-black/40 dark:text-white" />
       </Button>
       <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
-        <CommandInput placeholder="Cari seluruh anggota disini" />
+        <CommandInput
+          placeholder="Cari seluruh anggota disini"
+          value={keyword}
+          onValueChange={(search) => setKeyword(search)}
+        />
         <CommandList className="scroll-custom">
           <CommandEmpty>Tidak ada hasil yang dapat ditemukan</CommandEmpty>
           <CommandGroup>
-            {members?.map((member, index) => (
-              <CommandItem className="flex items-center gap-3.5" key={index}>
-                <img
-                  src={member.user.photo || 'https://github.com/shadcn.png'}
-                  alt={member.user.fullname}
-                  className="h-5 w-5 rounded-full"
-                />
-                <span className="text-sm font-medium">{member.user.fullname}</span>
-                <div className="ml-auto">
-                  <ReportMember />
-                </div>
-              </CommandItem>
-            ))}
+            {isLoading ? (
+              <CommandItem className="flex items-center gap-3.5">Mengambil data...</CommandItem>
+            ) : (
+              members?.map((member, index) => (
+                <CommandItem className="flex items-center gap-3.5" key={index}>
+                  <ServerImage src={member.user.photo} alt={member.user.fullname} className="h-5 w-5 rounded-full" />
+                  <span className="text-sm font-medium">{member.user.fullname}</span>
+                  <div className="ml-auto">
+                    <ReportMember />
+                  </div>
+                </CommandItem>
+              ))
+            )}
           </CommandGroup>
         </CommandList>
       </CommandDialog>

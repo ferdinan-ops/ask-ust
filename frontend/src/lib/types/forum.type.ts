@@ -16,13 +16,14 @@ export type MetaType = {
   total: number
 }
 
-type ForumListType = ForumType & { members: MemberType[] }
-export type ForumDetailType = ForumListType & {
+type ForumListType = ForumType & { members: MemberType[] } & ForumCountType
+type ForumCountType = {
   _count: {
     messages: number
     members: number
   }
 }
+export type ForumDetailType = ForumListType & ForumCountType
 
 export type ForumResponseType = {
   message: string

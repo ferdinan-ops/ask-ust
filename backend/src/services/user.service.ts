@@ -3,6 +3,7 @@ import db from '../utils/db'
 import { type IUserUpdatePayload } from '../types/user.type'
 import { deleteFile, compressedFile } from '../utils/fileSettings'
 import logger from '../utils/logger'
+import { userSelect } from '../utils/service'
 
 export const getUserLogin = async (userId: string) => {
   return await db.user.findUnique({
@@ -48,7 +49,10 @@ export const getUserLoginForums = async (userId: string, page: number, limit: nu
       take: limit,
       include: {
         members: {
-          include: { user: true }
+          include: { user: userSelect }
+        },
+        _count: {
+          select: { messages: true, members: true }
         }
       },
       orderBy: { created_at: 'desc' }
@@ -76,7 +80,10 @@ export const getForumByMemberId = async (userId: string, page: number, limit: nu
       take: limit,
       include: {
         members: {
-          include: { user: true }
+          include: { user: userSelect }
+        },
+        _count: {
+          select: { messages: true, members: true }
         }
       }
     }),

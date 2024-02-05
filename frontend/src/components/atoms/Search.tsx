@@ -1,11 +1,11 @@
 import { PiCommand, PiMagnifyingGlass } from 'react-icons/pi'
 import { HiHashtag } from 'react-icons/hi2'
-import { CommandSeparator } from 'cmdk'
 import * as React from 'react'
 
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command'
-import { MENU_FORUMS } from '@/lib/data'
 import { cn } from '@/lib/utils'
+import { useDebounce } from '@/hooks'
+import { useSearchForums } from '@/store/server/useSearch'
 
 interface SearchProps {
   className?: string
@@ -14,6 +14,10 @@ interface SearchProps {
 
 export default function Search({ className, action }: SearchProps) {
   const [isOpen, setIsOpen] = React.useState(false)
+  const [keyword, setKeyword] = React.useState('')
+
+  const debounceKeyword = useDebounce(keyword, 500)
+  const { data: forums, isLoading } = useSearchForums(debounceKeyword, isOpen)
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -50,44 +54,25 @@ export default function Search({ className, action }: SearchProps) {
         </div>
       </div>
       <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
-        <CommandInput placeholder="Cari seluruh forum disini" />
+        <CommandInput
+          placeholder="Cari seluruh forum disini"
+          value={keyword}
+          onValueChange={(search) => setKeyword(search)}
+        />
         <CommandList className="scroll-custom">
           <CommandEmpty>Tidak ada hasil yang dapat ditemukan</CommandEmpty>
           <CommandGroup>
-            {MENU_FORUMS.map((menu, index) => (
-              <CommandItem className="flex items-center gap-3.5" key={index}>
-                <HiHashtag className="text-xl" />
-                {/* <img
-                  src={`https://source.unsplash.com/random?${menu.name}`}
-                  alt={menu.name}
-                  className="w-5 h-5 rounded-full"
-                /> */}
-                <span className="text-sm font-medium">{menu.name}</span>
-              </CommandItem>
-            ))}
+            {isLoading ? (
+              <CommandItem className="flex items-center gap-3.5">Mengambil data...</CommandItem>
+            ) : (
+              forums?.map((forum) => (
+                <CommandItem className="flex items-center gap-3.5" key={forum.id}>
+                  <HiHashtag className="text-xl" />
+                  <span className="text-sm font-medium">{forum.title}</span>
+                </CommandItem>
+              ))
+            )}
           </CommandGroup>
-          <CommandSeparator />
-          {/* <CommandGroup heading="Pertanyaan">
-            {[...Array(5)].map((_, index) => (
-              <CommandItem className="flex items-center gap-3.5" key={index}>
-                <Hash />
-                <span className="text-sm font-medium">Text overflow ellipsis on two lines [duplicate] {index + 1}</span>
-              </CommandItem>
-            ))}
-          </CommandGroup> */}
-          <CommandSeparator />
-          {/* <CommandGroup heading="Anggota">
-            {[...Array(5)].map((_, index) => (
-              <CommandItem className="flex items-center gap-3.5" key={index}>
-                <img
-                  src={`https://source.unsplash.com/random?profile`}
-                  alt="profile"
-                  className="w-5 h-5 rounded-full"
-                />
-                <span className="text-sm font-medium">Profile {index + 1}</span>
-              </CommandItem>
-            ))}
-          </CommandGroup> */}
         </CommandList>
       </CommandDialog>
     </React.Fragment>
