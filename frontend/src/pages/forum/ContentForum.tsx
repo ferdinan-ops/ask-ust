@@ -1,4 +1,5 @@
 import {
+  HiCheckBadge,
   HiHashtag,
   HiOutlinePaperAirplane,
   HiOutlinePhone,
@@ -7,7 +8,7 @@ import {
 } from 'react-icons/hi2'
 import { useParams } from 'react-router-dom'
 
-import { ReportMember, UploadFile } from '@/components/organism'
+import { MemberSettings, UploadFile } from '@/components/organism'
 import { SearchMember, ServerImage } from '@/components/atoms'
 
 import { Button } from '@/components/ui/button'
@@ -15,6 +16,7 @@ import { Input } from '@/components/ui/input'
 
 import { useGetDetailForum } from '@/store/server/useForum'
 import { useTitle } from '@/hooks'
+import { MemberType } from '@/lib/types/member.type'
 
 export default function ContentForum() {
   const { slug } = useParams<{ slug: string }>()
@@ -25,6 +27,8 @@ export default function ContentForum() {
   if (isLoading) {
     return <p>loading...</p>
   }
+
+  console.log(forum)
 
   return (
     <section className="flex flex-col justify-between gap-7 xl:flex-row xl:p-7">
@@ -152,23 +156,37 @@ export default function ContentForum() {
         <article className="flex flex-col">
           <div className="flex items-center justify-between border-b border-[#E9E9E9] p-4 dark:border-white/10">
             <h4 className="text-sm font-semibold">{forum?._count.members} Anggota Forum</h4>
-            <SearchMember forumId={slug as string} />
+            <SearchMember
+              forumId={slug as string}
+              admin={forum?.admin as MemberType}
+              moderators={forum?.moderators as MemberType[]}
+            />
           </div>
           <div className="scroll-custom flex max-h-[calc(100vh-68px-56px-67px)] min-h-[calc(100vh-68px-56px-67px)] flex-col gap-4 overflow-y-scroll p-4">
             {forum?.members.map((member, i) => (
               <div className="flex items-center justify-between" key={i}>
                 <div className="flex items-start gap-3">
-                  <ServerImage src={member.user.photo} alt={member.user.fullname} className="h-6 w-6 rounded-lg" />
+                  <div className="relative">
+                    <ServerImage src={member.user.photo} alt={member.user.fullname} className="h-6 w-6 rounded-lg" />
+                  </div>
                   <div className="flex flex-col">
-                    <p className="truncate-1 text-sm font-medium">{member.user.fullname}</p>
+                    <p className="flex items-center gap-1 text-sm font-medium">
+                      <span className="truncate-1">{member.user.fullname}</span>
+                      {member.role === 'ADMIN' && <HiCheckBadge className="text-blue-500" />}
+                      {member.role === 'MODERATOR' && <HiCheckBadge className="text-green-500" />}
+                    </p>
                     <span className="text-xs font-medium text-zinc-400 dark:text-white/40">
                       @{member.user.username}
                     </span>
                   </div>
                 </div>
-                <div>
-                  <ReportMember />
-                </div>
+
+                <MemberSettings
+                  moderators={forum.moderators}
+                  admin={forum.admin as MemberType}
+                  forumId={forum.id}
+                  memberId={member.id}
+                />
               </div>
             ))}
           </div>

@@ -8,12 +8,14 @@ import { userSelect } from '../utils/service'
 export const getUserLogin = async (userId: string) => {
   return await db.user.findUnique({
     where: { id: userId },
-    include: {
-      _count: {
-        select: {
-          forums: true
-        }
-      }
+    select: {
+      id: true,
+      fullname: true,
+      username: true,
+      email: true,
+      photo: true,
+      provider: true,
+      _count: { select: { forums: true } }
     }
   })
 }

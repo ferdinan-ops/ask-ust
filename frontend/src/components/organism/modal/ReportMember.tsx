@@ -1,4 +1,3 @@
-import { HiOutlineEllipsisHorizontal } from 'react-icons/hi2'
 import * as React from 'react'
 
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../../ui/dialog'
@@ -10,17 +9,14 @@ import { cn } from '@/lib/utils'
 
 interface ReportMemberProps {
   className?: string
+  children: React.ReactNode
 }
 
-export default function ReportMember({ className }: ReportMemberProps) {
+export default function ReportMember({ className, children }: ReportMemberProps) {
   const [open, setOpen] = React.useState(false)
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="icon" className="h-6 w-6 p-0 dark:bg-primary">
-          <HiOutlineEllipsisHorizontal className="text-lg" />
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-primary dark:text-white">Laporkan anggota</DialogTitle>

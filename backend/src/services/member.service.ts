@@ -30,6 +30,13 @@ export const getMembersByForumId = async ({ forumId, page, limit, search }: IMem
   return { data, count }
 }
 
+export const getMemberById = async (memberId: string) => {
+  return await db.member.findUnique({
+    where: { id: memberId },
+    include: { user: userSelect }
+  })
+}
+
 export const removeMember = async (memberId: string, forumId: string, userId: string) => {
   return await db.forum.update({
     where: {

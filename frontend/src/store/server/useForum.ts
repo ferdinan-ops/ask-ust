@@ -33,7 +33,16 @@ export const useGetForum = () => {
 }
 
 export const useGetDetailForum = (forumId: string) => {
-  return useQuery(['forums', forumId], async () => await getForumByIdFn(forumId), { enabled: !!forumId })
+  return useQuery(['forums', forumId], async () => await getForumByIdFn(forumId), {
+    enabled: !!forumId,
+    select: (data) => {
+      return {
+        ...data,
+        moderators: data.members.filter((member) => member.role === 'MODERATOR'),
+        admin: data.members.find((member) => member.role === 'ADMIN')
+      }
+    }
+  })
 }
 
 export const useUpdateForum = () => {

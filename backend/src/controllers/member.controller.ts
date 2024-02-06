@@ -104,3 +104,16 @@ export const reportMember = async (req: Request, res: Response) => {
     res.status(500).json({ error })
   }
 }
+
+export const getMember = async (req: Request, res: Response) => {
+  const { memberId } = req.params
+
+  try {
+    const data = await MemberService.getMemberById(memberId)
+
+    logInfo(req, 'Getting member')
+    res.status(200).json({ message: 'Berhasil menampilkan member', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}

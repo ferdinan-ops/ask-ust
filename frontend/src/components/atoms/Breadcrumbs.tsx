@@ -11,6 +11,8 @@ const routes = [
   { path: '/forums/edit/:slug', breadcrumb: 'Ubah Forum' },
   { path: '/forums/:slug', breadcrumb: 'Detail' },
   { path: '/forums/:slug/content', breadcrumb: 'Konten' },
+  { path: '/forums/:slug/member/:memberId', breadcrumb: 'Manajemen' },
+  { path: '/forums/:slug/member', breadcrumb: 'Anggota' },
   { path: '/forums/create', breadcrumb: 'Buka forum baru' }
 ]
 

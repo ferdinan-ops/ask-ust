@@ -2,14 +2,16 @@ import * as React from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 import { DashboardLayout, PaddingLayout, ProfileLayout, ProtectedAuth, ProtectedRoute } from './components/layouts'
+import ImagePreview from './components/atoms/ImagePreview'
 import { Toaster } from './components/ui/toaster'
 
 import { ContentForum, CreateForum, DetailForum, Forums, VideoForum, VoiceForum } from './pages/forum'
 import { ForgotPassword, Login, Register, ResetPassword, VerifyEmail } from './pages/auth'
 import { EditProfile, Profile } from './pages/user'
 import Dashboard from './pages/Dashboard'
-import ImagePreview from './components/atoms/ImagePreview'
+
 import { usePreviewImage } from './store/client'
+import { ManageMember, Member } from './pages/member'
 
 export default function App() {
   const { previewImage, setPreviewImage } = usePreviewImage((state) => ({
@@ -35,11 +37,17 @@ export default function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/forums">
                 <Route index element={<Forums />} />
-                <Route path=":slug" element={<DetailForum />} />
-                <Route path=":slug/video" element={<VideoForum />} />
-                <Route path=":slug/voice" element={<VoiceForum />} />
                 <Route path="create" element={<CreateForum />} />
                 <Route path="edit/:id" element={<CreateForum />} />
+                <Route path=":slug">
+                  <Route index element={<DetailForum />} />
+                  <Route path="video" element={<VideoForum />} />
+                  <Route path="voice" element={<VoiceForum />} />
+                  <Route path="member">
+                    <Route index element={<Member />} />
+                    <Route path=":memberId" element={<ManageMember />} />
+                  </Route>
+                </Route>
               </Route>
             </Route>
             <Route path="/forums/:slug/content" element={<ContentForum />} />

@@ -4,23 +4,24 @@ import * as React from 'react'
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command'
 import { Button } from '../ui/button'
 
-import { ReportMember } from '../organism'
+import { MemberSettings } from '../organism'
 import { ServerImage } from '.'
 import { useSearchMembers } from '@/store/server/useSearch'
 import { useDebounce } from '@/hooks'
+import { MemberType } from '@/lib/types/member.type'
 
 interface SearchMemberProps {
   forumId: string
+  admin: MemberType
+  moderators: MemberType[]
 }
 
-export default function SearchMember({ forumId }: SearchMemberProps) {
+export default function SearchMember({ forumId, admin, moderators }: SearchMemberProps) {
   const [isOpen, setIsOpen] = React.useState(false)
   const [keyword, setKeyword] = React.useState('')
 
   const debounceKeyword = useDebounce(keyword, 500)
   const { data: members, isLoading } = useSearchMembers(debounceKeyword, forumId, isOpen)
-
-  if (isLoading) return <p>Loading...</p>
 
   return (
     <React.Fragment>
@@ -49,7 +50,7 @@ export default function SearchMember({ forumId }: SearchMemberProps) {
                   <ServerImage src={member.user.photo} alt={member.user.fullname} className="h-5 w-5 rounded-full" />
                   <span className="text-sm font-medium">{member.user.fullname}</span>
                   <div className="ml-auto">
-                    <ReportMember />
+                    <MemberSettings admin={admin} moderators={moderators} forumId={forumId} memberId={member.id} />
                   </div>
                 </CommandItem>
               ))

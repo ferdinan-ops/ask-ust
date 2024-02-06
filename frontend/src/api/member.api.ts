@@ -5,3 +5,8 @@ export const getMembersFn = async (forumId: string): Promise<MemberType[]> => {
   const response = await api.get(`/members/forum/${forumId}`)
   return response.data?.data
 }
+
+export const getMemberFn = async (forumId: string): Promise<MemberType> => {
+  const response = await api.get(`/members/${forumId}`)
+  return response.data?.data
+}

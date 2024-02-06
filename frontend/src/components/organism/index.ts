@@ -3,6 +3,7 @@ import Leftbar from './Leftbar'
 import Rightbar from './Rightbar'
 import LogoutAlert from './LogoutAlert'
 import HeaderMobile from './HeaderMobile'
+import MemberSettings from './MemberSettings'
 
 import TabForum from './forum/TabForum'
 
@@ -21,5 +22,6 @@ export {
   LogoutAlert,
   TabForum,
   UploadPhoto,
-  EditEmail
+  EditEmail,
+  MemberSettings
 }
