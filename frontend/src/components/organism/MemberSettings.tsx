@@ -11,9 +11,10 @@ interface MemberSettingsProps {
   moderators: MemberType[]
   forumId: string
   memberId: string
+  memberUserId: string
 }
 
-export default function MemberSettings({ admin, moderators, forumId, memberId }: MemberSettingsProps) {
+export default function MemberSettings({ admin, moderators, forumId, memberId, memberUserId }: MemberSettingsProps) {
   const navigate = useNavigate()
   const { data: user, isLoading } = useGetMe()
 
@@ -31,11 +32,13 @@ export default function MemberSettings({ admin, moderators, forumId, memberId }:
           <HiOutlineCog6Tooth className="text-base" />
         </Button>
       ) : (
-        <ReportMember>
-          <Button variant="outline" size="icon" className="h-6 w-6 p-0 dark:bg-primary">
-            <HiOutlineExclamationCircle className="text-base text-red-500 dark:text-red-300" />
-          </Button>
-        </ReportMember>
+        memberUserId !== user?.id && (
+          <ReportMember memberId={memberId} forumId={forumId}>
+            <Button variant="outline" size="icon" className="h-6 w-6 p-0 dark:bg-primary">
+              <HiOutlineExclamationCircle className="text-base text-red-500 dark:text-red-300" />
+            </Button>
+          </ReportMember>
+        )
       )}
     </React.Fragment>
   )

@@ -10,22 +10,16 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { LiaDoorOpenSolid } from 'react-icons/lia'
 import * as React from 'react'
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
-} from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 
 import { useDeleteForum, useGetDetailForum, useJoinForum, useLeaveForum } from '@/store/server/useForum'
 import { useGetMe } from '@/store/server/useUser'
 import { useTitle } from '@/hooks'
+import { Alert } from '@/components/organism'
+import { alertConfig } from '@/lib/config'
+
+const alertDeleteConf = alertConfig.detailForum.delete
+const alertLeaveConf = alertConfig.detailForum.leave
 
 export default function DetailForum() {
   const navigate = useNavigate()
@@ -97,62 +91,32 @@ export default function DetailForum() {
               <HiOutlinePencilSquare className="text-lg" />
               <span>Update Forum</span>
             </Button>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button className="gap-2" variant="destructive" loading={isLoadingDelete}>
-                  <HiTrash className="text-lg" />
-                  <span>Hapus Forum</span>
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Anda yakin untuk menghapus forum?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Tindakan ini tidak dapat dibatalkan. Tindakan ini akan menghapus forum ini secara permanen dari
-                    sistem.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel className="text-xs">Batal</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={handleDelete}
-                    className="bg-red-500 text-xs hover:bg-red-600 dark:bg-red-900 dark:text-zinc-50 dark:hover:bg-red-900/90"
-                  >
-                    Ya, Hapus forum
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+            <Alert
+              title={alertDeleteConf.title}
+              desc={alertDeleteConf.desc}
+              btnText={alertDeleteConf.btnTxt}
+              action={handleDelete}
+            >
+              <Button className="gap-2" variant="destructive" loading={isLoadingDelete}>
+                <HiTrash className="text-lg" />
+                <span>Hapus Forum</span>
+              </Button>
+            </Alert>
           </React.Fragment>
         ) : (
           <React.Fragment>
             {forum?.members.filter((member) => member.user_id === user?.id).length !== 0 ? (
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive" className="gap-2" loading={isLoadingLeave}>
-                    <HiOutlineArrowRightOnRectangle className="text-lg" />
-                    <span>Tinggalkan Forum</span>
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Anda yakin keluar dari forum?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Tindakan ini tidak dapat dibatalkan. Tindakan ini akan mengeluarkan Anda secara permanen dari
-                      forum ini.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel className="text-xs">Batal</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={handleLeave}
-                      className="bg-red-500 text-xs hover:bg-red-600 dark:bg-red-900 dark:text-zinc-50 dark:hover:bg-red-900/90"
-                    >
-                      Ya, Keluar
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <Alert
+                title={alertLeaveConf.title}
+                desc={alertLeaveConf.desc}
+                btnText={alertLeaveConf.btnTxt}
+                action={handleLeave}
+              >
+                <Button variant="destructive" className="gap-2" loading={isLoadingLeave}>
+                  <HiOutlineArrowRightOnRectangle className="text-lg" />
+                  <span>Tinggalkan Forum</span>
+                </Button>
+              </Alert>
             ) : (
               <Button className="gap-2 border-zinc-300" loading={isLoadingJoin} onClick={handleJoin}>
                 <HiOutlineArrowLeftOnRectangle className="text-lg" />

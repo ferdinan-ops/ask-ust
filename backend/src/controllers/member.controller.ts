@@ -39,17 +39,17 @@ export const getMembers = async (req: Request, res: Response) => {
 }
 
 export const kickMember = async (req: Request, res: Response) => {
-  const { memberId } = req.params
-  if (req.body?.forumId) {
-    logError(req, 'Forum id is not provided')
-    return res.status(400).json({ error: 'Forum id masih kosong' })
-  }
+  const { memberId, forumId } = req.params
+  const userId = req.userId as string
 
   try {
-    const forumId = req.body.forumId as string
-    const userId = req.userId as string
-    const data = await MemberService.removeMember(memberId, forumId, userId)
+    const forum = await MemberService.getMemberByUserIdAndForumId(userId, forumId)
+    if (forum?.members?.[0]?.role !== MemberRole.ADMIN) {
+      logError(req, 'User is not admin')
+      return res.status(400).json({ error: 'User bukan admin' })
+    }
 
+    const data = await MemberService.removeMember(memberId, forumId, userId)
     logInfo(req, 'Kicking member')
     res.status(200).json({ message: 'Member berhasil dikeluarkan', data })
   } catch (error) {
@@ -58,6 +58,7 @@ export const kickMember = async (req: Request, res: Response) => {
 }
 
 export const updateMember = async (req: Request, res: Response) => {
+  const { memberId } = req.params
   const { value, error } = validUpdateMember(req.body as IUpdateMemberPayload)
   if (error) {
     logError(req, error)
@@ -65,13 +66,13 @@ export const updateMember = async (req: Request, res: Response) => {
   }
 
   const userId = req.userId as string
-  const { forumId, memberId, role } = value
+  const { forumId, role } = value
 
   try {
     const forum = await MemberService.getMemberByUserIdAndForumId(userId, forumId)
-    if (forum?.members?.[0]?.role !== MemberRole.ADMIN && forum?.members?.[0]?.role !== MemberRole.MODERATOR) {
-      logError(req, 'User is not admin or moderator')
-      return res.status(400).json({ error: 'User bukan admin atau moderator' })
+    if (forum?.members?.[0]?.role !== MemberRole.ADMIN) {
+      logError(req, 'User is not admin')
+      return res.status(400).json({ error: 'User bukan admin' })
     }
 
     const data = await MemberService.updateMemberRole({

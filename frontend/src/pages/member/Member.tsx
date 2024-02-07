@@ -1,10 +1,13 @@
-import { SearchMember, ServerImage } from '@/components/atoms'
+import { SearchMember, ServerImage, Title } from '@/components/atoms'
 import { MemberSettings } from '@/components/organism'
 import { useTitle } from '@/hooks'
+import { titleConfig } from '@/lib/config'
 import { MemberType } from '@/lib/types/member.type'
 import { useGetDetailForum } from '@/store/server/useForum'
 import { HiCheckBadge } from 'react-icons/hi2'
 import { useParams } from 'react-router-dom'
+
+const titleConf = titleConfig.member
 
 export default function Member() {
   useTitle('Anggota Forum')
@@ -15,11 +18,8 @@ export default function Member() {
 
   return (
     <section className="mx-auto w-full md:w-8/12">
-      <h1 className="mb-4 text-xl font-bold md:mb-5 md:text-2xl">Anggota Forum {forum?.title}</h1>
-      <p className="-mt-3 text-[13px] md:text-[15px]">
-        Anda dapat melihat seluruh anggota yang tergabung dalam forum ini. Anda juga dapat mengatur peran dari anggota
-        forum disini.
-      </p>
+      <Title heading={`${titleConf.heading} ${forum?.title}`} desc={titleConf.desc} />
+
       <div className="mt-8 flex items-center justify-between border-b border-[#E9E9E9] pb-4 dark:border-white/10">
         <h4 className="text-sm font-semibold">Total {forum?._count.members} Anggota</h4>
         <SearchMember
@@ -50,6 +50,7 @@ export default function Member() {
               admin={forum.admin as MemberType}
               forumId={slug as string}
               memberId={member.id}
+              memberUserId={member.user_id}
             />
           </div>
         ))}

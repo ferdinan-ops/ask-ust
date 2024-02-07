@@ -89,9 +89,6 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
                     action={handleClose}
                   />
                 ))}
-                {/* {MENU_FORUMS.map((menu, index) => (
-                  <ActiveLink href={menu.href} name={menu.name} icon={HiHashtag} key={index} action={handleClose} />
-                ))} */}
               </div>
             </div>
           )}

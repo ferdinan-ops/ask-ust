@@ -13,6 +13,10 @@ import { useCreateForum, useGetDetailForum, useUpdateForum } from '@/store/serve
 import { forumDefaultValues } from '@/lib/defaultValues'
 import { ForumType } from '@/lib/types/forum.type'
 import { useTitle } from '@/hooks'
+import { Title } from '@/components/atoms'
+import { titleConfig } from '@/lib/config'
+
+const titleConf = titleConfig.createForum
 
 export default function CreateForum() {
   const navigate = useNavigate()
@@ -56,8 +60,8 @@ export default function CreateForum() {
 
   return (
     <section className="mx-auto w-full md:w-8/12">
-      <h1 className="mb-4 text-xl font-bold md:mb-5 md:text-2xl">{id ? 'Ubah Forum' : 'Buka Forum Baru'}</h1>
-      <p className="-mt-3 text-[13px] md:text-[15px]">Silahkan isi seluruh form yang disediakan yah...</p>
+      <Title heading={id ? titleConf.heading.update : titleConf.heading.create} desc={titleConf.desc} />
+
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="mt-6 flex flex-col gap-5 md:mt-8">
           {!id && (

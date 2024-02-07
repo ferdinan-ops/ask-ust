@@ -2,7 +2,6 @@ import { type ReportCategory, type MemberRole } from '@prisma/client'
 
 export interface IUpdateMemberPayload {
   role: MemberRole
-  memberId: string
   forumId: string
 }
 

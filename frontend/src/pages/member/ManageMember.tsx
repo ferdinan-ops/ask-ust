@@ -1,23 +1,41 @@
-import { ServerImage } from '@/components/atoms'
+import { ServerImage, Title } from '@/components/atoms'
+import { Alert } from '@/components/organism'
 import { Button } from '@/components/ui/button'
 import { useTitle } from '@/hooks'
-import { useGetMember } from '@/store/server/useMember'
-import { useParams } from 'react-router-dom'
+import { alertConfig, titleConfig } from '@/lib/config'
+import { useGetMember, useKickMember, useUpdateMember } from '@/store/server/useMember'
+import { useNavigate, useParams } from 'react-router-dom'
+
+const titleConf = titleConfig.manageMember
+const alertConf = alertConfig.manageMember
 
 export default function ManageMember() {
   useTitle('Manajemen Anggota')
-  const { memberId } = useParams<{ slug: string; memberId: string }>()
+  const navigate = useNavigate()
+  const { memberId, slug } = useParams<{ slug: string; memberId: string }>()
+
   const { data: member, isLoading } = useGetMember(memberId as string)
+  const { mutate: kickMember, isLoading: isLoadingKick } = useKickMember()
+  const { mutate: updateMember, isLoading: isLoadingUpdate } = useUpdateMember()
+
+  const handleKickMember = () => {
+    const fields = { forumId: slug as string, memberId: memberId as string }
+    kickMember(fields, {
+      onSuccess: () => {
+        navigate(`/forums/${slug}/members`)
+      }
+    })
+  }
+
+  const handleUpdateMember = (role: 'GUEST' | 'MODERATOR') => {
+    updateMember({ forumId: slug as string, memberId: memberId as string, role })
+  }
 
   if (isLoading) return <p>Loading...</p>
 
   return (
     <section className="mx-auto w-full md:w-8/12">
-      <h1 className="mb-4 text-xl font-bold md:mb-5 md:text-2xl">Manajemen Anggota</h1>
-      <p className="-mt-3 text-[13px] md:text-[15px]">
-        Anda dapat melihat laporan dari anggota yang melanggar aturan forum disini. Anda juga dapat mengubah status dari
-        anggota, serta mengeluarkan anggota dari forum.
-      </p>
+      <Title heading={titleConf.heading} desc={titleConf.desc} />
       <article className="mt-8 flex items-center justify-between rounded-lg bg-zinc-100 px-4 py-3 dark:bg-white/10">
         <div className="flex items-start gap-4">
           <div className="relative">
@@ -34,8 +52,18 @@ export default function ManageMember() {
         </div>
         {member?.role !== 'ADMIN' && (
           <div className="flex items-center gap-3">
-            <Button variant="outline">Jadikan {member?.role === 'GUEST' ? 'Moderator' : 'Guest'}</Button>
-            <Button variant="destructive">Keluarkan</Button>
+            <Button
+              variant="outline"
+              loading={isLoadingUpdate}
+              onClick={() => handleUpdateMember(member?.role === 'GUEST' ? 'MODERATOR' : 'GUEST')}
+            >
+              Jadikan {member?.role === 'GUEST' ? 'Moderator' : 'Guest'}
+            </Button>
+            <Alert title={alertConf.title} desc={alertConf.desc} btnText={alertConf.btnTxt} action={handleKickMember}>
+              <Button variant="destructive" loading={isLoadingKick}>
+                Keluarkan
+              </Button>
+            </Alert>
           </div>
         )}
       </article>

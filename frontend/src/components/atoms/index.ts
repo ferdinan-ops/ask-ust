@@ -7,5 +7,6 @@ import Pagination from './Pagination'
 import Breadcrumbs from './Breadcrumbs'
 import ServerImage from './ServerImage'
 import SearchMember from './SearchMember'
+import Title from './Title'
 
-export { ActiveLink, Breadcrumbs, Search, SearchMember, BgAbsolute, Password, Pagination, Dropzone, ServerImage }
+export { ActiveLink, Breadcrumbs, Search, SearchMember, BgAbsolute, Password, Pagination, Dropzone, ServerImage, Title }

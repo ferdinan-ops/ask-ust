@@ -41,7 +41,8 @@ export const getForumsFromDB = async (page: number, limit: number, search: strin
         members: {
           include: {
             user: userSelect
-          }
+          },
+          orderBy: { created_at: 'asc' }
         },
         _count: {
           select: { messages: true, members: true }

@@ -155,7 +155,7 @@ export default function ContentForum() {
       <section className="hidden max-h-[calc(100vh-68px-56px)] min-h-[calc(100vh-68px-56px)] w-3/12 overflow-hidden rounded-lg border border-[#E9E9E9] dark:border-white/10 xl:block">
         <article className="flex flex-col">
           <div className="flex items-center justify-between border-b border-[#E9E9E9] p-4 dark:border-white/10">
-            <h4 className="text-sm font-semibold">{forum?._count.members} Anggota Forum</h4>
+            <h4 className="text-sm font-semibold">{forum?._count.members} Anggota</h4>
             <SearchMember
               forumId={slug as string}
               admin={forum?.admin as MemberType}
@@ -186,6 +186,7 @@ export default function ContentForum() {
                   admin={forum.admin as MemberType}
                   forumId={forum.id}
                   memberId={member.id}
+                  memberUserId={member.user_id}
                 />
               </div>
             ))}

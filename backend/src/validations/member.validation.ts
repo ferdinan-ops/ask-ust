@@ -4,8 +4,7 @@ import { ReportCategory } from '@prisma/client'
 
 export const validUpdateMember = (payload: IUpdateMemberPayload) => {
   const schema = Joi.object<IUpdateMemberPayload>({
-    role: Joi.string().valid('ADMIN', 'MODERATOR', 'GUEST').required(),
-    memberId: Joi.string().required(),
+    role: Joi.string().valid('MODERATOR', 'GUEST').required(),
     forumId: Joi.string().required()
   })
 

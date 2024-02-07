@@ -9,6 +9,6 @@ memberRoute.get('/forum/:forumId', verifyJwt, getMembers)
 memberRoute.get('/:memberId', verifyJwt, getMember)
 memberRoute.post('/report', verifyJwt, reportMember)
 memberRoute.put('/:memberId', verifyJwt, updateMember)
-memberRoute.delete('/:memberId', verifyJwt, kickMember)
+memberRoute.delete('/:memberId/forum/:forumId', verifyJwt, kickMember)
 
 export default memberRoute
