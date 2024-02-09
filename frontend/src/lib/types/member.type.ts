@@ -1,3 +1,4 @@
+import { ReportType } from './report.type'
 import { UserType } from './user.type'
 
 export type MemberType = {
@@ -8,6 +9,7 @@ export type MemberType = {
   created_at: string
   updated_at: string
   user: UserType
+  reports: ReportType[]
 }
 
 export type UpdateMemberParams = {

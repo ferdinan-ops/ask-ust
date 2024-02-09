@@ -5,13 +5,15 @@ import forumRoute from './forum.route'
 import userRoute from './user.route'
 import memberRoute from './member.route'
 import searchRoute from './search.route'
+import reportRoute from './report.route'
 
 const _routes = [
   ['/auth', authRoute],
   ['/forums', forumRoute],
   ['/users', userRoute],
   ['/members', memberRoute],
-  ['/search', searchRoute]
+  ['/search', searchRoute],
+  ['/reports', reportRoute]
 ]
 
 const routes = (app: Application) => {

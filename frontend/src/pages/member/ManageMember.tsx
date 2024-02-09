@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { useTitle } from '@/hooks'
 import { alertConfig, titleConfig } from '@/lib/config'
 import { useGetMember, useKickMember, useUpdateMember } from '@/store/server/useMember'
+import { useGetReports } from '@/store/server/useReport'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const titleConf = titleConfig.manageMember
@@ -15,6 +16,8 @@ export default function ManageMember() {
   const { memberId, slug } = useParams<{ slug: string; memberId: string }>()
 
   const { data: member, isLoading } = useGetMember(memberId as string)
+  const { data: reports, isLoading: isLoadingReport } = useGetReports(memberId as string, slug as string)
+
   const { mutate: kickMember, isLoading: isLoadingKick } = useKickMember()
   const { mutate: updateMember, isLoading: isLoadingUpdate } = useUpdateMember()
 
@@ -31,7 +34,7 @@ export default function ManageMember() {
     updateMember({ forumId: slug as string, memberId: memberId as string, role })
   }
 
-  if (isLoading) return <p>Loading...</p>
+  if (isLoading || isLoadingReport) return <p>Loading...</p>
 
   return (
     <section className="mx-auto w-full md:w-8/12">
@@ -72,26 +75,12 @@ export default function ManageMember() {
         <h2 className="bg-primary py-2 text-center text-base font-semibold text-white dark:bg-white dark:text-primary">
           Laporan
         </h2>
-        <li className="flex items-center justify-between border-b border-zinc-200 px-4 py-2 dark:border-white/10">
-          <span className="text-sm font-medium">Pelecehan secara online</span>
-          <span className="rounded bg-red-200 px-2 py-1 text-xs dark:bg-red-900">20 laporan</span>
-        </li>
-        <li className="flex items-center justify-between border-b border-zinc-200 px-4 py-2 dark:border-white/10">
-          <span className="text-sm font-medium">Perilaku kebencian</span>
-          <span className="rounded bg-red-200 px-2 py-1 text-xs dark:bg-red-900">12 laporan</span>
-        </li>
-        <li className="flex items-center justify-between border-b border-zinc-200 px-4 py-2 dark:border-white/10">
-          <span className="text-sm font-medium">Ancaman kekerasan</span>
-          <span className="rounded bg-red-200 px-2 py-1 text-xs dark:bg-red-900">0 laporan</span>
-        </li>
-        <li className="flex items-center justify-between border-b border-zinc-200 px-4 py-2 dark:border-white/10">
-          <span className="text-sm font-medium">Mencelakai diri sendiri</span>
-          <span className="rounded bg-red-200 px-2 py-1 text-xs dark:bg-red-900">0 laporan</span>
-        </li>
-        <li className="flex items-center justify-between border-b border-zinc-200 px-4 py-2 dark:border-white/10">
-          <span className="text-sm font-medium">Spam</span>
-          <span className="rounded bg-red-200 px-2 py-1 text-xs dark:bg-red-900">0 laporan</span>
-        </li>
+        {reports?.map((report) => (
+          <li className="flex items-center justify-between border-b border-zinc-200 px-4 py-2 dark:border-white/10">
+            <span className="text-sm font-medium">{report.title}</span>
+            <span className="rounded bg-red-200 px-2 py-1 text-xs dark:bg-red-900">{report.value} laporan</span>
+          </li>
+        ))}
       </ul>
     </section>
   )

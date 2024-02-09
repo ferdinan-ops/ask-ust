@@ -6,6 +6,7 @@ import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, C
 import { cn } from '@/lib/utils'
 import { useDebounce } from '@/hooks'
 import { useSearchForums } from '@/store/server/useSearch'
+import { useNavigate } from 'react-router-dom'
 
 interface SearchProps {
   className?: string
@@ -13,6 +14,7 @@ interface SearchProps {
 }
 
 export default function Search({ className, action }: SearchProps) {
+  const navigate = useNavigate()
   const [isOpen, setIsOpen] = React.useState(false)
   const [keyword, setKeyword] = React.useState('')
 
@@ -34,6 +36,11 @@ export default function Search({ className, action }: SearchProps) {
   const handleClick = () => {
     setIsOpen((open) => !open)
     action && action()
+  }
+
+  const handleNavigate = (forumId: string) => {
+    navigate(`/forums/${forumId}`)
+    setIsOpen(false)
   }
 
   return (
@@ -66,9 +73,11 @@ export default function Search({ className, action }: SearchProps) {
               <CommandItem className="flex items-center gap-3.5">Mengambil data...</CommandItem>
             ) : (
               forums?.map((forum) => (
-                <CommandItem className="flex items-center gap-3.5" key={forum.id}>
-                  <HiHashtag className="text-xl" />
-                  <span className="text-sm font-medium">{forum.title}</span>
+                <CommandItem key={forum.id}>
+                  <button onClick={() => handleNavigate(forum.id)} className="flex flex-1 items-center gap-3.5">
+                    <HiHashtag className="text-xl" />
+                    <span className="text-sm font-medium">{forum.title}</span>
+                  </button>
                 </CommandItem>
               ))
             )}

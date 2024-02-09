@@ -4,7 +4,7 @@ import { useTitle } from '@/hooks'
 import { titleConfig } from '@/lib/config'
 import { MemberType } from '@/lib/types/member.type'
 import { useGetDetailForum } from '@/store/server/useForum'
-import { HiCheckBadge } from 'react-icons/hi2'
+import { HiCheckBadge, HiExclamationCircle } from 'react-icons/hi2'
 import { useParams } from 'react-router-dom'
 
 const titleConf = titleConfig.member
@@ -40,6 +40,7 @@ export default function Member() {
                   <span className="truncate-1">{member.user.fullname}</span>
                   {member.role === 'ADMIN' && <HiCheckBadge className="text-blue-500" />}
                   {member.role === 'MODERATOR' && <HiCheckBadge className="text-green-500" />}
+                  {member.reports.length > 0 && <HiExclamationCircle className="text-red-500 dark:text-red-300" />}
                 </p>
                 <span className="text-xs font-medium text-zinc-400 dark:text-white/40">@{member.user.username}</span>
               </div>

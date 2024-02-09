@@ -1,4 +1,5 @@
 import { MemberType } from './member.type'
+import { ReportType } from './report.type'
 
 export type ForumType = {
   id: string
@@ -16,7 +17,7 @@ export type MetaType = {
   total: number
 }
 
-type ForumListType = ForumType & { members: MemberType[] } & ForumCountType
+type ForumListType = ForumType & { members: MemberType[] } & { reports: ReportType[] }
 type ForumCountType = {
   _count: {
     messages: number

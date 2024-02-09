@@ -50,7 +50,13 @@ export default function SearchMember({ forumId, admin, moderators }: SearchMembe
                   <ServerImage src={member.user.photo} alt={member.user.fullname} className="h-5 w-5 rounded-full" />
                   <span className="text-sm font-medium">{member.user.fullname}</span>
                   <div className="ml-auto">
-                    <MemberSettings admin={admin} moderators={moderators} forumId={forumId} memberId={member.id} />
+                    <MemberSettings
+                      memberUserId={member.user_id}
+                      admin={admin}
+                      moderators={moderators}
+                      forumId={forumId}
+                      memberId={member.id}
+                    />
                   </div>
                 </CommandItem>
               ))

@@ -66,7 +66,8 @@ export const getForumById = async (forumId: string) => {
     include: {
       members: {
         include: {
-          user: userSelect
+          user: userSelect,
+          reports: true
         }
       },
       _count: {

@@ -1,5 +1,6 @@
 import {
   HiCheckBadge,
+  HiExclamationCircle,
   HiHashtag,
   HiOutlinePaperAirplane,
   HiOutlinePhone,
@@ -27,8 +28,6 @@ export default function ContentForum() {
   if (isLoading) {
     return <p>loading...</p>
   }
-
-  console.log(forum)
 
   return (
     <section className="flex flex-col justify-between gap-7 xl:flex-row xl:p-7">
@@ -174,6 +173,7 @@ export default function ContentForum() {
                       <span className="truncate-1">{member.user.fullname}</span>
                       {member.role === 'ADMIN' && <HiCheckBadge className="text-blue-500" />}
                       {member.role === 'MODERATOR' && <HiCheckBadge className="text-green-500" />}
+                      {member.reports.length > 0 && <HiExclamationCircle className="text-red-500 dark:text-red-300" />}
                     </p>
                     <span className="text-xs font-medium text-zinc-400 dark:text-white/40">
                       @{member.user.username}
