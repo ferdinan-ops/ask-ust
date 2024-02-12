@@ -7,11 +7,11 @@ interface AuthLayoutProps {
 
 export default function AuthLayout({ children, desc, bgImage }: AuthLayoutProps) {
   return (
-    <main className="flex min-h-screen">
+    <main className="flex min-h-screen justify-center">
       <section className="flex w-full max-w-[440px] flex-1 items-center justify-center bg-white p-6 text-primary dark:bg-primary dark:text-primary xl:max-w-none xl:p-0">
         {children}
       </section>
-      <section className="relative hidden flex-1 overflow-hidden bg-gradient-to-b from-gray-700 to-zinc-900 xl:flex">
+      <section className="relative hidden overflow-hidden bg-gradient-to-b from-gray-700 to-zinc-900 xl:flex xl:flex-1">
         <div className="relative z-10 flex flex-col items-center justify-center gap-[67px]">
           <img src={bgImage} alt="auth" className="w-full" />
           <div className="flex flex-col gap-2 self-start px-[92px]">

@@ -11,8 +11,10 @@ import { AuthLayout } from '@/components/layouts'
 import { VerifyEmailBg } from '@/assets'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useTitle } from '@/hooks'
+import { titleConfig } from '@/lib/config'
+import { Title } from '@/components/atoms'
 
-const description = 'Nggak apa-apa lupa sama kata sandi, asalkan kita jangan sampe lupa sama jasa para pahlawan~'
+const titleConf = titleConfig.forgotPassword
 
 export default function ForgotPassword() {
   useTitle('Lupa Kata Sandi')
@@ -29,21 +31,16 @@ export default function ForgotPassword() {
     forgotPassword(values.email, {
       onSuccess: () => {
         forms.reset({ email: '' })
-        setTimeout(() => {
-          navigate('/reset-password')
-        }, 1500)
+        navigate('/reset-password')
       }
     })
   }
 
   return (
-    <AuthLayout desc={description} bgImage={VerifyEmailBg}>
+    <AuthLayout desc={titleConf.rightDesc} bgImage={VerifyEmailBg}>
       <section className="mx-auto flex w-[440px] flex-col gap-[10px]">
         <div className="flex flex-col">
-          <h2 className="text-[32px] font-bold text-primary dark:text-white">Lupa Kata Sandi</h2>
-          <p className="text-sm font-medium text-zinc-500">
-            Masukkan email yang kamu daftarkan sebelumnya, nanti kamu bakal dikirim email.
-          </p>
+          <Title heading={titleConf.heading} desc={titleConf.desc} />
         </div>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="mt-8 flex flex-col gap-5">

@@ -41,9 +41,7 @@ export default function CreateForum() {
 
   const onSuccess = (data: ForumType) => {
     forms.reset(forumDefaultValues)
-    setTimeout(() => {
-      navigate(`/forums/${data.id}`)
-    }, 1500)
+    navigate(`/forums/${data.id}`)
   }
 
   const onSubmit = (data: ForumInputType) => {

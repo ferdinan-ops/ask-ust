@@ -8,8 +8,8 @@ interface TitleProps {
 export default function Title({ heading, desc }: TitleProps) {
   return (
     <React.Fragment>
-      <h1 className="mb-4 text-xl font-bold md:mb-5 md:text-2xl">{heading}</h1>
-      <p className="-mt-3 text-[13px] md:text-[15px]">{desc}</p>
+      <h2 className="text-2xl font-bold text-primary dark:text-white md:text-[32px]">{heading}</h2>
+      <p className="text-[13px] font-medium text-zinc-500 md:text-sm">{desc}</p>
     </React.Fragment>
   )
 }

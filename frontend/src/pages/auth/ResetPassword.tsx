@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 import { AuthLayout } from '@/components/layouts'
-import { Password } from '@/components/atoms'
+import { Password, Title } from '@/components/atoms'
 
 import { ResetPasswordType, resetPasswordValidation } from '@/lib/validations/auth.validation'
 import { ResetPasswordBg } from '@/assets'
@@ -16,9 +16,11 @@ import { useResetPassword } from '@/store/server/useAuth'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { changePasswordValidation } from '@/lib/validations/user.validation'
 import { useChangePassword } from '@/store/server/useUser'
+import { titleConfig } from '@/lib/config'
 
 const description = 'Biar nanti nggak lupa lagi sama kata sandinya, disimpen di password manager ya, bang!'
 const CHANGE_PASSWORD = '/me/change-password'
+const titleConf = titleConfig.resetPassword
 
 export default function ResetPassword() {
   useTitle('Ubah Kata Sandi')
@@ -41,9 +43,7 @@ export default function ResetPassword() {
       return resetPassword(data, {
         onSuccess: () => {
           forms.reset(resetPasswordDefaultValues)
-          setTimeout(() => {
-            navigate('/login')
-          }, 1500)
+          navigate('/login')
         }
       })
     }
@@ -52,21 +52,16 @@ export default function ResetPassword() {
     return changePassword(data, {
       onSuccess: () => {
         forms.reset(resetPasswordDefaultValues)
-        setTimeout(() => {
-          navigate('/me')
-        }, 1500)
+        navigate('/me')
       }
     })
   }
 
   return (
-    <AuthLayout desc={description} bgImage={ResetPasswordBg}>
+    <AuthLayout desc={titleConf.rightDesc} bgImage={ResetPasswordBg}>
       <section className="mx-auto flex w-[440px] flex-col gap-[10px]">
         <div className="flex flex-col">
-          <h2 className="text-[32px] font-bold text-primary dark:text-white">Atur ulang kata sandi</h2>
-          <p className="text-sm font-medium text-zinc-500">
-            Jangan pake kata sandi yang susah-susah makannya, ngerepotin mulu jadi orang.
-          </p>
+          <Title heading={titleConf.heading} desc={description} />
         </div>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="mt-8 flex flex-col gap-5">

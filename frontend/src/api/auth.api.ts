@@ -50,3 +50,8 @@ export const loginGoogleFn = async (payload: { token: string }) => {
 export const logoutFn = async () => {
   return await api.delete('/auth/logout')
 }
+
+export const loginWithGoogleFn = async (payload: { token: string }): Promise<AuthResponseType> => {
+  const repsonse = await apiPublic.post('/auth/google', payload)
+  return repsonse.data
+}

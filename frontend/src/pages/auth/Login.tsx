@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Link, useNavigate } from 'react-router-dom'
+import { useGoogleLogin } from '@react-oauth/google'
 import { useForm } from 'react-hook-form'
 import { FcGoogle } from 'react-icons/fc'
 
@@ -8,20 +9,22 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 import { AuthLayout } from '@/components/layouts'
-import { Password } from '@/components/atoms'
+import { Password, Title } from '@/components/atoms'
 
 import { LoginType, loginValidation } from '@/lib/validations/auth.validation'
 import { loginDefaultValues } from '@/lib/defaultValues'
-import { useLogin } from '@/store/server/useAuth'
+import { useLogin, useLoginWithGoogle } from '@/store/server/useAuth'
+import { titleConfig } from '@/lib/config'
 import { useTitle } from '@/hooks'
 import { LoginBg } from '@/assets'
 
-const description = 'Diskusi secara online semakin mudah – tetap berdiskusi walaupun pake kuota dari Kemendikbud hehe ~'
+const titleConf = titleConfig.login
 
 export default function Login() {
   useTitle('Masuk')
   const navigate = useNavigate()
   const { mutate: login, isLoading } = useLogin()
+  const { mutate: loginWithGoogle, isLoading: isLoadingGoogle } = useLoginWithGoogle()
 
   const forms = useForm<LoginType>({
     mode: 'onTouched',
@@ -33,23 +36,35 @@ export default function Login() {
     login(values, {
       onSuccess: () => {
         forms.reset(loginDefaultValues)
-        setTimeout(() => {
-          navigate('/dashboard')
-        }, 1500)
+        navigate('/dashboard')
       }
     })
   }
 
+  const handleLoginWithGoogle = useGoogleLogin({
+    onSuccess: (response) => {
+      const { access_token } = response
+      const payload = { token: access_token }
+      loginWithGoogle(payload, {
+        onSuccess: () => {
+          navigate('/dashboard')
+        }
+      })
+    }
+  })
+
   return (
-    <AuthLayout desc={description} bgImage={LoginBg}>
+    <AuthLayout desc={titleConf.rightDesc} bgImage={LoginBg}>
       <section className="mx-auto flex w-[440px] flex-col gap-[10px]">
         <div className="flex flex-col">
-          <h2 className="text-[32px] font-bold text-primary dark:text-white">Masuk ke akun kamu</h2>
-          <p className="text-sm font-medium text-zinc-500">
-            Ajukan pertanyaanmu dengan mudah di ask.UST, mulai temukan solusi dari masalah kamu!
-          </p>
+          <Title heading={titleConf.heading} desc={titleConf.desc} />
         </div>
-        <Button variant="outline" className="mt-4 w-full gap-[15px] py-[26px] text-primary dark:text-white">
+        <Button
+          variant="outline"
+          loading={isLoadingGoogle}
+          onClick={() => handleLoginWithGoogle()}
+          className="mt-4 w-full gap-[15px] py-[26px] text-primary dark:text-white"
+        >
           <FcGoogle className="text-2xl" />
           <span className="font-semibold">Login with Google</span>
         </Button>

@@ -3,6 +3,7 @@ import axios from 'axios'
 import ENV from '@/lib/environment'
 import { useToken } from '@/store/client'
 import { refreshTokenFn } from './auth.api'
+import { toast } from '@/components/ui/use-toast'
 
 const api = axios.create({
   baseURL: ENV.apiUrl,
@@ -43,6 +44,11 @@ api.interceptors.response.use(
         } catch (error) {
           useToken.getState().removeAccessToken()
           useToken.getState().removeRefreshToken()
+          toast({
+            title: 'Sesi Anda telah berakhir',
+            description: 'Silahkan login kembali untuk melanjutkan.',
+            variant: 'destructive'
+          })
           window.location.href = '/login'
           return Promise.reject(error)
         }

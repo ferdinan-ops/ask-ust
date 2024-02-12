@@ -7,16 +7,16 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 import { AuthLayout } from '@/components/layouts'
-import { Password } from '@/components/atoms'
+import { Password, Title } from '@/components/atoms'
 
 import { RegisterType, registerValidation } from '@/lib/validations/auth.validation'
 import { registerDefaultValues } from '@/lib/defaultValues'
 import { useRegister } from '@/store/server/useAuth'
 import { RegisterBg } from '@/assets'
 import { useTitle } from '@/hooks'
+import { titleConfig } from '@/lib/config'
 
-const description =
-  'Ayo mendaftar dan rajin berdiskusi di sini supaya masalah Anda cepat terselesaikan biar gak stress mulu~'
+const titleConf = titleConfig.register
 
 export default function Register() {
   useTitle('Daftar')
@@ -33,21 +33,16 @@ export default function Register() {
     register(values, {
       onSuccess: () => {
         forms.reset(registerDefaultValues)
-        setTimeout(() => {
-          navigate('/verify-email')
-        }, 1500)
+        navigate('/verify-email')
       }
     })
   }
 
   return (
-    <AuthLayout desc={description} bgImage={RegisterBg}>
+    <AuthLayout desc={titleConf.rightDesc} bgImage={RegisterBg}>
       <section className="mx-auto flex w-[440px] flex-col gap-[10px]">
         <div className="flex flex-col">
-          <h2 className="text-[32px] font-bold text-primary dark:text-white">Buat akun baru</h2>
-          <p className="text-sm font-medium text-zinc-500">
-            Nggak susah kok, kamu cuma tinggal masukin beberapa data aja terus langsung jadi deh!
-          </p>
+          <Title heading={titleConf.heading} desc={titleConf.desc} />
         </div>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="mt-8 flex flex-col gap-5">

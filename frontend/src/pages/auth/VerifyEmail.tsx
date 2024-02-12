@@ -11,8 +11,10 @@ import { VerifyEmailType, verifyEmailValidation } from '@/lib/validations/auth.v
 import { useVerifyEmail } from '@/store/server/useAuth'
 import { VerifyEmailBg } from '@/assets'
 import { useTitle } from '@/hooks'
+import { titleConfig } from '@/lib/config'
+import { Title } from '@/components/atoms'
 
-const description = 'Selamat datang! Kami perlu memastikan bahwa akun ini benar-benar milik kamu, supaya aman hehe~'
+const titleConf = titleConfig.verifyEmail
 
 export default function VerifyEmail() {
   useTitle('Verifikasi Email')
@@ -29,21 +31,16 @@ export default function VerifyEmail() {
     verifyEmail(values.token, {
       onSuccess: () => {
         forms.reset({ token: '' })
-        setTimeout(() => {
-          navigate('/login')
-        }, 1500)
+        navigate('/login')
       }
     })
   }
 
   return (
-    <AuthLayout desc={description} bgImage={VerifyEmailBg}>
+    <AuthLayout desc={titleConf.rightDesc} bgImage={VerifyEmailBg}>
       <section className="mx-auto flex w-[440px] flex-col gap-[10px]">
         <div className="flex flex-col">
-          <h2 className="text-[32px] font-bold text-primary dark:text-white">Verifikasi Email</h2>
-          <p className="text-sm font-medium text-zinc-500">
-            Kami sudah kirim kode verifikasi ke email yang udah kamu daftarkan. Salin dan paste disini deh!
-          </p>
+          <Title heading={titleConf.heading} desc={titleConf.desc} />
         </div>
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="mt-8 flex flex-col gap-5">

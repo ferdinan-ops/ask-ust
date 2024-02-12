@@ -33,5 +33,31 @@ export const titleConfig = {
       update: 'Ubah Forum'
     },
     desc: 'Silahkan isi seluruh form yang disediakan yah...'
+  },
+  login: {
+    heading: 'Masuk ke akun kamu',
+    desc: 'Ajukan pertanyaanmu dengan mudah di ask.UST, mulai temukan solusi dari masalah kamu!',
+    rightDesc: 'Diskusi secara online semakin mudah – tetap berdiskusi walaupun pake kuota dari Kemendikbud hehe ~'
+  },
+  register: {
+    heading: 'Buat akun baru',
+    desc: 'Nggak susah kok, kamu cuma tinggal masukin beberapa data aja terus langsung jadi deh!',
+    rightDesc:
+      'Ayo mendaftar dan rajin berdiskusi di sini supaya masalah Anda cepat terselesaikan biar gak stress mulu~'
+  },
+  forgotPassword: {
+    heading: 'Lupa Kata Sandi',
+    desc: 'Masukkan email yang kamu daftarkan sebelumnya, nanti kamu bakal dikirim email.',
+    rightDesc: 'Nggak apa-apa lupa sama kata sandi, asalkan kita jangan sampe lupa sama jasa para pahlawan~'
+  },
+  verifyEmail: {
+    heading: 'Verifikasi Email',
+    desc: 'Kami sudah kirim kode verifikasi ke email yang udah kamu daftarkan. Salin dan paste disini deh!',
+    rightDesc: 'Selamat datang! Kami perlu memastikan bahwa akun ini benar-benar milik kamu, supaya aman hehe~'
+  },
+  resetPassword: {
+    heading: 'Ubah Kata Sandi',
+    desc: 'Masukkan kata sandi baru yang kamu inginkan, jangan lupa simpan di password manager ya!',
+    rightDesc: 'Biar nanti nggak lupa lagi sama kata sandinya, disimpen di password manager ya, bang!'
   }
 }
