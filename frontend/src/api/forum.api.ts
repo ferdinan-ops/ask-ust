@@ -37,3 +37,8 @@ export const leaveForumFn = async (forumId: string): Promise<ForumType> => {
   const response = await api.post(`/forums/leave`, { forum_id: forumId })
   return response.data?.data
 }
+
+export const joinForumWithInviteCodeFn = async (inviteCode: string): Promise<ForumType> => {
+  const response = await api.post(`/forums/invite-code`, { invite_code: inviteCode })
+  return response.data?.data
+}

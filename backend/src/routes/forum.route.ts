@@ -8,6 +8,7 @@ import {
   getForum,
   getForums,
   joinForum,
+  joinForumWithInviteCode,
   leaveForum,
   updateForum
 } from '../controllers/forum.controller'
@@ -21,6 +22,7 @@ forumRoute.get('/:forumId', verifyJwt, getForum)
 forumRoute.post('/', verifyJwt, createForum)
 forumRoute.post('/join', verifyJwt, joinForum)
 forumRoute.post('/leave', verifyJwt, leaveForum)
+forumRoute.post('/invite-code', verifyJwt, joinForumWithInviteCode)
 
 forumRoute.delete('/:forumId', verifyJwt, deleteForum)
 

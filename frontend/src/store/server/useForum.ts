@@ -4,6 +4,7 @@ import {
   getForumByIdFn,
   getForumsFn,
   joinForumFn,
+  joinForumWithInviteCodeFn,
   leaveForumFn,
   updateForumByIdFn
 } from '@/api/forum.api'
@@ -104,6 +105,22 @@ export const useLeaveForum = () => {
       toast({
         title: 'Anda berhasil keluar',
         description: 'Anda berhasil keluar dari forum ini'
+      })
+    }
+  })
+}
+
+export const useInviteCodeForum = () => {
+  const queryClient = useQueryClient()
+  return useMutation(joinForumWithInviteCodeFn, {
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['forums', data.id])
+      toast({
+        title: 'Anda berhasil bergabung',
+        description: 'Anda berhasil bergabung dengan forum ini'
       })
     }
   })

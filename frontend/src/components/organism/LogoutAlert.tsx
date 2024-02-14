@@ -59,7 +59,7 @@ export default function LogoutAlert({ children }: LogoutAlertProps) {
             onClick={handleLogout}
             className="bg-red-500 text-xs hover:bg-red-600 dark:bg-red-900 dark:text-zinc-50 dark:hover:bg-red-900/90"
           >
-            Ya, Keluarkan
+            Ya, Keluar
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

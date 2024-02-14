@@ -7,11 +7,12 @@ import { Toaster } from './components/ui/toaster'
 
 import { ContentForum, CreateForum, DetailForum, Forums, VideoForum, VoiceForum } from './pages/forum'
 import { ForgotPassword, Login, Register, ResetPassword, VerifyEmail } from './pages/auth'
+import { ManageMember, Member } from './pages/member'
 import { EditProfile, Profile } from './pages/user'
+import InviteCode from './pages/InviteCode'
 import Dashboard from './pages/Dashboard'
 
 import { usePreviewImage } from './store/client'
-import { ManageMember, Member } from './pages/member'
 
 export default function App() {
   const { previewImage, setPreviewImage } = usePreviewImage((state) => ({
@@ -56,6 +57,7 @@ export default function App() {
               <Route path="edit" element={<EditProfile />} />
             </Route>
           </Route>
+          <Route path="/invite-code/:inviteCode" element={<InviteCode />} />
           <Route path="/me/change-password" element={<ResetPassword />} />
         </Route>
       </Routes>

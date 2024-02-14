@@ -116,6 +116,12 @@ export const joinForum = async (req: Request, res: Response) => {
 
   try {
     const { forum_id: forumId } = req.body
+    const isMember = await ForumService.isMemberAlreadyJoin(forumId as string, req.userId as string)
+    if (isMember) {
+      logError(req, 'User already join the forum')
+      return res.status(400).json({ error: 'Pengguna sudah bergabung dengan forum ini' })
+    }
+
     const data = await ForumService.addMemberToForum(forumId as string, req.userId as string)
 
     logInfo(req, 'Joining forum')
@@ -167,6 +173,35 @@ export const createVoiceCall = async (req: Request, res: Response) => {
 
     logInfo(req, 'Creating voice call')
     res.status(200).json({ message: 'Berhasil membuat voice call', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const joinForumWithInviteCode = async (req: Request, res: Response) => {
+  if (!req.body?.invite_code) {
+    logError(req, 'Invite code is not provided')
+    return res.status(400).json({ error: 'Invite code is not provided' })
+  }
+
+  try {
+    const { invite_code: inviteCode } = req.body
+    const forum = await ForumService.getForumByInviteCode(inviteCode as string)
+    if (!forum) {
+      logError(req, 'Forum not found')
+      return res.status(404).json({ error: 'Forum not found' })
+    }
+
+    // check is user already join the forum
+    const isMember = forum.members.find((member) => member.user_id === (req.userId as string))
+    if (isMember) {
+      logError(req, 'User already join the forum')
+      return res.status(400).json({ error: 'Pengguna sudah bergabung dengan forum ini' })
+    }
+
+    const data = await ForumService.addMemberToForum(forum?.id, req.userId as string)
+    logInfo(req, 'Joining forum with invite code')
+    res.status(200).json({ message: 'Berhasil join forum', data })
   } catch (error) {
     res.status(500).json({ error })
   }

@@ -212,3 +212,25 @@ export const sendVoiceCallInvite = async (forumId: string) => {
     })
   })
 }
+
+export const getForumByInviteCode = async (inviteCode: string) => {
+  return await db.forum.findFirst({
+    where: { invite_code: inviteCode },
+    include: {
+      members: true
+    }
+  })
+}
+
+export const isMemberAlreadyJoin = async (forumId: string, userId: string) => {
+  return await db.forum.findFirst({
+    where: {
+      id: forumId,
+      members: {
+        some: {
+          user_id: userId
+        }
+      }
+    }
+  })
+}

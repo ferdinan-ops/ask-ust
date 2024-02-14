@@ -12,6 +12,7 @@ import UploadFile from './modal/UploadFile'
 import UploadPhoto from './modal/UploadPhoto'
 import ReportMember from './modal/ReportMember'
 import EditEmail from './modal/EditEmail'
+import ShareForum from './modal/ShareForum'
 
 export {
   Header,
@@ -25,5 +26,6 @@ export {
   UploadPhoto,
   EditEmail,
   MemberSettings,
-  Alert
+  Alert,
+  ShareForum
 }

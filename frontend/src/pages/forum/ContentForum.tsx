@@ -4,12 +4,11 @@ import {
   HiHashtag,
   HiOutlinePaperAirplane,
   HiOutlinePhone,
-  HiOutlineShare,
   HiOutlineVideoCamera
 } from 'react-icons/hi2'
 import { useParams } from 'react-router-dom'
 
-import { MemberSettings, UploadFile } from '@/components/organism'
+import { MemberSettings, ShareForum, UploadFile } from '@/components/organism'
 import { SearchMember, ServerImage } from '@/components/atoms'
 
 import { Button } from '@/components/ui/button'
@@ -53,9 +52,7 @@ export default function ContentForum() {
             <Button variant="outline" size="icon" className="rounded-full border-none dark:bg-primary">
               <HiOutlinePhone className="text-lg md:text-xl" />
             </Button>
-            <Button variant="outline" size="icon" className="rounded-full border-none dark:bg-primary">
-              <HiOutlineShare className="text-lg md:text-xl" />
-            </Button>
+            <ShareForum inviteCode={forum?.invite_code as string} />
           </article>
         </div>
         <div className="flex max-h-[calc(100vh-68px-57px)] flex-col xl:max-h-[calc(100vh-68px-56px-80px)] xl:min-h-[calc(100vh-68px-56px-80px)]">
