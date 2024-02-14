@@ -5,5 +5,6 @@ import ProfileLayout from './ProfileLayout'
 
 import ProtectedAuth from './ProtectedAuth'
 import ProtectedRoute from './ProtectedRoute'
+import ProtectedForum from './ProtectedForum'
 
-export { AuthLayout, DashboardLayout, PaddingLayout, ProfileLayout, ProtectedAuth, ProtectedRoute }
+export { AuthLayout, DashboardLayout, PaddingLayout, ProfileLayout, ProtectedAuth, ProtectedRoute, ProtectedForum }

@@ -82,6 +82,8 @@ export const updateMember = async (req: Request, res: Response) => {
       memberId
     })
 
+    await MemberService.sendRoleEmailToMember(memberId, forumId, role)
+
     logInfo(req, 'Updating member')
     res.status(200).json({ message: 'Member berhasil diupdate', data })
   } catch (error) {
@@ -98,6 +100,7 @@ export const reportMember = async (req: Request, res: Response) => {
 
   try {
     const data = await MemberService.addReport(value)
+    await MemberService.sendReportEmailToAdmin(value.forum_id, value.member_id)
 
     logInfo(req, 'Reporting member')
     res.status(200).json({ message: 'Member berhasil dilaporkan', data })

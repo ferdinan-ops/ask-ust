@@ -13,8 +13,12 @@ export default function InviteCode() {
   const { mutate: joinForum, isLoading, isError, data: results } = useInviteCodeForum()
 
   React.useEffect(() => {
-    joinForum(inviteCode as string)
-  }, [joinForum, inviteCode])
+    const joinForumtimeOut = setTimeout(() => {
+      joinForum(inviteCode as string)
+    }, 1000)
+
+    return () => clearTimeout(joinForumtimeOut)
+  }, [inviteCode, joinForum])
 
   const handleBackToHome = () => {
     navigate('/dashboard', { state: { from: location.pathname }, replace: true })

@@ -1,7 +1,14 @@
 import * as React from 'react'
 import { Routes, Route } from 'react-router-dom'
 
-import { DashboardLayout, PaddingLayout, ProfileLayout, ProtectedAuth, ProtectedRoute } from './components/layouts'
+import {
+  DashboardLayout,
+  PaddingLayout,
+  ProfileLayout,
+  ProtectedAuth,
+  ProtectedForum,
+  ProtectedRoute
+} from './components/layouts'
 import ImagePreview from './components/atoms/ImagePreview'
 import { Toaster } from './components/ui/toaster'
 
@@ -42,16 +49,20 @@ export default function App() {
                 <Route path="edit/:id" element={<CreateForum />} />
                 <Route path=":slug">
                   <Route index element={<DetailForum />} />
-                  <Route path="video" element={<VideoForum />} />
-                  <Route path="voice" element={<VoiceForum />} />
-                  <Route path="member">
-                    <Route index element={<Member />} />
-                    <Route path=":memberId" element={<ManageMember />} />
+                  <Route element={<ProtectedForum />}>
+                    <Route path="video" element={<VideoForum />} />
+                    <Route path="voice" element={<VoiceForum />} />
+                    <Route path="member">
+                      <Route index element={<Member />} />
+                      <Route path=":memberId" element={<ManageMember />} />
+                    </Route>
                   </Route>
                 </Route>
               </Route>
             </Route>
-            <Route path="/forums/:slug/content" element={<ContentForum />} />
+            <Route element={<ProtectedForum />}>
+              <Route path="/forums/:slug/content" element={<ContentForum />} />
+            </Route>
             <Route path="/me" element={<ProfileLayout />}>
               <Route index element={<Profile />} />
               <Route path="edit" element={<EditProfile />} />
