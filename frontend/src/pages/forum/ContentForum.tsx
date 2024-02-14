@@ -6,7 +6,7 @@ import {
   HiOutlinePhone,
   HiOutlineVideoCamera
 } from 'react-icons/hi2'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { MemberSettings, ShareForum, UploadFile } from '@/components/organism'
 import { SearchMember, ServerImage } from '@/components/atoms'
@@ -15,14 +15,27 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 import { useGetDetailForum } from '@/store/server/useForum'
+import { useCreateVideoCall } from '@/store/server/useMedia'
+
 import { useTitle } from '@/hooks'
 import { MemberType } from '@/lib/types/member.type'
 
 export default function ContentForum() {
+  const navigate = useNavigate()
   const { slug } = useParams<{ slug: string }>()
+
   const { data: forum, isLoading } = useGetDetailForum(slug as string)
+  const { mutate: createVideoCall, isLoading: isLoadingVideo } = useCreateVideoCall()
 
   useTitle(`Forum - ${forum?.title}`)
+
+  const handleCreateVideoCall = () => {
+    createVideoCall(slug as string, {
+      onSuccess: (data) => {
+        navigate(`/forums/${slug}/video/${data.id}`)
+      }
+    })
+  }
 
   if (isLoading) {
     return <p>loading...</p>
@@ -46,7 +59,13 @@ export default function ContentForum() {
             </div>
           </article>
           <article className="flex items-center gap-0 md:gap-2">
-            <Button variant="outline" size="icon" className="rounded-full border-none dark:bg-primary">
+            <Button
+              variant="outline"
+              size="icon"
+              className="rounded-full border-none dark:bg-primary"
+              onClick={handleCreateVideoCall}
+              loading={isLoadingVideo}
+            >
               <HiOutlineVideoCamera className="text-lg md:text-xl" />
             </Button>
             <Button variant="outline" size="icon" className="rounded-full border-none dark:bg-primary">

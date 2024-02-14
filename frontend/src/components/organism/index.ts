@@ -5,6 +5,7 @@ import LogoutAlert from './LogoutAlert'
 import HeaderMobile from './HeaderMobile'
 import MemberSettings from './MemberSettings'
 import Alert from './Alert'
+import MediaRoom from './MediaRoom'
 
 import TabForum from './forum/TabForum'
 
@@ -27,5 +28,6 @@ export {
   EditEmail,
   MemberSettings,
   Alert,
-  ShareForum
+  ShareForum,
+  MediaRoom
 }

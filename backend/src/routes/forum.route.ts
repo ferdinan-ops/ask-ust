@@ -2,8 +2,6 @@ import express from 'express'
 
 import {
   createForum,
-  createVideoCall,
-  createVoiceCall,
   deleteForum,
   getForum,
   getForums,
@@ -27,7 +25,5 @@ forumRoute.post('/invite-code', verifyJwt, joinForumWithInviteCode)
 forumRoute.delete('/:forumId', verifyJwt, deleteForum)
 
 forumRoute.put('/:forumId', verifyJwt, updateForum)
-forumRoute.put('/video/:forumId', verifyJwt, createVideoCall)
-forumRoute.put('/voice/:forumId', verifyJwt, createVoiceCall)
 
 export default forumRoute

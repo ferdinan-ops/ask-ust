@@ -50,8 +50,8 @@ export default function App() {
                 <Route path=":slug">
                   <Route index element={<DetailForum />} />
                   <Route element={<ProtectedForum />}>
-                    <Route path="video" element={<VideoForum />} />
-                    <Route path="voice" element={<VoiceForum />} />
+                    <Route path="video/:videoId" element={<VideoForum />} />
+                    <Route path="voice/:voiceId" element={<VoiceForum />} />
                     <Route path="member">
                       <Route index element={<Member />} />
                       <Route path=":memberId" element={<ManageMember />} />

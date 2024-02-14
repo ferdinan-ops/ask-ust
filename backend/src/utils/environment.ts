@@ -7,7 +7,9 @@ const ENV = {
   refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
   emailUsername: process.env.EMAIL_USERNAME,
   emailPassword: process.env.EMAIL_PASSWORD,
-  publicUrl: process.env.PUBLIC_URL
+  publicUrl: process.env.PUBLIC_URL,
+  livekitApiKey: process.env.LIVEKIT_API_KEY,
+  livekitApiSecret: process.env.LIVEKIT_API_SECRET
 }
 
 export default ENV

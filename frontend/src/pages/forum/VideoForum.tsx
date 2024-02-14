@@ -8,12 +8,23 @@ import {
 
 import { Profile1, Profile2, Profile3, Profile4, Profile5, Profile6, Profile7, Profile8 } from '@/assets'
 import { Button } from '@/components/ui/button'
+import { useParams } from 'react-router-dom'
+import { useGetLivekitToken, useGetVideoCall } from '@/store/server/useMedia'
+import { MediaRoom } from '@/components/organism'
+// import { MediaRoom } from '@/components/organism'
 
 const dummyData = [Profile1, Profile2, Profile3, Profile4, Profile5, Profile6, Profile7, Profile8]
 
 export default function VideoForum() {
+  const { videoId } = useParams<{ slug: string; videoId: string }>()
+  const { data: video, isLoading } = useGetVideoCall(videoId as string)
+  const { isSuccess, data: token } = useGetLivekitToken(video?.id as string, video?.member.user.username as string)
+
+  if (isLoading || !isSuccess) return <div>Loading...</div>
+
   return (
     <section className="flex flex-col gap-7">
+      {isSuccess && <MediaRoom audio={true} video={true} token={token as string} />}
       <div className="grid min-h-[calc(100vh-68px-56px-40px-28px)] grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4 xl:grid-rows-2">
         {dummyData.map((item, index) => (
           <div
