@@ -41,8 +41,8 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
       <aside
         ref={ref}
         className={cn(
-          'fixed top-0 z-[9999999] h-screen w-64 border-r border-[#E9E9E9] bg-white text-primary transition-transform duration-300 dark:border-white/10 dark:bg-primary dark:text-white xl:sticky',
-          isShow ? '-translate-x-0' : '-translate-x-full xl:translate-x-0'
+          'fixed top-0 z-[9999999] h-screen w-64 border-r border-[#E9E9E9] bg-white text-primary transition-transform duration-300 dark:border-white/10 dark:bg-primary dark:text-white lg:sticky',
+          isShow ? '-translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
         {isShow && (
@@ -55,11 +55,11 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
           </Button>
         )}
         <nav className="flex flex-col gap-4 px-4 py-5">
-          <Link to="/dashboard" className="hidden items-center gap-3 p-1 xl:flex">
+          <Link to="/dashboard" className="hidden items-center gap-3 p-1 lg:flex">
             <img src={Logo} alt="logo" className="w-7" />
             <span className="font-semibold">ASK.UST</span>
           </Link>
-          <div className="flex flex-col gap-3 xl:hidden">
+          <div className="flex flex-col gap-3 lg:hidden">
             <Search className="w-full" action={() => setIsShow(false)} />
             <Button className="h-fit w-full gap-2 p-0 px-3 py-2 text-xs" onClick={handleCreate}>
               <HiPlus className="text-lg" />

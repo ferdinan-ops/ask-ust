@@ -44,12 +44,12 @@ api.interceptors.response.use(
         } catch (error) {
           useToken.getState().removeAccessToken()
           useToken.getState().removeRefreshToken()
+          window.location.href = '/login'
           toast({
             title: 'Sesi Anda telah berakhir',
             description: 'Silahkan login kembali untuk melanjutkan.',
             variant: 'destructive'
           })
-          window.location.href = '/login'
           return Promise.reject(error)
         }
       }

@@ -11,7 +11,7 @@ interface CardForumProps {
 
 export default function CardForum({ forums }: CardForumProps) {
   return (
-    <section className="grid grid-cols-1 gap-7 md:grid-cols-2 xl:grid-cols-3">
+    <section className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
       {forums?.data.length !== 0 &&
         forums?.data.map((forum) => (
           <Link

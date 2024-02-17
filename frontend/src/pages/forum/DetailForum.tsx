@@ -58,7 +58,7 @@ export default function DetailForum() {
   }
 
   return (
-    <section className="mx-auto md:w-10/12 xl:w-8/12">
+    <section className="mx-auto md:w-10/12 lg:w-8/12">
       <h1 className="mb-4 text-2xl font-bold md:mb-5 md:text-3xl">{forum?.title}</h1>
       <p className="text-sm font-medium leading-relaxed text-zinc-700 dark:text-zinc-400 md:text-base">
         {forum?.description}

@@ -45,7 +45,7 @@ export default function UploadPhoto({ user, className }: UploadPhotoProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className="group relative -mt-12 h-24 w-24 cursor-pointer overflow-hidden rounded-full border-4 border-white dark:border-white/50 xl:-mt-[72px] xl:h-36 xl:w-36">
+        <div className="group relative -mt-12 h-24 w-24 cursor-pointer overflow-hidden rounded-full border-4 border-white dark:border-white/50 lg:-mt-[72px] lg:h-36 lg:w-36">
           <div className="absolute inset-0 z-[2] flex bg-primary/60 opacity-0 transition-opacity group-hover:opacity-100">
             <HiCamera className="m-auto text-2xl text-white md:text-4xl" />
           </div>

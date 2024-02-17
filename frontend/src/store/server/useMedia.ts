@@ -1,4 +1,4 @@
-import { createVideoCallFn, getLivekitToken, getVideoCallFn } from '@/api/media.api'
+import { createVideoCallFn, createVoiceCallFn, getLivekitToken, getVideoCallFn, getVoiceCallFn } from '@/api/media.api'
 import { toast } from '@/components/ui/use-toast'
 import { handleOnError } from '@/lib/services/handleToast'
 import { AxiosError } from 'axios'
@@ -27,5 +27,25 @@ export const useGetVideoCall = (videoId: string) => {
 export const useGetLivekitToken = (id: string, username: string) => {
   return useQuery('livekit', async () => getLivekitToken(id, username), {
     enabled: !!id && !!username
+  })
+}
+
+export const useGetVoiceCall = (voiceId: string) => {
+  return useQuery(['voice', voiceId], async () => await getVoiceCallFn(voiceId), {
+    enabled: !!voiceId
+  })
+}
+
+export const useCreateVoiceCall = () => {
+  return useMutation(createVoiceCallFn, {
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Panggilan suara berhasil dibuat',
+        description: 'Panggilan suara berhasil dibuat dan dapat dilihat oleh semua orang'
+      })
+    }
   })
 }

@@ -7,8 +7,6 @@ export const createVideoCall = async (req: Request, res: Response) => {
   const forumId = req.body?.forumId as string
   const memberId = req.userId as string
 
-  console.log({ forumId, memberId })
-
   if (!forumId) {
     logError(req, 'Forum id is required')
     return res.status(400).json({ message: 'Forum id is required' })

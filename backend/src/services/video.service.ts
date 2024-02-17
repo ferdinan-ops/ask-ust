@@ -3,11 +3,11 @@ import ENV from '../utils/environment'
 import sendMail from '../middlewares/mailer'
 import { userSelect } from '../utils/service'
 
-export const enabledVideoCall = async (forumId: string, memberId: string) => {
+export const enabledVideoCall = async (forumId: string, userId: string) => {
   const member = await db.member.findFirst({
     where: {
       forum_id: forumId,
-      user_id: memberId
+      user_id: userId
     }
   })
 

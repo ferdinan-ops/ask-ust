@@ -50,8 +50,6 @@ export default function App() {
                 <Route path=":slug">
                   <Route index element={<DetailForum />} />
                   <Route element={<ProtectedForum />}>
-                    <Route path="video/:videoId" element={<VideoForum />} />
-                    <Route path="voice/:voiceId" element={<VoiceForum />} />
                     <Route path="member">
                       <Route index element={<Member />} />
                       <Route path=":memberId" element={<ManageMember />} />
@@ -61,7 +59,11 @@ export default function App() {
               </Route>
             </Route>
             <Route element={<ProtectedForum />}>
-              <Route path="/forums/:slug/content" element={<ContentForum />} />
+              <Route path="/forums/:slug">
+                <Route path="content" element={<ContentForum />} />
+                <Route path="video/:videoId" element={<VideoForum />} />
+                <Route path="voice/:voiceId" element={<VoiceForum />} />
+              </Route>
             </Route>
             <Route path="/me" element={<ProfileLayout />}>
               <Route index element={<Profile />} />

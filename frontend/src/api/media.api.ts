@@ -18,7 +18,7 @@ export const getLivekitToken = async (id: string, username: string): Promise<str
 
 export const createVoiceCallFn = async (forumId: string): Promise<MediaRoomType> => {
   const response = await api.post('/voice', { forumId })
-  return response.data?.data
+  return response.data?.data?.voice
 }
 
 export const getVoiceCallFn = async (voiceId: string): Promise<MediaRoomType> => {

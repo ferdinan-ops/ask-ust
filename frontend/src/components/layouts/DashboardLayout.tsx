@@ -7,15 +7,17 @@ import { useGetDevices } from '@/hooks'
 export default function DashboardLayout() {
   const [isOpenLeftBar, setIsOpenLeftBar] = React.useState(false)
 
-  const { isMobile, isTablet } = useGetDevices()
+  const { isMobile, isTablet, isDesktop } = useGetDevices()
 
   return (
     <section className="flex">
       <Leftbar isShow={isOpenLeftBar} setIsShow={setIsOpenLeftBar} />
       <main className="flex-1">
-        {isMobile || isTablet ? <HeaderMobile action={() => setIsOpenLeftBar(true)} /> : <Header />}
+        {(isMobile || isTablet) && <HeaderMobile action={() => setIsOpenLeftBar(true)} />}
+        {isDesktop && <Header />}
 
-        <section className="min-h-[calc(100vh-68px-12px)] flex-1 bg-white text-primary dark:bg-primary dark:text-white md:min-h-[calc(100vh-68px-12px)] xl:min-h-[calc(100vh-68px)]">
+        {/* <section className="min-h-[calc(100vh-68px-12px)] flex-1 bg-white text-primary dark:bg-primary dark:text-white md:min-h-[calc(100vh-68px-12px)] lg:min-h-[calc(100vh-68px)]"> */}
+        <section className="flex-1 bg-white text-primary dark:bg-primary dark:text-white">
           <Outlet />
         </section>
       </main>

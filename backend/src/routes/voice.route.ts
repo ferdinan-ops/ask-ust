@@ -5,6 +5,6 @@ import verifyJwt from '../middlewares/verifyJwt'
 const voiceRoute = express.Router()
 
 voiceRoute.post('/', verifyJwt, createVoiceCall)
-voiceRoute.get('/:videoId', verifyJwt, getVoiceCall)
+voiceRoute.get('/:voiceId', verifyJwt, getVoiceCall)
 
 export default voiceRoute

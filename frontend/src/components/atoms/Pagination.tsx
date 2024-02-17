@@ -3,7 +3,7 @@ import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi2'
 
 export default function Pagination() {
   return (
-    <div className="bottom-0 right-0 mt-5 flex items-center justify-center gap-1 xl:absolute xl:mt-0 xl:justify-end">
+    <div className="bottom-0 right-0 mt-5 flex items-center justify-center gap-1 lg:absolute lg:mt-0 lg:justify-end">
       <Button className="py-2 text-xs font-semibold" variant="outline" size="icon">
         <HiChevronDoubleLeft />
       </Button>

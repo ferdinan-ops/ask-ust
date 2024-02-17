@@ -20,7 +20,7 @@ export default function TabForum({ forums, containerClassName, contentClassName 
     <Tabs defaultValue="all" className={cn('w-full', containerClassName)}>
       <div className="flex items-center justify-between">
         <h1 className="mb-5 text-xl font-semibold">Forum</h1>
-        <TabsList className="mb-5 grid grid-cols-2 rounded-full md:w-4/12 xl:w-3/12">
+        <TabsList className="mb-5 grid grid-cols-2 rounded-full md:w-4/12 lg:w-3/12">
           <TabsTrigger value="all" className="flex items-center gap-2 rounded-full">
             <HiSquare3Stack3D className="text-primary dark:text-white" />
             <span className="text-[13px] font-semibold text-primary dark:text-white">Semua</span>

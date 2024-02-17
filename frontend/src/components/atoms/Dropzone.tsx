@@ -46,7 +46,9 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
         if (oversizedFiles.length > 0) {
           setError(id, {
             type: 'manual',
-            message: `File '${oversizedFiles[0].name}' melebihi ukuran maksimum ${maxFileSize ? bytesToSize(maxFileSize) : '2 MB'}.`
+            message: `File '${oversizedFiles[0].name}' melebihi ukuran maksimum ${
+              maxFileSize ? bytesToSize(maxFileSize) : '2 MB'
+            }.`
           })
         } else {
           const acceptedFilesPreview = acceptedFiles.map((file: T) =>
@@ -69,7 +71,7 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
 
   React.useEffect(() => {
     return () => {
-      () => {
+      ;() => {
         files.forEach((file) => URL.revokeObjectURL(file.preview))
       }
     }
@@ -102,7 +104,7 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
   })
 
   return (
-    <div className="flex w-full flex-col gap-1.5 xl:gap-2.5">
+    <div className="flex w-full flex-col gap-1.5 lg:gap-2.5">
       {files?.length > 0 ? (
         <div className="flex w-full flex-col gap-3">
           {files.map((file, id) => (

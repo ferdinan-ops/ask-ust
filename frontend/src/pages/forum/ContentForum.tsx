@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 import { useGetDetailForum } from '@/store/server/useForum'
-import { useCreateVideoCall } from '@/store/server/useMedia'
+import { useCreateVideoCall, useCreateVoiceCall } from '@/store/server/useMedia'
 
 import { useTitle } from '@/hooks'
 import { MemberType } from '@/lib/types/member.type'
@@ -26,6 +26,7 @@ export default function ContentForum() {
 
   const { data: forum, isLoading } = useGetDetailForum(slug as string)
   const { mutate: createVideoCall, isLoading: isLoadingVideo } = useCreateVideoCall()
+  const { mutate: createVoiceCall, isLoading: isLoadingVoice } = useCreateVoiceCall()
 
   useTitle(`Forum - ${forum?.title}`)
 
@@ -37,13 +38,21 @@ export default function ContentForum() {
     })
   }
 
+  const handleCreateVoiceCall = () => {
+    createVoiceCall(slug as string, {
+      onSuccess: (data) => {
+        navigate(`/forums/${slug}/voice/${data.id}`)
+      }
+    })
+  }
+
   if (isLoading) {
     return <p>loading...</p>
   }
 
   return (
-    <section className="flex flex-col justify-between gap-7 xl:flex-row xl:p-7">
-      <section className="rounded-lg border-[#E9E9E9] dark:border-white/10 dark:bg-primary xl:max-h-[calc(100vh-68px-56px)] xl:min-h-[calc(100vh-68px-56px)] xl:w-9/12 xl:border">
+    <section className="flex flex-col justify-between gap-7 lg:flex-row lg:p-7">
+      <section className="rounded-lg border-[#E9E9E9] dark:border-white/10 dark:bg-primary lg:max-h-[calc(100vh-68px-56px)] lg:min-h-[calc(100vh-68px-56px)] lg:w-9/12 lg:border">
         <div className="flex items-center justify-between gap-4 border-b p-2 dark:border-white/10 md:p-4">
           <article className="flex items-start gap-3">
             <div className="flex h-8 w-8 rounded-full border-none bg-zinc-100 dark:bg-zinc-800 md:h-10 md:w-10">
@@ -68,13 +77,19 @@ export default function ContentForum() {
             >
               <HiOutlineVideoCamera className="text-lg md:text-xl" />
             </Button>
-            <Button variant="outline" size="icon" className="rounded-full border-none dark:bg-primary">
+            <Button
+              variant="outline"
+              size="icon"
+              className="rounded-full border-none dark:bg-primary"
+              onClick={handleCreateVoiceCall}
+              loading={isLoadingVoice}
+            >
               <HiOutlinePhone className="text-lg md:text-xl" />
             </Button>
             <ShareForum inviteCode={forum?.invite_code as string} />
           </article>
         </div>
-        <div className="flex max-h-[calc(100vh-68px-57px)] flex-col xl:max-h-[calc(100vh-68px-56px-80px)] xl:min-h-[calc(100vh-68px-56px-80px)]">
+        <div className="flex max-h-[calc(100vh-68px-57px)] flex-col lg:max-h-[calc(100vh-68px-56px-80px)] lg:min-h-[calc(100vh-68px-56px-80px)]">
           <article className="scroll-custom flex flex-col gap-4 overflow-y-scroll p-4 md:gap-5 md:px-5 md:py-7">
             <div className="flex items-start gap-2">
               <img
@@ -167,7 +182,7 @@ export default function ContentForum() {
           </article>
         </div>
       </section>
-      <section className="hidden max-h-[calc(100vh-68px-56px)] min-h-[calc(100vh-68px-56px)] w-3/12 overflow-hidden rounded-lg border border-[#E9E9E9] dark:border-white/10 xl:block">
+      <section className="hidden max-h-[calc(100vh-68px-56px)] min-h-[calc(100vh-68px-56px)] w-3/12 overflow-hidden rounded-lg border border-[#E9E9E9] dark:border-white/10 lg:block">
         <article className="flex flex-col">
           <div className="flex items-center justify-between border-b border-[#E9E9E9] p-4 dark:border-white/10">
             <h4 className="text-sm font-semibold">{forum?._count.members} Anggota</h4>

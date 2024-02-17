@@ -3,14 +3,21 @@ import db from '../utils/db'
 import ENV from '../utils/environment'
 import { userSelect } from '../utils/service'
 
-export const enabledVoiceCall = async (forumId: string, memberId: string) => {
+export const enabledVoiceCall = async (forumId: string, userId: string) => {
+  const member = await db.member.findFirst({
+    where: {
+      forum_id: forumId,
+      user_id: userId
+    }
+  })
+
   return await db.forum.update({
     where: { id: forumId },
     data: {
       voice: {
         create: {
           is_enabled: true,
-          member_id: memberId
+          member_id: member?.id as string
         }
       }
     },
