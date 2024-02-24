@@ -1,9 +1,9 @@
 import { MemberType } from '@/lib/types/member.type'
 import { useGetMe } from '@/store/server/useUser'
 import * as React from 'react'
-import { Button } from '../ui/button'
+import { Button } from '../../ui/button'
 import { HiOutlineCog6Tooth, HiOutlineExclamationCircle } from 'react-icons/hi2'
-import { ReportMember } from '.'
+import { ReportMember } from '..'
 import { useNavigate } from 'react-router-dom'
 
 interface MemberSettingsProps {

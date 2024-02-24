@@ -39,5 +39,9 @@ export const uploadProfilePicFn = async (data: ChangeProfilePicType) => {
     formData.append('photo', data.photo[0])
   }
 
-  return await api.put('/users/change-photo', formData)
+  return await api.put('/users/change-photo', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
 }

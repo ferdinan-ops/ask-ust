@@ -3,9 +3,7 @@ import Leftbar from './Leftbar'
 import Rightbar from './Rightbar'
 import LogoutAlert from './LogoutAlert'
 import HeaderMobile from './HeaderMobile'
-import MemberSettings from './MemberSettings'
 import Alert from './Alert'
-import MediaRoom from './MediaRoom'
 
 import TabForum from './forum/TabForum'
 
@@ -14,6 +12,13 @@ import UploadPhoto from './modal/UploadPhoto'
 import ReportMember from './modal/ReportMember'
 import EditEmail from './modal/EditEmail'
 import ShareForum from './modal/ShareForum'
+
+import MediaCard from './media/MediaCard'
+import MediaRoom from './media/MediaRoom'
+import MediaMenu from './media/MediaMenu'
+
+import MemberSettings from './member/MemberSettings'
+import MemberCard from './member/MemberCard'
 
 export {
   Header,
@@ -29,5 +34,8 @@ export {
   MemberSettings,
   Alert,
   ShareForum,
-  MediaRoom
+  MediaRoom,
+  MediaCard,
+  MediaMenu,
+  MemberCard
 }

@@ -1,10 +1,9 @@
-import { SearchMember, ServerImage, Title } from '@/components/atoms'
-import { MemberSettings } from '@/components/organism'
+import { SearchMember, Title } from '@/components/atoms'
+import { MemberCard } from '@/components/organism'
 import { useTitle } from '@/hooks'
 import { titleConfig } from '@/lib/config'
 import { MemberType } from '@/lib/types/member.type'
 import { useGetDetailForum } from '@/store/server/useForum'
-import { HiCheckBadge, HiExclamationCircle } from 'react-icons/hi2'
 import { useParams } from 'react-router-dom'
 
 const titleConf = titleConfig.member
@@ -30,30 +29,14 @@ export default function Member() {
       </div>
       <div className="mt-4 flex flex-col gap-4">
         {forum?.members?.map((member, i) => (
-          <div className="flex items-center justify-between border-b border-zinc-200 pb-3 dark:border-white/10" key={i}>
-            <div className="flex items-start gap-3">
-              <div className="relative">
-                <ServerImage src={member.user.photo} alt={member.user.fullname} className="h-6 w-6 rounded-lg" />
-              </div>
-              <div className="flex flex-col">
-                <p className="flex items-center gap-1 text-sm font-medium">
-                  <span className="truncate-1">{member.user.fullname}</span>
-                  {member.role === 'ADMIN' && <HiCheckBadge className="text-blue-500" />}
-                  {member.role === 'MODERATOR' && <HiCheckBadge className="text-green-500" />}
-                  {member.reports.length > 0 && <HiExclamationCircle className="text-red-500 dark:text-red-300" />}
-                </p>
-                <span className="text-xs font-medium text-zinc-400 dark:text-white/40">@{member.user.username}</span>
-              </div>
-            </div>
-
-            <MemberSettings
-              moderators={forum.moderators}
-              admin={forum.admin as MemberType}
-              forumId={slug as string}
-              memberId={member.id}
-              memberUserId={member.user_id}
-            />
-          </div>
+          <MemberCard
+            key={i}
+            member={member}
+            forumId={forum.id}
+            admin={forum.admin as MemberType}
+            moderators={forum.moderators}
+            className="border-b border-zinc-200 pb-3 dark:border-white/10"
+          />
         ))}
       </div>
     </section>

@@ -4,7 +4,8 @@ const ENV = {
   googleClientId: import.meta.env.VITE_GOOGLE_CLIENT_ID as string,
   livekitUrl: import.meta.env.VITE_LIVEKIT_URL as string,
   livekitApiKey: import.meta.env.VITE_LIVEKIT_API_KEY as string,
-  livekitApiSecret: import.meta.env.VITE_LIVEKIT_API_SECRET as string
+  livekitApiSecret: import.meta.env.VITE_LIVEKIT_API_SECRET as string,
+  videoSdkToken: import.meta.env.VITE_VIDEOSDK_TOKEN as string
 }
 
 export default ENV

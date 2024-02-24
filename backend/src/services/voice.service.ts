@@ -52,7 +52,7 @@ export const sendVoiceCallInvite = async (forumId: string) => {
     sendMail({
       to: member.user.email,
       subject: 'Panggilan Grup Suara telah dimulai',
-      html: `<p>Hai ${member.user.fullname}, </p><p>${forum?.voice?.member.user.fullname} telah memulai panggilan suara pada ${forum?.title}. Anda telah diundang untuk bergabung dengan panggilan suara baru pada forum ini. Ayo klik <a href="${ENV.publicUrl}/forum/${forumId}/voice">disini</a> untuk bergabung</p>`
+      html: `<p>Hai ${member.user.fullname}, </p><p>${forum?.voice?.member.user.fullname} telah memulai panggilan suara pada ${forum?.title}. Anda telah diundang untuk bergabung dengan panggilan suara baru pada forum ini. Ayo klik <a href="${ENV.publicUrl}/forum/${forumId}/voice/${forum.voice?.id}">disini</a> untuk bergabung</p>`
     })
   })
 }
@@ -60,6 +60,30 @@ export const sendVoiceCallInvite = async (forumId: string) => {
 export const getVoiceCallById = async (voiceId: string) => {
   return await db.voice.findUnique({
     where: { id: voiceId },
+    include: {
+      member: {
+        include: {
+          user: userSelect
+        }
+      }
+    }
+  })
+}
+
+export const removeVoiceCallById = async (voiceId: string, userId: string) => {
+  return await db.voice.delete({
+    where: {
+      id: voiceId
+    }
+  })
+}
+
+export const getEnabledVoiceCallByForumId = async (forumId: string) => {
+  return await db.voice.findFirst({
+    where: {
+      forum_id: forumId,
+      is_enabled: true
+    },
     include: {
       member: {
         include: {

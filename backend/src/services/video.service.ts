@@ -52,7 +52,7 @@ export const sendVideoCallInvite = async (forumId: string) => {
     sendMail({
       to: member.user.email,
       subject: 'Panggilan Grup Video telah dimulai',
-      html: `<p>Hai ${member.user.fullname}, </p><p>${forum?.video?.member.user.fullname} telah memulai panggilan video pada ${forum?.title}. Anda telah diundang untuk bergabung dengan panggilan video baru pada forum ini. Ayo klik <a href="${ENV.publicUrl}/forum/${forumId}/video">disini</a> untuk bergabung</p>`
+      html: `<p>Hai ${member.user.fullname}, </p><p>${forum?.video?.member.user.fullname} telah memulai panggilan video pada ${forum?.title}. Anda telah diundang untuk bergabung dengan panggilan video baru pada forum ini. Ayo klik <a href="${ENV.publicUrl}/forum/${forumId}/video/${forum.video?.id}">disini</a> untuk bergabung</p>`
     })
   })
 }
@@ -60,6 +60,28 @@ export const sendVideoCallInvite = async (forumId: string) => {
 export const getVideoCallById = async (videoId: string) => {
   return await db.video.findUnique({
     where: { id: videoId },
+    include: {
+      member: {
+        include: {
+          user: userSelect
+        }
+      }
+    }
+  })
+}
+
+export const removeVideoCallById = async (videoId: string, userId: string) => {
+  return await db.video.delete({
+    where: { id: videoId }
+  })
+}
+
+export const getEnabledVideoCallByForumId = async (forumId: string) => {
+  return await db.video.findFirst({
+    where: {
+      forum_id: forumId,
+      is_enabled: true
+    },
     include: {
       member: {
         include: {

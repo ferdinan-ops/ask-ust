@@ -23,10 +23,27 @@ export const createVideoCall = async (req: Request, res: Response) => {
   }
 }
 
+export const deleteVideoCall = async (req: Request, res: Response) => {
+  const videoId = req.params?.videoId
+  const userId = req.userId as string
+
+  try {
+    const isVideoCallExist = await VideoService.getVideoCallById(videoId)
+    if (!isVideoCallExist) {
+      logError(req, 'Video call not found')
+      return res.status(404).json({ error: 'Video call tidak ditemukan' })
+    }
+
+    const data = await VideoService.removeVideoCallById(videoId, userId)
+    logInfo(req, 'Deleting video call')
+    res.status(200).json({ message: 'Berhasil menghapus video call', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
 export const getVideoCall = async (req: Request, res: Response) => {
   const videoId = req.params?.videoId
-
-  console.log({ videoId })
 
   try {
     const data = await VideoService.getVideoCallById(videoId)
@@ -35,6 +52,23 @@ export const getVideoCall = async (req: Request, res: Response) => {
 
     logInfo(req, 'Getting video call')
     res.status(200).json({ message: 'Berhasil mendapatkan video call', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const getEnabledVideoCall = async (req: Request, res: Response) => {
+  const forumId = req.params?.forumId
+
+  try {
+    const data = await VideoService.getEnabledVideoCallByForumId(forumId)
+    if (!data) {
+      logError(req, 'Video call not found')
+      return res.status(404).json({ error: 'Video call tidak ditemukan' })
+    }
+
+    logInfo(req, 'Getting enabled video call')
+    res.status(200).json({ message: 'Berhasil mendapatkan video call yang aktif', data })
   } catch (error) {
     res.status(500).json({ error })
   }

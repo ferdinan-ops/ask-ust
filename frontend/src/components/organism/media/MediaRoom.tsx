@@ -1,13 +1,15 @@
 import '@livekit/components-styles'
-import ENV from '@/lib/environment'
+
 import { LiveKitRoom, VideoConference } from '@livekit/components-react'
 import { useNavigate } from 'react-router-dom'
+
+import ENV from '@/lib/environment'
 
 interface MediaRoomProps {
   video: boolean
   audio: boolean
   token: string
-  onDisconnected: () => void
+  onDisconnected?: () => void
 }
 
 export default function MediaRoom({ video, audio, token, onDisconnected }: MediaRoomProps) {
@@ -22,8 +24,9 @@ export default function MediaRoom({ video, audio, token, onDisconnected }: Media
       audio={audio}
       onDisconnected={() => {
         navigate(-1)
-        onDisconnected()
+        onDisconnected && onDisconnected()
       }}
+      style={{ height: '100vh' }}
     >
       <VideoConference />
     </LiveKitRoom>
