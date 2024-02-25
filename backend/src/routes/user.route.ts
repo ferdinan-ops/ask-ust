@@ -6,6 +6,7 @@ import {
   getJoinedForums,
   getMe,
   getMyForums,
+  getProfileForumsCount,
   updateMe
 } from '../controllers/user.controller'
 import upload from '../middlewares/multer'
@@ -17,6 +18,7 @@ userRoute.get('/', verifyJwt, getMe)
 userRoute.put('/', verifyJwt, updateMe)
 userRoute.get('/forums', verifyJwt, getMyForums)
 userRoute.get('/forums/joined', verifyJwt, getJoinedForums)
+userRoute.get('/forums/count', verifyJwt, getProfileForumsCount)
 userRoute.put('/change-password', verifyJwt, changePassword)
 userRoute.put('/change-email', verifyJwt, changeEmail)
 userRoute.put('/change-photo', upload.single('photo'), verifyJwt, changeProfilePicture)

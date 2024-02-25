@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import ENV from '@/lib/environment'
-import { useToken } from '@/store/client'
+import { useToken, useUserInfo } from '@/store/client'
 import { refreshTokenFn } from './auth.api'
 import { toast } from '@/components/ui/use-toast'
 
@@ -40,6 +40,7 @@ api.interceptors.response.use(
         try {
           const response = await refreshTokenFn(refreshToken)
           useToken.getState().storeAccessToken(response.access_token)
+          useUserInfo.getState().setUser(response.user)
           return api(originalConfig)
         } catch (error) {
           useToken.getState().removeAccessToken()

@@ -5,8 +5,9 @@ export type UserType = {
   email: string
   photo?: string
   provider?: string
-  _count: {
-    forums: number
-    joined_forum: number
-  }
+}
+
+export type UserForumCountType = {
+  my_forum: number
+  joined_forum: number
 }

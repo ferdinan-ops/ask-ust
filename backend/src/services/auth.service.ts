@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 
 import db from '../utils/db'
 import ENV from '../utils/environment'
+import { userSelect } from '../utils/service'
 import sendMail from '../middlewares/mailer'
 
 import { type IGoogleLogin, type ITokenPayload, type IUser } from '../types/user.type'
@@ -81,7 +82,10 @@ export const findUserByEmail = async (email: string) => {
 }
 
 export const findUserByToken = async (token: string) => {
-  return await db.user.findUnique({ where: { token } })
+  return await db.user.findUnique({
+    where: { token },
+    select: userSelect.select
+  })
 }
 
 export const verifyUserEmail = async (userId: string) => {
@@ -95,5 +99,8 @@ export const verifyUserEmail = async (userId: string) => {
 }
 
 export const findUserById = async (userId: string) => {
-  return await db.user.findUnique({ where: { id: userId } })
+  return await db.user.findUnique({
+    where: { id: userId },
+    select: userSelect.select
+  })
 }

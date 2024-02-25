@@ -86,14 +86,11 @@ export const login = async (req: Request, res: Response) => {
     const accessToken = AuthService.accessTokenSign({ id: user.id })
     const refreshToken = AuthService.refreshTokenSign({ id: user.id })
 
+    const { password, ...rest } = user
+    const data = { user: rest, access_token: accessToken, refresh_token: refreshToken }
+
     logInfo(req, 'User is successfully logged in')
-    // res.cookie('ask-ust-refresh-token', refreshToken, {
-    //   httpOnly: true,
-    //   sameSite: 'none',
-    //   secure: true,
-    //   maxAge: 7 * 24 * 60 * 60 * 1000
-    // })
-    res.status(200).json({ access_token: accessToken, refresh_token: refreshToken })
+    res.status(200).json({ message: 'Login berhasil', data })
   } catch (error) {
     res.status(500).json({ error })
   }
@@ -131,14 +128,11 @@ export const loginGoogle = async (req: Request, res: Response) => {
     const accessToken = AuthService.accessTokenSign({ id: user.id })
     const refreshToken = AuthService.refreshTokenSign({ id: user.id })
 
+    const { password, ...rest } = user
+    const data = { user: rest, access_token: accessToken, refresh_token: refreshToken }
+
     logInfo(req, 'User is successfully logged in')
-    // res.cookie('ask-ust-refresh-token', refreshToken, {
-    //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: 'none',
-    //   maxAge: 7 * 24 * 60 * 60 * 1000
-    // })
-    res.status(200).json({ access_token: accessToken, refresh_token: refreshToken })
+    res.status(200).json({ message: 'Login berhasil', data })
   } catch (error) {
     res.status(500).json({ error })
   }
@@ -225,8 +219,10 @@ export const refreshToken = async (req: Request, res: Response) => {
       }
 
       const accessToken = AuthService.accessTokenSign({ id: user.id })
+      const data = { user, access_token: accessToken, refresh_token: refreshToken }
+
       logInfo(req, 'Access token is successfully refreshed')
-      res.status(200).json({ access_token: accessToken })
+      res.status(200).json({ message: 'Access token berhasil diperbarui', data })
     })
   } catch (error) {
     res.status(500).json({ error })

@@ -6,18 +6,19 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 import { EditEmail, LogoutAlert } from '@/components/organism'
-import { useGetMe, useUpdateMe } from '@/store/server/useUser'
+import { useUpdateMe } from '@/store/server/useUser'
 import { EditUserType, editUserValidation } from '@/lib/validations/user.validation'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
 import { useTitle } from '@/hooks'
 import { editProfileDefaultValues } from '@/lib/defaultValues'
+import { useUserInfo } from '@/store/client'
 
 export default function EditProfile() {
   useTitle('Pengaturan')
   const navigate = useNavigate()
 
-  const { data: user, isSuccess } = useGetMe()
+  const { user } = useUserInfo()
   const { mutate: updateMe, isLoading } = useUpdateMe()
 
   const forms = useForm<EditUserType>({
@@ -27,23 +28,19 @@ export default function EditProfile() {
   })
 
   React.useEffect(() => {
-    if (isSuccess) {
-      forms.setValue('fullname', user?.fullname)
-      forms.setValue('username', user?.username)
-    }
-  }, [user, isSuccess, forms])
+    forms.setValue('fullname', user?.fullname)
+    forms.setValue('username', user?.username)
+  }, [user, forms])
 
   const onSubmit = (values: EditUserType) => {
     updateMe(values)
   }
 
-  if (!isSuccess) return <p>Loading...</p>
-
   return (
     <>
       <div className="border-b pb-7 dark:border-white/10">
         <h1 className="mb-5 text-lg font-semibold md:text-xl">Pengaturan Profil</h1>
-        <div className="flex items-center gap-5">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-5">
           <Button variant="outline" className="border-primary" onClick={() => navigate('/me/change-password')}>
             Atur ulang kata sandi
           </Button>

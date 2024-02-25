@@ -1,17 +1,17 @@
 import { HiArrowLeftOnRectangle, HiHashtag, HiPlus, HiXMark } from 'react-icons/hi2'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import * as React from 'react'
 
 import { useDisableBodyScroll, useOutsideClick } from '@/hooks'
 import { ActiveLink, BgAbsolute, Search } from '../atoms'
-import { useGetJoinedForums, useGetMe } from '@/store/server/useUser'
+import { useGetJoinedForums } from '@/store/server/useUser'
 import { MAIN_MENU } from '@/lib/data'
 import { cn } from '@/lib/utils'
-import { Logo } from '@/assets'
 import { LogoutAlert } from '.'
 
-import { Skeleton } from '../ui/skeleton'
 import { Button } from '../ui/button'
+import Brand from '../atoms/Brand'
+import { useUserInfo } from '@/store/client'
 
 interface LeftbarProps {
   isShow: boolean
@@ -24,7 +24,7 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
   useDisableBodyScroll(isShow)
   const ref = useOutsideClick(() => setIsShow(false))
 
-  const { data: user, isLoading } = useGetMe()
+  const { user } = useUserInfo()
   const { data: joinedForums, isSuccess } = useGetJoinedForums(1)
 
   const handleClose = () => {
@@ -55,10 +55,7 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
           </Button>
         )}
         <nav className="flex flex-col gap-4 px-4 py-5">
-          <Link to="/dashboard" className="hidden items-center gap-3 p-1 lg:flex">
-            <img src={Logo} alt="logo" className="w-7" />
-            <span className="font-semibold">ASK.UST</span>
-          </Link>
+          <Brand className="hidden gap-3 p-1 lg:flex" imageClassName="w-7" />
           <div className="flex flex-col gap-3 lg:hidden">
             <Search className="w-full" action={() => setIsShow(false)} />
             <Button className="h-fit w-full gap-2 p-0 px-3 py-2 text-xs" onClick={handleCreate}>
@@ -96,17 +93,10 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
 
         <div className="sticky bottom-0 top-full border-t border-[#E9E9E9] px-4 py-5 dark:border-white/10">
           <div className="flex items-center justify-between gap-3">
-            {isLoading ? (
-              <div className="flex flex-col gap-1">
-                <Skeleton className="h-3 w-[160px]" />
-                <Skeleton className="h-2 w-[90px]" />
-              </div>
-            ) : (
-              <div className="flex flex-col">
-                <p className="max-w-[160px] truncate text-sm font-bold">{user?.fullname}</p>
-                <p className="text-xs font-semibold text-zinc-400">@{user?.username}</p>
-              </div>
-            )}
+            <div className="flex flex-col">
+              <p className="max-w-[160px] truncate text-sm font-bold">{user?.fullname}</p>
+              <p className="text-xs font-semibold text-zinc-400">@{user?.username}</p>
+            </div>
 
             <LogoutAlert>
               <Button

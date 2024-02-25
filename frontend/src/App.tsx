@@ -16,8 +16,10 @@ import { ContentForum, CreateForum, DetailForum, Forums, VideoForum, VoiceForum 
 import { ForgotPassword, Login, Register, ResetPassword, VerifyEmail } from './pages/auth'
 import { ManageMember, Member } from './pages/member'
 import { EditProfile, Profile } from './pages/user'
+
 import InviteCode from './pages/InviteCode'
 import Dashboard from './pages/Dashboard'
+import NotFound from './pages/NotFound'
 
 import { usePreviewImage } from './store/client'
 
@@ -75,6 +77,7 @@ export default function App() {
           <Route path="/invite-code/:inviteCode" element={<InviteCode />} />
           <Route path="/me/change-password" element={<ResetPassword />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </React.Fragment>
   )

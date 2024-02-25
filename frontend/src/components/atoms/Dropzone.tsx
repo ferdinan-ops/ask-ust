@@ -46,9 +46,8 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
         if (oversizedFiles.length > 0) {
           setError(id, {
             type: 'manual',
-            message: `File '${oversizedFiles[0].name}' melebihi ukuran maksimum ${
-              maxFileSize ? bytesToSize(maxFileSize) : '2 MB'
-            }.`
+            message: `File '${oversizedFiles[0].name}' melebihi ukuran maksimum ${maxFileSize ? bytesToSize(maxFileSize) : '2 MB'
+              }.`
           })
         } else {
           const acceptedFilesPreview = acceptedFiles.map((file: T) =>
@@ -71,7 +70,7 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
 
   React.useEffect(() => {
     return () => {
-      ;() => {
+      () => {
         files.forEach((file) => URL.revokeObjectURL(file.preview))
       }
     }
@@ -118,12 +117,14 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
               </div>
               <div className="flex items-center gap-2">
                 <button
+                  type="button"
                   className="flex h-7 w-7 cursor-pointer rounded hover:bg-slate-200 dark:hover:bg-zinc-700"
                   onClick={() => handlePreview(URL.createObjectURL(file))}
                 >
                   <HiOutlineEye className="m-auto text-xl text-primary/40 dark:text-white/40" />
                 </button>
                 <button
+                  type="button"
                   className="flex h-7 w-7 cursor-pointer rounded hover:bg-slate-200 dark:hover:bg-zinc-700"
                   onClick={(e) => deleteFile(e, file)}
                 >

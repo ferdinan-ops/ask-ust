@@ -20,6 +20,10 @@ import MediaMenu from './media/MediaMenu'
 import MemberSettings from './member/MemberSettings'
 import MemberCard from './member/MemberCard'
 
+import AuthSkeleton from './skeleton/AuthSkeleton'
+import ForumSkeleton from './skeleton/ForumSkeleton'
+import DetailForumSkeleton from './skeleton/DetailForumSkeleton'
+
 export {
   Header,
   Leftbar,
@@ -37,5 +41,8 @@ export {
   MediaRoom,
   MediaCard,
   MediaMenu,
-  MemberCard
+  MemberCard,
+  AuthSkeleton,
+  ForumSkeleton,
+  DetailForumSkeleton
 }

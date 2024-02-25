@@ -6,15 +6,17 @@ import { Pagination } from '@/components/atoms'
 import CardForum from './CardForum'
 import { useGetJoinedForums } from '@/store/server/useUser'
 import { cn } from '@/lib/utils'
+import { ForumSkeleton } from '..'
 
 interface TabsProps {
   forums: ForumResponseType
+  isFetching?: boolean
   containerClassName?: string
   contentClassName?: string
 }
 
-export default function TabForum({ forums, containerClassName, contentClassName }: TabsProps) {
-  const { data: joinedForums, isSuccess } = useGetJoinedForums(1)
+export default function TabForum({ forums, containerClassName, contentClassName, isFetching }: TabsProps) {
+  const { data: joinedForums, isLoading } = useGetJoinedForums(1)
 
   return (
     <Tabs defaultValue="all" className={cn('w-full', containerClassName)}>
@@ -32,15 +34,13 @@ export default function TabForum({ forums, containerClassName, contentClassName 
         </TabsList>
       </div>
       <TabsContent value="all" className={cn('relative', contentClassName)}>
-        <CardForum forums={forums} />
+        {isFetching ? <ForumSkeleton /> : <CardForum forums={forums} />}
         {forums?.data.length && forums?.data.length > 9 ? <Pagination /> : null}
       </TabsContent>
-      {isSuccess && (
-        <TabsContent value="joined" className={cn('relative', contentClassName)}>
-          <CardForum forums={joinedForums} />
-          {joinedForums?.data.length && joinedForums?.data.length > 9 ? <Pagination /> : null}
-        </TabsContent>
-      )}
+      <TabsContent value="joined" className={cn('relative', contentClassName)}>
+        {isLoading ? <ForumSkeleton /> : <CardForum forums={joinedForums as ForumResponseType} />}
+        {joinedForums?.data.length && joinedForums?.data.length > 9 ? <Pagination /> : null}
+      </TabsContent>
     </Tabs>
   )
 }

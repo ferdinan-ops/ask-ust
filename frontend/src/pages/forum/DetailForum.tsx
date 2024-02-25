@@ -13,10 +13,10 @@ import * as React from 'react'
 import { Button } from '@/components/ui/button'
 
 import { useDeleteForum, useGetDetailForum, useJoinForum, useLeaveForum } from '@/store/server/useForum'
-import { useGetMe } from '@/store/server/useUser'
 import { useTitle } from '@/hooks'
-import { Alert } from '@/components/organism'
+import { Alert, DetailForumSkeleton } from '@/components/organism'
 import { alertConfig } from '@/lib/config'
+import { useUserInfo } from '@/store/client'
 
 const alertDeleteConf = alertConfig.detailForum.delete
 const alertLeaveConf = alertConfig.detailForum.leave
@@ -24,8 +24,8 @@ const alertLeaveConf = alertConfig.detailForum.leave
 export default function DetailForum() {
   const navigate = useNavigate()
   const { slug } = useParams<{ slug: string }>()
+  const { user } = useUserInfo()
 
-  const { data: user, isLoading: isLoadingUser } = useGetMe()
   const { data: forum, isLoading } = useGetDetailForum(slug as string)
   const { mutate: joinForum, isLoading: isLoadingJoin } = useJoinForum()
   const { mutate: leaveForum, isLoading: isLoadingLeave } = useLeaveForum()
@@ -53,9 +53,7 @@ export default function DetailForum() {
     leaveForum(slug as string)
   }
 
-  if (isLoading || isLoadingUser) {
-    return <p>loading....</p>
-  }
+  if (isLoading) return <DetailForumSkeleton />
 
   return (
     <section className="mx-auto md:w-10/12 lg:w-8/12">

@@ -3,12 +3,14 @@ import {
   getJoinedForumsFn,
   getMeFn,
   getMyForumFn,
+  getProfileForumsCountFn,
   updateEmailFn,
   updateMeFn,
   uploadProfilePicFn
 } from '@/api/user.api'
 import { toast } from '@/components/ui/use-toast'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { useUserInfo } from '../client'
 
 export const useGetMe = () => {
   return useQuery('me', getMeFn)
@@ -25,8 +27,9 @@ export const useGetMyForums = (page: number) => {
 export const useUpdateMe = () => {
   const queryClient = useQueryClient()
   return useMutation(updateMeFn, {
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries('me')
+      useUserInfo.getState().setUser(data)
       toast({
         title: 'Berhasil mengupdate data',
         description: 'Data profil anda berhasil diupdate'
@@ -62,12 +65,17 @@ export const useUpdateEmail = () => {
 export const useUpdateProfilePic = () => {
   const queryClient = useQueryClient()
   return useMutation(uploadProfilePicFn, {
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries('me')
+      useUserInfo.getState().setUser(data)
       toast({
         title: 'Berhasil mengupdate foto profil',
         description: 'Foto profil anda berhasil diupdate'
       })
     }
   })
+}
+
+export const useGetProfileForumsCount = () => {
+  return useQuery('profile-forums-count', async () => await getProfileForumsCountFn())
 }

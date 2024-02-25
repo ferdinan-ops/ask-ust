@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { UserType } from '@/lib/types/user.type'
-import { useGetMe } from '@/store/server/useUser'
+import { useUserInfo } from '@/store/client'
 import { HiPhone, HiPhoneXMark, HiVideoCamera } from 'react-icons/hi2'
 
 interface MediaCardProps {
@@ -12,9 +12,7 @@ interface MediaCardProps {
 }
 
 export default function MediaCard({ type, creator, onConnect, onDisconnect, loading }: MediaCardProps) {
-  const { data: user, isLoading } = useGetMe()
-
-  if (isLoading) return <p>Loading...</p>
+  const { user } = useUserInfo()
 
   return (
     <div className="mx-auto flex w-fit items-center gap-14 rounded-full border border-zinc-200 bg-zinc-100 py-2.5 pl-7 pr-5 dark:border-zinc-700 dark:bg-zinc-800">

@@ -1,16 +1,22 @@
-import { useParams } from 'react-router-dom'
+import { Navigate, useLocation, useParams } from 'react-router-dom'
 
 import { MediaRoom } from '@/components/organism'
-import { useGetMe } from '@/store/server/useUser'
-import { useGetLivekitToken } from '@/store/server/useMedia'
+import { useUserInfo } from '@/store/client'
+import { useGetLivekitToken, useGetVoiceCall } from '@/store/server/useMedia'
 
 export default function VoiceForum() {
+  const location = useLocation()
   const { voiceId } = useParams<{ slug: string; voiceId: string }>()
 
-  const { data: user, isLoading } = useGetMe()
+  const { user } = useUserInfo()
+  const { data: voice, isLoading: isLoadingVoice } = useGetVoiceCall(voiceId as string)
   const { isSuccess, data: token } = useGetLivekitToken(voiceId as string, user?.fullname as string)
 
-  if (isLoading && !isSuccess) return <div>Loading...</div>
+  if (!isSuccess) return <div>Loading...</div>
+
+  if (!isLoadingVoice && !voice) {
+    return <Navigate to="/404" replace state={{ from: location }} />
+  }
 
   return <MediaRoom audio={true} video={false} token={token as string} onDisconnected={() => console.log('')} />
 }

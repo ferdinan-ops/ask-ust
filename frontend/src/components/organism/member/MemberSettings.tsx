@@ -1,10 +1,10 @@
 import { MemberType } from '@/lib/types/member.type'
-import { useGetMe } from '@/store/server/useUser'
 import * as React from 'react'
 import { Button } from '../../ui/button'
 import { HiOutlineCog6Tooth, HiOutlineExclamationCircle } from 'react-icons/hi2'
 import { ReportMember } from '..'
 import { useNavigate } from 'react-router-dom'
+import { useUserInfo } from '@/store/client'
 
 interface MemberSettingsProps {
   admin: MemberType
@@ -16,9 +16,7 @@ interface MemberSettingsProps {
 
 export default function MemberSettings({ admin, moderators, forumId, memberId, memberUserId }: MemberSettingsProps) {
   const navigate = useNavigate()
-  const { data: user, isLoading } = useGetMe()
-
-  if (isLoading) return <p>Loading...</p>
+  const { user } = useUserInfo()
 
   return (
     <React.Fragment>

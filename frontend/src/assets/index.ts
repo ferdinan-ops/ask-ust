@@ -13,6 +13,7 @@ import LoginBg from './images/login-bg.webp'
 import RegisterBg from './images/register-bg.webp'
 import VerifyEmailBg from './images/verify-email-bg.webp'
 import ResetPasswordBg from './images/reset-password-bg.webp'
+import NotFoundBg from './images/404.webp'
 
 export {
   LoginBg,
@@ -27,5 +28,6 @@ export {
   Profile5,
   Profile6,
   Profile7,
-  Profile8
+  Profile8,
+  NotFoundBg
 }

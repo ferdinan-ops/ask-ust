@@ -35,12 +35,20 @@ export const getUserJoinForumsCount = async (userId: string) => {
   })
 }
 
+export const getUserLoginForumsCount = async (userId: string) => {
+  return await db.forum.count({ where: { user_id: userId } })
+}
+
 export const getUserByUsername = async (username: string) => {
   return await db.user.findUnique({ where: { username } })
 }
 
 export const updateUserById = async (userId: string, payload: IUserUpdatePayload) => {
-  return await db.user.update({ where: { id: userId }, data: payload })
+  return await db.user.update({
+    where: { id: userId },
+    data: payload,
+    select: userSelect.select
+  })
 }
 
 export const getUserLoginForums = async (userId: string, page: number, limit: number) => {
@@ -122,7 +130,11 @@ export const updatePhoto = async (userId: string, filename: string) => {
   const oldPhoto = user.photo
   const newPhoto = await processPhoto(oldPhoto, filename)
 
-  return await db.user.update({ where: { id: userId }, data: { photo: newPhoto } })
+  return await db.user.update({
+    where: { id: userId },
+    data: { photo: newPhoto },
+    select: userSelect.select
+  })
 }
 
 export const getUserByEmail = async (email: string) => {

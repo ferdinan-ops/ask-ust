@@ -17,6 +17,7 @@ import {
 
 import { useTitle } from '@/hooks'
 import { MemberType } from '@/lib/types/member.type'
+import { ImSpinner2 } from 'react-icons/im'
 
 export default function ContentForum() {
   const navigate = useNavigate()
@@ -31,7 +32,11 @@ export default function ContentForum() {
   useTitle(`Forum - ${forum?.title}`)
 
   if (isLoading) {
-    return <p>loading...</p>
+    return (
+      <div className="flex flex-1 lg:min-h-[calc(100vh-68px)]">
+        <ImSpinner2 className="m-auto animate-spin text-6xl" />
+      </div>
+    )
   }
 
   return (

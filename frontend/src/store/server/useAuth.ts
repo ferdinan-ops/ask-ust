@@ -12,7 +12,7 @@ import { handleOnError } from '@/lib/services/handleToast'
 
 import { AxiosError } from 'axios'
 import { useMutation, useQueryClient } from 'react-query'
-import { useToken } from '../client'
+import { useToken, useUserInfo } from '../client'
 
 export const useRegister = () => {
   return useMutation(registerFn, {
@@ -50,6 +50,7 @@ export const useLogin = () => {
     onSuccess: (data) => {
       useToken.getState().storeAccessToken(data.access_token)
       useToken.getState().storeRefreshToken(data.refresh_token)
+      useUserInfo.getState().setUser(data.user)
       toast({
         title: 'Login berhasil',
         description: 'Selamat datang di aplikasi kami'
@@ -66,6 +67,7 @@ export const useLoginWithGoogle = () => {
     onSuccess: (data) => {
       useToken.getState().storeAccessToken(data.access_token)
       useToken.getState().storeRefreshToken(data.refresh_token)
+      useUserInfo.getState().setUser(data.user)
       toast({
         title: 'Login berhasil',
         description: 'Selamat datang di aplikasi kami'

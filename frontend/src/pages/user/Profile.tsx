@@ -1,12 +1,11 @@
 import { useTitle } from '@/hooks'
 import { useGetMyForums } from '@/store/server/useUser'
 import { TabForum } from '@/components/organism'
+import { ForumResponseType } from '@/lib/types/forum.type'
 
 export default function Profile() {
   useTitle('Profil Saya')
-  const { data: forums, isSuccess } = useGetMyForums(1)
+  const { data: forums, isLoading } = useGetMyForums(1)
 
-  if (!isSuccess) return <p>Loading...</p>
-
-  return <TabForum forums={forums} />
+  return <TabForum forums={forums as ForumResponseType} isFetching={isLoading} />
 }

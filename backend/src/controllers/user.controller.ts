@@ -25,6 +25,19 @@ export const getMe = async (req: Request, res: Response) => {
   }
 }
 
+export const getProfileForumsCount = async (req: Request, res: Response) => {
+  try {
+    const loginForumCount = await UserService.getUserLoginForumsCount(req.userId as string)
+    const joinedForumCount = await UserService.getUserJoinForumsCount(req.userId as string)
+    const results = { joined_forum: joinedForumCount, my_forum: loginForumCount }
+
+    logInfo(req, 'Getting user forums count')
+    res.status(200).json({ message: 'Berhasil menampilkan data forum user', data: results })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
 export const getMyForums = async (req: Request, res: Response) => {
   const { page, limit } = req.query
 
@@ -90,10 +103,9 @@ export const updateMe = async (req: Request, res: Response) => {
     }
 
     const data = await UserService.updateUserById(req.userId as string, value)
-    const { password, token, is_email_verified: isEmailVerif, ...rest } = data
 
     logInfo(req, 'Updating user data')
-    res.status(200).json({ message: 'Berhasil mengubah data user', data: rest })
+    res.status(200).json({ message: 'Berhasil mengubah data user', data })
   } catch (error) {
     res.status(500).json({ error })
   }

@@ -16,7 +16,7 @@ apiPublic.defaults.headers.post['Content-Type'] = 'application/json'
 
 export const refreshTokenFn = async (token: string): Promise<AuthResponseType> => {
   const response = await apiPublic.post('/auth/refresh', { refresh_token: token })
-  return response.data
+  return response.data?.data
 }
 
 export const registerFn = async (payload: RegisterType) => {
@@ -32,7 +32,7 @@ export const verifyEmailFn = async (token: string) => {
 
 export const loginFn = async (payload: LoginType): Promise<AuthResponseType> => {
   const response = await apiPublic.post('/auth/login', payload)
-  return response.data
+  return response.data?.data
 }
 
 export const forgotPasswordFn = async (email: string) => {
@@ -53,5 +53,5 @@ export const logoutFn = async () => {
 
 export const loginWithGoogleFn = async (payload: { token: string }): Promise<AuthResponseType> => {
   const repsonse = await apiPublic.post('/auth/google', payload)
-  return repsonse.data
+  return repsonse.data?.data
 }
