@@ -13,7 +13,7 @@ import { useCreateForum, useGetDetailForum, useUpdateForum } from '@/store/serve
 import { forumDefaultValues } from '@/lib/defaultValues'
 import { ForumType } from '@/lib/types/forum.type'
 import { useTitle } from '@/hooks'
-import { Title } from '@/components/atoms'
+import { BackButton, Title } from '@/components/atoms'
 import { titleConfig } from '@/lib/config'
 
 const titleConf = titleConfig.createForum
@@ -34,10 +34,12 @@ export default function CreateForum() {
   })
 
   React.useEffect(() => {
-    if (isSuccess) {
-      forms.setValue('description', forum?.description)
-    }
+    if (isSuccess) forms.setValue('description', forum?.description)
   }, [isSuccess, forms, forum?.description])
+
+  React.useEffect(() => {
+    if (!id) forms.reset(forumDefaultValues)
+  }, [id, forms])
 
   const onSuccess = (data: ForumType) => {
     forms.reset(forumDefaultValues)
@@ -58,6 +60,7 @@ export default function CreateForum() {
 
   return (
     <section className="mx-auto w-full md:w-8/12">
+      <BackButton />
       <Title heading={id ? titleConf.heading.update : titleConf.heading.create} desc={titleConf.desc} />
 
       <Form {...forms}>

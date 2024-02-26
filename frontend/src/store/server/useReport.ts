@@ -14,7 +14,7 @@ export const useGetReports = (memberId: string, forumId: string) => {
 
       return [
         {
-          title: 'Pelanggaran memposting informasi pribadi',
+          title: 'Memposting informasi pribadi',
           value: POST_PERSONAL_INFORMATION
         },
         {

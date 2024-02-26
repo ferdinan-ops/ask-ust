@@ -1,5 +1,5 @@
 import { HiXMark } from 'react-icons/hi2'
-import { Button } from '../ui/button'
+import { Button } from '../../ui/button'
 import { useDisableBodyScroll } from '@/hooks'
 
 interface ImagePreviewProps {

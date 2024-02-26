@@ -1,12 +1,12 @@
 import ENV from '@/lib/environment'
 import { cn } from '@/lib/utils'
 
-interface ServerImageProps {
+interface ImageProps {
   src?: string
   className?: string
   alt: string
 }
-export default function ServerImage({ src, alt, className }: ServerImageProps) {
+export default function Image({ src, alt, className }: ImageProps) {
   return (
     <img
       alt={alt}

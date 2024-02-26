@@ -2,7 +2,7 @@ import { PiCommand, PiMagnifyingGlass } from 'react-icons/pi'
 import { HiHashtag } from 'react-icons/hi2'
 import * as React from 'react'
 
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command'
+import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../../ui/command'
 import { cn } from '@/lib/utils'
 import { useDebounce } from '@/hooks'
 import { useSearchForums } from '@/store/server/useSearch'

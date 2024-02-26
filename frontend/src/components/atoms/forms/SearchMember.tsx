@@ -1,11 +1,11 @@
 import { PiMagnifyingGlass } from 'react-icons/pi'
 import * as React from 'react'
 
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command'
-import { Button } from '../ui/button'
+import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../../ui/command'
+import { Button } from '../../ui/button'
 
-import { MemberSettings } from '../organism'
-import { ServerImage } from '.'
+import { MemberSettings } from '../../organism'
+import { Image } from '..'
 import { useSearchMembers } from '@/store/server/useSearch'
 import { useDebounce } from '@/hooks'
 import { MemberType } from '@/lib/types/member.type'
@@ -47,7 +47,7 @@ export default function SearchMember({ forumId, admin, moderators }: SearchMembe
             ) : (
               members?.map((member, index) => (
                 <CommandItem className="flex items-center gap-3.5" key={index}>
-                  <ServerImage src={member.user.photo} alt={member.user.fullname} className="h-5 w-5 rounded-full" />
+                  <Image src={member.user.photo} alt={member.user.fullname} className="h-5 w-5 rounded-full" />
                   <span className="text-sm font-medium">{member.user.fullname}</span>
                   <div className="ml-auto">
                     <MemberSettings

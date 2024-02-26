@@ -1,4 +1,4 @@
-import { ServerImage } from '@/components/atoms'
+import { Image } from '@/components/atoms'
 import { MemberType } from '@/lib/types/member.type'
 import { HiCheckBadge, HiExclamationCircle } from 'react-icons/hi2'
 import { cn } from '@/lib/utils'
@@ -17,7 +17,7 @@ export default function MemberCard({ member, forumId, moderators, admin, classNa
     <div className={cn('flex items-center justify-between', className)}>
       <div className="flex items-start gap-3">
         <div className="relative">
-          <ServerImage src={member.user.photo} alt={member.user.fullname} className="h-6 w-6 rounded-lg" />
+          <Image src={member.user.photo} alt={member.user.fullname} className="h-6 w-6 rounded-lg" />
         </div>
         <div className="flex flex-col">
           <p className="flex items-center gap-1 text-sm font-medium">

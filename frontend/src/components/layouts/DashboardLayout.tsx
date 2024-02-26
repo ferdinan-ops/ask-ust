@@ -17,7 +17,7 @@ export default function DashboardLayout() {
         {isDesktop && <Header />}
 
         {/* <section className="min-h-[calc(100vh-68px-12px)] flex-1 bg-white text-primary dark:bg-primary dark:text-white md:min-h-[calc(100vh-68px-12px)] lg:min-h-[calc(100vh-68px)]"> */}
-        <section className="flex-1 bg-white text-primary dark:bg-primary dark:text-white">
+        <section className="relative flex-1 bg-white text-primary dark:bg-primary dark:text-white">
           <Outlet />
         </section>
       </main>

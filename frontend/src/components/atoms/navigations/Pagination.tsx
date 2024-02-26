@@ -1,4 +1,4 @@
-import { Button } from '../ui/button'
+import { Button } from '../../ui/button'
 import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi2'
 
 export default function Pagination() {

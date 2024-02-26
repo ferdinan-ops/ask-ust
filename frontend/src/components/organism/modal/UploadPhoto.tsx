@@ -12,12 +12,12 @@ import { HiCamera } from 'react-icons/hi2'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { UserType } from '@/lib/types/user.type'
-import { Dropzone, ServerImage } from '@/components/atoms'
+import { Dropzone, Image } from '@/components/atoms'
 import { useForm } from 'react-hook-form'
 import { Form, FormField } from '@/components/ui/form'
 import { ChangeProfilePicType, changeProfilePicValidation } from '@/lib/validations/user.validation'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { FileWithPreview } from '@/components/atoms/Dropzone'
+import { FileWithPreview } from '@/components/atoms/forms/Dropzone'
 import { useUpdateProfilePic } from '@/store/server/useUser'
 
 interface UploadPhotoProps {
@@ -49,7 +49,7 @@ export default function UploadPhoto({ user, className }: UploadPhotoProps) {
           <div className="absolute inset-0 z-[2] flex bg-primary/60 opacity-0 transition-opacity group-hover:opacity-100">
             <HiCamera className="m-auto text-2xl text-white md:text-4xl" />
           </div>
-          <ServerImage alt={user?.fullname} src={user?.photo} className="relative z-[1] h-full w-full object-cover" />
+          <Image alt={user?.fullname} src={user?.photo} className="relative z-[1] h-full w-full object-cover" />
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-xl">

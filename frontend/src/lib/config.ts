@@ -25,7 +25,7 @@ export const titleConfig = {
   },
   member: {
     heading: 'Anggota Forum',
-    desc: 'Anda dapat melihat seluruh anggota yang tergabung dalam forum ini. Anda juga dapat mengatur peran dari anggota forum disini.'
+    desc: 'Anda dapat melihat seluruh anggota yang tergabung dalam forum ini. Anda juga dapat mencari anggota berdasarkan nama atau username.'
   },
   createForum: {
     heading: {

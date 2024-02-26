@@ -2,7 +2,7 @@ import { HiHashtag, HiOutlinePaperAirplane } from 'react-icons/hi2'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { MediaCard, MediaMenu, MemberCard, UploadFile } from '@/components/organism'
-import { SearchMember } from '@/components/atoms'
+import { Loading, SearchMember } from '@/components/atoms'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -17,7 +17,6 @@ import {
 
 import { useTitle } from '@/hooks'
 import { MemberType } from '@/lib/types/member.type'
-import { ImSpinner2 } from 'react-icons/im'
 
 export default function ContentForum() {
   const navigate = useNavigate()
@@ -31,13 +30,7 @@ export default function ContentForum() {
 
   useTitle(`Forum - ${forum?.title}`)
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-1 lg:min-h-[calc(100vh-68px)]">
-        <ImSpinner2 className="m-auto animate-spin text-6xl" />
-      </div>
-    )
-  }
+  if (isLoading) return <Loading />
 
   return (
     <section className="flex flex-col justify-between gap-7 lg:flex-row lg:p-7">

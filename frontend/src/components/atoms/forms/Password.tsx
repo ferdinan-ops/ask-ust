@@ -1,8 +1,8 @@
 import { HiEye, HiEyeSlash } from 'react-icons/hi2'
 import * as React from 'react'
 
-import { Button } from '../ui/button'
-import { Input, InputProps } from '../ui/input'
+import { Button } from '../../ui/button'
+import { Input, InputProps } from '../../ui/input'
 
 import { cn } from '@/lib/utils'
 

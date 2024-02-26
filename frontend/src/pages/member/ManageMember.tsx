@@ -1,4 +1,4 @@
-import { ServerImage, Title } from '@/components/atoms'
+import { Loading, Image, Title, BackButton } from '@/components/atoms'
 import { Alert } from '@/components/organism'
 import { Button } from '@/components/ui/button'
 import { useTitle } from '@/hooks'
@@ -34,23 +34,22 @@ export default function ManageMember() {
     updateMember({ forumId: slug as string, memberId: memberId as string, role })
   }
 
-  if (isLoading || isLoadingReport) return <p>Loading...</p>
+  if (isLoading || isLoadingReport) return <Loading />
 
   return (
     <section className="mx-auto w-full md:w-8/12">
+      <BackButton />
       <Title heading={titleConf.heading} desc={titleConf.desc} />
-      <article className="mt-8 flex items-center justify-between rounded-lg bg-zinc-100 px-4 py-3 dark:bg-white/10">
-        <div className="flex items-start gap-4">
+      <article className="mt-8 flex flex-col justify-between gap-5 rounded-lg bg-zinc-100 px-4 py-3 dark:bg-white/10 md:flex-row md:items-center md:gap-4">
+        <div className="flex flex-col items-center gap-2 md:flex-row md:items-start md:gap-4">
           <div className="relative">
-            <ServerImage
-              src={member?.user.photo}
-              alt={member?.user.fullname as string}
-              className="h-12 w-12 rounded-lg"
-            />
+            <Image src={member?.user.photo} alt={member?.user.fullname as string} className="h-12 w-12 rounded-lg" />
           </div>
-          <div className="flex flex-col">
-            <p className="truncate-1 flex items-center gap-1 text-lg font-medium">{member?.user.fullname}</p>
-            <span className="text-sm font-medium text-zinc-400 dark:text-white/40">@{member?.user.username}</span>
+          <div className="flex flex-col text-center md:text-left">
+            <p className="truncate-1 flex items-center gap-1 font-medium md:text-lg">{member?.user.fullname}</p>
+            <span className="text-xs font-medium text-zinc-400 dark:text-white/40 md:text-sm">
+              @{member?.user.username}
+            </span>
           </div>
         </div>
         {member?.role !== 'ADMIN' && (
@@ -58,12 +57,13 @@ export default function ManageMember() {
             <Button
               variant="outline"
               loading={isLoadingUpdate}
+              className="flex-1 text-xs md:flex-none md:text-sm"
               onClick={() => handleUpdateMember(member?.role === 'GUEST' ? 'MODERATOR' : 'GUEST')}
             >
               Jadikan {member?.role === 'GUEST' ? 'Moderator' : 'Guest'}
             </Button>
             <Alert title={alertConf.title} desc={alertConf.desc} btnText={alertConf.btnTxt} action={handleKickMember}>
-              <Button variant="destructive" loading={isLoadingKick}>
+              <Button variant="destructive" loading={isLoadingKick} className="flex-1 text-xs md:flex-none md:text-sm">
                 Keluarkan
               </Button>
             </Alert>
@@ -72,7 +72,7 @@ export default function ManageMember() {
       </article>
 
       <ul className="mt-6 flex flex-col gap-2 md:mt-8">
-        <h2 className="bg-primary py-2 text-center text-base font-semibold text-white dark:bg-white dark:text-primary">
+        <h2 className="bg-primary py-2 text-center text-sm font-semibold text-white dark:bg-white dark:text-primary md:text-base">
           Laporan
         </h2>
         {reports?.map((report) => (

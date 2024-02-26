@@ -1,6 +1,6 @@
 import { Accept, FileRejection, FileWithPath, useDropzone } from 'react-dropzone'
 import { HiOutlineCloudArrowUp, HiOutlineDocument, HiOutlineEye, HiTrash } from 'react-icons/hi2'
-import { Button } from '../ui/button'
+import { Button } from '../../ui/button'
 import * as React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { bytesToSize } from '@/lib/utils'

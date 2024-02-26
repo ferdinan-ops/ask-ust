@@ -9,7 +9,7 @@ import {
   ProtectedForum,
   ProtectedRoute
 } from './components/layouts'
-import ImagePreview from './components/atoms/ImagePreview'
+import ImagePreview from './components/atoms/forms/ImagePreview'
 import { Toaster } from './components/ui/toaster'
 
 import { ContentForum, CreateForum, DetailForum, Forums, VideoForum, VoiceForum } from './pages/forum'

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { HiOutlineChatBubbleBottomCenterText, HiOutlineUserGroup } from 'react-icons/hi2'
 import { ForumResponseType } from '@/lib/types/forum.type'
 import { cn } from '@/lib/utils'
-import { ServerImage } from '@/components/atoms'
+import { Image } from '@/components/atoms'
 
 interface CardForumProps {
   forums: ForumResponseType
@@ -26,7 +26,7 @@ export default function CardForum({ forums }: CardForumProps) {
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 {forum.members.slice(0, 3).map((member, index) => (
-                  <ServerImage
+                  <Image
                     key={member.id}
                     src={member?.user?.photo}
                     alt={member?.user?.fullname}
