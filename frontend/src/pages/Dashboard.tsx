@@ -1,19 +1,21 @@
 import { FollowedForumDashboard, ForumDashboard, MemberDashboard, ReportDashboard } from '@/assets'
 import { Image } from '@/components/atoms'
+import { DoughnutChart } from '@/components/organism'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { useTitle } from '@/hooks'
 import { cn, formatDate } from '@/lib/utils'
-import { useGetMembersCount, useGetReportsCount } from '@/store/server/useDashboard'
-import { useGetForum } from '@/store/server/useForum'
-import { useGetProfileForumsCount } from '@/store/server/useUser'
+import { useGetMembersCount, useGetReportsCount, useGetReportsCountByForum } from '@/store/server/useDashboard'
+import { useGetMyForums, useGetProfileForumsCount } from '@/store/server/useUser'
 
 export default function Dashboard() {
   useTitle('Dashboard')
 
+  const { data: forums } = useGetMyForums(1)
   const { data: count } = useGetProfileForumsCount()
-  const { data: forums } = useGetForum()
   const { data: reportsCount } = useGetReportsCount()
   const { data: membersCount } = useGetMembersCount()
+  const { data: reportsChart } = useGetReportsCountByForum(forums?.data[0]?.id as string)
 
   return (
     <div className="flex flex-col gap-5 xl:gap-7">
@@ -39,12 +41,31 @@ export default function Dashboard() {
           <img src={MemberDashboard} className="absolute -bottom-3 -right-3 h-[95%]" />
         </article>
       </section>
-      <section className="mt-3 grid grid-cols-1 gap-5 xl:grid-cols-4 xl:gap-7">
-        <div className="h-[230px] rounded-2xl bg-[#F7F9FB] p-6 dark:bg-white/5 xl:col-span-1">
-          <h3 className="mb-1 text-sm font-bold">Persentase Laporan</h3>
+      <section className="mt-3 grid grid-cols-1 gap-5 xl:grid-cols-5 xl:gap-7">
+        <div className="flex flex-col gap-5 rounded-2xl bg-[#F7F9FB] p-6 dark:bg-white/5 xl:col-span-2">
+          <h3 className="mb-1 text-sm font-bold">Persentase Laporan Kamu</h3>
+          <DoughnutChart
+            data={reportsChart?.map((item) => item.value) as number[]}
+            labels={reportsChart?.map((item) => item.title) as string[]}
+          >
+            <Select>
+              <SelectTrigger>
+                <SelectValue placeholder="Pilih Forum" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="apple">Apple</SelectItem>
+                  <SelectItem value="banana">Banana</SelectItem>
+                  <SelectItem value="blueberry">Blueberry</SelectItem>
+                  <SelectItem value="grapes">Grapes</SelectItem>
+                  <SelectItem value="pineapple">Pineapple</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </DoughnutChart>
         </div>
         <div className="rounded-2xl bg-[#F7F9FB] p-6 dark:bg-white/5 xl:col-span-3">
-          <h3 className="mb-1 text-sm font-bold">Forum milik kamu</h3>
+          <h3 className="mb-1 text-sm font-bold">Forum Milik Kamu</h3>
           <Table>
             <TableHeader>
               <TableRow>

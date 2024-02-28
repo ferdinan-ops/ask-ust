@@ -1,6 +1,5 @@
 import Header from './Header'
 import Leftbar from './Leftbar'
-import Rightbar from './Rightbar'
 import LogoutAlert from './LogoutAlert'
 import HeaderMobile from './HeaderMobile'
 import Alert from './Alert'
@@ -26,10 +25,11 @@ import DetailForumSkeleton from './skeleton/DetailForumSkeleton'
 
 import Section from './home/Section'
 
+import DoughnutChart from './chart/DoughnutChart'
+
 export {
   Header,
   Leftbar,
-  Rightbar,
   ReportMember,
   UploadFile,
   HeaderMobile,
@@ -47,5 +47,6 @@ export {
   AuthSkeleton,
   ForumSkeleton,
   DetailForumSkeleton,
-  Section
+  Section,
+  DoughnutChart
 }

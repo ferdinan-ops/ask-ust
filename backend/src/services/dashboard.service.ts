@@ -35,3 +35,19 @@ export const getAllMembersOnMyForumsCount = async (userId: string) => {
 
   return members.length
 }
+
+export const getReportsCountByForumId = async (forumId: string, userId: string) => {
+  const members = await db.member.findFirst({
+    where: {
+      user_id: userId,
+      forum_id: forumId
+    }
+  })
+
+  return await db.report.findMany({
+    where: {
+      member_id: members?.id,
+      forum_id: forumId
+    }
+  })
+}

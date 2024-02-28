@@ -62,7 +62,7 @@ export const getUserLoginForums = async (userId: string, page: number, limit: nu
           include: { user: userSelect }
         },
         _count: {
-          select: { messages: true, members: true }
+          select: { messages: true, members: true, reports: true }
         }
       },
       orderBy: { created_at: 'desc' }

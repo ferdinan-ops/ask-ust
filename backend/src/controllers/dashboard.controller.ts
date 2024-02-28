@@ -27,3 +27,17 @@ export const getMembersCount = async (req: Request, res: Response) => {
     res.status(500).json({ error })
   }
 }
+
+export const getReportsCountByForum = async (req: Request, res: Response) => {
+  const userId = req.userId as string
+  const forumId = req.params.forumId
+
+  try {
+    const data = await DashboardService.getReportsCountByForumId(forumId, userId)
+
+    logInfo(req, 'Getting user reports count by forum')
+    res.status(200).json({ message: 'Berhasil menampilkan data laporan user berdasarkan forum', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
