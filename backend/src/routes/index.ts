@@ -9,6 +9,7 @@ import reportRoute from './report.route'
 import livekitRoute from './livekit.route'
 import videoRoute from './video.route'
 import voiceRoute from './voice.route'
+import dashboardRoute from './dashboard.route'
 
 const _routes = [
   ['/auth', authRoute],
@@ -19,7 +20,8 @@ const _routes = [
   ['/reports', reportRoute],
   ['/livekit', livekitRoute],
   ['/video', videoRoute],
-  ['/voice', voiceRoute]
+  ['/voice', voiceRoute],
+  ['/dashboard', dashboardRoute]
 ]
 
 const routes = (app: Application) => {

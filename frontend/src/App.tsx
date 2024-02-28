@@ -20,6 +20,7 @@ import { EditProfile, Profile } from './pages/user'
 import InviteCode from './pages/InviteCode'
 import Dashboard from './pages/Dashboard'
 import NotFound from './pages/NotFound'
+import Home from './pages/Home'
 
 import { usePreviewImage } from './store/client'
 
@@ -34,6 +35,7 @@ export default function App() {
       {previewImage && <ImagePreview image={previewImage} onShow={() => setPreviewImage('')} />}
       <Toaster />
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route element={<ProtectedAuth />}>
           <Route path="/login" element={<Login />} />

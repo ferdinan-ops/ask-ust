@@ -43,7 +43,7 @@ export const getForumsFromDB = async (page: number, limit: number, search: strin
           orderBy: { created_at: 'asc' }
         },
         _count: {
-          select: { messages: true, members: true }
+          select: { messages: true, members: true, reports: true }
         }
       },
       orderBy: { created_at: 'desc' }

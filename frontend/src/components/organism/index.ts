@@ -24,6 +24,8 @@ import AuthSkeleton from './skeleton/AuthSkeleton'
 import ForumSkeleton from './skeleton/ForumSkeleton'
 import DetailForumSkeleton from './skeleton/DetailForumSkeleton'
 
+import Section from './home/Section'
+
 export {
   Header,
   Leftbar,
@@ -44,5 +46,6 @@ export {
   MemberCard,
   AuthSkeleton,
   ForumSkeleton,
-  DetailForumSkeleton
+  DetailForumSkeleton,
+  Section
 }

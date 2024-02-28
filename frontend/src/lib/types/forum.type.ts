@@ -20,6 +20,7 @@ type ForumCountType = {
   _count: {
     messages: number
     members: number
+    reports: number
   }
 }
 
