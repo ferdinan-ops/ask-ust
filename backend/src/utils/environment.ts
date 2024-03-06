@@ -9,7 +9,8 @@ const ENV = {
   emailPassword: process.env.EMAIL_PASSWORD,
   publicUrl: process.env.PUBLIC_URL,
   livekitApiKey: process.env.LIVEKIT_API_KEY,
-  livekitApiSecret: process.env.LIVEKIT_API_SECRET
+  livekitApiSecret: process.env.LIVEKIT_API_SECRET,
+  messageBatch: process.env.MESSAGE_BATCH
 }
 
 export default ENV

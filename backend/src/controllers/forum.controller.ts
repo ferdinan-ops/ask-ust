@@ -29,7 +29,7 @@ export const createForum = async (req: Request, res: Response) => {
 export const deleteForum = async (req: Request, res: Response) => {
   if (!req.params?.forumId) {
     logError(req, 'Forum id is not provided')
-    return res.status(400).json({ error: 'Forum id is not provided' })
+    return res.status(400).json({ error: 'Id forum tidak diberikan' })
   }
 
   const forumId = req.params.forumId

@@ -10,6 +10,7 @@ import livekitRoute from './livekit.route'
 import videoRoute from './video.route'
 import voiceRoute from './voice.route'
 import dashboardRoute from './dashboard.route'
+import messageRoute from './message.route'
 
 const _routes = [
   ['/auth', authRoute],
@@ -21,7 +22,8 @@ const _routes = [
   ['/livekit', livekitRoute],
   ['/video', videoRoute],
   ['/voice', voiceRoute],
-  ['/dashboard', dashboardRoute]
+  ['/dashboard', dashboardRoute],
+  ['/messages', messageRoute]
 ]
 
 const routes = (app: Application) => {

@@ -112,7 +112,6 @@ export const getForumByMemberId = async (userId: string, page: number, limit: nu
 }
 
 export const processPhoto = async (oldPhoto: string, filename: string) => {
-  console.log({ oldPhoto, filename })
   if (oldPhoto !== '') await deleteFile(oldPhoto)
   const compressedPhoto = await compressedFile(filename)
   if (compressedPhoto) {

@@ -103,8 +103,8 @@ model Report {
 model Message {
   id         String  @id @default(uuid())
   content    String  @db.Text
-  file_url   String  @db.Text
-  is_deleted Boolean
+  file_url   String  @default("")
+  is_deleted Boolean @default(false)
 
   member_id String
   member    Member @relation(fields: [member_id], references: [id], onDelete: Cascade)

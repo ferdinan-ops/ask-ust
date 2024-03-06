@@ -1,16 +1,9 @@
-import { getMembersCountFn, getReportsCountByForumFn, getReportsCountFn } from '@/api/dashboard.api'
+import { getDashboardCountsFn, getForumsUserFn, getReportsByForumFn } from '@/api/dashboard.api'
 import { useQuery } from 'react-query'
 
-export const useGetReportsCount = () => {
-  return useQuery('reportsCount', getReportsCountFn)
-}
-
-export const useGetMembersCount = () => {
-  return useQuery('membersCount', getMembersCountFn)
-}
-
-export const useGetReportsCountByForum = (forumId: string) => {
-  return useQuery(['reportsCountByForum', forumId], () => getReportsCountByForumFn(forumId), {
+export const useGetReportsByForum = (forumId: string) => {
+  return useQuery(['reportsCountByForum', forumId], () => getReportsByForumFn(forumId), {
+    enabled: !!forumId,
     select: (data) => {
       const SPAM = data?.filter((report) => report.report_category === 'SPAM').length
       const HATEFUL_BEHAVIOR = data?.filter((report) => report.report_category === 'HATEFUL_BEHAVIOR').length
@@ -22,7 +15,7 @@ export const useGetReportsCountByForum = (forumId: string) => {
 
       return [
         {
-          title: 'Memposting informasi pribadi',
+          title: 'Posting informasi pribadi',
           value: POST_PERSONAL_INFORMATION
         },
         {
@@ -48,4 +41,12 @@ export const useGetReportsCountByForum = (forumId: string) => {
       ]
     }
   })
+}
+
+export const useGetDashboardCounts = () => {
+  return useQuery('dashboardCounts', getDashboardCountsFn)
+}
+
+export const useGetForumUser = () => {
+  return useQuery('forumUser', () => getForumsUserFn())
 }

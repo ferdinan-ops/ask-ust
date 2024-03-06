@@ -22,6 +22,7 @@ import MemberCard from './member/MemberCard'
 import AuthSkeleton from './skeleton/AuthSkeleton'
 import ForumSkeleton from './skeleton/ForumSkeleton'
 import DetailForumSkeleton from './skeleton/DetailForumSkeleton'
+import DashboardSkeleton from './skeleton/DashboardSkeleton'
 
 import Section from './home/Section'
 
@@ -47,6 +48,7 @@ export {
   AuthSkeleton,
   ForumSkeleton,
   DetailForumSkeleton,
+  DashboardSkeleton,
   Section,
   DoughnutChart
 }

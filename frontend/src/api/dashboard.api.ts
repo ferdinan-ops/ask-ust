@@ -1,17 +1,18 @@
 import { ReportType } from '@/lib/types/report.type'
 import api from './axiosInstance'
+import { DashboardCountsType } from '@/lib/types/dashboard.type'
 
-export const getReportsCountFn = async (): Promise<number> => {
-  const response = await api.get('/dashboard/reports/count')
+export const getReportsByForumFn = async (forumId: string): Promise<ReportType[]> => {
+  const response = await api.get(`/dashboard/forums/${forumId}/reports`)
   return response.data?.data
 }
 
-export const getMembersCountFn = async (): Promise<number> => {
-  const response = await api.get('/dashboard/members/count')
+export const getDashboardCountsFn = async (): Promise<DashboardCountsType> => {
+  const response = await api.get('/dashboard/count')
   return response.data?.data
 }
 
-export const getReportsCountByForumFn = async (forumId: string): Promise<ReportType[]> => {
-  const response = await api.get(`/dashboard/reports/count/${forumId}`)
+export const getForumsUserFn = async (): Promise<{ title: string; id: string }[]> => {
+  const response = await api.get('/dashboard/forums')
   return response.data?.data
 }

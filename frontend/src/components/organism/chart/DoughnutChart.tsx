@@ -19,7 +19,7 @@ export default function DoughnutChart({ labels, data, children }: DoughnutChartP
   }))
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-[55px]">
       {children}
       <Doughnut
         data={{ labels, datasets: [{ data, backgroundColor: bgColor }] }}
@@ -29,7 +29,7 @@ export default function DoughnutChart({ labels, data, children }: DoughnutChartP
             legend: { display: false }
           }
         }}
-        style={{ maxHeight: 177 }}
+        style={{ maxHeight: 190 }}
       />
       <div className="grid grid-cols-1 content-between gap-3 xl:grid-cols-2">
         {formatLabels?.map((item, index) => (
