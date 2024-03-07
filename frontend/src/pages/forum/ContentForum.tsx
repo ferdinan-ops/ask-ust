@@ -1,33 +1,16 @@
-import { HiHashtag, HiOutlinePaperAirplane } from 'react-icons/hi2'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { HiHashtag } from 'react-icons/hi2'
 
-import { MediaCard, MediaMenu, MemberCard, UploadFile } from '@/components/organism'
+import { MediaMenu, MemberCard, Messages } from '@/components/organism'
 import { Loading, SearchMember } from '@/components/atoms'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-
 import { useGetDetailForum } from '@/store/server/useForum'
-import {
-  useDeleteVideoCall,
-  useDeleteVoiceCall,
-  useGetEnabledVideoCall,
-  useGetEnabledVoiceCall
-} from '@/store/server/useMedia'
-
-import { useTitle } from '@/hooks'
 import { MemberType } from '@/lib/types/member.type'
+import { useTitle } from '@/hooks'
 
 export default function ContentForum() {
-  const navigate = useNavigate()
   const { slug } = useParams<{ slug: string }>()
-
   const { data: forum, isLoading } = useGetDetailForum(slug as string)
-  const { data: video, isSuccess: isSuccessEnabledVideo } = useGetEnabledVideoCall(slug as string)
-  const { data: voice, isSuccess: isSuccessEnabledVoice } = useGetEnabledVoiceCall(slug as string)
-  const { mutate: deleteVideo, isLoading: isLoadingVideo } = useDeleteVideoCall()
-  const { mutate: deleteVoice, isLoading: isLoadingVoice } = useDeleteVoiceCall()
-
   useTitle(`Forum - ${forum?.title}`)
 
   if (isLoading) return <Loading />
@@ -51,116 +34,7 @@ export default function ContentForum() {
           </article>
           <MediaMenu forumId={slug as string} invitedCode={forum?.invite_code as string} />
         </div>
-        <div className="flex max-h-[calc(100vh-68px-57px)] flex-col lg:max-h-[calc(100vh-68px-56px-80px)] lg:min-h-[calc(100vh-68px-56px-80px)]">
-          <article className="scroll-custom flex flex-col gap-4 overflow-y-scroll p-4 md:gap-5 md:px-5 xl:py-7">
-            <div className="flex items-start gap-2">
-              <img
-                src="https://source.unsplash.com/random?man"
-                alt="profile"
-                className="h-7 w-7 rounded-full object-cover"
-              />
-              <div className="flex flex-col gap-1 rounded-b-2xl rounded-r-2xl bg-[#E5ECF6] px-3 pb-3 pt-2">
-                <div className="flex items-center gap-2">
-                  <p className="truncate-1 text-sm font-bold text-primary">John Doe</p>
-                  <p className="text-primary/60">&bull;</p>
-                  <p className="text-xs font-medium text-primary/60">21 Agustus 2023, 12:36</p>
-                </div>
-                <span className="max-w-[calc(100vw-32px-28px-8px-65px)] text-[15px] font-medium leading-relaxed text-primary/90 md:max-w-lg">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod sit, libero temporibus minima labore
-                  reiciendis deleniti placeat? <span className="text-xs text-primary/60">(diubah)</span>
-                </span>
-              </div>
-            </div>
-            <div className="flex flex-row-reverse items-start justify-start gap-2">
-              <img
-                src="https://source.unsplash.com/random?people"
-                alt="profile"
-                className="h-7 w-7 rounded-full object-cover"
-              />
-              <div className="flex flex-col gap-1 rounded-b-2xl rounded-l-2xl bg-[#95A4FC] px-3 pb-3 pt-2">
-                <div className="flex items-center gap-2">
-                  <p className="truncate-1 text-sm font-bold text-white">You</p>
-                  <p className="text-white/60">&bull;</p>
-                  <p className="text-xs font-medium text-white/70">21 Agustus 2023, 12:36</p>
-                </div>
-                <span className="max-w-[calc(100vw-32px-28px-8px-65px)] text-[15px] font-medium leading-relaxed text-white/90 md:max-w-lg">
-                  Lorem ipsum dolor sit amet consectetur adipisicing.
-                </span>
-              </div>
-            </div>
-            <div className="flex items-start gap-2">
-              <img
-                src="https://source.unsplash.com/random?woman"
-                alt="profile"
-                className="h-7 w-7 rounded-full object-cover"
-              />
-              <div className="flex w-fit flex-col gap-1 rounded-b-2xl rounded-r-2xl bg-[#E5ECF6] px-3 pb-3 pt-2">
-                <div className="flex items-center gap-2">
-                  <p className="truncate-1 text-sm font-bold text-primary">Mercy Round</p>
-                  <p className="text-primary/60">&bull;</p>
-                  <p className="text-xs font-medium text-primary/60">21 Agustus 2023, 13:40</p>
-                </div>
-                <span className="max-w-[calc(100vw-32px-28px-8px-65px)] text-[15px] font-medium leading-relaxed text-primary/90 md:max-w-lg">
-                  <span className="italic text-primary/60">Pesan ini telah dihapus</span>
-                </span>
-              </div>
-            </div>
-            <div className="flex items-start gap-2">
-              <img
-                src="https://source.unsplash.com/random?man"
-                alt="profile"
-                className="h-7 w-7 rounded-full object-cover"
-              />
-              <div className="flex w-fit flex-col gap-1 rounded-b-2xl rounded-r-2xl bg-[#E5ECF6] px-3 pb-3 pt-2">
-                <div className="flex items-center gap-2">
-                  <p className="truncate-1 text-sm font-bold text-primary">John Doe</p>
-                  <p className="text-primary/60">&bull;</p>
-                  <p className="text-xs font-medium text-primary/60">21 Agustus 2023, 13:50</p>
-                </div>
-                <span className="max-w-[calc(100vw-32px-28px-8px-65px)] text-[15px] font-medium leading-relaxed text-primary/90 md:max-w-lg">
-                  Blanditiis, similique temporibus dolorum ex optio quod enim voluptates officiis, delectus fugit illum
-                  suscipit iusto iste, est cumque amet quam praesentium molestias! Nesciunt totam accusantium sequi quis
-                  dolore quibusdam perferendis soluta a beatae consequatur unde non, in minima maiores? Fugiat nulla
-                  ipsa, amet ex tenetur, nihil tempora nam molestiae quam ad esse accusantium ut culpa!
-                </span>
-              </div>
-            </div>
-            {isSuccessEnabledVideo && (
-              <MediaCard
-                type="video"
-                creator={video.member.user}
-                loading={isLoadingVideo}
-                onConnect={() => navigate(`/forums/${slug}/voice/${video.id}`)}
-                onDisconnect={() => deleteVideo(video.id)}
-              />
-            )}
-            {isSuccessEnabledVoice && (
-              <MediaCard
-                type="audio"
-                creator={voice.member.user}
-                loading={isLoadingVoice}
-                onConnect={() => navigate(`/forums/${slug}/voice/${voice.id}`)}
-                onDisconnect={() => deleteVoice(voice.id)}
-              />
-            )}
-          </article>
-          <article className="px-4 pb-4 pt-1 md:px-5 md:pb-7">
-            <div className="sticky bottom-0 mt-auto flex w-full items-center justify-between gap-2 self-end rounded-3xl bg-[#F7F9FB] px-3 py-2 dark:bg-white/5 md:gap-4 md:px-5 md:py-[14px]">
-              <div>
-                <UploadFile />
-              </div>
-              <Input
-                className="w-full border-none bg-transparent p-0 outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-transparent"
-                placeholder="Ketik pesan"
-              />
-              <div>
-                <Button variant="messageIcon" size="icon">
-                  <HiOutlinePaperAirplane className="text-lg md:text-xl" />
-                </Button>
-              </div>
-            </div>
-          </article>
-        </div>
+        <Messages forumId={slug as string} />
       </section>
       <section className="hidden max-h-[calc(100vh-68px-56px)] min-h-[calc(100vh-68px-56px)] w-3/12 overflow-hidden rounded-lg border border-[#E9E9E9] dark:border-white/10 lg:block">
         <article className="flex flex-col">
@@ -172,7 +46,7 @@ export default function ContentForum() {
               moderators={forum?.moderators as MemberType[]}
             />
           </div>
-          <div className="scroll-custom flex max-h-[calc(100vh-68px-56px-67px)] min-h-[calc(100vh-68px-56px-67px)] flex-col gap-4 overflow-y-scroll p-4">
+          <div className="scroll-custom flex max-h-[calc(100vh-68px-56px-67px)] min-h-[calc(100vh-68px-56px-67px)] flex-col gap-4 overflow-y-auto p-4">
             {forum?.members.map((member, i) => (
               <MemberCard
                 key={i}

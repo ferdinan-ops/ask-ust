@@ -14,7 +14,7 @@ export const bytesToSize = (bytes: number): string => {
   return Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + ' ' + sizes[i]
 }
 
-export const formatDate = (date: string) => {
+export const formatDate = (date: string, type: 'with-hour' | 'without-hour' = 'without-hour') => {
   // Membuat objek Date dari string
   const tanggalObjek = new Date(date)
 
@@ -41,8 +41,12 @@ export const formatDate = (date: string) => {
 
   // Mendapatkan nama bulan dari array
   const namaBulanStr = namaBulan[bulan]
+  const hours = ('0' + tanggalObjek.getHours()).slice(-2)
+  const minutes = ('0' + tanggalObjek.getMinutes()).slice(-2)
 
   // Format output
-  const hasil = tanggal + ' ' + namaBulanStr + ' ' + tahun
-  return hasil
+  const withoutHour = tanggal + ' ' + namaBulanStr + ' ' + tahun
+  const withHour = `${withoutHour}, ${hours}:${minutes}`
+
+  return type === 'with-hour' ? withHour : withoutHour
 }

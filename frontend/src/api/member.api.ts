@@ -22,3 +22,8 @@ export const kickMemberFn = async ({ memberId, forumId }: KickMemberParams) => {
 export const reportMemberFn = async ({ forum_id, member_id, report_category }: ReportMemberParams) => {
   return await api.post(`/members/report`, { forum_id, member_id, report_category })
 }
+
+export const getMemberLoginFn = async (forumId: string): Promise<MemberType> => {
+  const response = await api.get(`/members/forum/${forumId}/detail`)
+  return response.data?.data?.members[0]
+}

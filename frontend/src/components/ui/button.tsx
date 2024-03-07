@@ -22,7 +22,8 @@ const buttonVariants = cva(
         link: 'text-zinc-900 underline-offset-4 hover:underline dark:text-zinc-50',
         messageIcon:
           'rounded-full bg-transparent dark:bg-transparent hover:bg-primary hover:text-white dark:hover:bg-white dark:hover:text-primary',
-        call: 'bg-zinc-900 text-zinc-50 hover:bg-zinc-900/90 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-900'
+        call: 'bg-zinc-900 text-zinc-50 hover:bg-zinc-900/90 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-900',
+        contextItem: 'relative flex items-center rounded-sm text-sm outline-none w-full hover:bg-zinc-100'
       },
       size: {
         default: 'h-10 px-4 py-2',
@@ -48,7 +49,8 @@ const loadingVariants = cva('flex absolute left-1/2 top-1/2 -translate-x-1/2 -tr
       ghost: 'text-zinc-800 dark:text-white',
       link: 'text-zinc-900 dark:text-zinc-50',
       messageIcon: 'text-zinc-800 dark:text-white',
-      call: 'text-zinc-50 dark:text-white'
+      call: 'text-zinc-50 dark:text-white',
+      contextItem: 'text-zinc-900 dark:text-zinc-50'
     }
   },
   defaultVariants: {

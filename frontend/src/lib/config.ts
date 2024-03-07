@@ -15,6 +15,11 @@ export const alertConfig = {
       desc: 'Tindakan ini tidak dapat dibatalkan. Tindakan ini akan mengeluarkan Anda secara permanen dari forum ini.',
       btnTxt: 'Keluar'
     }
+  },
+  messages: {
+    title: 'Anda yakin menghapus pesan ini?',
+    desc: 'Tindakan ini tidak dapat dibatalkan. Tindakan ini akan menghapus pesan ini secara permanen dari forum ini.',
+    btnTxt: 'Hapus'
   }
 }
 

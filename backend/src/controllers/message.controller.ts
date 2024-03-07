@@ -67,7 +67,7 @@ export const deleteMessage = async (req: Request, res: Response) => {
   const userId = req.userId as string
 
   try {
-    const data = await MessageService.deleteMessage(messageId, {
+    const data = await MessageService.removeMessageFromDB(messageId, {
       userId,
       forumId
     })

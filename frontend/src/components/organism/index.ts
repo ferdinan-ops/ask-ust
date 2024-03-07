@@ -28,6 +28,8 @@ import Section from './home/Section'
 
 import DoughnutChart from './chart/DoughnutChart'
 
+import Messages from './forum/message/Messages'
+
 export {
   Header,
   Leftbar,
@@ -50,5 +52,6 @@ export {
   DetailForumSkeleton,
   DashboardSkeleton,
   Section,
-  DoughnutChart
+  DoughnutChart,
+  Messages
 }

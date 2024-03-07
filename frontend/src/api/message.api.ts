@@ -1,21 +1,22 @@
-import { MessageBodyType } from '@/lib/types/message.type'
+import { DeleteMessageParamsType, MessageBodyType, MessageType } from '@/lib/types/message.type'
 import api from './axiosInstance'
 
 export const sendMessageFn = async (payload: MessageBodyType) => {
-  return await api.post('/message', payload)
+  return await api.post('/messages', payload)
 }
 
-export const updateMessageFn = async (messageId: string, payload: MessageBodyType) => {
-  const response = await api.put(`/message/${messageId}`, payload)
+export const updateMessageFn = async (payload: MessageBodyType & { messageId: string }) => {
+  const { messageId, ...rest } = payload
+  const response = await api.put(`/messages/${messageId}`, rest)
   return response.data?.data
 }
 
-export const deleteMessageFn = async (messageId: string, forumId: string) => {
-  const response = await api.delete(`/message/${messageId}/forum/${forumId}`)
+export const deleteMessageFn = async (payload: DeleteMessageParamsType) => {
+  const response = await api.delete(`/messages/${payload.messageId}/forum/${payload.forumId}`)
   return response.data?.data
 }
 
-export const getMessagesFn = async (forumId: string) => {
-  const response = await api.get(`/message/forum/${forumId}?limit=10`)
+export const getMessagesFn = async (forumId: string): Promise<MessageType[]> => {
+  const response = await api.get(`/messages/forum/${forumId}?limit=10`)
   return response.data?.data
 }

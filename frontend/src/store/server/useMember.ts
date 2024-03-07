@@ -1,4 +1,11 @@
-import { getMemberFn, getMembersFn, kickMemberFn, reportMemberFn, updateRoleMemberFn } from '@/api/member.api'
+import {
+  getMemberFn,
+  getMemberLoginFn,
+  getMembersFn,
+  kickMemberFn,
+  reportMemberFn,
+  updateRoleMemberFn
+} from '@/api/member.api'
 import { toast } from '@/components/ui/use-toast'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
@@ -47,4 +54,8 @@ export const useReportMember = () => {
       })
     }
   })
+}
+
+export const useGetMemberLogin = (forumId: string) => {
+  return useQuery(['member', forumId], () => getMemberLoginFn(forumId))
 }

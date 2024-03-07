@@ -53,7 +53,7 @@ export const editMessage = async (messageId: string, payload: IMessagePayload) =
   })
 }
 
-export const deleteMessage = async (messageId: string, payload: Omit<IMessagePayload, 'content'>) => {
+export const removeMessageFromDB = async (messageId: string, payload: Omit<IMessagePayload, 'content'>) => {
   const memberId = await getMemberId(payload.userId, payload.forumId)
 
   return await db.message.update({
@@ -82,7 +82,7 @@ export const getMessagesByForumId = async (forumId: string, limit?: number) => {
       }
     },
     orderBy: {
-      created_at: 'desc'
+      created_at: 'asc'
     }
   })
 }

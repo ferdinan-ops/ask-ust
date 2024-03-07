@@ -121,3 +121,19 @@ export const getMember = async (req: Request, res: Response) => {
     res.status(500).json({ error })
   }
 }
+
+export const getMemberLogin = async (req: Request, res: Response) => {
+  const { forumId } = req.params
+  const userId = req.userId as string
+
+  console.log(forumId)
+
+  try {
+    const data = await MemberService.getMemberByUserIdAndForumId(userId, forumId)
+
+    logInfo(req, 'Getting member login')
+    res.status(200).json({ message: 'Berhasil menampilkan member login', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
