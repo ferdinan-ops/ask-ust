@@ -19,4 +19,5 @@ export type MessageType = {
   member_id: string
   member: MemberType
   created_at: string
+  updated_at: string
 }

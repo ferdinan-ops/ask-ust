@@ -1,4 +1,10 @@
-import { deleteMessageFn, getMessagesFn, sendMessageFn, updateMessageFn } from '@/api/message.api'
+import {
+  deleteMessageBySpecificRoleFn,
+  deleteMessageFn,
+  getMessagesFn,
+  sendMessageFn,
+  updateMessageFn
+} from '@/api/message.api'
 import { handleOnError } from '@/lib/services/handleToast'
 import { AxiosError } from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
@@ -30,6 +36,18 @@ export const useEditMessage = () => {
 export const useDeleteMessage = () => {
   const queryClient = useQueryClient()
   return useMutation(deleteMessageFn, {
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries('messages')
+    }
+  })
+}
+
+export const useDeleteMessageBySpecificRole = () => {
+  const queryClient = useQueryClient()
+  return useMutation(deleteMessageBySpecificRoleFn, {
     onError: (error: AxiosError) => {
       handleOnError(error)
     },

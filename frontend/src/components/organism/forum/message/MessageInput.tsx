@@ -9,6 +9,7 @@ import { useEditMessage, useSendMessage } from '@/store/server/useMessage'
 
 interface MessageInputProps {
   forumId: string
+  messageId?: string
   content?: string
 }
 
@@ -16,7 +17,7 @@ type FormFields = {
   content: string
 }
 
-export default function MessageInput({ forumId, content }: MessageInputProps) {
+export default function MessageInput({ forumId, content, messageId }: MessageInputProps) {
   const forms = useForm<FormFields>()
   const { mutate: sendMessage, isLoading } = useSendMessage()
   const { mutate: editMessage, isLoading: isLoadingEdit } = useEditMessage()
@@ -32,7 +33,7 @@ export default function MessageInput({ forumId, content }: MessageInputProps) {
   const onSubmit = (values: FormFields) => {
     const fields = { ...values, forumId }
     if (!content) return sendMessage(fields, { onSuccess })
-    editMessage({ messageId: content, ...fields }, { onSuccess })
+    editMessage({ messageId: messageId as string, ...fields }, { onSuccess })
   }
 
   const handleSendClick = () => {

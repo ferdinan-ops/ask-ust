@@ -7,7 +7,7 @@ interface IMessagePayload extends IMessageBody {
   userId: string
 }
 
-const getMemberId = async (userId: string, forumId: string) => {
+export const getMemberInfo = async (userId: string, forumId: string) => {
   const forum = await db.forum.findFirst({
     where: {
       id: forumId,
@@ -24,42 +24,32 @@ const getMemberId = async (userId: string, forumId: string) => {
 
   const member = forum?.members.find((member) => member.user_id === userId)
 
-  return member?.id as string
+  return member
 }
 
 export const addMessage = async (payload: IMessagePayload) => {
-  const memberId = await getMemberId(payload.userId, payload.forumId)
+  const member = await getMemberInfo(payload.userId, payload.forumId)
 
   return await db.message.create({
     data: {
       content: payload.content,
       forum_id: payload.forumId,
-      member_id: memberId
+      member_id: member?.id as string
     }
   })
 }
 
-export const editMessage = async (messageId: string, payload: IMessagePayload) => {
-  const memberId = await getMemberId(payload.userId, payload.forumId)
-
+export const editMessage = async (messageId: string, content: string) => {
   return await db.message.update({
-    where: {
-      id: messageId,
-      member_id: memberId
-    },
-    data: {
-      content: payload.content
-    }
+    where: { id: messageId },
+    data: { content }
   })
 }
 
 export const removeMessageFromDB = async (messageId: string, payload: Omit<IMessagePayload, 'content'>) => {
-  const memberId = await getMemberId(payload.userId, payload.forumId)
-
   return await db.message.update({
     where: {
-      id: messageId,
-      member_id: memberId
+      id: messageId
     },
     data: {
       is_deleted: true,

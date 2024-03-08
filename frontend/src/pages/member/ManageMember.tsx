@@ -34,7 +34,7 @@ export default function ManageMember() {
     updateMember({ forumId: slug as string, memberId: memberId as string, role })
   }
 
-  if (isLoading || isLoadingReport) return <Loading />
+  if (isLoading || isLoadingReport) return <Loading className="lg:min-h-[calc(100vh-68px-68px)]" />
 
   return (
     <section className="mx-auto w-full md:w-8/12">

@@ -1,9 +1,13 @@
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { HiOutlineFlag, HiOutlinePencilSquare, HiOutlineTrash } from 'react-icons/hi2'
 
-import MessageInput from './MessageInput'
-import { Alert, MediaCard } from '../..'
 import Message from './Message'
+import { Alert, MediaCard, ReportMember } from '../..'
+import MessageInput from './MessageInput'
+
+import { Button } from '@/components/ui/button'
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu'
 
 import {
   useDeleteVideoCall,
@@ -11,26 +15,24 @@ import {
   useGetEnabledVideoCall,
   useGetEnabledVoiceCall
 } from '@/store/server/useMedia'
-import { useDeleteMessage, useGetMessages } from '@/store/server/useMessage'
-import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu'
-import { HiOutlineFlag, HiOutlinePencilSquare, HiOutlineTrash } from 'react-icons/hi2'
-import { useGetMemberLogin } from '@/store/server/useMember'
-import { alertConfig } from '@/lib/config'
-import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { alertConfig } from '@/lib/config'
+import { useGetMemberLogin } from '@/store/server/useMember'
+import { useDeleteMessage, useDeleteMessageBySpecificRole, useGetMessages } from '@/store/server/useMessage'
+import { VariantProps, cva } from 'class-variance-authority'
 
 interface MessagesProps {
   forumId: string
 }
 
 const alertConf = alertConfig.messages
-const itemClass = 'h-fit justify-start gap-3 px-2 py-1.5'
 
 export default function Messages({ forumId }: MessagesProps) {
   const navigate = useNavigate()
   const { data: messages } = useGetMessages(forumId)
   const { data: member } = useGetMemberLogin(forumId)
   const { mutate: deleteMessage } = useDeleteMessage()
+  const { mutate: deleteMessageBySpecificRole } = useDeleteMessageBySpecificRole()
 
   const { data: video, isSuccess: isSuccessEnabledVideo } = useGetEnabledVideoCall(forumId)
   const { data: voice, isSuccess: isSuccessEnabledVoice } = useGetEnabledVoiceCall(forumId)
@@ -38,9 +40,17 @@ export default function Messages({ forumId }: MessagesProps) {
   const { mutate: deleteVoice, isLoading: isLoadingVoice } = useDeleteVoiceCall()
 
   const [content, setContent] = React.useState('')
+  const [messageId, setMessageId] = React.useState('')
 
-  const handleDeleteMessage = (id: string) => {
-    deleteMessage({ forumId, messageId: id })
+  const handleEditMessage = (messageId: string, content: string) => {
+    setMessageId(messageId)
+    setContent(content)
+  }
+
+  const handleDeleteMessage = (id: string, type: 'default' | 'role' = 'default') => {
+    const fields = { forumId, messageId: id }
+    if (type === 'default') return deleteMessage(fields)
+    deleteMessageBySpecificRole(fields)
   }
 
   return (
@@ -57,37 +67,42 @@ export default function Messages({ forumId }: MessagesProps) {
                 </ContextMenuTrigger>
                 <ContextMenuContent>
                   {member?.id === message.member_id ? (
-                    <>
-                      <Button
-                        variant="contextItem"
-                        className={cn('text-primary', itemClass)}
-                        onClick={() => setContent(message.content)}
-                      >
+                    <React.Fragment>
+                      <ContextItem onClick={() => handleEditMessage(message.id, message.content)}>
                         <HiOutlinePencilSquare className="text-lg" />
                         <span className="font-semibold">Ubah</span>
-                      </Button>
+                      </ContextItem>
                       <Alert
                         title={alertConf.title}
                         desc={alertConf.desc}
                         btnText={alertConf.btnTxt}
                         action={() => handleDeleteMessage(message.id)}
                       >
-                        <Button className={cn('text-red-500 hover:text-red-500', itemClass)} variant="contextItem">
+                        <ContextItem variant="destructive">
                           <HiOutlineTrash className="text-lg" />
                           <span className="font-semibold">Hapus</span>
-                        </Button>
+                        </ContextItem>
                       </Alert>
-                    </>
+                    </React.Fragment>
                   ) : member?.role === 'GUEST' ? (
-                    <Button className={cn('text-red-500 hover:text-red-500', itemClass)} variant="contextItem">
-                      <HiOutlineFlag className="text-lg" />
-                      <span className="font-semibold">Laporkan</span>
-                    </Button>
+                    <ReportMember memberId={member.id} forumId={forumId}>
+                      <ContextItem variant="destructive">
+                        <HiOutlineFlag className="text-lg" />
+                        <span className="font-semibold">Laporkan</span>
+                      </ContextItem>
+                    </ReportMember>
                   ) : (
-                    <Button className={cn('text-red-500 hover:text-red-500', itemClass)} variant="contextItem">
-                      <HiOutlineTrash className="text-lg" />
-                      <span className="font-semibold">Hapus pesan</span>
-                    </Button>
+                    <Alert
+                      title={alertConf.title}
+                      desc={alertConf.desc}
+                      btnText={alertConf.btnTxt}
+                      action={() => handleDeleteMessage(message.id, 'role')}
+                    >
+                      <ContextItem variant="destructive">
+                        <HiOutlineTrash className="text-lg" />
+                        <span className="font-semibold">Hapus pesan</span>
+                      </ContextItem>
+                    </Alert>
                   )}
                 </ContextMenuContent>
               </ContextMenu>
@@ -113,7 +128,32 @@ export default function Messages({ forumId }: MessagesProps) {
           />
         )}
       </article>
-      <MessageInput forumId={forumId} content={content} />
+      <MessageInput forumId={forumId} content={content} messageId={messageId} />
     </div>
+  )
+}
+
+const itemVariants = cva('h-fit justify-start gap-3 px-2 py-1.5 dark:hover:bg-white/10', {
+  variants: {
+    variant: {
+      default: 'text-primary dark:text-white',
+      destructive: 'text-red-500 hover:text-red-500 dark:text-red-400'
+    }
+  },
+  defaultVariants: {
+    variant: 'default'
+  }
+})
+
+interface ContextItemProps extends VariantProps<typeof itemVariants> {
+  children?: React.ReactNode
+  onClick?: () => void
+}
+
+function ContextItem({ variant, onClick, children }: ContextItemProps) {
+  return (
+    <Button variant="contextItem" className={cn(itemVariants({ variant }))} onClick={onClick}>
+      {children}
+    </Button>
   )
 }

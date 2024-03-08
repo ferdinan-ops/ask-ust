@@ -32,6 +32,8 @@ export const updateMessage = async (req: Request, res: Response) => {
   }
 
   const messageId = req.params.messageId
+  const userId = req.userId as string
+
   const { value, error } = validMessage(req.body as IMessageBody)
   if (error) {
     logError(req, error)
@@ -39,10 +41,13 @@ export const updateMessage = async (req: Request, res: Response) => {
   }
 
   try {
-    const data = await MessageService.editMessage(messageId, {
-      ...value,
-      userId: req.userId as string
-    })
+    const member = await MessageService.getMemberInfo(userId, value.forumId)
+    if (!member) {
+      logError(req, 'Member not found')
+      return res.status(404).json({ error: 'Member tidak dapat ditemukan' })
+    }
+
+    const data = await MessageService.editMessage(messageId, value.content)
 
     logInfo(req, 'Editing message')
     res.status(200).json({ message: 'Pesan berhasil diubah', data })
@@ -67,6 +72,45 @@ export const deleteMessage = async (req: Request, res: Response) => {
   const userId = req.userId as string
 
   try {
+    const data = await MessageService.removeMessageFromDB(messageId, {
+      userId,
+      forumId
+    })
+
+    logInfo(req, 'Deleting message')
+    res.status(200).json({ message: 'Pesan berhasil dihapus', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const deleteMessageBySpecificRole = async (req: Request, res: Response) => {
+  if (!req.params?.messageId) {
+    logError(req, 'Message id is not provided')
+    return res.status(400).json({ error: 'Id pesan tidak diberikan' })
+  }
+
+  if (!req.params?.forumId) {
+    logError(req, 'Forum id is not provided')
+    return res.status(400).json({ error: 'Id forum tidak diberikan' })
+  }
+
+  const messageId = req.params.messageId
+  const forumId = req.params.forumId
+  const userId = req.userId as string
+
+  try {
+    const member = await MessageService.getMemberInfo(userId, forumId)
+    if (!member) {
+      logError(req, 'Member not found')
+      return res.status(404).json({ error: 'Member tidak dapat ditemukan' })
+    }
+
+    if (member.role === 'GUEST') {
+      logError(req, 'Access Denied')
+      return res.status(404).json({ error: 'Guest tidak dapat mengakses layanan ini' })
+    }
+
     const data = await MessageService.removeMessageFromDB(messageId, {
       userId,
       forumId

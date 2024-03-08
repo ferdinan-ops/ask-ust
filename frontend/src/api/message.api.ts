@@ -16,6 +16,11 @@ export const deleteMessageFn = async (payload: DeleteMessageParamsType) => {
   return response.data?.data
 }
 
+export const deleteMessageBySpecificRoleFn = async (payload: DeleteMessageParamsType) => {
+  const response = await api.delete(`/messages/${payload.messageId}/forum/${payload.forumId}/role`)
+  return response.data?.data
+}
+
 export const getMessagesFn = async (forumId: string): Promise<MessageType[]> => {
   const response = await api.get(`/messages/forum/${forumId}?limit=10`)
   return response.data?.data

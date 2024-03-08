@@ -35,6 +35,12 @@ export default function Message({ className, message, memberLoginId }: MessagePr
           <p className={cn('text-xs font-medium', isUserLogin ? 'text-white/70' : 'text-primary/60')}>
             {formatDate(message.created_at, 'with-hour')}
           </p>
+          {message.updated_at !== message.created_at && !message.is_deleted && (
+            <p className={cn('text-xs font-semibold italic', isUserLogin ? 'text-white/80' : 'text-primary/60')}>
+              {' '}
+              (diubah)
+            </p>
+          )}
         </div>
         <span
           className={cn(
@@ -43,9 +49,6 @@ export default function Message({ className, message, memberLoginId }: MessagePr
           )}
         >
           {message.content}
-          {/* {type === 'edited' && (
-            <span className={cn('text-xs', isUserLogin ? 'text-white/60' : 'text-primary/60')}> (diubah)</span>
-          )} */}
           {message.is_deleted && (
             <span className={cn('font-semibold italic', isUserLogin ? 'text-white/70' : 'text-primary/60')}>
               Pesan ini telah dihapus
