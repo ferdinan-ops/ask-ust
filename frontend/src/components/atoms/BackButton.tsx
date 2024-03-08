@@ -20,10 +20,13 @@ export default function BackButton({ className, action }: BackButtonProps) {
     <Button
       variant="secondary"
       onClick={handleClick}
-      className={cn('mb-3 flex items-center gap-2 md:absolute md:left-7 md:top-7 md:mb-0', className)}
+      className={cn(
+        'mb-3 flex items-center gap-2 p-0 px-3.5 lg:absolute lg:left-7 lg:top-7 lg:mb-0 lg:px-4 lg:py-2',
+        className
+      )}
     >
-      <HiArrowLeft className="text-base" />
-      <span className="hidden text-xs font-semibold md:flex">Kembali</span>
+      <HiArrowLeft className="text-sm lg:text-base" />
+      <span className="hidden text-xs font-semibold lg:flex">Kembali</span>
     </Button>
   )
 }

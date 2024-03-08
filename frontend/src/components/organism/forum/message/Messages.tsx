@@ -54,7 +54,7 @@ export default function Messages({ forumId }: MessagesProps) {
   }
 
   return (
-    <div className="flex max-h-[calc(100vh-68px-57px)] flex-col lg:max-h-[calc(100vh-68px-56px-80px)] lg:min-h-[calc(100vh-68px-56px-80px)]">
+    <div className="flex max-h-[calc(100vh-68px-57px)] min-h-[calc(100vh-68px-57px)] flex-col md:max-h-[calc(100vh-68px-80px)] md:min-h-[calc(100vh-68px-80px)] lg:max-h-[calc(100vh-68px-56px-80px)] lg:min-h-[calc(100vh-68px-56px-80px)]">
       <article className="scroll-custom flex flex-1 flex-col gap-2 overflow-y-auto p-4 md:gap-3 md:px-5 xl:py-7">
         {messages?.map((message, i) => {
           if (message.is_deleted) {
@@ -62,7 +62,7 @@ export default function Messages({ forumId }: MessagesProps) {
           } else {
             return (
               <ContextMenu key={i}>
-                <ContextMenuTrigger>
+                <ContextMenuTrigger className="w-fit">
                   <Message key={i} message={message} memberLoginId={member?.id as string} />
                 </ContextMenuTrigger>
                 <ContextMenuContent>

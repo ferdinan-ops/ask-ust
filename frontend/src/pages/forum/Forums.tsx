@@ -11,8 +11,8 @@ export default function Forums() {
     <TabForum
       forums={forums as ForumResponseType}
       isFetching={isLoading}
-      containerClassName="min-h-[calc(100vh-68px-56px)]"
-      contentClassName="min-h-[calc(100vh-68px-56px-68px)]"
+      containerClassName="lg:min-h-[calc(100vh-68px-56px)] min-h-[calc(100vh-68px-32px)]"
+      contentClassName="lg:min-h-[calc(100vh-68px-56px-68px)] min-h-[calc(100vh-68px-32px-68px)]"
     />
   )
 }
