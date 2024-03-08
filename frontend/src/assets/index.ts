@@ -29,6 +29,9 @@ import FollowedForumDashboard from './images/followed-forum.svg'
 import MemberDashboard from './images/member.svg'
 import ReportDashboard from './images/report.svg'
 
+import NoChart from './images/no-chart-illustration.svg'
+import NoTable from './images/no-table-illustration.svg'
+
 export {
   LoginBg,
   RegisterBg,
@@ -54,5 +57,7 @@ export {
   ForumDashboard,
   FollowedForumDashboard,
   MemberDashboard,
-  ReportDashboard
+  ReportDashboard,
+  NoChart,
+  NoTable
 }

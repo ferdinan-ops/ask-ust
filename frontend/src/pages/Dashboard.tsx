@@ -1,4 +1,4 @@
-import { FollowedForumDashboard, ForumDashboard, MemberDashboard, ReportDashboard } from '@/assets'
+import { FollowedForumDashboard, ForumDashboard, MemberDashboard, NoTable, ReportDashboard } from '@/assets'
 import { Image } from '@/components/atoms'
 import { DashboardSkeleton, DoughnutChart } from '@/components/organism'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
@@ -104,42 +104,52 @@ export default function Dashboard() {
         <div className="rounded-2xl bg-[#F7F9FB] p-6 dark:bg-white/5 xl:col-span-3">
           <h3 className="mb-1 text-sm font-bold">Forum Milik Kamu</h3>
           {isSuccessTable ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Judul</TableHead>
-                  <TableHead>Anggota</TableHead>
-                  <TableHead>Jumlah Pesan</TableHead>
-                  <TableHead>Jumlah Laporan</TableHead>
-                  <TableHead>Tanggal Dibuat</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {forums?.data.map((forum) => (
-                  <TableRow key={forum.id}>
-                    <TableCell className="font-semibold"># {forum.title}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center">
-                        {forum.members.slice(0, 3).map((member, index) => (
-                          <Image
-                            key={member.id}
-                            src={member?.user?.photo}
-                            alt={member?.user?.fullname}
-                            className={cn(
-                              index !== 0 && '-ml-2',
-                              'h-6 w-6 rounded-full border-2 border-[#F7F9FB] dark:border-black'
-                            )}
-                          />
-                        ))}
-                      </div>
-                    </TableCell>
-                    <TableCell>{forum._count.messages} pesan</TableCell>
-                    <TableCell>{forum._count.reports} laporan</TableCell>
-                    <TableCell>{formatDate(forum.created_at)}</TableCell>
+            forums.data.length === 0 ? (
+              <div className="m-auto flex h-full flex-col items-center justify-center gap-6">
+                <img src={NoTable} alt="no forum" className="w-1/3" />
+                <div className="flex flex-col items-center gap-1 text-center">
+                  <h1 className="text-2xl font-bold">Yah, Kamu belum memiliki forum</h1>
+                  <p>Yuk buat forum milikmu sendiri sekarang!</p>
+                </div>
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Judul</TableHead>
+                    <TableHead>Anggota</TableHead>
+                    <TableHead>Jumlah Pesan</TableHead>
+                    <TableHead>Jumlah Laporan</TableHead>
+                    <TableHead>Tanggal Dibuat</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {forums?.data.map((forum) => (
+                    <TableRow key={forum.id}>
+                      <TableCell className="font-semibold"># {forum.title}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center">
+                          {forum.members.slice(0, 3).map((member, index) => (
+                            <Image
+                              key={member.id}
+                              src={member?.user?.photo}
+                              alt={member?.user?.fullname}
+                              className={cn(
+                                index !== 0 && '-ml-2',
+                                'h-6 w-6 rounded-full border-2 border-[#F7F9FB] dark:border-black'
+                              )}
+                            />
+                          ))}
+                        </div>
+                      </TableCell>
+                      <TableCell>{forum._count.messages} pesan</TableCell>
+                      <TableCell>{forum._count.reports} laporan</TableCell>
+                      <TableCell>{formatDate(forum.created_at)}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )
           ) : (
             <DashboardSkeleton.Table />
           )}

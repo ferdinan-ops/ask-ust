@@ -15,22 +15,28 @@ export default function DoughnutChart({ labels, data, children }: DoughnutChartP
   const total = data?.reduce((acc, current) => acc + current, 0)
   const formatLabels = labels?.map((label, index) => ({
     bgColor: bgColor[index],
-    label: `${label} : ${((data[index] / total) * 100).toFixed(0)}%`
+    label: `${label} : ${total === 0 ? 0 : ((data[index] / total) * 100).toFixed(0)}%`
   }))
 
   return (
     <div className="flex flex-col gap-[55px]">
       {children}
-      <Doughnut
-        data={{ labels, datasets: [{ data, backgroundColor: bgColor }] }}
-        options={{
-          plugins: {
-            tooltip: { callbacks: { label: (item) => `${item.label} : ${item.formattedValue.replace(',', '.')} ` } },
-            legend: { display: false }
-          }
-        }}
-        style={{ maxHeight: 190 }}
-      />
+      {total === 0 ? (
+        <div className="dark: mx-auto flex h-44 w-44 rounded-full bg-zinc-200 dark:bg-white/10">
+          <div className="m-auto h-24 w-24 rounded-full bg-[#F7F9FB] dark:bg-[#242427]" />
+        </div>
+      ) : (
+        <Doughnut
+          data={{ labels, datasets: [{ data, backgroundColor: bgColor }] }}
+          options={{
+            plugins: {
+              tooltip: { callbacks: { label: (item) => `${item.label} : ${item.formattedValue.replace(',', '.')} ` } },
+              legend: { display: false }
+            }
+          }}
+          style={{ maxHeight: 190 }}
+        />
+      )}
       <div className="grid grid-cols-1 content-between gap-3 xl:grid-cols-2">
         {formatLabels?.map((item, index) => (
           <div key={index} className="flex items-center gap-2">
