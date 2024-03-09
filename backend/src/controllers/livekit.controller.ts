@@ -31,8 +31,6 @@ export const createToken = async (req: Request, res: Response) => {
 
     const token = at.toJwt()
 
-    console.log({ token, at })
-
     logInfo(req, 'Creating token')
     res.status(200).json({ message: 'Token created', token })
   } catch (error) {

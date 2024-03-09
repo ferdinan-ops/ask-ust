@@ -30,7 +30,6 @@ export const verifyGoogleToken = async (token: string) => {
   const url = 'https://www.googleapis.com/oauth2/v3/userinfo'
   const options = { headers: { Authorization: `Bearer ${token}` } }
   const response = await axios.get<IGoogleLogin>(url, options)
-  console.log(response.data)
   return response.data
 }
 
@@ -89,7 +88,6 @@ export const findUserByToken = async (token: string) => {
 }
 
 export const verifyUserEmail = async (userId: string) => {
-  console.log(userId)
   return await db.user.update({
     where: { id: userId },
     data: {

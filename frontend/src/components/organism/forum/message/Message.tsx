@@ -36,25 +36,28 @@ export default function Message({ className, message, memberLoginId }: MessagePr
             {formatDate(message.created_at, 'with-hour')}
           </p>
         </div>
-        <span
-          className={cn(
-            'max-w-[calc(100vw-32px-28px-8px-65px)] text-[15px] font-medium leading-relaxed text-primary/90 md:max-w-lg',
-            isUserLogin ? 'text-white/90' : 'text-primary'
-          )}
-        >
-          {message.content}
-          {message.updated_at !== message.created_at && !message.is_deleted && (
-            <p className={cn('text-xs font-semibold italic', isUserLogin ? 'text-white/80' : 'text-primary/60')}>
-              {' '}
-              (diubah)
-            </p>
-          )}
-          {message.is_deleted && (
-            <span className={cn('font-semibold italic', isUserLogin ? 'text-white/70' : 'text-primary/60')}>
-              Pesan ini telah dihapus
-            </span>
-          )}
-        </span>
+        {message.file_url && <Image src={message.file_url} alt="" className="max-w-[400px] rounded-lg object-cover" />}
+        {!message.file_url && (
+          <span
+            className={cn(
+              'max-w-[calc(100vw-32px-28px-8px-65px)] text-[15px] font-medium leading-relaxed text-primary/90 md:max-w-lg',
+              isUserLogin ? 'text-white/90' : 'text-primary'
+            )}
+          >
+            {message.content}
+            {message.updated_at !== message.created_at && !message.is_deleted && (
+              <p className={cn('text-xs font-semibold italic', isUserLogin ? 'text-white/80' : 'text-primary/60')}>
+                {' '}
+                (diubah)
+              </p>
+            )}
+            {message.is_deleted && (
+              <span className={cn('font-semibold italic', isUserLogin ? 'text-white/70' : 'text-primary/60')}>
+                Pesan ini telah dihapus
+              </span>
+            )}
+          </span>
+        )}
       </div>
     </section>
   )

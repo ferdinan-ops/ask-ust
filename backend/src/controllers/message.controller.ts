@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express'
 import { validMessage } from '../validations/message.validation'
 import { type IMessageBody } from '../types/message.type'
-import { logError, logInfo } from '../utils/logger'
+import { logError, logInfo, logWarn } from '../utils/logger'
 
 import * as MessageService from '../services/message.service'
 
@@ -137,6 +137,41 @@ export const getMessages = async (req: Request, res: Response) => {
 
     logInfo(req, 'Getting messages')
     res.status(200).json({ message: 'Berhasil menampilkan seluruh pesan', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const sendImage = async (req: Request, res: Response) => {
+  if (!req.file) {
+    logWarn(req, 'No file provided')
+    return res.status(400).json({ error: 'Tidak ada file yang diberikan' })
+  }
+
+  if (!req.body.forumId) {
+    logError(req, 'Forum id is not provided')
+    return res.status(400).json({ error: 'Id forum tidak diberikan' })
+  }
+
+  const filename = req.file.filename
+  const userId = req.userId as string
+  const forumId = req.body.forumId as string
+
+  try {
+    const image = await MessageService.processedImage(filename)
+    const results = await MessageService.analyzeImage(image)
+
+    const isSecure = results && Object.values(results).every((value) => value === 'VERY_UNLIKELY')
+
+    if (!isSecure) {
+      logError(req, 'Insecure image')
+      return res.status(400).json({ error: 'Gambar tidak diperbolehkan untuk diunggah' })
+    }
+
+    const data = await MessageService.uploadImage(image, forumId, userId)
+
+    logInfo(req, 'Sending image')
+    res.status(201).json({ message: 'Gambar berhasil dikirim', data })
   } catch (error) {
     res.status(500).json({ error })
   }

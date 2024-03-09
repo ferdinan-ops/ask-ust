@@ -38,8 +38,6 @@ export const deleteForum = async (req: Request, res: Response) => {
   try {
     const data = await ForumService.deleteForumById(forumId, userId)
 
-    console.log('jalan 2')
-
     logInfo(req, 'Deleting forum')
     res.status(200).json({ message: 'Forum berhasil dihapus', data })
   } catch (error) {

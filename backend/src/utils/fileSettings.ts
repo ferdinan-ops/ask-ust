@@ -16,7 +16,7 @@ export const compressedFile = async (filename: string) => {
         if (error) {
           reject(error)
         } else {
-          // fs.unlinkSync(sourcePath)
+          fs.unlinkSync(sourcePath)
           resolve(filename)
         }
       })

@@ -148,7 +148,7 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
                 Pilih file atau seret dan lepas di sini
               </p>
               <p className="text-center text-xs text-primary/40 dark:text-white/40 md:text-left">
-                JPG, PNG atau PDF, ukuran tidak lebih dari 10MB
+                JPG atau PNG ukuran tidak lebih dari 10MB
               </p>
             </div>
             <Button

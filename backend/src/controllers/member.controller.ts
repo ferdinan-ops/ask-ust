@@ -126,8 +126,6 @@ export const getMemberLogin = async (req: Request, res: Response) => {
   const { forumId } = req.params
   const userId = req.userId as string
 
-  console.log(forumId)
-
   try {
     const data = await MemberService.getMemberByUserIdAndForumId(userId, forumId)
 

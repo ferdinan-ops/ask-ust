@@ -62,7 +62,9 @@ export default function Messages({ forumId }: MessagesProps) {
           } else {
             return (
               <ContextMenu key={i}>
-                <ContextMenuTrigger className="w-fit">
+                <ContextMenuTrigger
+                  className={cn('flex w-fit items-start', (member?.id as string) === message.member_id && 'ml-auto')}
+                >
                   <Message key={i} message={message} memberLoginId={member?.id as string} />
                 </ContextMenuTrigger>
                 <ContextMenuContent>

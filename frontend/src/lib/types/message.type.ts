@@ -21,3 +21,7 @@ export type MessageType = {
   created_at: string
   updated_at: string
 }
+
+export type SendImageMessageType = {
+  image: File
+} & Omit<MessageBodyType, 'content'>

@@ -8,17 +8,33 @@ import { cn } from '@/lib/utils'
 import { Dropzone } from '@/components/atoms'
 import { useForm } from 'react-hook-form'
 import { Form, FormField } from '@/components/ui/form'
+import { FileWithPreview } from '@/components/atoms/forms/Dropzone'
+import { useSendImageMessage } from '@/store/server/useMessage'
 
 interface UploadFileProps {
   className?: string
+  forumId: string
 }
 
-export default function UploadFile({ className }: UploadFileProps) {
+interface FormFields {
+  image: File[]
+}
+
+export default function UploadFile({ className, forumId }: UploadFileProps) {
   const [open, setOpen] = React.useState(false)
+  const { mutate: sendImageMessage, isLoading } = useSendImageMessage()
 
-  const forms = useForm()
+  const forms = useForm<FormFields>()
 
-  const onSubmit = () => { }
+  const onSubmit = (values: FormFields) => {
+    const fields = { image: values.image[0], forumId }
+    sendImageMessage(fields, {
+      onSuccess: () => {
+        setOpen(false)
+        forms.reset({ image: [] })
+      }
+    })
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -37,19 +53,21 @@ export default function UploadFile({ className }: UploadFileProps) {
         <Form {...forms}>
           <form className={cn('mt-2 grid items-start gap-4', className)} onSubmit={forms.handleSubmit(onSubmit)}>
             <FormField
-              name='file'
+              name="image"
               control={forms.control}
               render={({ field }) => (
                 <Dropzone
-                  id='file'
+                  id="image"
                   closedModal={() => setOpen(false)}
                   setValue={field.onChange}
-                  fileValue={field.value}
-                  accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
+                  fileValue={field.value as FileWithPreview[]}
+                  accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'] }}
                 />
               )}
             />
-            <Button type="submit">Kirim</Button>
+            <Button type="submit" loading={isLoading}>
+              Kirim
+            </Button>
           </form>
         </Form>
       </DialogContent>

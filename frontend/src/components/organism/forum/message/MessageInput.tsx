@@ -44,7 +44,7 @@ export default function MessageInput({ forumId, content, messageId }: MessageInp
   return (
     <div className="sticky bottom-0 mt-auto flex w-full items-center justify-between gap-2 self-end bg-[#F7F9FB] px-3 py-2 dark:bg-white/5 md:gap-4 md:px-5 md:py-[13px]">
       <div>
-        <UploadFile />
+        <UploadFile forumId={forumId} />
       </div>
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="w-full">

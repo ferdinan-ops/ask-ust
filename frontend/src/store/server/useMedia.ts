@@ -55,7 +55,6 @@ export const useDeleteVideoCall = () => {
       handleOnError(error)
     },
     onSuccess: (data) => {
-      console.log('video', data)
       queryClient.invalidateQueries(['video', data.forum_id])
       toast({
         title: 'Panggilan video berhasil dihapus',

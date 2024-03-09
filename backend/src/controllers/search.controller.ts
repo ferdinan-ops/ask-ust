@@ -7,7 +7,6 @@ export const searchForum = async (req: Request, res: Response) => {
   const search = (q as string) ?? ''
 
   try {
-    console.log({ search })
     const data = await SearchService.getForumByKeyword(search)
 
     logInfo(req, 'Searching forum')

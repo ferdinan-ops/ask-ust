@@ -2,6 +2,7 @@ import {
   deleteMessageBySpecificRoleFn,
   deleteMessageFn,
   getMessagesFn,
+  sendImageFn,
   sendMessageFn,
   updateMessageFn
 } from '@/api/message.api'
@@ -48,6 +49,18 @@ export const useDeleteMessage = () => {
 export const useDeleteMessageBySpecificRole = () => {
   const queryClient = useQueryClient()
   return useMutation(deleteMessageBySpecificRoleFn, {
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries('messages')
+    }
+  })
+}
+
+export const useSendImageMessage = () => {
+  const queryClient = useQueryClient()
+  return useMutation(sendImageFn, {
     onError: (error: AxiosError) => {
       handleOnError(error)
     },

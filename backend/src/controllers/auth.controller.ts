@@ -47,7 +47,6 @@ export const verifyEmail = async (req: Request, res: Response) => {
   }
 
   try {
-    console.log('jalan 1')
     const checkToken = await AuthService.findUserByToken(value.token)
     if (!checkToken) {
       logWarn(req, 'Token is not valid')
@@ -55,7 +54,6 @@ export const verifyEmail = async (req: Request, res: Response) => {
     }
 
     const result = await AuthService.verifyUserEmail(checkToken.id)
-    console.log(result)
     logInfo(req, 'Email has been verified')
     res.status(200).json({ message: 'Email berhasil diverifikasi' })
   } catch (error) {

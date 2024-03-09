@@ -1,7 +1,11 @@
-import { userSelect } from '../utils/service'
 import { type IMessageBody } from '../types/message.type'
 import db from '../utils/db'
 import ENV from '../utils/environment'
+import { userSelect } from '../utils/service'
+import { compressedFile } from '../utils/fileSettings'
+
+import vision from '@google-cloud/vision'
+import path from 'path'
 
 interface IMessagePayload extends IMessageBody {
   userId: string
@@ -73,6 +77,35 @@ export const getMessagesByForumId = async (forumId: string, limit?: number) => {
     },
     orderBy: {
       created_at: 'asc'
+    }
+  })
+}
+
+export const processedImage = async (image: string) => {
+  const compressedImage = await compressedFile(image)
+  return compressedImage as string
+}
+
+export const analyzeImage = async (image: string) => {
+  const imagePath = path.join(__dirname, '../../storage', image)
+
+  const client = new vision.ImageAnnotatorClient({
+    keyFilename: path.resolve('./keys.json')
+  })
+
+  const [safeSearch] = await client.safeSearchDetection(imagePath)
+
+  return safeSearch.safeSearchAnnotation
+}
+
+export const uploadImage = async (image: string, forumId: string, userId: string) => {
+  const member = await getMemberInfo(userId, forumId)
+  return await db.message.create({
+    data: {
+      file_url: image,
+      content: '',
+      forum_id: forumId,
+      member_id: member?.id as string
     }
   })
 }

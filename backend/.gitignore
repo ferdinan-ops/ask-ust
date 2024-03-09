@@ -13,3 +13,5 @@ docker-compose.yml
 # misc
 DS_Store
 .package-lock.json
+
+keys.json
