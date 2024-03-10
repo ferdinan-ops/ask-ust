@@ -85,6 +85,7 @@ export const useJoinForum = () => {
       handleOnError(error)
     },
     onSuccess: (data) => {
+      queryClient.invalidateQueries('joined-forums')
       queryClient.invalidateQueries(['forums', data.id])
       toast({
         title: 'Anda berhasil bergabung',
@@ -101,7 +102,9 @@ export const useLeaveForum = () => {
       handleOnError(error)
     },
     onSuccess: (data) => {
+      queryClient.invalidateQueries('joined-forums')
       queryClient.invalidateQueries(['forums', data.id])
+
       toast({
         title: 'Anda berhasil keluar',
         description: 'Anda berhasil keluar dari forum ini'

@@ -42,6 +42,7 @@
     "react-player": "^2.14.1",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.17.0",
+    "socket.io": "^4.7.4",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
     "use-react-router-breadcrumbs": "^4.0.1",

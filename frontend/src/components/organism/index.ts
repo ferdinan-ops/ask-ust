@@ -5,6 +5,7 @@ import HeaderMobile from './HeaderMobile'
 import Alert from './Alert'
 
 import TabForum from './forum/TabForum'
+import NoForum from './forum/NoForum'
 
 import UploadFile from './modal/UploadFile'
 import UploadPhoto from './modal/UploadPhoto'
@@ -53,5 +54,6 @@ export {
   DashboardSkeleton,
   Section,
   DoughnutChart,
-  Messages
+  Messages,
+  NoForum
 }

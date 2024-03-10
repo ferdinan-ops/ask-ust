@@ -10,14 +10,15 @@ import {
 import { useToast } from '@/components/ui/use-toast'
 
 import * as React from 'react'
-import { HiCheck, HiOutlineShare } from 'react-icons/hi2'
+import { HiCheck } from 'react-icons/hi2'
 import { MdContentCopy } from 'react-icons/md'
 
 interface ShareForumProps {
   inviteCode: string
+  children: React.ReactNode
 }
 
-export default function ShareForum({ inviteCode }: ShareForumProps) {
+export default function ShareForum({ inviteCode, children }: ShareForumProps) {
   const [open, setOpen] = React.useState(false)
   const [isCopied, setIsCopied] = React.useState(false)
 
@@ -34,11 +35,7 @@ export default function ShareForum({ inviteCode }: ShareForumProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="icon" className="rounded-full border-none dark:bg-primary">
-          <HiOutlineShare className="text-lg md:text-xl" />
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader className="mb-2">
           <DialogTitle className="text-xl font-bold text-primary dark:text-white">Undang Teman Anda</DialogTitle>

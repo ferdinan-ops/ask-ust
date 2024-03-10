@@ -11,7 +11,7 @@ import { Section } from '@/components/organism'
 import { Button } from '@/components/ui/button'
 import { useTitle } from '@/hooks'
 import { HiArrowRight } from 'react-icons/hi2'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Home() {
   useTitle('Beranda')
@@ -21,7 +21,11 @@ export default function Home() {
     <>
       <header className="flex h-20 w-full items-center bg-primary">
         <nav className="mx-auto flex w-[1180px] items-center justify-between px-5 md:px-10 xl:px-0">
-          <Brand className="gap-3 text-lg font-bold text-white xl:gap-4 xl:text-xl" imageClassName="xl:w-8 w-7" />
+          <Brand
+            href="/"
+            className="gap-3 text-lg font-bold text-white xl:gap-4 xl:text-xl"
+            imageClassName="xl:w-8 w-7"
+          />
           <div className="flex items-center gap-3">
             <Button
               className="bg-white/5 text-xs font-semibold dark:bg-white/5 dark:text-white xl:text-sm"
@@ -145,7 +149,10 @@ export default function Home() {
         <Section.Container className="flex items-center justify-between gap-5 py-0">
           <Brand className="gap-2" />
           <p className="text-sm font-medium">
-            dibangun oleh <span className="font-bold">Ferdinan Imanuel Tumanggor</span>
+            dibangun oleh{' '}
+            <Link to="https://github.com/ferdinan-ops" target="_blank" className="font-bold hover:underline">
+              Ferdinan Imanuel Tumanggor
+            </Link>
           </p>
         </Section.Container>
       </footer>

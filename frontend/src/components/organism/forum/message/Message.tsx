@@ -36,7 +36,13 @@ export default function Message({ className, message, memberLoginId }: MessagePr
             {formatDate(message.created_at, 'with-hour')}
           </p>
         </div>
-        {message.file_url && <Image src={message.file_url} alt="" className="max-w-[400px] rounded-lg object-cover" />}
+        {message.file_url && (
+          <Image
+            src={message.file_url}
+            alt={message.member.user.fullname}
+            className="w-full rounded-lg object-cover md:max-w-[300px] lg:max-w-[400px]"
+          />
+        )}
         {!message.file_url && (
           <span
             className={cn(

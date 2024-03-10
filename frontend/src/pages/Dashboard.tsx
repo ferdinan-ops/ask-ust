@@ -1,6 +1,6 @@
 import { FollowedForumDashboard, ForumDashboard, MemberDashboard, NoTable, ReportDashboard } from '@/assets'
 import { Image } from '@/components/atoms'
-import { DashboardSkeleton, DoughnutChart } from '@/components/organism'
+import { DashboardSkeleton, DoughnutChart, NoForum } from '@/components/organism'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -56,9 +56,9 @@ export default function Dashboard() {
         <DashboardSkeleton.Box />
       )}
       <section className="mt-3 grid grid-cols-1 gap-5 xl:grid-cols-5 xl:gap-7">
-        <div className="flex flex-col gap-[55px] rounded-2xl bg-[#F7F9FB] p-6 dark:bg-white/5 xl:col-span-2">
-          <div className="flex items-center">
-            <h3 className="mb-1 text-sm font-bold">Persentase Laporan Kamu</h3>
+        <div className="flex flex-col gap-8 rounded-2xl bg-[#F7F9FB] p-6 dark:bg-white/5 md:gap-[55px] xl:col-span-2">
+          <div className="flex flex-col items-center gap-2 md:flex-row md:gap-0">
+            <h3 className="mb-1 text-center text-sm font-bold lg:text-left">Persentase Laporan Kamu</h3>
             <Form {...forms}>
               <form className="flex-1">
                 <FormField
@@ -74,7 +74,7 @@ export default function Dashboard() {
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="ml-auto w-[65%]">
+                          <SelectTrigger className="ml-auto w-[130px] md:w-[65%]">
                             <SelectValue placeholder="Pilih Forum" />
                           </SelectTrigger>
                         </FormControl>
@@ -105,13 +105,7 @@ export default function Dashboard() {
           <h3 className="mb-1 text-sm font-bold">Forum Milik Kamu</h3>
           {isSuccessTable ? (
             forums.data.length === 0 ? (
-              <div className="m-auto flex h-full flex-col items-center justify-center gap-6">
-                <img src={NoTable} alt="no forum" className="w-1/3" />
-                <div className="flex flex-col items-center gap-1 text-center">
-                  <h1 className="text-2xl font-bold">Yah, Kamu belum memiliki forum</h1>
-                  <p>Yuk buat forum milikmu sendiri sekarang!</p>
-                </div>
-              </div>
+              <NoForum imgSrc={NoTable} location="dashboard" type="mine" />
             ) : (
               <Table>
                 <TableHeader>

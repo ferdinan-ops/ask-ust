@@ -19,7 +19,8 @@ export const getMembersByForumId = async ({ forumId, page, limit, search }: IMem
       },
       skip: (page - 1) * limit,
       take: limit,
-      include: { user: userSelect, reports: true }
+      include: { user: userSelect, reports: true },
+      orderBy: { created_at: 'asc' }
     }),
     db.member.count({
       where: {

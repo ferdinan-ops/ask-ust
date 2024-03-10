@@ -19,7 +19,7 @@ export default function DoughnutChart({ labels, data, children }: DoughnutChartP
   }))
 
   return (
-    <div className="flex flex-col gap-[55px]">
+    <div className="flex flex-col gap-10 md:gap-[55px]">
       {children}
       {total === 0 ? (
         <div className="dark: mx-auto flex h-44 w-44 rounded-full bg-zinc-200 dark:bg-white/10">
@@ -37,7 +37,7 @@ export default function DoughnutChart({ labels, data, children }: DoughnutChartP
           style={{ maxHeight: 190 }}
         />
       )}
-      <div className="grid grid-cols-1 content-between gap-3 xl:grid-cols-2">
+      <div className="grid grid-cols-1 content-between gap-3 md:grid-cols-3 xl:grid-cols-2">
         {formatLabels?.map((item, index) => (
           <div key={index} className="flex items-center gap-2">
             <div className="h-2 w-2 rounded-full" style={{ backgroundColor: item.bgColor }}></div>

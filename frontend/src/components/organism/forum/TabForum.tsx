@@ -6,7 +6,8 @@ import { Pagination } from '@/components/atoms'
 import CardForum from './CardForum'
 import { useGetJoinedForums } from '@/store/server/useUser'
 import { cn } from '@/lib/utils'
-import { ForumSkeleton } from '..'
+import { ForumSkeleton, NoForum } from '..'
+import { NoChart } from '@/assets'
 
 interface TabsProps {
   forums: ForumResponseType
@@ -34,11 +35,23 @@ export default function TabForum({ forums, containerClassName, contentClassName,
         </TabsList>
       </div>
       <TabsContent value="all" className={cn('relative', contentClassName)}>
-        {isFetching ? <ForumSkeleton /> : <CardForum forums={forums} />}
+        {isFetching ? (
+          <ForumSkeleton />
+        ) : forums.data.length === 0 ? (
+          <NoForum imgSrc={NoChart} location="profile" type="mine" />
+        ) : (
+          <CardForum forums={forums} />
+        )}
         {forums?.data.length && forums?.data.length > 9 ? <Pagination /> : null}
       </TabsContent>
       <TabsContent value="joined" className={cn('relative', contentClassName)}>
-        {isLoading ? <ForumSkeleton /> : <CardForum forums={joinedForums as ForumResponseType} />}
+        {isLoading ? (
+          <ForumSkeleton />
+        ) : joinedForums?.data.length === 0 ? (
+          <NoForum imgSrc={NoChart} location="profile" type="followed" />
+        ) : (
+          <CardForum forums={joinedForums as ForumResponseType} />
+        )}
         {joinedForums?.data.length && joinedForums?.data.length > 9 ? <Pagination /> : null}
       </TabsContent>
     </Tabs>

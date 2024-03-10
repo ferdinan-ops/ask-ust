@@ -70,10 +70,12 @@ export default function Messages({ forumId }: MessagesProps) {
                 <ContextMenuContent>
                   {member?.id === message.member_id ? (
                     <React.Fragment>
-                      <ContextItem onClick={() => handleEditMessage(message.id, message.content)}>
-                        <HiOutlinePencilSquare className="text-lg" />
-                        <span className="font-semibold">Ubah</span>
-                      </ContextItem>
+                      {!message.file_url && (
+                        <ContextItem onClick={() => handleEditMessage(message.id, message.content)}>
+                          <HiOutlinePencilSquare className="text-lg" />
+                          <span className="font-semibold">Ubah</span>
+                        </ContextItem>
+                      )}
                       <Alert
                         title={alertConf.title}
                         desc={alertConf.desc}

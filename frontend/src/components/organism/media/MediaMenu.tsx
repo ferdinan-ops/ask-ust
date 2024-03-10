@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom'
 import { useGetDevices } from '@/hooks'
 import * as React from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { IconType } from 'react-icons'
 
 interface MediaMenuProps {
   forumId: string
@@ -43,7 +44,7 @@ export default function MediaMenu({ forumId, invitedCode }: MediaMenuProps) {
 
   return (
     <React.Fragment>
-      {(isMobile || isTablet) && (
+      {isMobile && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon" className="h-8 w-8 rounded-full p-0 dark:bg-primary">
@@ -59,10 +60,6 @@ export default function MediaMenu({ forumId, invitedCode }: MediaMenuProps) {
               <HiOutlinePhone className="text-lg" />
               <p className="text-[13px]">Panggilan suara</p>
             </DropdownMenuItem>
-            <DropdownMenuItem className="gap-2.5 font-semibold text-primary">
-              <HiOutlineShare className="text-lg" />
-              <p className="text-[13px]">Bagikan forum</p>
-            </DropdownMenuItem>
             <DropdownMenuItem
               className="gap-2.5 font-semibold text-primary"
               onClick={() => navigate(`/forums/${forumId}/member`)}
@@ -70,32 +67,45 @@ export default function MediaMenu({ forumId, invitedCode }: MediaMenuProps) {
               <HiOutlineUserGroup className="text-lg" />
               <p className="text-[13px]">Lihat anggota</p>
             </DropdownMenuItem>
+            <ShareForum inviteCode={invitedCode}>
+              <Button
+                variant="contextItem"
+                className="h-fit justify-start gap-2.5 px-2 py-1.5 font-semibold text-primary dark:hover:bg-white/10"
+              >
+                <HiOutlineShare className="text-lg" />
+                <p className="text-[13px]">Bagikan forum</p>
+              </Button>
+            </ShareForum>
           </DropdownMenuContent>
         </DropdownMenu>
       )}
-      {isDesktop && (
+      {(isDesktop || isTablet) && (
         <article className="flex items-center gap-0 md:gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            className="rounded-full border-none dark:bg-primary"
-            onClick={handleCreateVideoCall}
-            loading={isLoadingVideo}
-          >
-            <HiOutlineVideoCamera className="text-lg md:text-xl" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            className="rounded-full border-none dark:bg-primary"
-            onClick={handleCreateVoiceCall}
-            loading={isLoadingVoice}
-          >
-            <HiOutlinePhone className="text-lg md:text-xl" />
-          </Button>
-          <ShareForum inviteCode={invitedCode} />
+          <IconButton onClick={handleCreateVideoCall} icon={HiOutlineVideoCamera} loading={isLoadingVideo} />
+          <IconButton onClick={handleCreateVoiceCall} icon={HiOutlinePhone} loading={isLoadingVoice} />
+          {isTablet && <IconButton onClick={() => navigate(`/forums/${forumId}/member`)} icon={HiOutlineUserGroup} />}
+
+          <ShareForum inviteCode={invitedCode}>
+            <IconButton icon={HiOutlineShare} />
+          </ShareForum>
         </article>
       )}
     </React.Fragment>
+  )
+}
+
+interface IconButtonProps {
+  onClick?: () => void
+  icon: IconType
+  loading?: boolean
+}
+
+function IconButton({ onClick, icon: Icon, loading }: IconButtonProps) {
+  const className = 'rounded-full border-none dark:bg-primary'
+
+  return (
+    <Button variant="outline" size="icon" loading={loading} className={className} onClick={onClick}>
+      <Icon className="text-lg md:text-xl" />
+    </Button>
   )
 }

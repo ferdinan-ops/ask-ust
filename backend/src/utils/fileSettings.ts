@@ -16,7 +16,9 @@ export const compressedFile = async (filename: string) => {
         if (error) {
           reject(error)
         } else {
-          fs.unlinkSync(sourcePath)
+          // this commented line is to delete the original file
+          // but in windows, we must give permission to delete the file
+          // fs.unlinkSync(sourcePath)
           resolve(filename)
         }
       })
