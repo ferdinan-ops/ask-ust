@@ -1,5 +1,7 @@
 import path from 'path'
 import cors from 'cors'
+import http from 'http'
+import { Server } from 'socket.io'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import express, { type Application } from 'express'
@@ -8,6 +10,8 @@ import routes from './routes'
 import logger from './utils/logger'
 
 const app: Application = express()
+const server = http.createServer(app)
+const io = new Server(server)
 const port: number = 3000
 
 app.use(cookieParser())
@@ -27,6 +31,17 @@ routes(app)
 
 app.use('/storage', express.static(path.join(__dirname, '../storage')))
 
-app.listen(port, () => {
+io.on('connection', (socket) => {
+  logger.info('a user connected')
+  socket.on('sendMessage', (message) => {
+    io.emit('message', message)
+  })
+
+  socket.on('disconnect', () => {
+    logger.info('user disconnected')
+  })
+})
+
+server.listen(port, () => {
   logger.info(`Server is running at http://localhost:${port}`)
 })
