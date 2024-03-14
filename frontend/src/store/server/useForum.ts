@@ -29,8 +29,8 @@ export const useCreateForum = () => {
   })
 }
 
-export const useGetForum = () => {
-  return useQuery('forums', getForumsFn)
+export const useGetForum = (page: number) => {
+  return useQuery('forums', async () => await getForumsFn(page))
 }
 
 export const useGetDetailForum = (forumId: string) => {

@@ -7,8 +7,8 @@ export const addForumFn = async (data: AddForumType): Promise<ForumType> => {
   return response.data?.data
 }
 
-export const getForumsFn = async (): Promise<ForumResponseType> => {
-  const response = await api.get('/forums')
+export const getForumsFn = async (page: number): Promise<ForumResponseType> => {
+  const response = await api.get(`/forums?page${page}`)
   return response.data
 }
 

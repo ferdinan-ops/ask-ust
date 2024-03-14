@@ -53,7 +53,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Token sudah tidak berlaku' })
     }
 
-    const result = await AuthService.verifyUserEmail(checkToken.id)
+    await AuthService.verifyUserEmail(checkToken.id)
     logInfo(req, 'Email has been verified')
     res.status(200).json({ message: 'Email berhasil diverifikasi' })
   } catch (error) {
