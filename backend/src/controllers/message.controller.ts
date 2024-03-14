@@ -18,6 +18,9 @@ export const sendMessage = async (req: Request, res: Response) => {
       userId: req.userId as string
     })
 
+    const forumKey = `chat:${value.forumId}:messages`
+    req.io?.emit(forumKey, data)
+
     logInfo(req, 'Sending message')
     res.status(201).json({ message: 'Pesan berhasil dikirim', data })
   } catch (error) {
@@ -49,6 +52,9 @@ export const updateMessage = async (req: Request, res: Response) => {
 
     const data = await MessageService.editMessage(messageId, value.content)
 
+    const forumKey = `chat:${value.forumId}:messages:update`
+    req.io?.emit(forumKey, data)
+
     logInfo(req, 'Editing message')
     res.status(200).json({ message: 'Pesan berhasil diubah', data })
   } catch (error) {
@@ -76,6 +82,9 @@ export const deleteMessage = async (req: Request, res: Response) => {
       userId,
       forumId
     })
+
+    const forumKey = `chat:${forumId}:delete`
+    req.io?.emit(forumKey, data)
 
     logInfo(req, 'Deleting message')
     res.status(200).json({ message: 'Pesan berhasil dihapus', data })
@@ -115,6 +124,9 @@ export const deleteMessageBySpecificRole = async (req: Request, res: Response) =
       userId,
       forumId
     })
+
+    const forumKey = `chat:${forumId}:messages:delete:role`
+    req.io?.emit(forumKey, data)
 
     logInfo(req, 'Deleting message')
     res.status(200).json({ message: 'Pesan berhasil dihapus', data })
@@ -169,6 +181,9 @@ export const sendImage = async (req: Request, res: Response) => {
     }
 
     const data = await MessageService.uploadImage(image, forumId, userId)
+
+    const forumKey = `chat:${forumId}:messages:image`
+    req.io?.emit(forumKey, data)
 
     logInfo(req, 'Sending image')
     res.status(201).json({ message: 'Gambar berhasil dikirim', data })

@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button'
 
 import { useTheme } from '@/components/theme-provider'
 
+const itemClass = 'cursor-pointer items-center gap-1 font-semibold'
+
 export function ModeToggle() {
   const { setTheme } = useTheme()
 
@@ -18,15 +20,15 @@ export function ModeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme('light')} className="items-center gap-1 font-semibold">
+        <DropdownMenuItem onClick={() => setTheme('light')} className={itemClass}>
           <Sun className="mr-2 h-4 w-4" />
           <p>Light</p>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('dark')} className="items-center gap-1 font-semibold">
+        <DropdownMenuItem onClick={() => setTheme('dark')} className={itemClass}>
           <Moon className="mr-2 h-4 w-4" />
           <p>Dark</p>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('system')} className="items-center gap-1 font-semibold">
+        <DropdownMenuItem onClick={() => setTheme('system')} className={itemClass}>
           <Monitor className="mr-2 h-4 w-4" />
           <p>System</p>
         </DropdownMenuItem>
