@@ -1,8 +1,14 @@
-import { DeleteMessageParamsType, MessageBodyType, MessageType, SendImageMessageType } from '@/lib/types/message.type'
+import {
+  DeleteMessageParamsType,
+  MessageBodyType,
+  MessageResponseType,
+  SendImageMessageType
+} from '@/lib/types/message.type'
 import api from './axiosInstance'
 
 export const sendMessageFn = async (payload: MessageBodyType) => {
-  return await api.post('/messages', payload)
+  const response = await api.post('/messages', payload)
+  return response.data?.data
 }
 
 export const updateMessageFn = async (payload: MessageBodyType & { messageId: string }) => {
@@ -21,9 +27,9 @@ export const deleteMessageBySpecificRoleFn = async (payload: DeleteMessageParams
   return response.data?.data
 }
 
-export const getMessagesFn = async (forumId: string): Promise<MessageType[]> => {
-  const response = await api.get(`/messages/forum/${forumId}?limit=10`)
-  return response.data?.data
+export const getMessagesFn = async (forumId: string, cursor?: number): Promise<MessageResponseType> => {
+  const response = await api.get(`/messages/forum/${forumId}`, { params: { cursor } })
+  return response.data
 }
 
 export const sendImageFn = async (payload: SendImageMessageType) => {

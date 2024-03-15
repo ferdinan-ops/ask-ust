@@ -4,6 +4,7 @@ import { type IMessageBody } from '../types/message.type'
 import { logError, logInfo, logWarn } from '../utils/logger'
 
 import * as MessageService from '../services/message.service'
+import ENV from '../utils/environment'
 
 export const sendMessage = async (req: Request, res: Response) => {
   const { value, error } = validMessage(req.body as IMessageBody)
@@ -83,7 +84,7 @@ export const deleteMessage = async (req: Request, res: Response) => {
       forumId
     })
 
-    const forumKey = `chat:${forumId}:delete`
+    const forumKey = `chat:${forumId}:messages:update`
     req.io?.emit(forumKey, data)
 
     logInfo(req, 'Deleting message')
@@ -125,7 +126,7 @@ export const deleteMessageBySpecificRole = async (req: Request, res: Response) =
       forumId
     })
 
-    const forumKey = `chat:${forumId}:messages:delete:role`
+    const forumKey = `chat:${forumId}:messages:update`
     req.io?.emit(forumKey, data)
 
     logInfo(req, 'Deleting message')
@@ -141,14 +142,24 @@ export const getMessages = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Id forum tidak diberikan' })
   }
 
-  const { limit } = req.query
+  const { cursor } = req.query
   const forumId = req.params.forumId
 
   try {
-    const data = await MessageService.getMessagesByForumId(forumId, Number(limit))
+    let data
+    if (cursor) {
+      data = await MessageService.getMessagesByCursor(forumId, cursor as string)
+    } else {
+      data = await MessageService.getMessagesByForumId(forumId)
+    }
+
+    let nextCursor = null
+    if (data.length === Number(ENV.messageBatch)) {
+      nextCursor = data[Number(ENV.messageBatch) - 1].id
+    }
 
     logInfo(req, 'Getting messages')
-    res.status(200).json({ message: 'Berhasil menampilkan seluruh pesan', data })
+    res.status(200).json({ message: 'Berhasil menampilkan seluruh pesan', data, next_cursor: nextCursor })
   } catch (error) {
     res.status(500).json({ error })
   }
@@ -182,7 +193,7 @@ export const sendImage = async (req: Request, res: Response) => {
 
     const data = await MessageService.uploadImage(image, forumId, userId)
 
-    const forumKey = `chat:${forumId}:messages:image`
+    const forumKey = `chat:${forumId}:messages:update`
     req.io?.emit(forumKey, data)
 
     logInfo(req, 'Sending image')

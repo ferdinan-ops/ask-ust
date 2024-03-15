@@ -1,8 +1,7 @@
 import { HiOutlineHome, HiPlus } from 'react-icons/hi2'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { Breadcrumbs, Search } from '../atoms'
-import { ModeToggle } from '../mode-toggle'
+import { Breadcrumbs, Search, ModeToggle } from '../atoms'
 import { Button } from '../ui/button'
 
 export default function Header() {

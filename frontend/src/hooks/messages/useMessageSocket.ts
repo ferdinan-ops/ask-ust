@@ -4,29 +4,22 @@ import { useQueryClient } from 'react-query'
 
 import { useSocket } from '@/components/providers/SocketProvider'
 import { MessageType } from '@/lib/types/message.type'
-import { MemberType } from '@/lib/types/member.type'
-import { UserType } from '@/lib/types/user.type'
 
-type ChatSocketProps = {
+interface ChatSocketProps {
   addKey: string
   updateKey: string
   queryKey: string
+  queryForumKey?: string
 }
 
-type MessageWithMemberWithProfile = MessageType & {
-  member: MemberType & {
-    profile: UserType
-  }
-}
-
-export const useChatSocket = ({ addKey, updateKey, queryKey }: ChatSocketProps) => {
+export default function useMessageSocket({ addKey, updateKey, queryKey, queryForumKey }: ChatSocketProps) {
   const { socket } = useSocket()
   const queryClient = useQueryClient()
 
   useEffect(() => {
     if (!socket) return
 
-    socket.on(updateKey, (message: MessageWithMemberWithProfile) => {
+    socket.on(updateKey, (message: MessageType) => {
       queryClient.setQueryData([queryKey], (oldData: any) => {
         if (!oldData || !oldData.pages || oldData.pages.length === 0) {
           return oldData
@@ -35,7 +28,7 @@ export const useChatSocket = ({ addKey, updateKey, queryKey }: ChatSocketProps) 
         const newData = oldData.pages.map((page: any) => {
           return {
             ...page,
-            items: page.items.map((item: MessageWithMemberWithProfile) => {
+            data: page.data.map((item: MessageType) => {
               if (item.id === message.id) {
                 return message
               }
@@ -51,13 +44,13 @@ export const useChatSocket = ({ addKey, updateKey, queryKey }: ChatSocketProps) 
       })
     })
 
-    socket.on(addKey, (message: MessageWithMemberWithProfile) => {
+    socket.on(addKey, (message: MessageType) => {
       queryClient.setQueryData([queryKey], (oldData: any) => {
         if (!oldData || !oldData.pages || oldData.pages.length === 0) {
           return {
             pages: [
               {
-                items: [message]
+                data: [message]
               }
             ]
           }
@@ -67,12 +60,23 @@ export const useChatSocket = ({ addKey, updateKey, queryKey }: ChatSocketProps) 
 
         newData[0] = {
           ...newData[0],
-          items: [message, ...newData[0].items]
+          data: [message, ...newData[0].data]
         }
 
         return {
           ...oldData,
           pages: newData
+        }
+      })
+
+      queryClient.setQueryData([queryForumKey], (oldData: any) => {
+        if (!oldData) return oldData
+        return {
+          ...oldData,
+          _count: {
+            ...oldData._count,
+            messages: oldData._count.messages + 1
+          }
         }
       })
     })
@@ -81,5 +85,5 @@ export const useChatSocket = ({ addKey, updateKey, queryKey }: ChatSocketProps) 
       socket.off(addKey)
       socket.off(updateKey)
     }
-  }, [queryClient, addKey, queryKey, socket, updateKey])
+  }, [queryClient, addKey, queryKey, socket, updateKey, queryForumKey])
 }

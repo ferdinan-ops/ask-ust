@@ -4,8 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import './index.css'
 import App from './App.tsx'
-import { QueryProvider, GoogleProvider, SocketProvider } from './components/providers'
-import { ThemeProvider } from './components/theme-provider.tsx'
+import { QueryProvider, GoogleProvider, SocketProvider, ThemeProvider } from './components/providers'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

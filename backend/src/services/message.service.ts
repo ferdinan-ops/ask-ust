@@ -11,6 +11,14 @@ interface IMessagePayload extends IMessageBody {
   userId: string
 }
 
+const includedMessage = {
+  member: {
+    select: {
+      user: userSelect
+    }
+  }
+}
+
 export const getMemberInfo = async (userId: string, forumId: string) => {
   const forum = await db.forum.findFirst({
     where: {
@@ -39,14 +47,16 @@ export const addMessage = async (payload: IMessagePayload) => {
       content: payload.content,
       forum_id: payload.forumId,
       member_id: member?.id as string
-    }
+    },
+    include: includedMessage
   })
 }
 
 export const editMessage = async (messageId: string, content: string) => {
   return await db.message.update({
     where: { id: messageId },
-    data: { content }
+    data: { content },
+    include: includedMessage
   })
 }
 
@@ -58,13 +68,14 @@ export const removeMessageFromDB = async (messageId: string, payload: Omit<IMess
     data: {
       is_deleted: true,
       content: ''
-    }
+    },
+    include: includedMessage
   })
 }
 
-export const getMessagesByForumId = async (forumId: string, limit?: number) => {
+export const getMessagesByForumId = async (forumId: string) => {
   return await db.message.findMany({
-    take: limit ?? Number(ENV.messageBatch),
+    take: Number(ENV.messageBatch),
     where: {
       forum_id: forumId
     },
@@ -76,7 +87,30 @@ export const getMessagesByForumId = async (forumId: string, limit?: number) => {
       }
     },
     orderBy: {
-      created_at: 'asc'
+      created_at: 'desc'
+    }
+  })
+}
+
+export const getMessagesByCursor = async (forumId: string, cursor: string) => {
+  return await db.message.findMany({
+    take: Number(ENV.messageBatch),
+    skip: 1,
+    cursor: {
+      id: cursor
+    },
+    where: {
+      forum_id: forumId
+    },
+    include: {
+      member: {
+        select: {
+          user: userSelect
+        }
+      }
+    },
+    orderBy: {
+      created_at: 'desc'
     }
   })
 }
@@ -106,6 +140,7 @@ export const uploadImage = async (image: string, forumId: string, userId: string
       content: '',
       forum_id: forumId,
       member_id: member?.id as string
-    }
+    },
+    include: includedMessage
   })
 }

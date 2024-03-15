@@ -52,10 +52,10 @@ export default function Message({ className, message, memberLoginId }: MessagePr
           >
             {message.content}
             {message.updated_at !== message.created_at && !message.is_deleted && (
-              <p className={cn('text-xs font-semibold italic', isUserLogin ? 'text-white/80' : 'text-primary/60')}>
+              <span className={cn('text-xs font-semibold italic', isUserLogin ? 'text-white/80' : 'text-primary/60')}>
                 {' '}
                 (diubah)
-              </p>
+              </span>
             )}
             {message.is_deleted && (
               <span className={cn('font-semibold italic', isUserLogin ? 'text-white/70' : 'text-primary/60')}>

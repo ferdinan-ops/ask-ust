@@ -9,9 +9,11 @@ import Pagination from './navigations/Pagination'
 import Breadcrumbs from './navigations/Breadcrumbs'
 
 import Image from './Image'
+import Brand from './Brand'
 import Title from './Title'
 import Loading from './Loading'
 import BackButton from './BackButton'
+import ModeToggle from './ModeToggle'
 
 export {
   ActiveLink,
@@ -25,5 +27,7 @@ export {
   Image,
   Title,
   Loading,
-  BackButton
+  BackButton,
+  ModeToggle,
+  Brand
 }

@@ -3,11 +3,11 @@ import { Monitor, Moon, Sun } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 
-import { useTheme } from '@/components/theme-provider'
+import { useTheme } from '@/components/providers/ThemeProvider'
 
 const itemClass = 'cursor-pointer items-center gap-1 font-semibold'
 
-export function ModeToggle() {
+export default function ModeToggle() {
   const { setTheme } = useTheme()
 
   return (

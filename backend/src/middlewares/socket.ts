@@ -1,16 +1,21 @@
 import { Server as ServerIO } from 'socket.io'
 import type http from 'http'
+import logger from '../utils/logger'
 
 let io: ServerIO
 
 export const initializeSocket = (server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>) => {
-  io = new ServerIO(server)
+  io = new ServerIO(server, {
+    cors: {
+      origin: '*'
+    }
+  })
 
   io.on('connection', (socket) => {
-    console.log('a user connected')
+    logger.info('a user connected')
 
     socket.on('disconnect', () => {
-      console.log('user disconnected')
+      logger.error('user disconnected')
     })
   })
 }

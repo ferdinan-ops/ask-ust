@@ -8,7 +8,7 @@ import {
 } from '@/api/message.api'
 import { handleOnError } from '@/lib/services/handleToast'
 import { AxiosError } from 'axios'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { useInfiniteQuery, useMutation, useQueryClient } from 'react-query'
 
 export const useSendMessage = () => {
   const queryClient = useQueryClient()
@@ -71,5 +71,9 @@ export const useSendImageMessage = () => {
 }
 
 export const useGetMessages = (forumId: string) => {
-  return useQuery(['messages', forumId], () => getMessagesFn(forumId))
+  return useInfiniteQuery({
+    queryKey: `messages:${forumId}`,
+    queryFn: ({ pageParam }) => getMessagesFn(forumId, pageParam),
+    getNextPageParam: (lastPage) => lastPage?.next_cursor
+  })
 }

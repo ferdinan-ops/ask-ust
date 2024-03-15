@@ -22,6 +22,11 @@ export type MessageType = {
   updated_at: string
 }
 
+export type MessageResponseType = {
+  data: MessageType[]
+  next_cursor: string
+}
+
 export type SendImageMessageType = {
   image: File
 } & Omit<MessageBodyType, 'content'>

@@ -1,7 +1,6 @@
 import { HiBars3 } from 'react-icons/hi2'
 
-import { ModeToggle } from '../mode-toggle'
-import Brand from '../atoms/Brand'
+import { Brand, ModeToggle } from '../atoms'
 
 interface HeaderMobileProps {
   action?: () => void

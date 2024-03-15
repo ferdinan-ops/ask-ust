@@ -34,7 +34,7 @@ export const useGetForum = (page: number) => {
 }
 
 export const useGetDetailForum = (forumId: string) => {
-  return useQuery(['forums', forumId], async () => await getForumByIdFn(forumId), {
+  return useQuery(`forums:${forumId}`, async () => await getForumByIdFn(forumId), {
     enabled: !!forumId,
     select: (data) => {
       return {
@@ -53,7 +53,7 @@ export const useUpdateForum = () => {
       handleOnError(error)
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['forums', data.id])
+      queryClient.invalidateQueries(`forums:${data.id}`)
       toast({
         title: 'Forum berhasil diupdate',
         description: 'Forum anda berhasil diupdate dan dapat dilihat oleh semua orang'
@@ -69,7 +69,7 @@ export const useDeleteForum = () => {
       handleOnError(error)
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['forums', data.id])
+      queryClient.invalidateQueries(`forums:${data.id}`)
       toast({
         title: 'Forum berhasil dihapus',
         description: 'Forum anda berhasil dihapus secara permanen dari sistem'
@@ -86,7 +86,7 @@ export const useJoinForum = () => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries('joined-forums')
-      queryClient.invalidateQueries(['forums', data.id])
+      queryClient.invalidateQueries(`forums:${data.id}`)
       toast({
         title: 'Anda berhasil bergabung',
         description: 'Anda berhasil bergabung dengan forum ini'
@@ -103,7 +103,7 @@ export const useLeaveForum = () => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries('joined-forums')
-      queryClient.invalidateQueries(['forums', data.id])
+      queryClient.invalidateQueries(`forums:${data.id}`)
 
       toast({
         title: 'Anda berhasil keluar',
@@ -120,7 +120,7 @@ export const useInviteCodeForum = () => {
       handleOnError(error)
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['forums', data.id])
+      queryClient.invalidateQueries(`forums:${data.id}`)
       toast({
         title: 'Anda berhasil bergabung',
         description: 'Anda berhasil bergabung dengan forum ini'

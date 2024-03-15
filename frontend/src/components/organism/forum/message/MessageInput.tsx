@@ -18,12 +18,15 @@ type FormFields = {
 }
 
 export default function MessageInput({ forumId, content, messageId }: MessageInputProps) {
-  const forms = useForm<FormFields>()
+  const forms = useForm<FormFields>({
+    defaultValues: { content: '' }
+  })
+
   const { mutate: sendMessage, isLoading } = useSendMessage()
   const { mutate: editMessage, isLoading: isLoadingEdit } = useEditMessage()
 
   React.useEffect(() => {
-    if (content) forms.setValue('content', content)
+    if (content) forms.reset({ content })
   }, [content, forms])
 
   const onSuccess = () => {
