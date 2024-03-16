@@ -67,7 +67,8 @@ export const removeMessageFromDB = async (messageId: string, payload: Omit<IMess
     },
     data: {
       is_deleted: true,
-      content: ''
+      content: '',
+      file_url: ''
     },
     include: includedMessage
   })

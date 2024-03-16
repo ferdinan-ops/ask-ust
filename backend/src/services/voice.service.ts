@@ -3,6 +3,14 @@ import db from '../utils/db'
 import ENV from '../utils/environment'
 import { userSelect } from '../utils/service'
 
+const voiceInclude = {
+  member: {
+    include: {
+      user: userSelect
+    }
+  }
+}
+
 export const enabledVoiceCall = async (forumId: string, userId: string) => {
   const member = await db.member.findFirst({
     where: {
@@ -11,7 +19,7 @@ export const enabledVoiceCall = async (forumId: string, userId: string) => {
     }
   })
 
-  return await db.forum.update({
+  const forum = await db.forum.update({
     where: { id: forumId },
     data: {
       voice: {
@@ -22,9 +30,13 @@ export const enabledVoiceCall = async (forumId: string, userId: string) => {
       }
     },
     include: {
-      voice: true
+      voice: {
+        include: voiceInclude
+      }
     }
   })
+
+  return forum.voice
 }
 
 export const sendVoiceCallInvite = async (forumId: string) => {
@@ -74,7 +86,8 @@ export const removeVoiceCallById = async (voiceId: string, userId: string) => {
   return await db.voice.delete({
     where: {
       id: voiceId
-    }
+    },
+    include: voiceInclude
   })
 }
 

@@ -3,6 +3,14 @@ import ENV from '../utils/environment'
 import sendMail from '../middlewares/mailer'
 import { userSelect } from '../utils/service'
 
+const videoInclude = {
+  member: {
+    include: {
+      user: userSelect
+    }
+  }
+}
+
 export const enabledVideoCall = async (forumId: string, userId: string) => {
   const member = await db.member.findFirst({
     where: {
@@ -11,7 +19,7 @@ export const enabledVideoCall = async (forumId: string, userId: string) => {
     }
   })
 
-  return await db.forum.update({
+  const forum = await db.forum.update({
     where: { id: forumId },
     data: {
       video: {
@@ -22,9 +30,13 @@ export const enabledVideoCall = async (forumId: string, userId: string) => {
       }
     },
     include: {
-      video: true
+      video: {
+        include: videoInclude
+      }
     }
   })
+
+  return forum.video
 }
 
 export const sendVideoCallInvite = async (forumId: string) => {
@@ -60,19 +72,14 @@ export const sendVideoCallInvite = async (forumId: string) => {
 export const getVideoCallById = async (videoId: string) => {
   return await db.video.findUnique({
     where: { id: videoId },
-    include: {
-      member: {
-        include: {
-          user: userSelect
-        }
-      }
-    }
+    include: videoInclude
   })
 }
 
 export const removeVideoCallById = async (videoId: string, userId: string) => {
   return await db.video.delete({
-    where: { id: videoId }
+    where: { id: videoId },
+    include: videoInclude
   })
 }
 
@@ -82,12 +89,6 @@ export const getEnabledVideoCallByForumId = async (forumId: string) => {
       forum_id: forumId,
       is_enabled: true
     },
-    include: {
-      member: {
-        include: {
-          user: userSelect
-        }
-      }
-    }
+    include: videoInclude
   })
 }

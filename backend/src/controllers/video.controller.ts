@@ -16,6 +16,9 @@ export const createVideoCall = async (req: Request, res: Response) => {
     const data = await VideoService.enabledVideoCall(forumId, memberId)
     await VideoService.sendVideoCallInvite(forumId)
 
+    const forumKey = `video:${forumId}:enabled`
+    req.io?.emit(forumKey, data)
+
     logInfo(req, 'Creating video call')
     res.status(200).json({ message: 'Berhasil membuat video call', data })
   } catch (error) {
@@ -35,6 +38,10 @@ export const deleteVideoCall = async (req: Request, res: Response) => {
     }
 
     const data = await VideoService.removeVideoCallById(videoId, userId)
+
+    const forumKey = `video:${isVideoCallExist.forum_id}:disabled`
+    req.io?.emit(forumKey, data)
+
     logInfo(req, 'Deleting video call')
     res.status(200).json({ message: 'Berhasil menghapus video call', data })
   } catch (error) {
@@ -47,6 +54,8 @@ export const getVideoCall = async (req: Request, res: Response) => {
 
   try {
     const data = await VideoService.getVideoCallById(videoId)
+
+    console.log(data)
 
     logInfo(req, 'Getting video call')
     res.status(200).json({ message: 'Berhasil mendapatkan video call', data })

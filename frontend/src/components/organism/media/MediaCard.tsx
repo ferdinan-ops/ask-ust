@@ -25,6 +25,7 @@ export default function MediaCard({ type, creator, onConnect, onDisconnect, load
       <div className="flex items-center gap-3">
         <Button
           size="icon"
+          type="button"
           variant="outline"
           onClick={onConnect}
           className="h-8 w-8 rounded-full border-none bg-indigo-500 text-lg text-white hover:bg-indigo-600 dark:bg-indigo-700 hover:dark:bg-indigo-800"
@@ -33,6 +34,7 @@ export default function MediaCard({ type, creator, onConnect, onDisconnect, load
         </Button>
         {user?.id === creator.id && (
           <Button
+            type="button"
             size="icon"
             variant="destructive"
             loading={loading}

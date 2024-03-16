@@ -15,6 +15,9 @@ export const createVoiceCall = async (req: Request, res: Response) => {
     const data = await VoiceService.enabledVoiceCall(forumId, memberId)
     await VoiceService.sendVoiceCallInvite(forumId)
 
+    const forumKey = `voice:${forumId}:enabled`
+    req.io?.emit(forumKey, data)
+
     logInfo(req, 'Creating voice call')
     res.status(200).json({ message: 'Berhasil membuat voice call', data })
   } catch (error) {
@@ -34,6 +37,10 @@ export const deleteVoiceCall = async (req: Request, res: Response) => {
     }
 
     const data = await VoiceService.removeVoiceCallById(voiceId, userId)
+
+    const forumKey = `voice:${isVoiceCallExist.forum_id}:disabled`
+    req.io?.emit(forumKey, data)
+
     logInfo(req, 'Deleting voice call')
     res.status(200).json({ message: 'Berhasil menghapus voice call', data })
   } catch (error) {

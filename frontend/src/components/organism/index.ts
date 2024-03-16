@@ -16,6 +16,7 @@ import ShareForum from './modal/ShareForum'
 import MediaCard from './media/MediaCard'
 import MediaRoom from './media/MediaRoom'
 import MediaMenu from './media/MediaMenu'
+import MediaAction from './media/MediaAction'
 
 import MemberSettings from './member/MemberSettings'
 import MemberCard from './member/MemberCard'
@@ -47,6 +48,7 @@ export {
   MediaRoom,
   MediaCard,
   MediaMenu,
+  MediaAction,
   MemberCard,
   AuthSkeleton,
   ForumSkeleton,

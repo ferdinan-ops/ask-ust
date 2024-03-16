@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom'
 import { HiHashtag } from 'react-icons/hi2'
 
 import { MediaMenu, MemberCard, Messages } from '@/components/organism'
-import { Loading, SearchMember } from '@/components/atoms'
+import { ContentBox, Loading, SearchMember } from '@/components/atoms'
 
 import { useGetDetailForum } from '@/store/server/useForum'
 import { MemberType } from '@/lib/types/member.type'
@@ -17,8 +17,8 @@ export default function ContentForum() {
 
   return (
     <section className="flex flex-col justify-between gap-7 lg:flex-row lg:p-7">
-      <section className="rounded-lg border-[#E9E9E9] dark:border-white/10 dark:bg-primary lg:max-h-[calc(100vh-68px-56px)] lg:min-h-[calc(100vh-68px-56px)] lg:w-9/12 lg:border">
-        <div className="flex items-center justify-between gap-4 border-b p-2 dark:border-white/10 md:p-4">
+      <ContentBox className="rounded-lg border-[#E9E9E9] dark:border-white/10 dark:bg-primary lg:w-9/12 lg:border">
+        <ContentBox.Header>
           <article className="flex items-start gap-3">
             <div className="flex h-8 w-8 rounded-full border-none bg-zinc-100 dark:bg-zinc-800 md:h-10 md:w-10">
               <HiHashtag className="m-auto text-lg md:text-xl" />
@@ -33,20 +33,21 @@ export default function ContentForum() {
             </div>
           </article>
           <MediaMenu forumId={slug as string} invitedCode={forum?.invite_code as string} />
-        </div>
+        </ContentBox.Header>
         <Messages forumId={slug as string} />
-      </section>
-      <section className="hidden max-h-[calc(100vh-68px-56px)] min-h-[calc(100vh-68px-56px)] w-3/12 overflow-hidden rounded-lg border border-[#E9E9E9] dark:border-white/10 lg:block">
+      </ContentBox>
+
+      <ContentBox className="hidden w-3/12 overflow-hidden rounded-lg border border-[#E9E9E9] dark:border-white/10 lg:block">
         <article className="flex flex-col">
-          <div className="flex items-center justify-between border-b border-[#E9E9E9] p-4 dark:border-white/10">
+          <ContentBox.Header>
             <h4 className="text-sm font-semibold">{forum?._count.members} Anggota</h4>
             <SearchMember
               forumId={slug as string}
               admin={forum?.admin as MemberType}
               moderators={forum?.moderators as MemberType[]}
             />
-          </div>
-          <div className="scroll-custom flex max-h-[calc(100vh-68px-56px-67px)] min-h-[calc(100vh-68px-56px-67px)] flex-col gap-4 overflow-y-auto p-4">
+          </ContentBox.Header>
+          <ContentBox.Scroll className="gap-4">
             {forum?.members.map((member, i) => (
               <MemberCard
                 key={i}
@@ -56,9 +57,9 @@ export default function ContentForum() {
                 admin={forum.admin as MemberType}
               />
             ))}
-          </div>
+          </ContentBox.Scroll>
         </article>
-      </section>
+      </ContentBox>
     </section>
   )
 }

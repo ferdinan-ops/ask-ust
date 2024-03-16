@@ -14,6 +14,7 @@ import Title from './Title'
 import Loading from './Loading'
 import BackButton from './BackButton'
 import ModeToggle from './ModeToggle'
+import ContentBox from './ContentBox'
 
 export {
   ActiveLink,
@@ -29,5 +30,6 @@ export {
   Loading,
   BackButton,
   ModeToggle,
-  Brand
+  Brand,
+  ContentBox
 }

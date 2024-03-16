@@ -21,5 +21,7 @@ export default function VideoForum() {
     return <Navigate to="/404" replace state={{ from: location }} />
   }
 
-  return <MediaRoom audio={true} video={true} token={token as string} onDisconnected={() => console.log('')} />
+  return (
+    <MediaRoom audio={true} video={true} token={token as unknown as string} onDisconnected={() => console.log('')} />
+  )
 }

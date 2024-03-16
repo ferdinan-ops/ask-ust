@@ -9,6 +9,9 @@ import useTitle from './useTitle'
 import useMessageScroll from './messages/useMessageScroll'
 import useMessageSocket from './messages/useMessageSocket'
 
+import useVideoSocket from './media/useVideoSocket'
+import useVoiceSocket from './media/useVoiceSocket'
+
 export {
   useTitle,
   useOutsideClick,
@@ -18,5 +21,7 @@ export {
   usePagination,
   useParams,
   useMessageScroll,
-  useMessageSocket
+  useMessageSocket,
+  useVideoSocket,
+  useVoiceSocket
 }

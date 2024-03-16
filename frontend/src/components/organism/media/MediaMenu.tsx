@@ -44,7 +44,7 @@ export default function MediaMenu({ forumId, invitedCode }: MediaMenuProps) {
 
   return (
     <React.Fragment>
-      {/* {isMobile && (
+      {isMobile && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon" className="h-8 w-8 rounded-full p-0 dark:bg-primary">
@@ -78,7 +78,7 @@ export default function MediaMenu({ forumId, invitedCode }: MediaMenuProps) {
             </ShareForum>
           </DropdownMenuContent>
         </DropdownMenu>
-      )} */}
+      )}
       {(isDesktop || isTablet) && (
         <article className="flex items-center gap-0 md:gap-2">
           <IconButton onClick={handleCreateVideoCall} icon={HiOutlineVideoCamera} loading={isLoadingVideo} />
