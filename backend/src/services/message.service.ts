@@ -6,6 +6,7 @@ import { compressedFile } from '../utils/fileSettings'
 
 import vision from '@google-cloud/vision'
 import path from 'path'
+import axios from 'axios'
 
 interface IMessagePayload extends IMessageBody {
   userId: string
@@ -131,6 +132,33 @@ export const analyzeImage = async (image: string) => {
   const [safeSearch] = await client.safeSearchDetection(imagePath)
 
   return safeSearch.safeSearchAnnotation
+}
+
+export const analyzeMessage = async (message: string) => {
+  const url = `https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${ENV.perspectiveApiKey}`
+  const response = await axios.post(url, {
+    comment: {
+      text: message
+    },
+    languages: ['id'],
+    requestedAttributes: {
+      TOXICITY: {}
+    }
+  })
+
+  const toxicityScore = response.data.attributeScores.TOXICITY.summaryScore.value
+
+  if (toxicityScore > 0.5) {
+    return {
+      isToxic: true,
+      score: toxicityScore
+    }
+  }
+
+  return {
+    isToxic: false,
+    score: toxicityScore
+  }
 }
 
 export const uploadImage = async (image: string, forumId: string, userId: string) => {

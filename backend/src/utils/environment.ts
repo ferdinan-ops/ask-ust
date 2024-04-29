@@ -10,7 +10,9 @@ const ENV = {
   publicUrl: process.env.PUBLIC_URL,
   livekitApiKey: process.env.LIVEKIT_API_KEY,
   livekitApiSecret: process.env.LIVEKIT_API_SECRET,
-  messageBatch: process.env.MESSAGE_BATCH
+  messageBatch: process.env.MESSAGE_BATCH,
+  perspectiveApiKey: process.env.PERSPECTIVE_API_KEY,
+  discoveryUrl: process.env.DISCOVERY_URL
 }
 
 export default ENV

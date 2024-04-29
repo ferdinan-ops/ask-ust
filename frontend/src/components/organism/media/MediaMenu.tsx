@@ -86,7 +86,9 @@ export default function MediaMenu({ forumId, invitedCode }: MediaMenuProps) {
           {isTablet && <IconButton onClick={() => navigate(`/forums/${forumId}/member`)} icon={HiOutlineUserGroup} />}
 
           <ShareForum inviteCode={invitedCode}>
-            <IconButton icon={HiOutlineShare} />
+            <Button variant="outline" size="icon" className="rounded-full border-none dark:bg-primary">
+              <HiOutlineShare className="text-lg md:text-xl" />
+            </Button>
           </ShareForum>
         </article>
       )}

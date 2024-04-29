@@ -8,6 +8,7 @@ import api from './axiosInstance'
 
 export const sendMessageFn = async (payload: MessageBodyType) => {
   const response = await api.post('/messages', payload)
+  console.log(response.data)
   return response.data?.data
 }
 

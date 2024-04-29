@@ -14,6 +14,13 @@ export const sendMessage = async (req: Request, res: Response) => {
   }
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+    const resultAnalysis = await MessageService.analyzeMessage(value.content)
+    if (resultAnalysis.isToxic) {
+      logError(req, 'Insecure message')
+      return res.status(400).json({ error: 'Pesan tidak diperbolehkan untuk dikirim' })
+    }
+
     const data = await MessageService.addMessage({
       ...value,
       userId: req.userId as string
