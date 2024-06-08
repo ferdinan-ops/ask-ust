@@ -11,18 +11,21 @@ datasource db {
 }
 
 model User {
-  id                String  @id @default(uuid())
+  id                String    @id @default(uuid())
   fullname          String
-  username          String  @unique
-  email             String  @unique
-  password          String  @default("")
-  photo             String  @default("")
-  is_email_verified Boolean @default(false)
-  token             String  @unique
-  provider          String  @default("email")
+  username          String    @unique
+  email             String    @unique
+  password          String    @default("")
+  photo             String    @default("")
+  is_email_verified Boolean   @default(false)
+  token             String    @unique
+  provider          String    @default("email")
+  is_banned         Boolean   @default(false)
+  banned_until      DateTime?
 
-  forums  Forum[]
-  members Member[]
+  forums     Forum[]
+  members    Member[]
+  violations Violation[]
 }
 
 model Forum {
@@ -151,4 +154,13 @@ model Voice {
 
   @@index([member_id])
   @@index([forum_id])
+}
+
+model Violation {
+  id              String   @id @default(uuid())
+  user_id         String   @unique
+  violation_count Int      @default(0)
+  last_violation  DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }

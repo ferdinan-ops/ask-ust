@@ -4,6 +4,8 @@ export interface IUser {
   email: string
   password?: string
   photo?: string
+  is_banned?: boolean
+  banned_until?: string
 }
 
 export interface ITokenPayload {

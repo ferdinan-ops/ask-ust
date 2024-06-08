@@ -148,7 +148,9 @@ export const analyzeMessage = async (message: string) => {
 
   const toxicityScore = response.data.attributeScores.TOXICITY.summaryScore.value
 
-  if (toxicityScore > 0.5) {
+  console.log({ toxicityScore })
+
+  if (toxicityScore >= 0.4) {
     return {
       isToxic: true,
       score: toxicityScore

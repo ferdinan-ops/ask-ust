@@ -14,7 +14,7 @@ export const useSendMessage = () => {
   const queryClient = useQueryClient()
   return useMutation(sendMessageFn, {
     onError: (error: AxiosError) => {
-      handleOnError(error, undefined, 'Pesan anda bersifat negatif dan tidak sesuai dengan aturan forum')
+      handleOnError(error, undefined, 'Pesan anda bersifat negatif dan tidak sesuai dengan aturan yang berlaku')
     },
     onSuccess: () => {
       queryClient.invalidateQueries('messages')

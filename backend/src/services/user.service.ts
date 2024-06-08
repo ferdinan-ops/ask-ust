@@ -4,6 +4,7 @@ import { type IUserUpdatePayload } from '../types/user.type'
 import { deleteFile, compressedFile } from '../utils/fileSettings'
 import logger from '../utils/logger'
 import { userSelect } from '../utils/service'
+import ENV from '../utils/environment'
 
 export const getUserLogin = async (userId: string) => {
   return await db.user.findUnique({
@@ -15,6 +16,8 @@ export const getUserLogin = async (userId: string) => {
       email: true,
       photo: true,
       provider: true,
+      is_banned: true,
+      banned_until: true,
       _count: { select: { forums: true } }
     }
   })
@@ -142,4 +145,8 @@ export const getUserByEmail = async (email: string) => {
 
 export const updateEmail = async (userId: string, email: string, token: string) => {
   return await db.user.update({ where: { id: userId }, data: { email, is_email_verified: false, token } })
+}
+
+export const changeBannedStatus = async (userId: string) => {
+  return await db.user.update({ where: { id: userId }, data: { banned_until: ENV.banOneDay, is_banned: true } })
 }

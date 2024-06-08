@@ -4,26 +4,38 @@ import { type IMessageBody } from '../types/message.type'
 import { logError, logInfo, logWarn } from '../utils/logger'
 
 import * as MessageService from '../services/message.service'
+import * as ViolationService from '../services/violation.service'
 import ENV from '../utils/environment'
 
 export const sendMessage = async (req: Request, res: Response) => {
+  const userId = req.userId as string
   const { value, error } = validMessage(req.body as IMessageBody)
+
   if (error) {
     logError(req, error)
     return res.status(400).json({ error: error.details[0].message })
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+    const isUserBanned = await ViolationService.validateUser(userId)
+    if (isUserBanned) {
+      logError(req, 'User is banned')
+      res.status(400).json({ error: ViolationService.bannedMessage })
+    }
+
     const resultAnalysis = await MessageService.analyzeMessage(value.content)
     if (resultAnalysis.isToxic) {
-      logError(req, 'Insecure message')
-      return res.status(400).json({ error: 'Pesan tidak diperbolehkan untuk dikirim' })
+      const violation = await ViolationService.handleViolations(userId)
+
+      if (!violation.success) {
+        logError(req, violation.error as string)
+        return res.status(400).json({ error: violation.error })
+      }
     }
 
     const data = await MessageService.addMessage({
       ...value,
-      userId: req.userId as string
+      userId
     })
 
     const forumKey = `chat:${value.forumId}:messages`
@@ -188,14 +200,24 @@ export const sendImage = async (req: Request, res: Response) => {
   const forumId = req.body.forumId as string
 
   try {
+    const isUserBanned = await ViolationService.validateUser(userId)
+    if (isUserBanned) {
+      logError(req, 'User is banned')
+      res.status(400).json({ error: ViolationService.bannedMessage })
+    }
+
     const image = await MessageService.processedImage(filename)
     const results = await MessageService.analyzeImage(image)
 
     const isSecure = results && Object.values(results).every((value) => value === 'VERY_UNLIKELY')
 
     if (!isSecure) {
-      logError(req, 'Insecure image')
-      return res.status(400).json({ error: 'Gambar tidak diperbolehkan untuk diunggah' })
+      const violation = await ViolationService.handleViolations(userId)
+
+      if (!violation.success) {
+        logError(req, violation.error as string)
+        return res.status(400).json({ error: violation.error })
+      }
     }
 
     const data = await MessageService.uploadImage(image, forumId, userId)
