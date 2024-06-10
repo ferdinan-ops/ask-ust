@@ -13,7 +13,8 @@ export const registerValidation = Yup.object({
     .matches(/^\S*$/g, 'Tidak boleh mengandung spasi'),
   confirmPassword: Yup.string()
     .required('Konfirmasi kata sandi harus diisi')
-    .oneOf([Yup.ref('password')], 'Kata sandi harus cocok')
+    .oneOf([Yup.ref('password')], 'Kata sandi harus cocok'),
+  agreement: Yup.boolean().oneOf([true], 'Anda harus menyetujui syarat dan ketentuan')
 })
 
 export type RegisterType = Yup.InferType<typeof registerValidation>
@@ -56,3 +57,9 @@ export type ResetPasswordType = {
   password: string
   confirmPassword: string
 }
+
+export const termsValidation = Yup.object({
+  agreement: Yup.boolean().oneOf([true], 'Anda harus menyetujui syarat dan ketentuan')
+})
+
+export type TermsType = Yup.InferType<typeof termsValidation>

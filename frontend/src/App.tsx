@@ -23,6 +23,7 @@ import NotFound from './pages/NotFound'
 import Home from './pages/Home'
 
 import { usePreviewImage } from './store/client'
+import Terms from './pages/Terms'
 
 export default function App() {
   const { previewImage, setPreviewImage } = usePreviewImage((state) => ({
@@ -36,6 +37,7 @@ export default function App() {
       <Toaster />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/terms-and-conditions" element={<Terms />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route element={<ProtectedAuth />}>
           <Route path="/login" element={<Login />} />

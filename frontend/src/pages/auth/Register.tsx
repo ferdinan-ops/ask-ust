@@ -1,8 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import * as React from 'react'
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
@@ -11,10 +13,12 @@ import { Password, Title } from '@/components/atoms'
 
 import { RegisterType, registerValidation } from '@/lib/validations/auth.validation'
 import { registerDefaultValues } from '@/lib/defaultValues'
+import { titleConfig } from '@/lib/config'
+
 import { useRegister } from '@/store/server/useAuth'
+import { useTerms } from '@/store/client'
 import { RegisterBg } from '@/assets'
 import { useTitle } from '@/hooks'
-import { titleConfig } from '@/lib/config'
 
 const titleConf = titleConfig.register
 
@@ -23,16 +27,28 @@ export default function Register() {
   const navigate = useNavigate()
   const { mutate: register, isLoading } = useRegister()
 
+  const { terms, setTerms } = useTerms((state) => ({
+    terms: state.terms,
+    setTerms: state.setTerms
+  }))
+
   const forms = useForm<RegisterType>({
     mode: 'onTouched',
     resolver: yupResolver(registerValidation),
     defaultValues: registerDefaultValues
   })
 
+  React.useEffect(() => {
+    if (terms) {
+      forms.setValue('agreement', true)
+    }
+  }, [terms, forms])
+
   const onSubmit = (values: RegisterType) => {
     register(values, {
       onSuccess: () => {
         forms.reset(registerDefaultValues)
+        setTerms(false)
         navigate('/verify-email')
       }
     })
@@ -109,6 +125,25 @@ export default function Register() {
                   <FormControl>
                     <Password {...field} placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="agreement"
+              control={forms.control}
+              render={({ field }) => (
+                <FormItem className="flex items-start space-x-3 space-y-0">
+                  <FormControl>
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} className="mt-[1.5px] rounded" />
+                  </FormControl>
+                  <FormLabel className="text-xs font-medium dark:text-white">
+                    Dengan membuat akun, Anda menyetujui{' '}
+                    <Link to="/terms-and-conditions" className="font-bold underline">
+                      Syarat, ketentuan dan kebijakan privasi
+                    </Link>{' '}
+                    ASK.UST.
+                  </FormLabel>
                   <FormMessage />
                 </FormItem>
               )}

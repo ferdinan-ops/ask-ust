@@ -6,7 +6,7 @@ import { ImSpinner2 } from 'react-icons/im'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'relative inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50',
+  'relative inline-flex items-center justify-center rounded-md text-xs md:text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
