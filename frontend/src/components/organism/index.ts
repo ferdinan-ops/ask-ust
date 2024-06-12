@@ -1,7 +1,8 @@
-import Header from './Header'
+import DashboardHeader from './header/DashboardHeader'
+import HomeHeader from './header/HomeHeader'
+
 import Leftbar from './Leftbar'
 import LogoutAlert from './LogoutAlert'
-import HeaderMobile from './HeaderMobile'
 import Alert from './Alert'
 
 import TabForum from './forum/TabForum'
@@ -33,11 +34,11 @@ import DoughnutChart from './chart/DoughnutChart'
 import Messages from './forum/message/Messages'
 
 export {
-  Header,
+  DashboardHeader,
+  HomeHeader,
   Leftbar,
   ReportMember,
   UploadFile,
-  HeaderMobile,
   LogoutAlert,
   TabForum,
   UploadPhoto,

@@ -6,6 +6,7 @@ import { HiOutlinePaperAirplane } from 'react-icons/hi2'
 import { useForm } from 'react-hook-form'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { useEditMessage, useSendMessage } from '@/store/server/useMessage'
+import { useToast } from '@/components/ui/use-toast'
 
 interface MessageInputProps {
   forumId: string
@@ -18,6 +19,7 @@ type FormFields = {
 }
 
 export default function MessageInput({ forumId, content, messageId }: MessageInputProps) {
+  const { toast } = useToast()
   const forms = useForm<FormFields>({
     defaultValues: { content: '' }
   })
@@ -35,6 +37,12 @@ export default function MessageInput({ forumId, content, messageId }: MessageInp
 
   const onSubmit = (values: FormFields) => {
     const fields = { ...values, forumId }
+    toast({
+      title: 'Tunggu sebentar...',
+      description: 'Konten yang Anda kirim sedang kami periksa keamanannya',
+      variant: 'warning'
+    })
+
     if (!content) return sendMessage(fields, { onSuccess })
     editMessage({ messageId: messageId as string, ...fields }, { onSuccess })
   }

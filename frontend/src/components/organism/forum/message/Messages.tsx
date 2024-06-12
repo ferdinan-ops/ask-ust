@@ -66,7 +66,7 @@ export default function Messages({ forumId }: MessagesProps) {
       <ContentBox.Scroll ref={messageRef} className="gap-2 md:gap-3 md:px-5 xl:py-7">
         {hasNextPage && <LoadMore fetchNextPage={fetchNextPage} isFetchingNextPage={isFetchingNextPage} />}
 
-        <div className="flex flex-1 flex-col-reverse gap-2 md:gap-3">
+        <div className="flex flex-col-reverse gap-2 md:gap-3">
           {data?.pages?.map((group, i) => (
             <React.Fragment key={i}>
               {group.data.map((message) => {

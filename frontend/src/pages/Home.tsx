@@ -7,7 +7,7 @@ import {
   ProfileIllustration
 } from '@/assets'
 import Brand from '@/components/atoms/Brand'
-import { Section } from '@/components/organism'
+import { HomeHeader, Section } from '@/components/organism'
 import { Button } from '@/components/ui/button'
 import { useTitle } from '@/hooks'
 import { HiArrowRight } from 'react-icons/hi2'
@@ -19,29 +19,7 @@ export default function Home() {
 
   return (
     <>
-      <header className="flex h-20 w-full items-center bg-primary">
-        <nav className="mx-auto flex w-[1180px] items-center justify-between px-5 md:px-10 xl:px-0">
-          <Brand
-            href="/"
-            className="gap-3 text-lg font-bold text-white xl:gap-4 xl:text-xl"
-            imageClassName="xl:w-8 w-7"
-          />
-          <div className="flex items-center gap-3">
-            <Button
-              className="bg-white/5 text-xs font-semibold dark:bg-white/5 dark:text-white xl:text-sm"
-              onClick={() => navigate('/register')}
-            >
-              Daftar
-            </Button>
-            <Button
-              className="bg-white text-xs font-semibold text-primary hover:bg-zinc-200 xl:text-sm"
-              onClick={() => navigate('/login')}
-            >
-              Masuk
-            </Button>
-          </div>
-        </nav>
-      </header>
+      <HomeHeader />
       <Section className="relative items-start justify-start bg-primary bg-[url('@/assets/images/hero-bg.svg')] bg-cover bg-no-repeat xl:min-h-[calc(100vh-80px)] xl:pt-24">
         <Section.Container className="items-start gap-0 xl:flex-col xl:items-center xl:gap-0 xl:px-[120px] xl:text-center">
           <h1 className="text-2xl font-bold text-white xl:text-5xl xl:leading-[64px]">

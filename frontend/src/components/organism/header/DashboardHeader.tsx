@@ -1,10 +1,10 @@
 import { HiOutlineHome, HiPlus } from 'react-icons/hi2'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { Breadcrumbs, Search, ModeToggle } from '../atoms'
-import { Button } from '../ui/button'
+import { Breadcrumbs, Search, ModeToggle } from '../../atoms'
+import { Button } from '../../ui/button'
 
-export default function Header() {
+export default function DashboardHeader() {
   const navigate = useNavigate()
   return (
     <header className="sticky left-0 right-0 top-0 z-10 hidden h-[68px] w-full items-center border-b border-[#E9E9E9] bg-white text-primary dark:border-white/10 dark:bg-primary dark:text-white lg:flex">
@@ -27,19 +27,6 @@ export default function Header() {
               <HiPlus className="text-lg" />
               <span>Forum baru</span>
             </Button>
-            {/* <Link to="/notification">
-              <Button variant="outline" size="icon" className="rounded-full border-none dark:bg-primary">
-                <PiBell className="text-xl" />
-              </Button>
-            </Link> */}
-            {/* <Button
-              variant="outline"
-              size="icon"
-              className="rounded-full border-none dark:bg-primary"
-              onClick={rightbarAction}
-            >
-              <PiSidebar className="text-xl" />
-            </Button> */}
           </div>
         </nav>
       </div>

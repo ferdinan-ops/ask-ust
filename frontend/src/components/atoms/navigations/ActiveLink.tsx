@@ -31,7 +31,7 @@ export default function ActiveLink({ name, href, icon: Icon, type = 'menu', acti
           ) : (
             <img src={`https://source.unsplash.com/random?${name}`} alt={name} className="h-5 w-5 rounded-full" />
           )}
-          <span className="text-sm font-medium">{name}</span>
+          <span className="truncate-1 text-sm font-medium">{name}</span>
           {isActive && (
             <div className="absolute left-0 top-1/2 h-1/2 w-1 -translate-y-1/2 rounded-full bg-primary dark:bg-white" />
           )}

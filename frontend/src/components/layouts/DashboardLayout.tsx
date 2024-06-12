@@ -1,8 +1,10 @@
 import { Outlet } from 'react-router-dom'
 import * as React from 'react'
 
-import { Header, HeaderMobile, Leftbar } from '../organism'
+import { DashboardHeader, Leftbar } from '../organism'
 import { useGetDevices } from '@/hooks'
+import { HiBars3 } from 'react-icons/hi2'
+import { Brand, ModeToggle } from '../atoms'
 
 export default function DashboardLayout() {
   const [isOpenLeftBar, setIsOpenLeftBar] = React.useState(false)
@@ -14,15 +16,28 @@ export default function DashboardLayout() {
       <Leftbar isShow={isOpenLeftBar} setIsShow={setIsOpenLeftBar} />
       <main className="flex-1">
         {(isMobile || isTablet) && <HeaderMobile action={() => setIsOpenLeftBar(true)} />}
-        {isDesktop && <Header />}
+        {isDesktop && <DashboardHeader />}
 
-        {/* <section className="min-h-[calc(100vh-68px-12px)] flex-1 bg-white text-primary dark:bg-primary dark:text-white md:min-h-[calc(100vh-68px-12px)] lg:min-h-[calc(100vh-68px)]"> */}
         <section className="relative min-h-[calc(100vh-68px)] flex-1 bg-white text-primary dark:bg-primary dark:text-white lg:min-h-0">
           <Outlet />
         </section>
       </main>
-
-      {/* {isExpanded && <Rightbar />} */}
     </section>
+  )
+}
+
+interface HeaderMobileProps {
+  action?: () => void
+}
+
+function HeaderMobile({ action }: HeaderMobileProps) {
+  return (
+    <header className="sticky inset-x-0 top-0 z-30 flex h-[68px] items-center border-b border-[#E9E9E9] bg-white px-4 dark:border-white/10 dark:bg-primary dark:text-white md:px-6 lg:hidden">
+      <nav className="flex w-full items-center justify-between">
+        <HiBars3 className="h-5 w-5" onClick={action} />
+        <Brand className="h-8 gap-4 text-xl" imageClassName="h-full object-contain" />
+        <ModeToggle />
+      </nav>
+    </header>
   )
 }
