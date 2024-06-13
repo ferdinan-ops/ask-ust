@@ -25,7 +25,7 @@ export default function TabForum(props: TabsProps) {
   const { forums, containerClassName, contentClassName, isFetching, page, createParam } = props
 
   return (
-    <Tabs defaultValue="all" className={cn('w-full', containerClassName)}>
+    <Tabs defaultValue="all" className={cn('flex w-full flex-col', containerClassName)}>
       <div className="flex items-center justify-between">
         <h1 className="mb-5 text-base font-semibold md:text-xl">Forum</h1>
         <TabsList className="mb-5 grid h-9 grid-cols-2 rounded-full md:w-4/12 lg:w-3/12">
@@ -39,10 +39,10 @@ export default function TabForum(props: TabsProps) {
           </TabsTrigger>
         </TabsList>
       </div>
-      <TabsContent value="all" className={cn('relative', contentClassName)}>
+      <TabsContent value="all" className={cn('relative flex-1', contentClassName)}>
         <AllForum forums={forums} isFetching={isFetching} page={page} createParam={createParam} />
       </TabsContent>
-      <TabsContent value="joined" className={cn('relative', contentClassName)}>
+      <TabsContent value="joined" className={cn('relative flex-1', contentClassName)}>
         <JoinedForum page={page} createParam={createParam} />
       </TabsContent>
     </Tabs>

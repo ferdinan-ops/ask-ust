@@ -39,12 +39,14 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/terms-and-conditions" element={<Terms />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
+
         <Route element={<ProtectedAuth />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
         </Route>
+
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
             <Route element={<PaddingLayout />}>
@@ -64,20 +66,24 @@ export default function App() {
                 </Route>
               </Route>
             </Route>
+
             <Route element={<ProtectedForum />}>
               <Route path="/forums/:slug/content" element={<ContentForum />} />
             </Route>
+
             <Route path="/me" element={<ProfileLayout />}>
               <Route index element={<Profile />} />
               <Route path="edit" element={<EditProfile />} />
             </Route>
           </Route>
+
           <Route element={<ProtectedForum />}>
             <Route path="/forums/:slug">
               <Route path="video/:videoId" element={<VideoForum />} />
               <Route path="voice/:voiceId" element={<VoiceForum />} />
             </Route>
           </Route>
+
           <Route path="/invite-code/:inviteCode" element={<InviteCode />} />
           <Route path="/me/change-password" element={<ResetPassword />} />
         </Route>

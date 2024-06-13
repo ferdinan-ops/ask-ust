@@ -40,7 +40,8 @@ export default function MessageInput({ forumId, content, messageId }: MessageInp
     toast({
       title: 'Tunggu sebentar...',
       description: 'Konten yang Anda kirim sedang kami periksa keamanannya',
-      variant: 'warning'
+      variant: 'warning',
+      duration: 1000
     })
 
     if (!content) return sendMessage(fields, { onSuccess })

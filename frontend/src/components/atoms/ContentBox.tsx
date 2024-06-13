@@ -6,11 +6,7 @@ interface ContentBoxProps {
   className?: string
 }
 export default function ContentBox({ children, className }: ContentBoxProps) {
-  return (
-    <section className={cn('flex max-h-[calc(100vh-68px-56px)] min-h-[calc(100vh-68px-56px)] flex-col', className)}>
-      {children}
-    </section>
-  )
+  return <section className={cn('flex flex-col', className)}>{children}</section>
 }
 
 const Scroll = React.forwardRef<HTMLDivElement, ContentBoxProps>(({ children, className }, ref) => {

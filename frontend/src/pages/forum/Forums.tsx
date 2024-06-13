@@ -14,8 +14,7 @@ export default function Forums() {
       forums={forums as ForumResponseType}
       page={params.page}
       createParam={createParam}
-      containerClassName="lg:min-h-[calc(100vh-68px-56px)] min-h-[calc(100vh-68px-32px)]"
-      contentClassName="lg:min-h-[calc(100vh-68px-56px-68px)] min-h-[calc(100vh-68px-32px-68px)]"
+      containerClassName="flex-1"
     />
   )
 }

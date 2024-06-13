@@ -40,7 +40,7 @@ export default function ProfileLayout() {
           <p>{count?.joined_forum} forum yang diikuti</p>
         </div>
       </div>
-      <section className="mx-auto p-4 md:p-6 lg:w-10/12 lg:p-7">
+      <section className="mx-auto flex flex-col p-4 md:p-6 lg:w-10/12 lg:p-7">
         <Outlet />
       </section>
     </>

@@ -16,8 +16,8 @@ export default function ContentForum() {
   if (isLoading) return <Loading />
 
   return (
-    <section className="flex flex-col justify-between gap-7 lg:flex-row lg:p-7">
-      <ContentBox className="rounded-lg border-[#E9E9E9] dark:border-white/10 dark:bg-primary lg:w-9/12 lg:border">
+    <section className="flex flex-1 flex-col justify-between gap-7 lg:flex-row lg:p-7">
+      <ContentBox className="flex flex-1 flex-col overflow-hidden rounded-none border-[#E9E9E9] dark:border-white/10 dark:bg-primary lg:w-9/12 lg:rounded-lg lg:border">
         <ContentBox.Header>
           <article className="flex items-start gap-3">
             <div className="flex h-8 w-8 rounded-full border-none bg-zinc-100 dark:bg-zinc-800 md:h-10 md:w-10">

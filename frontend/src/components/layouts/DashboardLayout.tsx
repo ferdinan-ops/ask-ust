@@ -14,11 +14,11 @@ export default function DashboardLayout() {
   return (
     <section className="flex">
       <Leftbar isShow={isOpenLeftBar} setIsShow={setIsOpenLeftBar} />
-      <main className="flex-1">
+      <main className="flex flex-1 flex-col">
         {(isMobile || isTablet) && <HeaderMobile action={() => setIsOpenLeftBar(true)} />}
         {isDesktop && <DashboardHeader />}
 
-        <section className="relative min-h-[calc(100vh-68px)] flex-1 bg-white text-primary dark:bg-primary dark:text-white lg:min-h-0">
+        <section className="relative flex min-h-[calc(100vh-68px)] flex-1 flex-col text-primary dark:bg-primary dark:text-white lg:min-h-0">
           <Outlet />
         </section>
       </main>

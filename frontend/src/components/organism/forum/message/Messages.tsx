@@ -62,8 +62,11 @@ export default function Messages({ forumId }: MessagesProps) {
   }
 
   return (
-    <ContentBox className="md:max-h-[calc(100vh-148px)] md:min-h-[calc(100vh-148px)] lg:max-h-[calc(100vh-204px)] lg:min-h-[calc(100vh-204px)]">
-      <ContentBox.Scroll ref={messageRef} className="gap-2 md:gap-3 md:px-5 xl:py-7">
+    <ContentBox className="flex flex-1 flex-col">
+      <ContentBox.Scroll
+        ref={messageRef}
+        className="max-h-[calc(100vh-57px-40px-32px-32px-20px)] gap-2 md:max-h-[calc(100vh-148px)] md:gap-3 md:px-5 lg:max-h-[calc(100vh-80px-68px-68px-56px)] xl:py-7"
+      >
         {hasNextPage && <LoadMore fetchNextPage={fetchNextPage} isFetchingNextPage={isFetchingNextPage} />}
 
         <div className="flex flex-col-reverse gap-2 md:gap-3">
