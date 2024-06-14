@@ -1,6 +1,7 @@
 # depedencies
 /node_modules
 
+
 # testing
 /coverage
 
@@ -15,3 +16,4 @@ DS_Store
 .package-lock.json
 
 keys.json
+netlify.toml

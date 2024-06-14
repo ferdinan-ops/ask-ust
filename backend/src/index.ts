@@ -4,6 +4,7 @@ import http from 'http'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import express, { type Request, type Application } from 'express'
+import serverless from 'serverless-http'
 
 import routes from './routes'
 import logger from './utils/logger'
@@ -32,3 +33,5 @@ app.use('/storage', express.static(path.join(__dirname, '../storage')))
 server.listen(port, () => {
   logger.info(`Server is running at http://localhost:${port}`)
 })
+
+export const handler = serverless(app)

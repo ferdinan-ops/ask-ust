@@ -13,23 +13,23 @@ import dashboardRoute from './dashboard.route'
 import messageRoute from './message.route'
 
 const _routes = [
-  ['/auth', authRoute],
-  ['/forums', forumRoute],
-  ['/users', userRoute],
-  ['/members', memberRoute],
-  ['/search', searchRoute],
-  ['/reports', reportRoute],
-  ['/livekit', livekitRoute],
-  ['/video', videoRoute],
-  ['/voice', voiceRoute],
-  ['/dashboard', dashboardRoute],
-  ['/messages', messageRoute]
+  ['auth', authRoute],
+  ['forums', forumRoute],
+  ['users', userRoute],
+  ['members', memberRoute],
+  ['search', searchRoute],
+  ['reports', reportRoute],
+  ['livekit', livekitRoute],
+  ['video', videoRoute],
+  ['voice', voiceRoute],
+  ['dashboard', dashboardRoute],
+  ['messages', messageRoute]
 ]
 
 const routes = (app: Application) => {
   _routes.forEach((route) => {
     const [url, router] = route
-    app.use(url as string, router as Router)
+    app.use(`/api/${url as string}`, router as Router)
   })
 }
 
