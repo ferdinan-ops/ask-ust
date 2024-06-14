@@ -63,14 +63,14 @@ export default function HomeHeader() {
               <NavLink href="/me" label="Profil" onClick={handleClose} icon={HiOutlineUser} />
 
               <Alert
-                title="Comeback soon?"
-                desc="Are you sure you want to sign out of the app?"
+                title="Anda yakin keluar dari aplikasi?"
+                desc="Tindakan ini akan mengeluarkan akun Anda dari aplikasi kami. Namun Anda bisa kembali lagi dengan login."
                 btnText="sign out"
                 action={handleLogout}
               >
                 <button className={cn(dropdownLinkClass, 'w-full cursor-pointer text-red-500')}>
                   <HiOutlineArrowRightOnRectangle className="text-xl" />
-                  <span className="text-sm font-medium">Sign Out</span>
+                  <span className="text-sm font-medium">Keluar dari aplikasi</span>
                 </button>
               </Alert>
             </div>

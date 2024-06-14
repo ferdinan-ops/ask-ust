@@ -13,6 +13,7 @@ import UploadPhoto from './modal/UploadPhoto'
 import ReportMember from './modal/ReportMember'
 import EditEmail from './modal/EditEmail'
 import ShareForum from './modal/ShareForum'
+import MessageAction from './modal/MessageAction'
 
 import MediaCard from './media/MediaCard'
 import MediaRoom from './media/MediaRoom'
@@ -58,5 +59,6 @@ export {
   Section,
   DoughnutChart,
   Messages,
-  NoForum
+  NoForum,
+  MessageAction
 }

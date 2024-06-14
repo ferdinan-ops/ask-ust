@@ -2,7 +2,7 @@ import * as React from 'react'
 import { HiOutlineFlag, HiOutlinePencilSquare, HiOutlineTrash } from 'react-icons/hi2'
 
 import Message from './Message'
-import { Alert, MediaAction, ReportMember } from '../..'
+import { Alert, MediaAction, MessageAction, ReportMember } from '../..'
 import MessageInput from './MessageInput'
 
 import { Button } from '@/components/ui/button'
@@ -12,16 +12,18 @@ import { cn } from '@/lib/utils'
 import { alertConfig } from '@/lib/config'
 import { useGetMemberLogin } from '@/store/server/useMember'
 import { useDeleteMessage, useDeleteMessageBySpecificRole, useGetMessages } from '@/store/server/useMessage'
-import { useMessageScroll, useMessageSocket } from '@/hooks'
+import { useGetDevices, useMessageScroll, useMessageSocket } from '@/hooks'
 import { Loader2 } from 'lucide-react'
 import { ContentBox } from '@/components/atoms'
 import ContextItem from './ContextItem'
+import { MemberType } from '@/lib/types/member.type'
 
 interface MessagesProps {
   forumId: string
 }
 
 const alertConf = alertConfig.messages
+const heightClass = 'max-h-[calc(100vh-181px)] md:max-h-[calc(100vh-148px)] lg:max-h-[calc(100vh-272px)]'
 
 export default function Messages({ forumId }: MessagesProps) {
   const messageRef = React.useRef<HTMLDivElement>(null)
@@ -49,6 +51,7 @@ export default function Messages({ forumId }: MessagesProps) {
 
   const [content, setContent] = React.useState('')
   const [messageId, setMessageId] = React.useState('')
+  const { isMobile } = useGetDevices()
 
   const handleEditMessage = (messageId: string, content: string) => {
     setMessageId(messageId)
@@ -63,74 +66,70 @@ export default function Messages({ forumId }: MessagesProps) {
 
   return (
     <ContentBox className="flex flex-1 flex-col">
-      <ContentBox.Scroll
-        ref={messageRef}
-        className="max-h-[calc(100vh-57px-40px-32px-32px-20px)] gap-2 md:max-h-[calc(100vh-148px)] md:gap-3 md:px-5 lg:max-h-[calc(100vh-80px-68px-68px-56px)] xl:py-7"
-      >
+      <ContentBox.Scroll ref={messageRef} className={cn('gap-2 md:gap-3 md:px-5 xl:py-7', heightClass)}>
         {hasNextPage && <LoadMore fetchNextPage={fetchNextPage} isFetchingNextPage={isFetchingNextPage} />}
 
         <div className="flex flex-col-reverse gap-2 md:gap-3">
           {data?.pages?.map((group, i) => (
             <React.Fragment key={i}>
               {group.data.map((message) => {
+                const isMine = member?.id === message.member_id
+                const isHasFile = message.file_url
+                const isGuest = member?.role === 'GUEST'
+
                 if (message.is_deleted) {
                   return <Message key={message.id} message={message} memberLoginId={member?.id as string} />
-                } else {
+                }
+
+                if (isMobile) {
                   return (
-                    <ContextMenu key={message.id}>
-                      <ContextMenuTrigger
-                        className={cn(
-                          'flex w-fit items-start',
-                          (member?.id as string) === message.member_id && 'ml-auto'
-                        )}
-                      >
-                        <Message key={i} message={message} memberLoginId={member?.id as string} />
-                      </ContextMenuTrigger>
-                      <ContextMenuContent>
-                        {member?.id === message.member_id ? (
-                          <React.Fragment>
-                            {!message.file_url && (
-                              <ContextItem onClick={() => handleEditMessage(message.id, message.content)}>
-                                <HiOutlinePencilSquare className="text-lg" />
-                                <span className="font-semibold">Ubah</span>
-                              </ContextItem>
-                            )}
-                            <Alert
-                              title={alertConf.title}
-                              desc={alertConf.desc}
-                              btnText={alertConf.btnTxt}
-                              action={() => handleDeleteMessage(message.id)}
-                            >
-                              <ContextItem variant="destructive">
-                                <HiOutlineTrash className="text-lg" />
-                                <span className="font-semibold">Hapus</span>
-                              </ContextItem>
-                            </Alert>
-                          </React.Fragment>
-                        ) : member?.role === 'GUEST' ? (
-                          <ReportMember memberId={member.id} forumId={forumId}>
-                            <ContextItem variant="destructive">
-                              <HiOutlineFlag className="text-lg" />
-                              <span className="font-semibold">Laporkan</span>
-                            </ContextItem>
-                          </ReportMember>
-                        ) : (
-                          <Alert
-                            title={alertConf.title}
-                            desc={alertConf.desc}
-                            btnText={alertConf.btnTxt}
-                            action={() => handleDeleteMessage(message.id, 'role')}
-                          >
-                            <ContextItem variant="destructive">
-                              <HiOutlineTrash className="text-lg" />
-                              <span className="font-semibold">Hapus pesan</span>
-                            </ContextItem>
-                          </Alert>
-                        )}
-                      </ContextMenuContent>
-                    </ContextMenu>
+                    <MessageAction
+                      key={message.id}
+                      forumId={forumId}
+                      message={message}
+                      member={member as MemberType}
+                      onEdit={handleEditMessage}
+                      onDelete={handleDeleteMessage}
+                    >
+                      <Message message={message} memberLoginId={member?.id as string} />
+                    </MessageAction>
                   )
                 }
+
+                return (
+                  <ContextMenu key={message.id}>
+                    <ContextMenuTrigger
+                      className={cn(
+                        'flex w-fit items-start',
+                        (member?.id as string) === message.member_id && 'ml-auto'
+                      )}
+                    >
+                      <Message message={message} memberLoginId={member?.id as string} />
+                    </ContextMenuTrigger>
+                    <ContextMenuContent>
+                      {isMine ? (
+                        <React.Fragment>
+                          {!isHasFile && (
+                            <ContextItem onClick={() => handleEditMessage(message.id, message.content)}>
+                              <HiOutlinePencilSquare className="text-lg" />
+                              <span className="font-semibold">Ubah</span>
+                            </ContextItem>
+                          )}
+                          <DeleteAlert action={() => handleDeleteMessage(message.id)} />
+                        </React.Fragment>
+                      ) : isGuest ? (
+                        <ReportMember memberId={member.id} forumId={forumId}>
+                          <ContextItem variant="destructive">
+                            <HiOutlineFlag className="text-lg" />
+                            <span className="font-semibold">Laporkan</span>
+                          </ContextItem>
+                        </ReportMember>
+                      ) : (
+                        <DeleteAlert action={() => handleDeleteMessage(message.id, 'role')} />
+                      )}
+                    </ContextMenuContent>
+                  </ContextMenu>
+                )
               })}
             </React.Fragment>
           ))}
@@ -161,5 +160,20 @@ function LoadMore({ fetchNextPage, isFetchingNextPage }: LoadMoreProps) {
         </Button>
       )}
     </div>
+  )
+}
+
+interface DeleteAlertProps {
+  action: () => void
+}
+
+function DeleteAlert({ action }: DeleteAlertProps) {
+  return (
+    <Alert title={alertConf.title} desc={alertConf.desc} btnText={alertConf.btnTxt} action={action}>
+      <ContextItem variant="destructive">
+        <HiOutlineTrash className="text-lg" />
+        <span className="font-semibold">Hapus</span>
+      </ContextItem>
+    </Alert>
   )
 }

@@ -18,9 +18,10 @@ interface ReportMemberProps {
   memberId: string
   forumId: string
   children: React.ReactNode
+  onClick?: () => void
 }
 
-export default function ReportMember({ className, children, memberId, forumId }: ReportMemberProps) {
+export default function ReportMember({ className, children, memberId, forumId, onClick }: ReportMemberProps) {
   const [open, setOpen] = React.useState(false)
   const { mutate: reportMember, isLoading } = useReportMember()
 
@@ -47,7 +48,9 @@ export default function ReportMember({ className, children, memberId, forumId }:
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger asChild onClick={onClick}>
+        {children}
+      </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-primary dark:text-white">Laporkan anggota</DialogTitle>

@@ -46,7 +46,7 @@ export default function Message({ className, message, memberLoginId }: MessagePr
         {!message.file_url && (
           <span
             className={cn(
-              'max-w-[calc(100vw-32px-28px-8px-100px)] text-[15px] font-medium leading-relaxed text-primary/90 md:max-w-lg',
+              'max-w-[calc(100vw-32px-28px-8px-100px)] text-left text-[15px] font-medium leading-relaxed text-primary/90 md:max-w-lg',
               isUserLogin ? 'text-white/90' : 'text-primary'
             )}
           >
