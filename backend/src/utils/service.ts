@@ -5,6 +5,16 @@ export const userSelect = {
     username: true,
     email: true,
     photo: true,
-    provider: true
+    provider: true,
+    is_admin: true
+  }
+}
+
+export const userValidateSelect = {
+  select: {
+    id: true,
+    is_valid: true,
+    note: true,
+    user_id: true
   }
 }

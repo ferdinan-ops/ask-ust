@@ -6,6 +6,7 @@ import { logWarn } from '../utils/logger'
 
 interface DecodedToken {
   id: string
+  isAdmin: boolean
   iat: number
   exp: number
 }
@@ -25,11 +26,21 @@ const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
       return res.status(403).json({ message: 'Forbidden' })
     }
 
-    const { id } = decoded as DecodedToken
+    const { id, isAdmin } = decoded as DecodedToken
 
     req.userId = id
+    req.isAdmin = isAdmin
     next()
   })
+}
+
+export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => {
+  if (req.isAdmin) {
+    logWarn(req, 'Unauthorized access')
+    return res.status(401).json({ message: 'Unauthorized' })
+  }
+
+  next()
 }
 
 export default verifyJwt

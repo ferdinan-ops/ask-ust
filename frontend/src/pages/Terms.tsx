@@ -66,6 +66,10 @@ export default function Terms() {
             <li className="font-bold">Ketentuan Penggunaan</li>
             <ul className="ml-7 flex list-disc flex-col gap-1">
               <li>
+                Pengguna wajib menunjukkan bukti identitas yang valid saat mendaftar dan menggunakan aplikasi ini
+                sebagai bagian dari Universitas Katolik Santo Thomas.
+              </li>
+              <li>
                 Pengguna wajib menggunakan aplikasi ini untuk tujuan yang sah dan sesuai dengan peraturan
                 perundang-undangan yang berlaku.
               </li>

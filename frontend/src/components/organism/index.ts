@@ -1,5 +1,5 @@
 import DashboardHeader from './header/DashboardHeader'
-import HomeHeader from './header/HomeHeader'
+import Header from './header/Header'
 
 import Leftbar from './Leftbar'
 import LogoutAlert from './LogoutAlert'
@@ -31,12 +31,13 @@ import DashboardSkeleton from './skeleton/DashboardSkeleton'
 import Section from './home/Section'
 
 import DoughnutChart from './chart/DoughnutChart'
+import NoChart from './chart/NoChart'
 
 import Messages from './forum/message/Messages'
 
 export {
   DashboardHeader,
-  HomeHeader,
+  Header,
   Leftbar,
   ReportMember,
   UploadFile,
@@ -60,5 +61,6 @@ export {
   DoughnutChart,
   Messages,
   NoForum,
-  MessageAction
+  MessageAction,
+  NoChart
 }

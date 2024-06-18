@@ -53,9 +53,9 @@ export const verifyEmail = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Token sudah tidak berlaku' })
     }
 
-    await AuthService.verifyUserEmail(checkToken.id)
+    const user = await AuthService.verifyUserEmail(checkToken.id)
     logInfo(req, 'Email has been verified')
-    res.status(200).json({ message: 'Email berhasil diverifikasi' })
+    res.status(200).json({ message: 'Email berhasil diverifikasi', data: user })
   } catch (error) {
     res.status(500).json({ error })
   }
@@ -81,8 +81,13 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Email atau password Anda salah' })
     }
 
-    const accessToken = AuthService.accessTokenSign({ id: user.id })
-    const refreshToken = AuthService.refreshTokenSign({ id: user.id })
+    if (!user.validate) {
+      logWarn(req, 'Account is not verified')
+      return res.status(400).json({ error: 'Akun Anda belum diverifikasi oleh Admin' })
+    }
+
+    const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: user.is_admin })
+    const refreshToken = AuthService.refreshTokenSign({ id: user.id, isAdmin: user.is_admin })
 
     const { password, ...rest } = user
     const data = { user: rest, access_token: accessToken, refresh_token: refreshToken }
@@ -119,12 +124,13 @@ export const loginGoogle = async (req: Request, res: Response) => {
         email,
         token: '',
         photo: picture,
-        is_email_verified: true
+        is_email_verified: true,
+        provider: 'google'
       })
     }
 
-    const accessToken = AuthService.accessTokenSign({ id: user.id })
-    const refreshToken = AuthService.refreshTokenSign({ id: user.id })
+    const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: user.is_admin })
+    const refreshToken = AuthService.refreshTokenSign({ id: user.id, isAdmin: user.is_admin })
 
     const { password, ...rest } = user
     const data = { user: rest, access_token: accessToken, refresh_token: refreshToken }
@@ -216,7 +222,7 @@ export const refreshToken = async (req: Request, res: Response) => {
         return res.status(401).json({ error: 'Unauthorized' })
       }
 
-      const accessToken = AuthService.accessTokenSign({ id: user.id })
+      const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: user.is_admin })
       const data = { user, access_token: accessToken, refresh_token: refreshToken }
 
       logInfo(req, 'Access token is successfully refreshed')

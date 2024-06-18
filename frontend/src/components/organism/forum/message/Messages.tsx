@@ -51,7 +51,7 @@ export default function Messages({ forumId }: MessagesProps) {
 
   const [content, setContent] = React.useState('')
   const [messageId, setMessageId] = React.useState('')
-  const { isMobile } = useGetDevices()
+  const { isMobile, isTablet } = useGetDevices()
 
   const handleEditMessage = (messageId: string, content: string) => {
     setMessageId(messageId)
@@ -81,7 +81,7 @@ export default function Messages({ forumId }: MessagesProps) {
                   return <Message key={message.id} message={message} memberLoginId={member?.id as string} />
                 }
 
-                if (isMobile) {
+                if (isMobile || isTablet) {
                   return (
                     <MessageAction
                       key={message.id}

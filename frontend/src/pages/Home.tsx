@@ -7,7 +7,7 @@ import {
   ProfileIllustration
 } from '@/assets'
 import Brand from '@/components/atoms/Brand'
-import { HomeHeader, Section } from '@/components/organism'
+import { Header, Section } from '@/components/organism'
 import { Button } from '@/components/ui/button'
 import { useTitle } from '@/hooks'
 import { HiArrowRight } from 'react-icons/hi2'
@@ -19,7 +19,7 @@ export default function Home() {
 
   return (
     <>
-      <HomeHeader />
+      <Header />
       <Section className="relative items-start justify-start bg-primary bg-[url('@/assets/images/hero-bg.svg')] bg-cover bg-no-repeat xl:min-h-[calc(100vh-80px)] xl:pt-24">
         <Section.Container className="items-start gap-0 xl:flex-col xl:items-center xl:gap-0 xl:px-[120px] xl:text-center">
           <h1 className="text-2xl font-bold text-white xl:text-5xl xl:leading-[64px]">

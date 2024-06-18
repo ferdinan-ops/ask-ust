@@ -13,7 +13,7 @@ import ImagePreview from './components/atoms/forms/ImagePreview'
 import { Toaster } from './components/ui/toaster'
 
 import { ContentForum, CreateForum, DetailForum, Forums, VideoForum, VoiceForum } from './pages/forum'
-import { ForgotPassword, Login, Register, ResetPassword, VerifyEmail } from './pages/auth'
+import { ForgotPassword, Login, Register, ResetPassword, Unverified, ValidateUser, VerifyEmail } from './pages/auth'
 import { ManageMember, Member } from './pages/member'
 import { EditProfile, Profile } from './pages/user'
 
@@ -39,6 +39,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/terms-and-conditions" element={<Terms />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/validate" element={<ValidateUser />} />
+        <Route path="/unverified" element={<Unverified />} />
 
         <Route element={<ProtectedAuth />}>
           <Route path="/login" element={<Login />} />

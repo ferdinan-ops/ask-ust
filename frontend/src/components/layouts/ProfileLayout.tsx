@@ -20,7 +20,7 @@ export default function ProfileLayout() {
   return (
     <>
       <div className="h-28 w-full bg-[url('@/assets/images/profile-bg.webp')] bg-cover lg:h-48" />
-      <div className="relative mx-auto flex flex-col gap-5 border-b px-4 pb-5 dark:border-white/10 md:px-6 lg:w-10/12 lg:px-7">
+      <div className="relative mx-auto flex w-full flex-col gap-5 border-b px-4 pb-5 dark:border-white/10 md:px-6 lg:w-10/12 lg:px-7">
         <Button
           variant="outline"
           className="absolute right-4 top-4 gap-3 rounded-full md:right-6 md:top-6 lg:right-7 lg:top-7"
@@ -40,7 +40,7 @@ export default function ProfileLayout() {
           <p>{count?.joined_forum} forum yang diikuti</p>
         </div>
       </div>
-      <section className="mx-auto flex flex-col p-4 md:p-6 lg:w-10/12 lg:p-7">
+      <section className="mx-auto flex w-full flex-col p-4 md:p-6 lg:w-10/12 lg:p-7">
         <Outlet />
       </section>
     </>

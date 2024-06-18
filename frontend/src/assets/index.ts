@@ -14,6 +14,7 @@ import RegisterBg from './images/register-bg.webp'
 import VerifyEmailBg from './images/verify-email-bg.webp'
 import ResetPasswordBg from './images/reset-password-bg.webp'
 import NotFoundBg from './images/404.webp'
+import ValidateBg from './images/validate-bg.webp'
 
 import HeroBg from './images/hero-bg.svg'
 import HeroIllustration1 from './images/hero-illustration-1.svg'
@@ -25,11 +26,12 @@ import MediaIllustration from './images/media-illustration.svg'
 import ProfileIllustration from './images/profile-illustration.webp'
 
 import ForumDashboard from './images/forum.svg'
-import FollowedForumDashboard from './images/followed-forum.svg'
+import FollowedDashboard from './images/followed-forum.svg'
 import MemberDashboard from './images/member.svg'
 import ReportDashboard from './images/report.svg'
 
-import NoChart from './images/no-chart-illustration.svg'
+import NoForumImg from './images/no-forum-illustration.svg'
+import NoChartImg from './images/no-chart-illustration.svg'
 import NoTable from './images/no-table-illustration.svg'
 
 export {
@@ -37,6 +39,7 @@ export {
   RegisterBg,
   ResetPasswordBg,
   VerifyEmailBg,
+  ValidateBg,
   Logo,
   Profile1,
   Profile2,
@@ -55,9 +58,10 @@ export {
   MediaIllustration,
   ProfileIllustration,
   ForumDashboard,
-  FollowedForumDashboard,
+  FollowedDashboard,
   MemberDashboard,
   ReportDashboard,
-  NoChart,
-  NoTable
+  NoForumImg,
+  NoTable,
+  NoChartImg
 }

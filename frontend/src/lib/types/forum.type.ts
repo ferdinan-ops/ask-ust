@@ -24,7 +24,7 @@ type ForumCountType = {
   }
 }
 
-type ForumListType = ForumType & { members: MemberType[] } & ForumCountType
+export type ForumListType = ForumType & { members: MemberType[] } & ForumCountType
 
 export type ForumDetailType = ForumListType & ForumCountType
 

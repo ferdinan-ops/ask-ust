@@ -22,10 +22,25 @@ model User {
   provider          String    @default("email")
   is_banned         Boolean   @default(false)
   banned_until      DateTime?
+  is_admin          Boolean   @default(false)
 
   forums     Forum[]
   members    Member[]
   violations Violation[]
+  validate   Validate?
+}
+
+model Validate {
+  id         String   @id @default(uuid())
+  user_id    String   @unique
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  file       String
+  photo      String
+  note       String?
+  is_valid   Boolean  @default(false)
+  is_read    Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Forum {

@@ -64,5 +64,10 @@ export const titleConfig = {
     heading: 'Ubah Kata Sandi',
     desc: 'Masukkan kata sandi baru yang kamu inginkan, jangan lupa simpan di password manager ya!',
     rightDesc: 'Biar nanti nggak lupa lagi sama kata sandinya, disimpen di password manager ya, bang!'
+  },
+  validateUser: {
+    heading: 'Verifikasi Data',
+    desc: 'Kami cuma mau memastikan aja kalau kamu itu benar-benar bagian dari Universitas Katolik Santo Thomas',
+    rightDesc: 'Ayo verifikasi data kamu, supaya kita bisa lebih mengenal satu sama lain dan saling berbagi informasi~'
   }
 }

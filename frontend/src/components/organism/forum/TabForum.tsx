@@ -9,7 +9,7 @@ import CardForum from './CardForum'
 
 import { useGetJoinedForums } from '@/store/server/useUser'
 import { ParamsType } from '@/hooks/useParams'
-import { NoChart } from '@/assets'
+import { NoForumImg } from '@/assets'
 
 import { ForumResponseType } from '@/lib/types/forum.type'
 import { cn } from '@/lib/utils'
@@ -62,7 +62,7 @@ function JoinedForum({ page, createParam }: JoinedForumProps) {
   }
 
   if (joinedForums?.data.length === 0) {
-    return <NoForum imgSrc={NoChart} location="profile" type="followed" />
+    return <NoForum imgSrc={NoForumImg} location="profile" type="followed" />
   }
 
   return (
@@ -86,7 +86,7 @@ function AllForum({ forums, isFetching, page, createParam }: TabsProps) {
   }
 
   if (forums.data.length === 0) {
-    return <NoForum imgSrc={NoChart} location="profile" type="mine" />
+    return <NoForum imgSrc={NoForumImg} location="profile" type="mine" />
   }
 
   return (

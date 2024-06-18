@@ -33,7 +33,8 @@ export const useVerifyEmail = () => {
     onError: (error: AxiosError) => {
       handleOnError(error)
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      useUserInfo.getState().setUser(data)
       toast({
         title: 'Email anda berhasil diverifikasi',
         description: 'Silahkan login untuk melanjutkan'
@@ -86,6 +87,7 @@ export const useLogout = () => {
       queryClient.clear()
       useToken.getState().removeAccessToken()
       useToken.getState().removeRefreshToken()
+      useUserInfo.getState().removeUser()
       toast({
         title: 'Logout berhasil',
         description: 'Anda telah keluar dari aplikasi'

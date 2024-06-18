@@ -11,6 +11,7 @@ import videoRoute from './video.route'
 import voiceRoute from './voice.route'
 import dashboardRoute from './dashboard.route'
 import messageRoute from './message.route'
+import validateRoute from './validate.route'
 
 const _routes = [
   ['/auth', authRoute],
@@ -23,7 +24,8 @@ const _routes = [
   ['/video', videoRoute],
   ['/voice', voiceRoute],
   ['/dashboard', dashboardRoute],
-  ['/messages', messageRoute]
+  ['/messages', messageRoute],
+  ['/validate', validateRoute]
 ]
 
 const routes = (app: Application) => {

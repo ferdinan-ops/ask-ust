@@ -1,9 +1,11 @@
 import axios from 'axios'
 
+import api from './axiosInstance'
+
 import ENV from '@/lib/environment'
+import { UserType } from '@/lib/types/user.type'
 import { AuthResponseType } from '@/lib/types/auth.type'
 import { LoginType, RegisterType } from '@/lib/validations/auth.validation'
-import api from './axiosInstance'
 
 const apiPublic = axios.create({
   baseURL: ENV.apiUrl,
@@ -26,8 +28,9 @@ export const registerFn = async (payload: RegisterType) => {
   }
 }
 
-export const verifyEmailFn = async (token: string) => {
-  return await apiPublic.post('/auth/verify-email', { token })
+export const verifyEmailFn = async (token: string): Promise<UserType> => {
+  const response = await apiPublic.post('/auth/verify-email', { token })
+  return response.data?.data
 }
 
 export const loginFn = async (payload: LoginType): Promise<AuthResponseType> => {

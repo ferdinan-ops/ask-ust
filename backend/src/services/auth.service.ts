@@ -66,10 +66,11 @@ export const generateToken = () => {
 interface IAddUserPayload {
   token: string
   is_email_verified?: boolean
+  provider?: string
 }
 
 export const addUser = async (payload: IUser & IAddUserPayload) => {
-  return await db.user.create({ data: payload })
+  return await db.user.create({ data: payload, include: { validate: true } })
 }
 
 export const updateUserToken = async (userId: string, token: string) => {
@@ -77,7 +78,7 @@ export const updateUserToken = async (userId: string, token: string) => {
 }
 
 export const findUserByEmail = async (email: string) => {
-  return await db.user.findUnique({ where: { email } })
+  return await db.user.findUnique({ where: { email }, include: { validate: true } })
 }
 
 export const findUserByToken = async (token: string) => {
@@ -92,6 +93,10 @@ export const verifyUserEmail = async (userId: string) => {
     where: { id: userId },
     data: {
       is_email_verified: true
+    },
+    select: {
+      ...userSelect.select,
+      validate: true
     }
   })
 }

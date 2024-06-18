@@ -13,10 +13,19 @@ interface DropZoneProps {
   setValue: (value: unknown, options?: { shouldValidate?: boolean }) => void
   fileValue?: FileWithPreview[]
   maxFileSize?: number
-  closedModal: () => void
+  description?: string
+  closedModal?: () => void
 }
 
-export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize, closedModal }: DropZoneProps) {
+export default function Dropzone({
+  accept,
+  id,
+  setValue,
+  fileValue,
+  maxFileSize,
+  closedModal,
+  description
+}: DropZoneProps) {
   const { setError, clearErrors, formState } = useFormContext()
   const { errors } = formState
 
@@ -46,8 +55,9 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
         if (oversizedFiles.length > 0) {
           setError(id, {
             type: 'manual',
-            message: `File '${oversizedFiles[0].name}' melebihi ukuran maksimum ${maxFileSize ? bytesToSize(maxFileSize) : '2 MB'
-              }.`
+            message: `File '${oversizedFiles[0].name}' melebihi ukuran maksimum ${
+              maxFileSize ? bytesToSize(maxFileSize) : '2 MB'
+            }.`
           })
         } else {
           const acceptedFilesPreview = acceptedFiles.map((file: T) =>
@@ -70,7 +80,7 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
 
   React.useEffect(() => {
     return () => {
-      () => {
+      ;() => {
         files.forEach((file) => URL.revokeObjectURL(file.preview))
       }
     }
@@ -93,7 +103,7 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
 
   const handlePreview = (preview: string) => {
     setPreviewImage(preview)
-    closedModal()
+    closedModal && closedModal()
   }
 
   const { getInputProps, getRootProps } = useDropzone({
@@ -148,13 +158,13 @@ export default function Dropzone({ accept, id, setValue, fileValue, maxFileSize,
                 Pilih file atau seret dan lepas di sini
               </p>
               <p className="text-center text-xs text-primary/40 dark:text-white/40 md:text-left">
-                JPG atau PNG ukuran tidak lebih dari 10MB
+                {description ?? 'JPG atau PNG ukuran tidak lebih dari 10MB'}
               </p>
             </div>
             <Button
               type="button"
               variant="outline"
-              className="border-blue-500 text-xs uppercase text-blue-500 hover:text-blue-500"
+              className="border-blue-500 uppercase text-blue-500 hover:text-blue-500 md:text-xs"
             >
               Pilih file
             </Button>

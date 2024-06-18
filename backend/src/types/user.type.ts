@@ -10,6 +10,7 @@ export interface IUser {
 
 export interface ITokenPayload {
   id: string
+  isAdmin: boolean
 }
 
 export type IUserUpdatePayload = Omit<IUser, 'email' | 'password' | 'photo'>

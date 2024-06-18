@@ -47,7 +47,12 @@ export default function SearchMember({ forumId, admin, moderators }: SearchMembe
             ) : (
               members?.map((member, index) => (
                 <CommandItem className="flex items-center gap-3.5" key={index}>
-                  <Image src={member.user.photo} alt={member.user.fullname} className="h-5 w-5 rounded-full" />
+                  <Image
+                    src={member.user.photo}
+                    alt={member.user.fullname}
+                    provider={member.user.provider}
+                    className="h-5 w-5 rounded-full"
+                  />
                   <span className="text-sm font-medium">{member.user.fullname}</span>
                   <div className="ml-auto">
                     <MemberSettings

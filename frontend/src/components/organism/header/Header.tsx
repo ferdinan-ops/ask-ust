@@ -17,7 +17,11 @@ import { IconType } from 'react-icons'
 
 const dropdownLinkClass = 'flex cursor-pointer items-center gap-4 rounded-md px-4 py-3 hover:bg-zinc-100 text-font'
 
-export default function HomeHeader() {
+interface HeaderProps {
+  className?: string
+}
+
+export default function Header({ className }: HeaderProps) {
   const navigate = useNavigate()
   const { mutate: logout } = useLogout()
 
@@ -33,7 +37,7 @@ export default function HomeHeader() {
   }
 
   return (
-    <header className="flex h-20 w-full items-center bg-primary">
+    <header className={cn('flex h-20 w-full items-center bg-primary', className)}>
       <nav className="mx-auto flex w-[1180px] items-center justify-between px-5 md:px-10 xl:px-0">
         <Brand
           href="/"
@@ -65,7 +69,7 @@ export default function HomeHeader() {
               <Alert
                 title="Anda yakin keluar dari aplikasi?"
                 desc="Tindakan ini akan mengeluarkan akun Anda dari aplikasi kami. Namun Anda bisa kembali lagi dengan login."
-                btnText="sign out"
+                btnText="Keluar"
                 action={handleLogout}
               >
                 <button className={cn(dropdownLinkClass, 'w-full cursor-pointer text-red-500')}>
@@ -101,7 +105,7 @@ interface ProfileBoxProps {
 function ProfileBox({ user, onClick, children, className, isHidden }: ProfileBoxProps) {
   return (
     <div className={cn('flex items-center gap-3.5', className)} onClick={() => onClick && onClick()}>
-      <Image src={user.photo} alt={user.fullname} className="h-10 w-10 rounded-full" />
+      <Image src={user.photo} alt={user.fullname} provider={user.provider} className="h-10 w-10 rounded-full" />
       <div className={cn('flex max-w-[170px] flex-col', isHidden && 'hidden lg:flex')}>
         <h3 className="text-font truncate text-sm font-semibold">{user.username}</h3>
         <p className="text-font/50 truncate text-xs">{user.email}</p>

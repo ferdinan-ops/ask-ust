@@ -43,7 +43,12 @@ export default function ManageMember() {
       <article className="mt-8 flex flex-col justify-between gap-5 rounded-lg bg-zinc-100 px-4 py-3 dark:bg-white/10 md:flex-row md:items-center md:gap-4">
         <div className="flex flex-col items-center gap-2 md:flex-row md:items-start md:gap-4">
           <div className="relative">
-            <Image src={member?.user.photo} alt={member?.user.fullname as string} className="h-12 w-12 rounded-lg" />
+            <Image
+              src={member?.user.photo}
+              alt={member?.user.fullname}
+              provider={member?.user.provider}
+              className="h-12 w-12 rounded-lg"
+            />
           </div>
           <div className="flex flex-col text-center md:text-left">
             <p className="truncate-1 flex items-center gap-1 font-medium md:text-lg">{member?.user.fullname}</p>

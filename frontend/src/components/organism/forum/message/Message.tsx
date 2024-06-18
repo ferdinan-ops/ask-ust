@@ -19,6 +19,7 @@ export default function Message({ className, message, memberLoginId }: MessagePr
       <Image
         src={message.member.user.photo}
         alt={message.member.user.fullname}
+        provider={message.member.user.provider}
         className="h-7 w-7 rounded-full object-cover"
       />
       <div

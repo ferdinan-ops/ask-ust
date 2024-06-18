@@ -42,6 +42,8 @@ export default function UploadPhoto({ user, className }: UploadPhotoProps) {
     })
   }
 
+  console.log(user.provider)
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -49,7 +51,12 @@ export default function UploadPhoto({ user, className }: UploadPhotoProps) {
           <div className="absolute inset-0 z-[2] flex bg-primary/60 opacity-0 transition-opacity group-hover:opacity-100">
             <HiCamera className="m-auto text-2xl text-white md:text-4xl" />
           </div>
-          <Image alt={user?.fullname} src={user?.photo} className="relative z-[1] h-full w-full object-cover" />
+          <Image
+            alt={user?.fullname}
+            src={user?.photo}
+            provider={user.provider}
+            className="relative z-[1] h-full w-full object-cover"
+          />
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-xl">
