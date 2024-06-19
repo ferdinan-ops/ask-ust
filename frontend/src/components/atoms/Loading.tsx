@@ -8,7 +8,7 @@ interface LoadingProps {
 export default function Loading({ className }: LoadingProps) {
   return (
     <div className={cn('flex flex-1 text-6xl', className)}>
-      <ImSpinner2 className="m-auto animate-spin text-primary dark:text-white" />
+      <ImSpinner2 className="m-auto animate-spin text-zinc-400 dark:text-white" />
     </div>
   )
 }

@@ -49,8 +49,12 @@ export const useLogin = () => {
       handleOnError(error)
     },
     onSuccess: (data) => {
-      useToken.getState().storeAccessToken(data.access_token)
-      useToken.getState().storeRefreshToken(data.refresh_token)
+      console.log('data', data)
+      if (data.access_token && data.refresh_token) {
+        useToken.getState().storeAccessToken(data.access_token)
+        useToken.getState().storeRefreshToken(data.refresh_token)
+      }
+
       useUserInfo.getState().setUser(data.user)
       toast({
         title: 'Login berhasil',
@@ -66,8 +70,11 @@ export const useLoginWithGoogle = () => {
       handleOnError(error)
     },
     onSuccess: (data) => {
-      useToken.getState().storeAccessToken(data.access_token)
-      useToken.getState().storeRefreshToken(data.refresh_token)
+      if (data.access_token && data.refresh_token) {
+        useToken.getState().storeAccessToken(data.access_token)
+        useToken.getState().storeRefreshToken(data.refresh_token)
+      }
+
       useUserInfo.getState().setUser(data.user)
       toast({
         title: 'Login berhasil',

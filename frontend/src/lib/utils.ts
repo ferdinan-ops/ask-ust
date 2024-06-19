@@ -50,3 +50,34 @@ export const formatDate = (date: string, type: 'with-hour' | 'without-hour' = 'w
 
   return type === 'with-hour' ? withHour : withoutHour
 }
+
+export const removeUuid = (filename: string): string => {
+  // Pola regex untuk mencocokkan UUID
+  const uuidPattern = /[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/
+
+  // Menghapus UUID dari nama file
+  let newFilename = filename.replace(uuidPattern, '')
+
+  // Menghapus tanda strip yang tersisa di awal dan akhir nama file jika ada
+  newFilename = newFilename.replace(/^-+|-+$/g, '')
+  return newFilename
+}
+
+export const getExtension = (filename: string): string => {
+  const lastDotIndex = filename.lastIndexOf('.')
+  const ext = filename.substring(lastDotIndex)
+  return ext
+}
+
+export const truncateFilename = (filename: string, maxLength: number): string => {
+  const noUuid = removeUuid(filename)
+  const lastDotIndex = noUuid.lastIndexOf('.')
+  const ext = noUuid.substring(lastDotIndex)
+  const nameWithoutExt = noUuid.substring(0, lastDotIndex)
+
+  if (nameWithoutExt.length > maxLength) {
+    return nameWithoutExt.substring(0, maxLength - 3) + '_' + ext
+  }
+
+  return noUuid
+}

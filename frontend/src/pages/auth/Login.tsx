@@ -34,8 +34,9 @@ export default function Login() {
 
   const onSubmit = (values: LoginType) => {
     login(values, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         forms.reset(loginDefaultValues)
+        if (data.user.is_admin) return navigate('/admin')
         navigate('/dashboard')
       }
     })
@@ -46,7 +47,12 @@ export default function Login() {
       const { access_token } = response
       const payload = { token: access_token }
       loginWithGoogle(payload, {
-        onSuccess: () => {
+        onSuccess: (data) => {
+          if (!data.user?.validate?.is_valid) {
+            return navigate('/validate')
+          }
+
+          if (data.user.is_admin) return navigate('/admin')
           navigate('/dashboard')
         }
       })

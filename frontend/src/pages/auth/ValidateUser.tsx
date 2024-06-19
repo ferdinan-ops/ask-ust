@@ -12,24 +12,30 @@ import { titleConfig } from '@/lib/config'
 import { VerifyEmailBg } from '@/assets'
 import { useTitle } from '@/hooks'
 import { FileWithPreview } from '@/components/atoms/forms/Dropzone'
+import { useStoreValidateUser } from '@/store/server/useValidate'
+import { useNavigate } from 'react-router-dom'
 
 const titleConf = titleConfig.validateUser
 
-interface FormFields {
+export interface FormFields {
   file: File[]
   photo: File[]
   agreement: boolean
 }
 
 export default function ValidateUser() {
-  useTitle('Daftar')
+  useTitle('Validasi Akun')
+  const navigate = useNavigate()
 
-  const forms = useForm<FormFields>({
-    mode: 'onTouched'
-  })
+  const forms = useForm<FormFields>({ mode: 'onTouched' })
+  const { mutate: storeValidateUser, isLoading } = useStoreValidateUser()
 
   const onSubmit = (values: FormFields) => {
-    console.log(values)
+    storeValidateUser(values, {
+      onSuccess: () => {
+        navigate('/unverified')
+      }
+    })
   }
 
   return (
@@ -43,6 +49,7 @@ export default function ValidateUser() {
             <FormField
               name="file"
               control={forms.control}
+              rules={{ required: 'File validasi harus diisi' }}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">File validasi</FormLabel>
@@ -52,7 +59,7 @@ export default function ValidateUser() {
                       setValue={field.onChange}
                       fileValue={field.value as FileWithPreview[]}
                       description="PDF, JPG atau PNG ukuran tidak lebih dari 10MB"
-                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'] }}
+                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
                     />
                   </FormControl>
                   <FormDescription className="text-xs">
@@ -66,12 +73,13 @@ export default function ValidateUser() {
             <FormField
               name="photo"
               control={forms.control}
+              rules={{ required: 'Foto harus diisi' }}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Foto</FormLabel>
                   <FormControl>
                     <Dropzone
-                      id="file"
+                      id="photo"
                       setValue={field.onChange}
                       fileValue={field.value as FileWithPreview[]}
                       accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'] }}
@@ -100,7 +108,7 @@ export default function ValidateUser() {
                 </FormItem>
               )}
             />
-            <Button className="font-semibold" type="submit">
+            <Button className="font-semibold" type="submit" loading={isLoading}>
               Verifikasi
             </Button>
           </form>

@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import { useToken, useUserInfo } from '@/store/client'
 import {
   HiOutlineArrowRightOnRectangle,
+  HiOutlineBell,
   HiOutlineChevronDown,
   HiOutlineSquares2X2,
   HiOutlineUser
@@ -19,9 +20,10 @@ const dropdownLinkClass = 'flex cursor-pointer items-center gap-4 rounded-md px-
 
 interface HeaderProps {
   className?: string
+  isAdmin?: boolean
 }
 
-export default function Header({ className }: HeaderProps) {
+export default function Header({ className, isAdmin }: HeaderProps) {
   const navigate = useNavigate()
   const { mutate: logout } = useLogout()
 
@@ -37,46 +39,57 @@ export default function Header({ className }: HeaderProps) {
   }
 
   return (
-    <header className={cn('flex h-20 w-full items-center bg-primary', className)}>
+    <header className={cn('flex h-20 w-full items-center bg-primary text-white', className)}>
       <nav className="mx-auto flex w-[1180px] items-center justify-between px-5 md:px-10 xl:px-0">
         <Brand
-          href="/"
-          className="gap-3 text-lg font-bold text-white xl:gap-4 xl:text-xl"
+          href={isAdmin ? '/admin' : '/'}
+          className="gap-3 text-lg font-bold xl:gap-4 xl:text-xl"
           imageClassName="xl:w-8 w-7"
         />
         {accessToken ? (
-          <div className="relative w-fit">
-            <ProfileBox
-              isHidden
-              user={user}
-              onClick={() => setIsOpen(!isOpen)}
-              className="cursor-pointer rounded-full bg-white/10 text-white hover:bg-white/5 xl:rounded-lg xl:px-2.5 xl:py-2"
-            >
-              <HiOutlineChevronDown className="text-font hidden text-lg lg:block" />
-            </ProfileBox>
-
-            <div
-              className={cn(
-                'absolute right-0 top-full z-[9999] origin-top-right transition-all duration-300',
-                'mt-2 w-[270px] flex-col rounded-lg border-2 border-zinc-200 bg-white p-4 shadow-xl',
-                isOpen ? 'visible translate-y-0 opacity-100' : 'invisible translate-y-[-10px] opacity-0'
-              )}
-            >
-              <ProfileBox user={user} className="border-b border-zinc-200 pb-4" />
-              <NavLink href="/dashboard" label="Dashboard" onClick={handleClose} icon={HiOutlineSquares2X2} />
-              <NavLink href="/me" label="Profil" onClick={handleClose} icon={HiOutlineUser} />
-
-              <Alert
-                title="Anda yakin keluar dari aplikasi?"
-                desc="Tindakan ini akan mengeluarkan akun Anda dari aplikasi kami. Namun Anda bisa kembali lagi dengan login."
-                btnText="Keluar"
-                action={handleLogout}
+          <div className="flex items-center gap-5">
+            {isAdmin && (
+              <Button size="icon" variant="secondary" className="rounded-full">
+                <HiOutlineBell className="text-xl text-primary" />
+                <div className="absolute right-2.5 top-2 h-2.5 w-2.5 rounded-full border-2 border-white bg-red-500" />
+              </Button>
+            )}
+            <div className="relative w-fit">
+              <ProfileBox
+                isHidden
+                user={user}
+                onClick={() => setIsOpen(!isOpen)}
+                className={cn(
+                  'cursor-pointer rounded-full bg-white/10 text-white hover:bg-white/5 xl:rounded-lg xl:px-2.5 xl:py-2',
+                  isAdmin && 'bg-zinc-100 text-primary hover:bg-zinc-200'
+                )}
               >
-                <button className={cn(dropdownLinkClass, 'w-full cursor-pointer text-red-500')}>
-                  <HiOutlineArrowRightOnRectangle className="text-xl" />
-                  <span className="text-sm font-medium">Keluar dari aplikasi</span>
-                </button>
-              </Alert>
+                <HiOutlineChevronDown className="text-font hidden text-lg lg:block" />
+              </ProfileBox>
+
+              <div
+                className={cn(
+                  'absolute right-0 top-full z-[9999] origin-top-right transition-all duration-300',
+                  'mt-2 w-[270px] flex-col rounded-lg border-2 border-zinc-200 bg-white p-4 shadow-xl',
+                  isOpen ? 'visible translate-y-0 opacity-100' : 'invisible translate-y-[-10px] opacity-0'
+                )}
+              >
+                <ProfileBox user={user} className="border-b border-zinc-200 pb-4" />
+                <NavLink href="/Home" label="Dashboard" onClick={handleClose} icon={HiOutlineSquares2X2} />
+                <NavLink href="/me" label="Profil" onClick={handleClose} icon={HiOutlineUser} />
+
+                <Alert
+                  title="Anda yakin keluar dari aplikasi?"
+                  desc="Tindakan ini akan mengeluarkan akun Anda dari aplikasi kami. Namun Anda bisa kembali lagi dengan login."
+                  btnText="Keluar"
+                  action={handleLogout}
+                >
+                  <button className={cn(dropdownLinkClass, 'w-full cursor-pointer text-red-500')}>
+                    <HiOutlineArrowRightOnRectangle className="text-xl" />
+                    <span className="text-sm font-medium">Keluar dari aplikasi</span>
+                  </button>
+                </Alert>
+              </div>
             </div>
           </div>
         ) : (
