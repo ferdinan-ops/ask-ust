@@ -1,7 +1,7 @@
 import { FormFields } from '@/pages/auth/ValidateUser'
 import api from './axiosInstance'
 import { useUserInfo } from '@/store/client'
-import { UserResponseType, UserType } from '@/lib/types/user.type'
+import { UserType, ValidateResponseType } from '@/lib/types/user.type'
 
 export const storeValidateUserFn = async (payload: FormFields): Promise<UserType> => {
   const formData = new FormData()
@@ -22,12 +22,17 @@ export const storeValidateUserFn = async (payload: FormFields): Promise<UserType
   return response.data?.data
 }
 
-export const getUserValidatesFn = async (search?: string, page?: number, limit?: number): Promise<UserResponseType> => {
+export const getUserValidatesFn = async (
+  search?: string,
+  page?: number,
+  filter?: string
+): Promise<ValidateResponseType> => {
   const response = await api.get('/validate', {
     params: {
       q: search,
       page,
-      limit
+      limit: 10,
+      filter
     }
   })
 
@@ -42,11 +47,24 @@ export const getUserValidateByIdFn = async (userId: string): Promise<UserType> =
 type UpdateValidatePayload = {
   isValid: boolean
   note?: string
-  userId: string
   validateId: string
 }
 
 export const updateValidateUserFn = async (payload: UpdateValidatePayload) => {
   const { validateId, ...rest } = payload
   return await api.put(`/validate/${validateId}`, rest)
+}
+
+export const getUnreadValidatesFn = async (): Promise<number> => {
+  const response = await api.get('/validate/notif')
+  return response.data?.data
+}
+
+export const updateReadStatusFn = async (validateId: string) => {
+  return await api.put(`/validate/${validateId}/read`)
+}
+
+export const deleteValidateUserFn = async (validateId: string): Promise<UserType> => {
+  const response = await api.delete(`/validate/${validateId}`)
+  return response.data?.data
 }

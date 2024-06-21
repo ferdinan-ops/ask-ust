@@ -3,8 +3,7 @@ import { IValidateUpdatePayload } from '../types/validate.type'
 
 export const validUpdateValidate = (payload: IValidateUpdatePayload) => {
   const schema = Joi.object<IValidateUpdatePayload>({
-    userId: Joi.string().required(),
-    note: Joi.string(),
+    note: Joi.string().allow(''),
     isValid: Joi.boolean().required()
   })
 

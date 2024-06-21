@@ -21,9 +21,15 @@ export type ValidateUserType = {
   file: string
   photo: string
   is_valid: boolean
+  is_read: boolean
   note?: string
   user_id: string
   created_at: string
+}
+
+export type ValidateResponseType = {
+  data: Array<ValidateUserType & { user: UserType }>
+  meta: MetaType
 }
 
 export type UserResponseType = {

@@ -1,6 +1,7 @@
 import useDisableBodyScroll from './useDisableBodyScroll'
 import useOutsideClick from './useOutsideClick'
 import { usePagination } from './usePagination'
+import useQueryParams from './useQueryParams'
 import useGetDevices from './useGetDevices'
 import useDebounce from './useDebounce'
 import useParams from './useParams'
@@ -23,5 +24,6 @@ export {
   useMessageScroll,
   useMessageSocket,
   useVideoSocket,
-  useVoiceSocket
+  useVoiceSocket,
+  useQueryParams
 }

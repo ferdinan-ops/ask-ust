@@ -6,7 +6,7 @@ import logger from '../utils/logger'
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => {
-    cb(null, 'uploads')
+    cb(null, 'storage')
   },
   filename: (_req, file, cb) => {
     cb(null, v4() + '-' + file.originalname)
@@ -14,7 +14,15 @@ const storage = multer.diskStorage({
 })
 
 const fileFilter = (_req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
-  const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp', 'image/svg', 'image/gif']
+  const allowedTypes = [
+    'image/jpg',
+    'image/jpeg',
+    'image/png',
+    'image/webp',
+    'image/svg',
+    'image/gif',
+    'application/pdf'
+  ]
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true)
   } else {

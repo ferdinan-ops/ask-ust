@@ -1,8 +1,7 @@
 import db from '../utils/db'
 
 import { type IUserUpdatePayload } from '../types/user.type'
-import { deleteFile, compressedFile } from '../utils/fileSettings'
-import logger from '../utils/logger'
+// import { deleteFile } from '../utils/fileSettings'
 import { userSelect } from '../utils/service'
 import ENV from '../utils/environment'
 
@@ -115,14 +114,8 @@ export const getForumByMemberId = async (userId: string, page: number, limit: nu
 }
 
 export const processPhoto = async (oldPhoto: string, filename: string) => {
-  if (oldPhoto !== '') await deleteFile(oldPhoto)
-  const compressedPhoto = await compressedFile(filename)
-  if (compressedPhoto) {
-    return compressedPhoto
-  } else {
-    logger.error('Gagal mengubah foto')
-    return oldPhoto
-  }
+  // if (oldPhoto) await deleteFile(oldPhoto)
+  return filename
 }
 
 export const updatePhoto = async (userId: string, filename: string) => {
@@ -135,7 +128,10 @@ export const updatePhoto = async (userId: string, filename: string) => {
   return await db.user.update({
     where: { id: userId },
     data: { photo: newPhoto },
-    select: userSelect.select
+    select: {
+      ...userSelect.select,
+      validate: true
+    }
   })
 }
 

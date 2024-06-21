@@ -27,9 +27,11 @@ export default function Register() {
   const navigate = useNavigate()
   const { mutate: register, isLoading } = useRegister()
 
-  const { terms, setTerms } = useTerms((state) => ({
+  const { terms, setTerms, registerFields, setRegisterFields } = useTerms((state) => ({
     terms: state.terms,
-    setTerms: state.setTerms
+    setTerms: state.setTerms,
+    registerFields: state.registerFields,
+    setRegisterFields: state.setRegisterFields
   }))
 
   const forms = useForm<RegisterType>({
@@ -39,16 +41,19 @@ export default function Register() {
   })
 
   React.useEffect(() => {
-    if (terms) {
-      forms.setValue('agreement', true)
-    }
+    if (terms) forms.setValue('agreement', true)
   }, [terms, forms])
+
+  React.useEffect(() => {
+    if (registerFields) forms.reset(registerFields)
+  }, [registerFields, forms])
 
   const onSubmit = (values: RegisterType) => {
     register(values, {
       onSuccess: () => {
         forms.reset(registerDefaultValues)
         setTerms(false)
+        setRegisterFields(registerDefaultValues)
         navigate('/verify-email')
       }
     })
@@ -139,7 +144,11 @@ export default function Register() {
                   </FormControl>
                   <FormLabel className="text-xs font-medium dark:text-white">
                     Dengan membuat akun, Anda menyetujui{' '}
-                    <Link to="/terms-and-conditions" className="font-bold underline">
+                    <Link
+                      to="/terms-and-conditions"
+                      className="font-bold underline"
+                      onClick={() => setRegisterFields(forms.getValues())}
+                    >
                       Syarat, ketentuan dan kebijakan privasi
                     </Link>{' '}
                     ASK.UST.

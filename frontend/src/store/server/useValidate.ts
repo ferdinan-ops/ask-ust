@@ -1,11 +1,14 @@
 import {
+  deleteValidateUserFn,
+  getUnreadValidatesFn,
   getUserValidateByIdFn,
   getUserValidatesFn,
   storeValidateUserFn,
+  updateReadStatusFn,
   updateValidateUserFn
 } from '@/api/validate.api'
 import { toast } from '@/components/ui/use-toast'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useUserInfo } from '../client'
 
 export const useStoreValidateUser = () => {
@@ -23,18 +26,15 @@ export const useStoreValidateUser = () => {
 export interface GetAllParams {
   search?: string
   page?: number
-  limit?: number
-  enabled?: boolean
+  filter?: string
 }
 
-export const useGetUserValidates = ({ search, page, limit, enabled }: GetAllParams) => {
-  return useQuery('users', async () => await getUserValidatesFn(search, page, limit), {
-    enabled
-  })
+export const useGetUserValidates = ({ search, page, filter }: GetAllParams) => {
+  return useQuery(['users', search, page, filter], async () => await getUserValidatesFn(search, page, filter))
 }
 
 export const useGetUserValidate = (userId: string) => {
-  return useQuery(['user', userId], async () => await getUserValidateByIdFn(userId))
+  return useQuery(['users', userId], async () => await getUserValidateByIdFn(userId))
 }
 
 export const useUpdateValidateUser = () => {
@@ -43,6 +43,37 @@ export const useUpdateValidateUser = () => {
       toast({
         title: 'Berhasil',
         description: 'Berhasil mengubah status verifikasi user'
+      })
+    }
+  })
+}
+
+export const useGetUnreadValidates = (enabled: boolean) => {
+  return useQuery('unread', async () => await getUnreadValidatesFn(), {
+    enabled
+  })
+}
+
+export const useUpdateReadStatus = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(updateReadStatusFn, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('unread')
+    }
+  })
+}
+
+export const useDeleteValidate = () => {
+  const queryClient = useQueryClient()
+  return useMutation(deleteValidateUserFn, {
+    onSuccess: (data) => {
+      console.log({ data })
+      useUserInfo.getState().setUser(data)
+      queryClient.invalidateQueries(['users', data.id])
+      toast({
+        title: 'Ayo daftarkan diri kamu kembali!',
+        description: 'Berkas kamu sebelumnya sudah kami hapus dari sistem'
       })
     }
   })

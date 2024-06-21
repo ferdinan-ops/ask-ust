@@ -1,11 +1,14 @@
 import { Request, Response } from 'express'
 import { logError, logInfo } from '../utils/logger'
 import * as ValidateService from '../services/validate.service'
+import * as UserService from '../services/user.service'
 import { validUpdateValidate } from '../validations/validate.validation'
 import { IValidateUpdatePayload } from '../types/validate.type'
 
 export const createValidateUser = async (req: Request, res: Response) => {
-  const userId = req.body.userId
+  const userId = req.body?.userId as string
+  const agreement = req.body?.agreement as boolean
+
   const file = req.files?.file
   const photo = req.files?.photo
 
@@ -14,19 +17,39 @@ export const createValidateUser = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'User ID is required' })
   }
 
-  if (!file || !photo) {
+  if (!file?.[0].filename || !photo?.[0].filename) {
     logError(req, 'File not found')
     return res.status(400).json({ message: 'File not found' })
   }
 
   try {
-    await ValidateService.addNewValidate({
+    const validateUser = await ValidateService.fetchValidateByUserId(userId)
+    if (validateUser) {
+      logError(req, 'User already has validate data')
+      return res.status(400).json({ message: 'User already has validate data' })
+    }
+
+    let data
+    const results = await ValidateService.addNewValidate({
       user_id: userId,
-      file: file.name,
-      photo: photo.name
+      file: file[0].filename,
+      photo: photo[0].filename
     })
+
+    if (results) {
+      const { user, ...validate } = results
+      data = { ...user, validate }
+    }
+
+    if (agreement) {
+      data = await UserService.updatePhoto(userId, photo[0].filename)
+      logInfo(req, 'Updating user photo')
+    }
+
+    await ValidateService.sendNotificationToAdmin(userId, results.user.fullname)
+
     logInfo(req, 'Creating new validate user')
-    res.status(201).json({ message: 'Berhasil menambahkan data verifikasi user' })
+    res.status(201).json({ message: 'Berhasil menambahkan data verifikasi user', data })
   } catch (error) {
     res.status(500).json({ error })
   }
@@ -45,7 +68,8 @@ export const updateValidateUser = async (req: Request, res: Response) => {
   }
 
   try {
-    await ValidateService.changeValidateStatus(req.params.validateId, value)
+    const data = await ValidateService.changeValidateStatus(req.params.validateId, value)
+    await ValidateService.sendValidateNotification(data.user.email, data.is_valid, data.note as string)
     logInfo(req, 'Updating validate user')
     res.status(200).json({ message: 'Berhasil mengubah status verifikasi user' })
   } catch (error) {
@@ -54,10 +78,25 @@ export const updateValidateUser = async (req: Request, res: Response) => {
 }
 
 export const getUserValidates = async (req: Request, res: Response) => {
+  const { page, limit, q, filter } = req.query
+  const currentPage = Number(page) || 1
+  const perPage = Number(limit) || 10
+  const search = q as string
+  const filterBy = filter as string
+
   try {
-    const data = await ValidateService.fetchValidates()
+    const { data, count } = await ValidateService.fetchValidates(currentPage, perPage, search, filterBy)
+
     logInfo(req, 'Fetching all validates')
-    res.status(200).json({ message: 'Berhasil menampilkan data verifikasi user', data })
+    res.status(200).json({
+      message: 'Berhasil menampilkan data verifikasi user',
+      data,
+      meta: {
+        current_page: currentPage,
+        limit: perPage,
+        total: count
+      }
+    })
   } catch (error) {
     res.status(500).json({ error })
   }
@@ -65,9 +104,26 @@ export const getUserValidates = async (req: Request, res: Response) => {
 
 export const getUserValidate = async (req: Request, res: Response) => {
   const userId = req.params.userId
+  const isAdmin = req.isAdmin
 
   try {
-    const data = await ValidateService.fetchValidateByUserId(userId)
+    let data
+    if (isAdmin) {
+      const result = await ValidateService.fetchValidateByUserId(userId)
+      const { user, ...validate } = result ?? {}
+      data = { ...user, validate }
+    } else {
+      const result = await ValidateService.fetchValidateByUserId(userId, !isAdmin)
+      if (!result?.user) {
+        const user = await UserService.getUserLogin(userId)
+        console.log({ user })
+        data = { ...user }
+      } else {
+        const { user, ...validate } = result
+        data = { ...user, validate }
+      }
+    }
+
     logInfo(req, 'Fetching user validate')
     res.status(200).json({ message: 'Berhasil menampilkan data verifikasi user', data })
   } catch (error) {
@@ -82,6 +138,35 @@ export const updateValidateReadStatus = async (req: Request, res: Response) => {
     await ValidateService.changeValidateReadStatus(validateId)
     logInfo(req, 'Updating validate read status')
     res.status(200).json({ message: 'Berhasil mengubah status baca verifikasi user' })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const getUnreadValidates = async (req: Request, res: Response) => {
+  try {
+    const data = await ValidateService.fetchUnreadValidatesCount()
+    logInfo(req, 'Fetching unread validates')
+    res.status(200).json({ message: 'Berhasil menampilkan data verifikasi user yang belum dibaca', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const deleteValidateUser = async (req: Request, res: Response) => {
+  const validateId = req.params.validateId
+
+  try {
+    const results = await ValidateService.removeValidateUser(validateId)
+
+    let data
+    if (results) {
+      const { user, ...validate } = results
+      data = { ...user, validate }
+    }
+
+    logInfo(req, 'Deleting validate user')
+    res.status(200).json({ message: 'Berhasil menghapus data verifikasi user', data })
   } catch (error) {
     res.status(500).json({ error })
   }

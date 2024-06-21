@@ -81,15 +81,22 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Email atau password Anda salah' })
     }
 
+    const { password, ...userWithoutPassword } = user
+    const { validate, ...rest } = userWithoutPassword
+
     if (!user.validate) {
-      logWarn(req, 'Account is not verified')
-      return res.status(400).json({ error: 'Akun Anda belum diverifikasi oleh Admin' })
+      logWarn(req, 'Data has not been sent to Admin')
+      return res.status(200).json({ data: { user: rest } })
+    }
+
+    if (validate?.note ?? !validate?.is_valid ?? !validate?.note) {
+      logWarn(req, 'Data has been sent to Admin')
+      return res.status(200).json({ data: { user: userWithoutPassword } })
     }
 
     const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: user.is_admin })
     const refreshToken = AuthService.refreshTokenSign({ id: user.id, isAdmin: user.is_admin })
 
-    const { password, ...rest } = user
     const data = { user: rest, access_token: accessToken, refresh_token: refreshToken }
 
     logInfo(req, 'User is successfully logged in')
@@ -114,25 +121,41 @@ export const loginGoogle = async (req: Request, res: Response) => {
     }
 
     const { name, email, picture } = googleRes
-    let user = await AuthService.findUserByEmail(email)
+    const user = await AuthService.findUserByEmail(email)
 
     if (!user) {
-      const username = `${AuthService.formatUsername(name)}-${AuthService.generateToken()}`
-      user = await AuthService.addUser({
+      const token = AuthService.generateToken()
+      const username = `${AuthService.formatUsername(name)}-${token}`
+      const results = await AuthService.addUser({
         fullname: name,
         username,
+        token,
         email,
-        token: '',
         photo: picture,
         is_email_verified: true,
         provider: 'google'
       })
+
+      logInfo(req, 'User is successfully logged in')
+      return res.status(200).json({ message: 'Login berhasil', data: { user: results } })
+    }
+
+    const { password, ...userWithoutPassword } = user
+    const { validate, ...rest } = userWithoutPassword
+
+    if (!user.validate) {
+      logWarn(req, 'Data has not been sent to Admin')
+      return res.status(200).json({ data: { user: rest } })
+    }
+
+    if (validate?.note ?? !validate?.is_valid ?? !validate?.note) {
+      logWarn(req, 'Data has been sent to Admin')
+      return res.status(200).json({ data: { user: userWithoutPassword } })
     }
 
     const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: user.is_admin })
     const refreshToken = AuthService.refreshTokenSign({ id: user.id, isAdmin: user.is_admin })
 
-    const { password, ...rest } = user
     const data = { user: rest, access_token: accessToken, refresh_token: refreshToken }
 
     logInfo(req, 'User is successfully logged in')

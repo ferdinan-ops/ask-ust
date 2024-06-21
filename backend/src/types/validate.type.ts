@@ -7,7 +7,6 @@ export interface IValidateUser {
 }
 
 export interface IValidateUpdatePayload {
-  userId: string
   isValid: boolean
   note?: string
 }

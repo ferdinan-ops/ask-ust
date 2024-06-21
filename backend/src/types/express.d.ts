@@ -5,14 +5,14 @@ declare namespace Express {
     isAdmin?: boolean
 
     files?: {
-      file: {
-        name: string
+      file: Array<{
+        filename: string
         data: Buffer
-      }
-      photo: {
-        name: string
+      }>
+      photo: Array<{
+        filename: string
         data: Buffer
-      }
+      }>
     }
   }
 }

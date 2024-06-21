@@ -70,7 +70,13 @@ interface IAddUserPayload {
 }
 
 export const addUser = async (payload: IUser & IAddUserPayload) => {
-  return await db.user.create({ data: payload, include: { validate: true } })
+  return await db.user.create({
+    data: payload,
+    select: {
+      ...userSelect.select,
+      validate: true
+    }
+  })
 }
 
 export const updateUserToken = async (userId: string, token: string) => {
@@ -78,7 +84,10 @@ export const updateUserToken = async (userId: string, token: string) => {
 }
 
 export const findUserByEmail = async (email: string) => {
-  return await db.user.findUnique({ where: { email }, include: { validate: true } })
+  return await db.user.findUnique({
+    where: { email },
+    include: { validate: true }
+  })
 }
 
 export const findUserByToken = async (token: string) => {

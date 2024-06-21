@@ -9,7 +9,7 @@ import routes from './routes'
 import logger from './utils/logger'
 import * as socket from './middlewares/socket'
 
-const port: number = 3000
+const port: number = 58790
 const app: Application = express()
 const server = http.createServer(app)
 socket.initializeSocket(server)

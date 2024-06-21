@@ -206,8 +206,8 @@ export const sendImage = async (req: Request, res: Response) => {
       res.status(400).json({ error: ViolationService.bannedMessage })
     }
 
-    const image = await MessageService.processedImage(filename)
-    const results = await MessageService.analyzeImage(image)
+    // const image = await MessageService.processedImage(filename)
+    const results = await MessageService.analyzeImage(filename)
 
     const isSecure = results && Object.values(results).every((value) => value === 'VERY_UNLIKELY')
 
@@ -220,7 +220,7 @@ export const sendImage = async (req: Request, res: Response) => {
       }
     }
 
-    const data = await MessageService.uploadImage(image, forumId, userId)
+    const data = await MessageService.uploadImage(filename, forumId, userId)
 
     const forumKey = `chat:${forumId}:messages:update`
     req.io?.emit(forumKey, data)

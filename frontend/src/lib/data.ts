@@ -1,11 +1,4 @@
-import {
-  // HiOutlineBell,
-  // HiOutlineChatBubbleLeftRight,
-  HiOutlineInbox,
-  // HiOutlineInboxStack,
-  HiOutlineSquares2X2,
-  HiOutlineUser
-} from 'react-icons/hi2'
+import { HiOutlineBell, HiOutlineInbox, HiOutlineSquares2X2, HiOutlineUser, HiOutlineUserGroup } from 'react-icons/hi2'
 
 export const MAIN_MENU = [
   {
@@ -18,21 +11,6 @@ export const MAIN_MENU = [
     title: 'Forum',
     icon: HiOutlineInbox
   },
-  // {
-  //   href: '/my-questions',
-  //   title: 'Pertanyaan-ku',
-  //   icon: HiOutlineChatBubbleLeftRight
-  // },
-  // {
-  //   href: '/my-forums',
-  //   title: 'Forum-ku',
-  //   icon: HiOutlineInboxStack
-  // },
-  // {
-  //   href: '/notification',
-  //   title: 'Notifikasi',
-  //   icon: HiOutlineBell
-  // },
   {
     href: '/me',
     title: 'Profil',
@@ -78,4 +56,18 @@ export const MEMBERS = [
   'Linda Mariana',
   'Mega Susanti',
   'Nana Mariana'
+]
+
+export const headerLinks = [
+  { to: '/admin', label: 'Pengguna', icon: HiOutlineUserGroup, type: 'admin' },
+  { to: '/admin/notification', label: 'Notifikasi', icon: HiOutlineBell, type: 'admin' },
+  { to: '/dashboard', label: 'Dashboard', icon: HiOutlineSquares2X2, type: 'user' },
+  { to: '/me', label: 'Profil', icon: HiOutlineUser, type: 'user' }
+]
+
+export const filterItems = [
+  { label: 'Semua', value: 'all' },
+  { label: 'Valid', value: 'valid' },
+  { label: 'Tidak valid', value: 'invalid' },
+  { label: 'Belum divalidasi', value: 'pending' }
 ]

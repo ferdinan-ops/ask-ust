@@ -20,6 +20,11 @@ export const alertConfig = {
     title: 'Anda yakin menghapus pesan ini?',
     desc: 'Tindakan ini tidak dapat dibatalkan. Tindakan ini akan menghapus pesan ini secara permanen dari forum ini.',
     btnTxt: 'Hapus'
+  },
+  logout: {
+    title: 'Anda yakin keluar dari aplikasi?',
+    desc: 'Tindakan ini akan mengeluarkan akun Anda dari aplikasi kami. Namun Anda bisa kembali lagi dengan login.',
+    btnTxt: 'Keluar'
   }
 }
 
@@ -69,5 +74,17 @@ export const titleConfig = {
     heading: 'Verifikasi Data',
     desc: 'Kami cuma mau memastikan aja kalau kamu itu benar-benar bagian dari Universitas Katolik Santo Thomas',
     rightDesc: 'Ayo verifikasi data kamu, supaya kita bisa lebih mengenal satu sama lain dan saling berbagi informasi~'
+  },
+  userLists: {
+    heading: 'Daftar pengguna',
+    desc: 'Berikut adalah daftar pengguna yang terdaftar di aplikasi ini. Anda dapat melihat detail pengguna dan memeriksa apakah pengguna dapat diterima atau tidak.'
+  },
+  detailUser: {
+    heading: 'Detail pengguna',
+    desc: 'Anda perlu memeriksa seluruh data dari pengguna dan menekan tombol pada file validasi dan foto untuk melihat, lalu menentukan apakah pengguna dapat diterima sebagai bagian dari Universitas Katolik Santo Thomas atau tidak dari file tersebut'
+  },
+  notification: {
+    heading: 'Notifikasi',
+    desc: 'Berikut adalah daftar pengguna yang telah terdaftar pada sistem yang belum diverifikasi oleh admin. Kamu perlu memeriksa data pengguna dan menandai apakah pengguna tersebut sudah diverifikasi atau belum.'
   }
 }
