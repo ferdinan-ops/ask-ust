@@ -8,6 +8,8 @@ import ProtectedAuth from './middlewares/ProtectedAuth'
 import ProtectedRoute from './middlewares/ProtectedRoute'
 import ProtectedForum from './middlewares/ProtectedForum'
 import ProtectedFromUnverified from './middlewares/ProtectFromUnverified'
+import ProtectedFromAdmin from './middlewares/ProtectedFromAdmin'
+import ProtectedFromGuest from './middlewares/ProtectFromGuest'
 
 export {
   AuthLayout,
@@ -18,5 +20,7 @@ export {
   ProtectedRoute,
   ProtectedForum,
   ProtectedFromUnverified,
+  ProtectedFromAdmin,
+  ProtectedFromGuest,
   AdminLayout
 }

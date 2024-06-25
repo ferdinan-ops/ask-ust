@@ -8,6 +8,8 @@ import {
   ProfileLayout,
   ProtectedAuth,
   ProtectedForum,
+  ProtectedFromAdmin,
+  ProtectedFromGuest,
   ProtectedFromUnverified,
   ProtectedRoute
 } from './components/layouts'
@@ -43,12 +45,6 @@ export default function App() {
         <Route path="/terms-and-conditions" element={<Terms />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
 
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<User />} />
-          <Route path="validate/:userId" element={<DetailUser />} />
-          <Route path="notification" element={<Notification />} />
-        </Route>
-
         <Route element={<ProtectedAuth />}>
           <Route path="/login" element={<Login />} />
           <Route element={<ProtectedFromUnverified />}>
@@ -65,44 +61,54 @@ export default function App() {
         </Route>
 
         <Route element={<ProtectedRoute />}>
-          <Route element={<DashboardLayout />}>
-            <Route element={<PaddingLayout />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/forums">
-                <Route index element={<Forums />} />
-                <Route path="create" element={<CreateForum />} />
-                <Route path="edit/:id" element={<CreateForum />} />
-                <Route path=":slug">
-                  <Route index element={<DetailForum />} />
-                  <Route element={<ProtectedForum />}>
-                    <Route path="member">
-                      <Route index element={<Member />} />
-                      <Route path=":memberId" element={<ManageMember />} />
+          <Route element={<ProtectedFromGuest />}>
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<User />} />
+              <Route path="validate/:userId" element={<DetailUser />} />
+              <Route path="notification" element={<Notification />} />
+            </Route>
+          </Route>
+
+          <Route element={<ProtectedFromAdmin />}>
+            <Route element={<DashboardLayout />}>
+              <Route element={<PaddingLayout />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/forums">
+                  <Route index element={<Forums />} />
+                  <Route path="create" element={<CreateForum />} />
+                  <Route path="edit/:id" element={<CreateForum />} />
+                  <Route path=":slug">
+                    <Route index element={<DetailForum />} />
+                    <Route element={<ProtectedForum />}>
+                      <Route path="member">
+                        <Route index element={<Member />} />
+                        <Route path=":memberId" element={<ManageMember />} />
+                      </Route>
                     </Route>
                   </Route>
                 </Route>
               </Route>
+
+              <Route element={<ProtectedForum />}>
+                <Route path="/forums/:slug/content" element={<ContentForum />} />
+              </Route>
+
+              <Route path="/me" element={<ProfileLayout />}>
+                <Route index element={<Profile />} />
+                <Route path="edit" element={<EditProfile />} />
+              </Route>
             </Route>
 
             <Route element={<ProtectedForum />}>
-              <Route path="/forums/:slug/content" element={<ContentForum />} />
+              <Route path="/forums/:slug">
+                <Route path="video/:videoId" element={<VideoForum />} />
+                <Route path="voice/:voiceId" element={<VoiceForum />} />
+              </Route>
             </Route>
 
-            <Route path="/me" element={<ProfileLayout />}>
-              <Route index element={<Profile />} />
-              <Route path="edit" element={<EditProfile />} />
-            </Route>
+            <Route path="/invite-code/:inviteCode" element={<InviteCode />} />
+            <Route path="/me/change-password" element={<ResetPassword />} />
           </Route>
-
-          <Route element={<ProtectedForum />}>
-            <Route path="/forums/:slug">
-              <Route path="video/:videoId" element={<VideoForum />} />
-              <Route path="voice/:voiceId" element={<VoiceForum />} />
-            </Route>
-          </Route>
-
-          <Route path="/invite-code/:inviteCode" element={<InviteCode />} />
-          <Route path="/me/change-password" element={<ResetPassword />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
