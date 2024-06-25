@@ -18,7 +18,7 @@ import { Toaster } from './components/ui/toaster'
 
 import { ContentForum, CreateForum, DetailForum, Forums, VideoForum, VoiceForum } from './pages/forum'
 import { ForgotPassword, Login, Register, ResetPassword, Unverified, ValidateUser, VerifyEmail } from './pages/auth'
-import { DetailUser, Notification, User } from './pages/admin'
+import { DetailUser, Notification, Settings, User } from './pages/admin'
 import { ManageMember, Member } from './pages/member'
 import { EditProfile, Profile } from './pages/user'
 
@@ -40,18 +40,23 @@ export default function App() {
     <React.Fragment>
       {previewImage && <ImagePreview image={previewImage} onShow={() => setPreviewImage('')} />}
       <Toaster />
+
+      {/* ALL ROUTES */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/terms-and-conditions" element={<Terms />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
 
+        {/* AUTHENTICATION ROUTES */}
         <Route element={<ProtectedAuth />}>
           <Route path="/login" element={<Login />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+
+          {/* VERIFIED USER ROUTES */}
           <Route element={<ProtectedFromUnverified />}>
             <Route path="/register" element={<Register />} />
           </Route>
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route element={<ProtectedFromUnverified type="validate" />}>
             <Route path="/validate" element={<ValidateUser />} />
           </Route>
@@ -60,15 +65,19 @@ export default function App() {
           </Route>
         </Route>
 
+        {/* MAIN ROUTES */}
         <Route element={<ProtectedRoute />}>
+          {/* ADMIN ROUTES */}
           <Route element={<ProtectedFromGuest />}>
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<User />} />
               <Route path="validate/:userId" element={<DetailUser />} />
               <Route path="notification" element={<Notification />} />
+              <Route path="settings" element={<Settings />} />
             </Route>
           </Route>
 
+          {/* GUEST ROUTES */}
           <Route element={<ProtectedFromAdmin />}>
             <Route element={<DashboardLayout />}>
               <Route element={<PaddingLayout />}>
@@ -110,6 +119,7 @@ export default function App() {
             <Route path="/me/change-password" element={<ResetPassword />} />
           </Route>
         </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </React.Fragment>

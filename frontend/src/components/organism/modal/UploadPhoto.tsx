@@ -42,8 +42,6 @@ export default function UploadPhoto({ user, className }: UploadPhotoProps) {
     })
   }
 
-  console.log(user.provider)
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

@@ -1,4 +1,11 @@
-import { HiOutlineBell, HiOutlineInbox, HiOutlineSquares2X2, HiOutlineUser, HiOutlineUserGroup } from 'react-icons/hi2'
+import {
+  HiOutlineBell,
+  HiOutlineCog6Tooth,
+  HiOutlineInbox,
+  HiOutlineSquares2X2,
+  HiOutlineUser,
+  HiOutlineUserGroup
+} from 'react-icons/hi2'
 
 export const MAIN_MENU = [
   {
@@ -61,6 +68,7 @@ export const MEMBERS = [
 export const headerLinks = [
   { to: '/admin', label: 'Pengguna', icon: HiOutlineUserGroup, type: 'admin' },
   { to: '/admin/notification', label: 'Notifikasi', icon: HiOutlineBell, type: 'admin' },
+  { to: '/admin/settings', label: 'Pengaturan', icon: HiOutlineCog6Tooth, type: 'admin' },
   { to: '/dashboard', label: 'Dashboard', icon: HiOutlineSquares2X2, type: 'user' },
   { to: '/me', label: 'Profil', icon: HiOutlineUser, type: 'user' }
 ]
