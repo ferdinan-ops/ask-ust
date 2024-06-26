@@ -1,10 +1,9 @@
 import { Accept, FileRejection, FileWithPath, useDropzone } from 'react-dropzone'
-import { HiOutlineCloudArrowUp, HiOutlineDocument, HiOutlineEye, HiTrash } from 'react-icons/hi2'
-import { Button } from '../../ui/button'
+import { HiOutlineCloudArrowUp } from 'react-icons/hi2'
 import * as React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { bytesToSize } from '@/lib/utils'
-import { usePreviewImage } from '@/store/client'
+import FileBox from '../FileBox'
 
 export type FileWithPreview = FileWithPath & { preview: string }
 interface DropZoneProps {
@@ -30,7 +29,6 @@ export default function Dropzone({
   const { errors } = formState
 
   const dropzoneRef = React.useRef<HTMLDivElement>(null)
-  const setPreviewImage = usePreviewImage((state) => state.setPreviewImage)
 
   React.useEffect(() => {
     errors[id] && dropzoneRef.current?.focus()
@@ -101,11 +99,6 @@ export default function Dropzone({
     }
   }
 
-  const handlePreview = (preview: string) => {
-    setPreviewImage(preview)
-    closedModal && closedModal()
-  }
-
   const { getInputProps, getRootProps } = useDropzone({
     onDrop,
     accept,
@@ -115,61 +108,28 @@ export default function Dropzone({
   return (
     <div className="flex w-full flex-col gap-1.5 lg:gap-2.5">
       {files?.length > 0 ? (
-        <div className="flex w-full flex-col gap-3">
+        <FileBox className="flex w-full flex-col gap-3">
           {files.map((file, id) => (
-            <div
-              key={id}
-              className="flex items-center justify-between rounded-lg border border-slate-300 py-2.5 pl-4 pr-5 dark:border-white/25"
-            >
-              <div className="flex items-center gap-2">
-                <HiOutlineDocument className="text-2xl text-primary/40 dark:text-white/40" />
-                <span className="truncate-1 text-sm text-primary/40 dark:text-white/40">{file?.name ?? file}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  className="flex h-7 w-7 cursor-pointer rounded hover:bg-slate-200 dark:hover:bg-zinc-700"
-                  onClick={() => handlePreview(URL.createObjectURL(file))}
-                >
-                  <HiOutlineEye className="m-auto text-xl text-primary/40 dark:text-white/40" />
-                </button>
-                <button
-                  type="button"
-                  className="flex h-7 w-7 cursor-pointer rounded hover:bg-slate-200 dark:hover:bg-zinc-700"
-                  onClick={(e) => deleteFile(e, file)}
-                >
-                  <HiTrash className="m-auto text-xl text-red-500 dark:text-red-400" />
-                </button>
-              </div>
-            </div>
+            <FileBox.Container key={id} variant="filled">
+              <FileBox.Filled
+                file={file}
+                closedModal={closedModal}
+                previewCondition={file.type !== 'application/pdf'}
+                onDelete={(e) => deleteFile(e, file)}
+              />
+            </FileBox.Container>
           ))}
-        </div>
+        </FileBox>
       ) : (
-        <div
-          className="flex flex-col items-center gap-5 rounded-lg border-2 border-dashed border-primary/25 py-5 pl-8 pr-6 dark:border-white/25 md:flex-row md:gap-6"
-          {...getRootProps()}
-          ref={dropzoneRef}
-        >
+        <FileBox.Container {...getRootProps()} variant="null" ref={dropzoneRef}>
           <input id={id} {...getInputProps()} hidden />
-          <HiOutlineCloudArrowUp className="text-6xl text-primary/40 dark:text-white/40 md:text-5xl" />
-          <div className="flex w-full flex-col items-center justify-between gap-5 md:flex-row md:gap-0">
-            <div className="flex flex-col gap-1">
-              <p className="text-center text-[13px] font-semibold text-primary dark:text-white md:text-left">
-                Pilih file atau seret dan lepas di sini
-              </p>
-              <p className="text-center text-xs text-primary/40 dark:text-white/40 md:text-left">
-                {description ?? 'JPG atau PNG ukuran tidak lebih dari 10MB'}
-              </p>
-            </div>
-            <Button
-              type="button"
-              variant="outline"
-              className="border-blue-500 uppercase text-blue-500 hover:text-blue-500 md:text-xs"
-            >
-              Pilih file
-            </Button>
-          </div>
-        </div>
+          <FileBox.Nullish
+            btnText="Pilih file"
+            icon={HiOutlineCloudArrowUp}
+            label="Pilih file atau seret dan lepas di sini"
+            description={description ?? 'JPG atau PNG ukuran tidak lebih dari 10MB'}
+          />
+        </FileBox.Container>
       )}
 
       {errors[id] && (

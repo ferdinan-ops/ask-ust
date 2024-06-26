@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 
 import { AuthLayout } from '@/components/layouts'
-import { Dropzone, Title } from '@/components/atoms'
+import { Camera, Dropzone, Title } from '@/components/atoms'
 
 import { titleConfig } from '@/lib/config'
 
@@ -14,12 +14,13 @@ import { useTitle } from '@/hooks'
 import { FileWithPreview } from '@/components/atoms/forms/Dropzone'
 import { useStoreValidateUser } from '@/store/server/useValidate'
 import { useNavigate } from 'react-router-dom'
+import { base64ToFile } from '@/lib/utils'
 
 const titleConf = titleConfig.validateUser
 
-export interface FormFields {
+interface FormFields {
   file: File[]
-  photo: File[]
+  photo: string
   agreement: boolean
 }
 
@@ -30,8 +31,14 @@ export default function ValidateUser() {
   const forms = useForm<FormFields>({ mode: 'onTouched' })
   const { mutate: storeValidateUser, isLoading } = useStoreValidateUser()
 
-  const onSubmit = (values: FormFields) => {
-    storeValidateUser(values, {
+  const onSubmit = async (values: FormFields) => {
+    // change imageSrc to File
+    // const imageBlob = await fetch(values.photo as string).then((res) => res.blob())
+    // const photo = new File([imageBlob], 'webcam.jpg', { type: 'image/jpeg' })
+    const photo = await base64ToFile(values.photo as string)
+
+    const payload = { ...values, photo: [photo] }
+    storeValidateUser(payload, {
       onSuccess: () => {
         navigate('/unverified')
       }
@@ -78,12 +85,7 @@ export default function ValidateUser() {
                 <FormItem>
                   <FormLabel className="font-semibold dark:text-white">Foto</FormLabel>
                   <FormControl>
-                    <Dropzone
-                      id="photo"
-                      setValue={field.onChange}
-                      fileValue={field.value as FileWithPreview[]}
-                      accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'] }}
-                    />
+                    <Camera value={field.value ?? ''} onChange={field.onChange} />
                   </FormControl>
                   <FormDescription className="text-xs">
                     Persiapkan diri kamu sekarang dengan foto yang terbaik, jangan lupa untuk tersenyum!

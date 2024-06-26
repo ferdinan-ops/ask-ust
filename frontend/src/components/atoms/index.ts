@@ -3,6 +3,7 @@ import Dropzone from './forms/Dropzone'
 import Password from './forms/Password'
 import BgAbsolute from './forms/BgAbsolute'
 import SearchMember from './forms/SearchMember'
+import Camera from './forms/Camera'
 
 import ActiveLink from './navigations/ActiveLink'
 import Pagination from './navigations/Pagination'
@@ -18,6 +19,7 @@ import BackButton from './BackButton'
 import ModeToggle from './ModeToggle'
 import ContentBox from './ContentBox'
 import FileButton from './FileButton'
+import FileBox from './FileBox'
 
 export {
   ActiveLink,
@@ -37,5 +39,7 @@ export {
   ContentBox,
   FileButton,
   FloatBox,
-  NavToNotFound
+  NavToNotFound,
+  Camera,
+  FileBox
 }

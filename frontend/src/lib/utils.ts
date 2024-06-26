@@ -81,3 +81,10 @@ export const truncateFilename = (filename: string, maxLength: number): string =>
 
   return noUuid
 }
+
+export const base64ToFile = async (image: string) => {
+  const blob = await fetch(image as string).then((res) => res.blob())
+  const result = new File([blob], 'webcam.jpg', { type: 'image/jpeg' })
+
+  return result
+}

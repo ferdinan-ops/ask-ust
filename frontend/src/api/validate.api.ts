@@ -1,9 +1,14 @@
-import { FormFields } from '@/pages/auth/ValidateUser'
 import api from './axiosInstance'
 import { useUserInfo } from '@/store/client'
 import { UserType, ValidateResponseType } from '@/lib/types/user.type'
 
-export const storeValidateUserFn = async (payload: FormFields): Promise<UserType> => {
+type StorePayload = {
+  file: File[]
+  photo: File[]
+  agreement: boolean
+}
+
+export const storeValidateUserFn = async (payload: StorePayload): Promise<UserType> => {
   const formData = new FormData()
   formData.append('file', payload.file[0])
   formData.append('photo', payload.photo[0])
