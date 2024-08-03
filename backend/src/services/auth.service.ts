@@ -37,13 +37,13 @@ export const verifyGoogleToken = async (token: string) => {
 
 export const sendVerifyEmail = (email: string, token: string) => {
   sendMail({
-    from: ENV.emailUsername,
+    from: ENV.aplicationName,
     to: email,
     subject: 'Verifikasi Email',
     html: emailFormat({
       children: `
       <p>Hai, </p>
-      <p>Sistem kami A?K.UST mendeteksi bahwa email ini digunakan untuk mendaftar di aplikasi kami.</p>
+      <p>Sistem kami USTalk mendeteksi bahwa email ini digunakan untuk mendaftar di aplikasi kami.</p>
       <p>Kami telah berhasil mengirimkan kode verifikasi pada email ini. Untuk melanjutkan proses, silahkan salin kode verifikasi yang terdapat dibawah ini, lalu tempel pada inputan dilaman Anda berada sebelumnya.</p>
       <br/>
       <h2 style="margin:0 auto; padding: 13px 16px; background-color: #ddd; border-radius: 6px; width: fit-content;">${token}</h2>
@@ -58,7 +58,7 @@ export const updateUserPassword = async (userId: string, password: string) => {
 
 export const sendForgotPasswordEmail = (email: string, token: string) => {
   sendMail({
-    from: ENV.emailUsername,
+    from: ENV.aplicationName,
     to: email,
     subject: 'Atur Ulang Kata Sandi',
     html: emailFormat({

@@ -149,7 +149,7 @@ export const sendNotificationToAdmin = async (userId: string, fullname: string) 
 
   users.forEach((user) => {
     sendMail({
-      from: ENV.emailUsername,
+      from: ENV.aplicationName,
       to: user?.email,
       subject: 'Verifikasi Data',
       html: emailFormat({
@@ -158,7 +158,7 @@ export const sendNotificationToAdmin = async (userId: string, fullname: string) 
         children: `
         <p>Halo Admin,</p>
         <p>
-          Terdapat data pengguna baru dengan nama <b>${fullname}</b> yang perlu diverifikasi oleh kamu, ayo segera cek aplikasi A?K.UST untuk melihat data tersebut.
+          Terdapat data pengguna baru dengan nama <b>${fullname}</b> yang perlu diverifikasi oleh kamu, ayo segera cek aplikasi USTalk untuk melihat data tersebut.
         </p>
     `
       })
@@ -168,7 +168,7 @@ export const sendNotificationToAdmin = async (userId: string, fullname: string) 
 
 export const sendValidateNotification = async (email: string, isValid: boolean, note?: string) => {
   sendMail({
-    from: ENV.emailUsername,
+    from: ENV.aplicationName,
     to: email,
     subject: 'Verifikasi Data',
     html: emailFormat({

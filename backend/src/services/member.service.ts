@@ -121,7 +121,7 @@ export const sendReportEmailToAdmin = async (forumId: string, memberId: string) 
 
   if (adminEmail) {
     sendMail({
-      from: ENV.emailUsername,
+      from: ENV.aplicationName,
       to: adminEmail,
       subject: 'Laporan Anggota',
       html: emailFormat({
@@ -155,7 +155,7 @@ export const sendRoleEmailToMember = async (memberId: string, forumId: string, r
 
   if (memberEmail) {
     sendMail({
-      from: ENV.emailUsername,
+      from: ENV.aplicationName,
       to: memberEmail,
       subject: 'Perubahan Role',
       html: emailFormat({

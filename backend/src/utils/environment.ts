@@ -6,6 +6,8 @@ const ENV = {
   accessTokenSecret: process.env.ACCESS_TOKEN_SECRET,
   refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
   emailUsername: process.env.EMAIL_USERNAME,
+  aplicationName: process.env.APPLICATION_NAME,
+  emailBannerUrl: process.env.EMAIL_BANNER_URL,
   emailPassword: process.env.EMAIL_PASSWORD,
   publicUrl: process.env.PUBLIC_URL,
   livekitApiKey: process.env.LIVEKIT_API_KEY,

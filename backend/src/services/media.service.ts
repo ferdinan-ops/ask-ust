@@ -65,6 +65,7 @@ export const sendMediaCallInvite = async (forumId: string, type: string) => {
 
   forum?.members.forEach((member) => {
     sendMail({
+      from: ENV.aplicationName,
       to: member.user.email,
       subject: `Panggilan Grup ${type === 'video' ? 'Video' : 'Suara'} Telah Dimulai`,
       html: emailFormat({

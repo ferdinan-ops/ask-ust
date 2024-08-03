@@ -9,7 +9,7 @@ export const emailFormat = ({ children, btnText, btnLink }: IEmailFormat) => {
 
   return `
   <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Quicksand, Inter, sans-serif; font-size: 16px; color: #333">
-    <img src="https://i.ibb.co.com/MZt6J50/banner-email.webp" alt="banner-email" style="width: 100%; height: auto; margin-bottom: 20px;"/>
+    <img src="https://i.ibb.co.com/VJGBg80/email-banner.webp" alt="banner-email" style="width: 100%; height: auto; margin-bottom: 20px;"/>
     ${children}
     ${
       isHadButton
