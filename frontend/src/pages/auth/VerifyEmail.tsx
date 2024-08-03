@@ -31,7 +31,7 @@ export default function VerifyEmail() {
     verifyEmail(values.token, {
       onSuccess: () => {
         forms.reset({ token: '' })
-        navigate('/login')
+        navigate('/validate')
       }
     })
   }

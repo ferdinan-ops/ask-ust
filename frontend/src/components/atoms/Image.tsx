@@ -13,13 +13,11 @@ interface ImageProps {
 }
 
 export default function Image({ src, alt, className }: ImageProps) {
-  const isGoogle = checkIsGoogle(src as string)
-
   return (
     <img
       alt={alt}
       className={cn('object-cover', className)}
-      src={src ? (isGoogle ? src : `${ENV.storageUrl}/${src}`) : 'https://github.com/shadcn.png'}
+      src={src ? (checkIsGoogle(src as string) ? src : `${ENV.storageUrl}/${src}`) : 'https://github.com/shadcn.png'}
     />
   )
 }

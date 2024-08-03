@@ -1,10 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import * as React from 'react'
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
@@ -15,10 +13,11 @@ import { RegisterType, registerValidation } from '@/lib/validations/auth.validat
 import { registerDefaultValues } from '@/lib/defaultValues'
 import { titleConfig } from '@/lib/config'
 
-import { useRegister } from '@/store/server/useAuth'
-import { useTerms } from '@/store/client'
+import { useLoginWithGoogle, useRegister } from '@/store/server/useAuth'
 import { RegisterBg } from '@/assets'
 import { useTitle } from '@/hooks'
+import { FcGoogle } from 'react-icons/fc'
+import { useGoogleLogin } from '@react-oauth/google'
 
 const titleConf = titleConfig.register
 
@@ -26,13 +25,7 @@ export default function Register() {
   useTitle('Daftar')
   const navigate = useNavigate()
   const { mutate: register, isLoading } = useRegister()
-
-  const { terms, setTerms, registerFields, setRegisterFields } = useTerms((state) => ({
-    terms: state.terms,
-    setTerms: state.setTerms,
-    registerFields: state.registerFields,
-    setRegisterFields: state.setRegisterFields
-  }))
+  const { mutate: loginWithGoogle, isLoading: isLoadingGoogle } = useLoginWithGoogle()
 
   const forms = useForm<RegisterType>({
     mode: 'onTouched',
@@ -40,20 +33,27 @@ export default function Register() {
     defaultValues: registerDefaultValues
   })
 
-  React.useEffect(() => {
-    if (terms) forms.setValue('agreement', true)
-  }, [terms, forms])
+  const handleLoginWithGoogle = useGoogleLogin({
+    onSuccess: (response) => {
+      const { access_token } = response
+      const payload = { token: access_token }
+      loginWithGoogle(payload, {
+        onSuccess: (data) => {
+          if (!data.user?.validate?.is_valid && data.user.role === 'USER') {
+            return navigate('/validate')
+          }
 
-  React.useEffect(() => {
-    if (registerFields) forms.reset(registerFields)
-  }, [registerFields, forms])
+          if (data.user.role !== 'USER') return navigate('/admin')
+          navigate('/dashboard')
+        }
+      })
+    }
+  })
 
   const onSubmit = (values: RegisterType) => {
     register(values, {
       onSuccess: () => {
         forms.reset(registerDefaultValues)
-        setTerms(false)
-        setRegisterFields(registerDefaultValues)
         navigate('/verify-email')
       }
     })
@@ -65,8 +65,22 @@ export default function Register() {
         <div className="flex flex-col">
           <Title heading={titleConf.heading} desc={titleConf.desc} />
         </div>
+        <Button
+          variant="outline"
+          loading={isLoadingGoogle}
+          onClick={() => handleLoginWithGoogle()}
+          className="mt-4 w-full gap-[15px] py-[26px] text-primary dark:text-white"
+        >
+          <FcGoogle className="text-2xl" />
+          <span className="font-semibold">Daftar dengan Google</span>
+        </Button>
+        <div className="my-1 flex items-center justify-between gap-[11px]">
+          <div className="h-[2px] w-full rounded-full bg-zinc-300 dark:bg-zinc-700" />
+          <span className="text-xs font-semibold text-gray-600 dark:text-zinc-300">atau</span>
+          <div className="h-[2px] w-full rounded-full bg-zinc-300 dark:bg-zinc-700" />
+        </div>
         <Form {...forms}>
-          <form onSubmit={forms.handleSubmit(onSubmit)} className="mt-8 flex flex-col gap-5">
+          <form onSubmit={forms.handleSubmit(onSubmit)} className="flex flex-col gap-5">
             <div className="flex flex-col gap-3 md:flex-row">
               <FormField
                 name="fullname"
@@ -134,29 +148,7 @@ export default function Register() {
                 </FormItem>
               )}
             />
-            <FormField
-              name="agreement"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem className="flex items-start space-x-3 space-y-0">
-                  <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} className="mt-[1.5px] rounded" />
-                  </FormControl>
-                  <FormLabel className="text-xs font-medium dark:text-white">
-                    Dengan membuat akun, Anda menyetujui{' '}
-                    <Link
-                      to="/terms-and-conditions"
-                      className="font-bold underline"
-                      onClick={() => setRegisterFields(forms.getValues())}
-                    >
-                      Syarat, ketentuan dan kebijakan privasi
-                    </Link>{' '}
-                    ASK.UST.
-                  </FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
             <Button className="font-semibold" type="submit" loading={isLoading}>
               Daftar
             </Button>

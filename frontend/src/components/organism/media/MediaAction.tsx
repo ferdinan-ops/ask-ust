@@ -1,13 +1,9 @@
-import { useVideoSocket, useVoiceSocket } from '@/hooks'
-import {
-  useDeleteVideoCall,
-  useDeleteVoiceCall,
-  useGetEnabledVideoCall,
-  useGetEnabledVoiceCall
-} from '@/store/server/useMedia'
 import * as React from 'react'
-import { MediaCard } from '..'
 import { useNavigate } from 'react-router-dom'
+
+import { MediaCard } from '..'
+import { useMediaSocket } from '@/hooks'
+import { useDeleteMediaCall, useGetEnabledMediaCall } from '@/store/server/useMedia'
 
 interface MediaActionProps {
   forumId: string
@@ -15,41 +11,33 @@ interface MediaActionProps {
 
 export default function MediaAction({ forumId }: MediaActionProps) {
   const navigate = useNavigate()
-  const { data: video, isSuccess: isSuccessEnabledVideo } = useGetEnabledVideoCall(forumId)
-  const { data: voice, isSuccess: isSuccessEnabledVoice } = useGetEnabledVoiceCall(forumId)
-  const { mutate: deleteVideo, isLoading: isLoadingVideo } = useDeleteVideoCall()
-  const { mutate: deleteVoice, isLoading: isLoadingVoice } = useDeleteVoiceCall()
+  const { data: media, isSuccess: isSuccessEnabled } = useGetEnabledMediaCall(forumId)
+  const { mutate: deleteMedia, isLoading: isLoadingDelete } = useDeleteMediaCall()
 
-  useVideoSocket({
-    addKey: `video:${forumId}:enabled`,
-    deleteKey: `video:${forumId}:disabled`,
-    queryKey: `video:${forumId}`
-  })
-
-  useVoiceSocket({
-    addKey: `voice:${forumId}:enabled`,
-    deleteKey: `voice:${forumId}:disabled`,
-    queryKey: `voice:${forumId}`
+  useMediaSocket({
+    addKey: `media:${forumId}:enabled`,
+    deleteKey: `media:${forumId}:disabled`,
+    queryKey: `media:${forumId}`
   })
 
   return (
     <React.Fragment>
-      {isSuccessEnabledVideo && video && (
+      {isSuccessEnabled && media && media.type === 'video' && (
         <MediaCard
           type="video"
-          creator={video.member.user}
-          loading={isLoadingVideo}
-          onConnect={() => navigate(`/forums/${forumId}/video/${video.id}`)}
-          onDisconnect={() => deleteVideo(video.id)}
+          creator={media.member.user}
+          loading={isLoadingDelete}
+          onConnect={() => navigate(`/forums/${forumId}/video/${media.id}`)}
+          onDisconnect={() => deleteMedia(media.id)}
         />
       )}
-      {isSuccessEnabledVoice && voice && (
+      {isSuccessEnabled && media && media.type === 'voice' && (
         <MediaCard
           type="audio"
-          creator={voice.member.user}
-          loading={isLoadingVoice}
-          onConnect={() => navigate(`/forums/${forumId}/voice/${voice.id}`)}
-          onDisconnect={() => deleteVoice(voice.id)}
+          creator={media.member.user}
+          loading={isLoadingDelete}
+          onConnect={() => navigate(`/forums/${forumId}/voice/${media.id}`)}
+          onDisconnect={() => deleteMedia(media.id)}
         />
       )}
     </React.Fragment>

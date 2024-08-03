@@ -15,7 +15,7 @@ export default function AuthLayout({ children, desc, bgImage }: AuthLayoutProps)
         <div className="relative z-10 flex flex-col items-center justify-center gap-[67px]">
           <img src={bgImage} alt="auth" className="w-full" />
           <div className="flex flex-col gap-2 self-start px-[92px]">
-            <p className="text-sm font-semibold leading-7 tracking-wider text-white/60">ASK.UST</p>
+            <p className="text-sm font-semibold leading-7 tracking-wider text-white/60">USTalk</p>
             <p className="text-3xl font-semibold leading-10 text-white">{desc}</p>
           </div>
         </div>

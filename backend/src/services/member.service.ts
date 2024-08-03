@@ -5,6 +5,7 @@ import { type IUpdateMemberParams, type IMembersParams, type IReportMemberPayloa
 import db from '../utils/db'
 import sendMail from '../middlewares/mailer'
 import ENV from '../utils/environment'
+import { emailFormat } from '../utils/emailFormat'
 
 const optionsSearchMember = (search: string) => {
   return [{ user: { username: { contains: search } } }, { user: { fullname: { contains: search } } }]
@@ -123,7 +124,19 @@ export const sendReportEmailToAdmin = async (forumId: string, memberId: string) 
       from: ENV.emailUsername,
       to: adminEmail,
       subject: 'Laporan Anggota',
-      html: `<h3>Ada Anggota yang dilaporkan!!</h3><p>Hai pemilik forum <b>${admin.title}</b>, anggota dengan username <b>${member?.user?.username}</b> telah dilaporkan oleh salah satu anggota yang bergabung. Ayo segera masuk dan cek ke dalam aplikasi untuk dapat menangani anggota yang bermasalah.</p><p>Silahkan tekan atau akses link berikut ini untuk dapat segera melihat track dari anggota ini:</p><a href="${ENV.publicUrl}/forums/${forumId}/member/${memberId}">Lihat Anggota</a>`
+      html: emailFormat({
+        btnText: 'Lihat Anggota',
+        btnLink: `${ENV.publicUrl}/forums/${forumId}/member/${memberId}`,
+        children: `
+          <h3>Ada Anggota yang dilaporkan!!</h3>
+          <p>
+            Hai pemilik forum <b>${admin.title}</b>, anggota dengan username <b>${member?.user?.username}</b> telah dilaporkan oleh salah satu anggota yang bergabung. Ayo segera masuk dan cek ke dalam aplikasi untuk dapat menangani anggota yang bermasalah.
+          </p>
+          <p>
+            Silahkan tekan tombol berikut ini untuk dapat dengan segera melihat track dari anggota yang dilaporkan.
+          </p>
+        `
+      })
     })
   }
 }
@@ -145,7 +158,25 @@ export const sendRoleEmailToMember = async (memberId: string, forumId: string, r
       from: ENV.emailUsername,
       to: memberEmail,
       subject: 'Perubahan Role',
-      html: `<h3>Selamat ${role} baru!!</h3><p>Selamat Role anda anda di forum <b>${forum?.title}</b> telah diubah menjadi:</p><h1>${role}</h1>`
+      html: emailFormat({
+        children: `
+        ${member.role === 'MODERATOR' ? '<h3>Selamat!!</h3>' : ''}
+        <p>Hai ${member?.user?.fullname},</p>
+        <p>
+          ${member.role === 'MODERATOR' ? 'Kami ucapkan selamat kepada kamu. ' : ''}Role kamu di forum <b>${forum?.title}</b> telah diubah oleh pemilik forum menjadi:
+        </p>
+        <br/>
+        <h2 style="margin:0 auto; padding: 13px 16px; background-color: #ddd; border-radius: 6px; width: fit-content;">${role}</h2>
+        <br/>
+        <p>
+          ${member.role === 'MODERATOR' ? 'Dengan perubahan role ini, kami harap kamu dapat lebih aktif dan dapat membantu pemilik forum dalam menjaga forum agar tetap kondusif dan nyaman bagi semua anggota yang bergabung.' : 'Jika kamu memiliki pertanyaan lebih lanjut, silahkan hubungi pemilik forum ini.'}
+        </p>
+        <p>
+          Terima kasih atas partisipasi dan kontribusi yang telah kamu berikan dalam forum ini.
+        </p>
+
+      `
+      })
     })
   }
 }

@@ -27,7 +27,6 @@ export default function MediaRoom({ video, audio, token, onDisconnected }: Media
         onDisconnected && onDisconnected()
       }}
       style={{ height: '100vh' }}
-      // className="h-screen"
     >
       <VideoConference />
     </LiveKitRoom>

@@ -5,5 +5,6 @@ import VerifyEmail from './VerifyEmail'
 import ForgotPassword from './ForgotPassword'
 import ValidateUser from './ValidateUser'
 import Unverified from './Unverified'
+import Quiz from './Quiz'
 
-export { Login, Register, ResetPassword, VerifyEmail, ForgotPassword, ValidateUser, Unverified }
+export { Login, Register, ResetPassword, VerifyEmail, ForgotPassword, ValidateUser, Unverified, Quiz }

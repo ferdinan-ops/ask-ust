@@ -4,6 +4,8 @@ import Password from './forms/Password'
 import BgAbsolute from './forms/BgAbsolute'
 import SearchMember from './forms/SearchMember'
 import Camera from './forms/Camera'
+import TextEditor from './forms/TextEditor'
+import Video from './forms/Video'
 
 import ActiveLink from './navigations/ActiveLink'
 import Pagination from './navigations/Pagination'
@@ -41,5 +43,7 @@ export {
   FloatBox,
   NavToNotFound,
   Camera,
-  FileBox
+  FileBox,
+  TextEditor,
+  Video
 }

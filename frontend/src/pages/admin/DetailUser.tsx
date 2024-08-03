@@ -11,6 +11,8 @@ import { Switch } from '@/components/ui/switch'
 import { useGetUserValidate, useUpdateReadStatus, useUpdateValidateUser } from '@/store/server/useValidate'
 import { cn, formatDate } from '@/lib/utils'
 import { titleConfig } from '@/lib/config'
+import { TableButton } from '@/components/ui/table'
+import { HiOutlineEye } from 'react-icons/hi2'
 
 const titleConf = titleConfig.detailUser
 
@@ -70,11 +72,11 @@ export default function DetailUser() {
         <Title heading={titleConf.heading} desc={titleConf.desc} />
       </div>
 
-      <div className="grid grid-cols-1 gap-5 border-b pb-6 md:grid-cols-3 md:grid-rows-3 md:gap-0 md:pb-8">
+      <div className="grid grid-cols-1 gap-5 border-b pb-6 md:grid-cols-3 md:gap-y-6 md:pb-8">
         <Information title="Nama Lengkap">{user.fullname}</Information>
         <Information title="Username">{user.username}</Information>
         <Information title="Email">{user.email}</Information>
-        <Information title="Role">{!user.is_admin && 'Pengguna'}</Information>
+        <Information title="Role">{user.role}</Information>
         <Information title="Provider">{user.provider}</Information>
         <Information title="Tanggal pendaftaran">{formatDate(user.validate?.created_at as string)}</Information>
         <Information title="Foto Profil">
@@ -85,6 +87,17 @@ export default function DetailUser() {
         </Information>
         <Information title="Foto validasi" className="w-fit">
           <FileButton filename={user.validate?.photo as string} maxLetters={20} className="max-w-[200px]" />
+        </Information>
+        <Information title="Nilai Kuis">{user.quiz?.total} jawaban benar</Information>
+        <Information title="Hasil Kuis" className="w-fit">
+          <TableButton icon={HiOutlineEye} onClick={() => navigate(`/admin/questions/${user.id}`)}>
+            Lihat hasil kuis
+          </TableButton>
+        </Information>
+        <Information title="Record Kuis" className="w-fit">
+          <TableButton icon={HiOutlineEye} onClick={() => window.open(user?.validate?.url_quiz_record, '_blank')}>
+            Lihat rekaman kuis
+          </TableButton>
         </Information>
       </div>
       <div className="pt-6 md:pt-8">
@@ -146,7 +159,7 @@ interface InformationProps {
 
 function Information({ title, children, className }: InformationProps) {
   return (
-    <div className={cn('flex flex-col gap-1 text-sm md:text-base', className)}>
+    <div className={cn('flex flex-col gap-1 text-sm font-medium md:text-base', className)}>
       <p className="text-xs font-bold md:text-sm">{title}:</p>
       {children}
     </div>

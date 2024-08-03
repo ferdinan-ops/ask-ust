@@ -25,7 +25,7 @@ export const sendMessage = async (req: Request, res: Response) => {
 
     const resultAnalysis = await MessageService.analyzeMessage(value.content)
     if (resultAnalysis.isToxic) {
-      const violation = await ViolationService.handleViolations(userId)
+      const violation = await ViolationService.handleViolations(userId, 'message')
 
       if (!violation.success) {
         logError(req, violation.error as string)
@@ -206,13 +206,11 @@ export const sendImage = async (req: Request, res: Response) => {
       res.status(400).json({ error: ViolationService.bannedMessage })
     }
 
-    // const image = await MessageService.processedImage(filename)
     const results = await MessageService.analyzeImage(filename)
-
     const isSecure = results && Object.values(results).every((value) => value === 'VERY_UNLIKELY')
 
     if (!isSecure) {
-      const violation = await ViolationService.handleViolations(userId)
+      const violation = await ViolationService.handleViolations(userId, 'image')
 
       if (!violation.success) {
         logError(req, violation.error as string)

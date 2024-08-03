@@ -47,6 +47,10 @@ export default function User() {
     filter: params.filter || ''
   })
 
+  React.useEffect(() => {
+    if (params.search) forms.setValue('search', params.search)
+  }, [params, forms])
+
   const handleFilter = (value: string) => {
     if (value === 'all') {
       deleteParam('filter')
@@ -126,7 +130,7 @@ export default function User() {
           <TableHeader>
             <TableRow>
               <TableHead>Nama Lengkap</TableHead>
-              <TableHead>Username</TableHead>
+              <TableHead>Peran</TableHead>
               <TableHead>File Validasi</TableHead>
               <TableHead>Photo</TableHead>
               <TableHead>Data valid</TableHead>
@@ -145,7 +149,7 @@ export default function User() {
               validates?.data.map((validate) => (
                 <TableRow key={validate.id}>
                   <TableCell className="font-semibold">{validate.user.fullname}</TableCell>
-                  <TableCell>{validate.user.username}</TableCell>
+                  <TableCell className="capitalize">{validate.role}</TableCell>
                   <TableCell>
                     <FileButton filename={validate.file as string} maxLetters={14} />
                   </TableCell>

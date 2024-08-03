@@ -5,6 +5,7 @@ export type MediaRoomType = {
   forum_id: string
   member_id: string
   is_enabled: boolean
+  type: 'video' | 'voice'
   created_at: string
   updated_at: string
   member: MemberType

@@ -3,8 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
 
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Textarea } from '@/components/ui/textarea'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
@@ -13,7 +12,7 @@ import { useCreateForum, useGetDetailForum, useUpdateForum } from '@/store/serve
 import { forumDefaultValues } from '@/lib/defaultValues'
 import { ForumType } from '@/lib/types/forum.type'
 import { useTitle } from '@/hooks'
-import { BackButton, Title } from '@/components/atoms'
+import { BackButton, TextEditor, Title } from '@/components/atoms'
 import { titleConfig } from '@/lib/config'
 
 const titleConf = titleConfig.createForum
@@ -75,6 +74,7 @@ export default function CreateForum() {
                   <FormControl>
                     <Input {...field} placeholder="Teknologi" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -86,12 +86,14 @@ export default function CreateForum() {
               <FormItem className="flex-1">
                 <FormLabel className="font-semibold dark:text-white">Deskripsi singkat</FormLabel>
                 <FormControl>
-                  <Textarea
-                    {...field}
-                    placeholder="Forum teknologi adalah platform online di mana pengguna dapat berbagi seputar perkembangan teknologi "
-                    className="min-h-[150px]"
+                  <TextEditor
+                    id="description"
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Forum teknologi adalah platform online di mana pengguna dapat berbagi seputar perkembangan teknologi..."
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />

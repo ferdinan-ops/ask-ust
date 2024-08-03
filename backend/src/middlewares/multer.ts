@@ -21,7 +21,10 @@ const fileFilter = (_req: Request, file: Express.Multer.File, cb: multer.FileFil
     'image/webp',
     'image/svg',
     'image/gif',
-    'application/pdf'
+    'application/pdf',
+    // excel
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-excel'
   ]
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true)

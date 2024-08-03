@@ -5,6 +5,7 @@ import { UserType, ValidateResponseType } from '@/lib/types/user.type'
 type StorePayload = {
   file: File[]
   photo: File[]
+  role: string
   agreement: boolean
 }
 
@@ -13,6 +14,7 @@ export const storeValidateUserFn = async (payload: StorePayload): Promise<UserTy
   formData.append('file', payload.file[0])
   formData.append('photo', payload.photo[0])
   formData.append('userId', useUserInfo.getState().user?.id.toString())
+  formData.append('role', payload.role)
 
   if (payload.agreement) {
     formData.append('agreement', payload.agreement.toString())
@@ -72,4 +74,13 @@ export const updateReadStatusFn = async (validateId: string) => {
 export const deleteValidateUserFn = async (validateId: string): Promise<UserType> => {
   const response = await api.delete(`/validate/${validateId}`)
   return response.data?.data
+}
+
+type sendQuizRecordParams = {
+  userId: string
+  url: string
+}
+
+export const sendQuizRecordFn = async ({ userId, url }: sendQuizRecordParams) => {
+  return await api.put(`/validate/${userId}/upload/record`, { quiz: url })
 }

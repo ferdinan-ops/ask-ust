@@ -13,8 +13,7 @@ export const registerValidation = Yup.object({
     .matches(/^\S*$/g, 'Tidak boleh mengandung spasi'),
   confirmPassword: Yup.string()
     .required('Konfirmasi kata sandi harus diisi')
-    .oneOf([Yup.ref('password')], 'Kata sandi harus cocok'),
-  agreement: Yup.boolean().oneOf([true], 'Anda harus menyetujui syarat dan ketentuan')
+    .oneOf([Yup.ref('password')], 'Kata sandi harus cocok')
 })
 
 export type RegisterType = Yup.InferType<typeof registerValidation>

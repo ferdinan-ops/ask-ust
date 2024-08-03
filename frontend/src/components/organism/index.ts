@@ -14,6 +14,10 @@ import ReportMember from './modal/ReportMember'
 import EditEmail from './modal/EditEmail'
 import ShareForum from './modal/ShareForum'
 import MessageAction from './modal/MessageAction'
+import MemberRole from './modal/MemberRole'
+import ValidateDataGuide from './modal/ValidateDataGuide'
+import QuizGuide from './modal/QuizGuide'
+import UploadXlsx from './modal/UploadXlsx'
 
 import MediaCard from './media/MediaCard'
 import MediaRoom from './media/MediaRoom'
@@ -34,6 +38,15 @@ import DoughnutChart from './chart/DoughnutChart'
 import NoChart from './chart/NoChart'
 
 import Messages from './forum/message/Messages'
+
+import QuestionForm from './question/QuestionForm'
+import QuizTimer from './question/QuizTimer'
+import QuizForm from './question/QuizForm'
+import QuestionHeader from './question/QuestionHeader'
+import BannedQuizAlert from './question/BannedQuizAlert'
+
+import CourseFetch from './data/CourseFetch'
+import LectureFetch from './data/LectureFetch'
 
 export {
   DashboardHeader,
@@ -62,5 +75,16 @@ export {
   Messages,
   NoForum,
   MessageAction,
-  NoChart
+  NoChart,
+  MemberRole,
+  ValidateDataGuide,
+  QuestionForm,
+  QuizGuide,
+  QuizTimer,
+  QuestionHeader,
+  QuizForm,
+  BannedQuizAlert,
+  CourseFetch,
+  LectureFetch,
+  UploadXlsx
 }

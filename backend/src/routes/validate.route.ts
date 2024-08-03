@@ -5,6 +5,7 @@ import {
   getUnreadValidates,
   getUserValidate,
   getUserValidates,
+  sendQuizRecord,
   updateValidateReadStatus,
   updateValidateUser
 } from '../controllers/validate.controller'
@@ -24,6 +25,7 @@ validateRoute.post(
 validateRoute.delete('/:validateId', deleteValidateUser)
 validateRoute.put('/:validateId', verifyJwt, verifyAdmin, updateValidateUser)
 validateRoute.put('/:validateId/read', verifyJwt, verifyAdmin, updateValidateReadStatus)
+validateRoute.put('/:userId/upload/record', sendQuizRecord)
 
 validateRoute.get('/', verifyJwt, verifyAdmin, getUserValidates)
 validateRoute.get('/user/:userId', verifyUserRole, getUserValidate)

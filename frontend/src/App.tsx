@@ -11,16 +11,39 @@ import {
   ProtectedFromAdmin,
   ProtectedFromGuest,
   ProtectedFromUnverified,
-  ProtectedRoute
+  ProtectedRoute,
+  ProtectFromNewUser
 } from './components/layouts'
 import ImagePreview from './components/atoms/forms/ImagePreview'
 import { Toaster } from './components/ui/toaster'
 
-import { ContentForum, CreateForum, DetailForum, Forums, VideoForum, VoiceForum } from './pages/forum'
-import { ForgotPassword, Login, Register, ResetPassword, Unverified, ValidateUser, VerifyEmail } from './pages/auth'
-import { DetailUser, Notification, Settings, User } from './pages/admin'
+import { ContentForum, CreateForum, DetailForum, Forums, MediaForum } from './pages/forum'
 import { ManageMember, Member } from './pages/member'
 import { EditProfile, Profile } from './pages/user'
+
+import {
+  ForgotPassword,
+  Login,
+  Quiz,
+  Register,
+  ResetPassword,
+  Unverified,
+  ValidateUser,
+  VerifyEmail
+} from './pages/auth'
+
+import {
+  Admin,
+  CreateAdmin,
+  CreateQuestion,
+  DetailUser,
+  Lecture,
+  Notification,
+  Question,
+  Settings,
+  User,
+  UserAnswer
+} from './pages/admin'
 
 import InviteCode from './pages/InviteCode'
 import Dashboard from './pages/Dashboard'
@@ -29,8 +52,10 @@ import Terms from './pages/Terms'
 import Home from './pages/Home'
 
 import { usePreviewImage } from './store/client'
+import { useScrollToTop } from './hooks'
 
 export default function App() {
+  useScrollToTop()
   const { previewImage, setPreviewImage } = usePreviewImage((state) => ({
     previewImage: state.previewImage,
     setPreviewImage: state.setPreviewImage
@@ -49,19 +74,27 @@ export default function App() {
 
         {/* AUTHENTICATION ROUTES */}
         <Route element={<ProtectedAuth />}>
-          <Route path="/login" element={<Login />} />
+          <Route element={<ProtectFromNewUser />}>
+            <Route path="/login" element={<Login />} />
+          </Route>
+
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
 
           {/* VERIFIED USER ROUTES */}
-          <Route element={<ProtectedFromUnverified />}>
-            <Route path="/register" element={<Register />} />
+          <Route element={<ProtectFromNewUser />}>
+            <Route element={<ProtectedFromUnverified />}>
+              <Route path="/register" element={<Register />} />
+            </Route>
           </Route>
           <Route element={<ProtectedFromUnverified type="validate" />}>
             <Route path="/validate" element={<ValidateUser />} />
           </Route>
           <Route element={<ProtectedFromUnverified type="unverified" />}>
             <Route path="/unverified" element={<Unverified />} />
+          </Route>
+          <Route element={<ProtectedFromUnverified type="quiz" />}>
+            <Route path="/quiz" element={<Quiz />} />
           </Route>
         </Route>
 
@@ -71,9 +104,22 @@ export default function App() {
           <Route element={<ProtectedFromGuest />}>
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<User />} />
+              <Route path="create" element={<CreateAdmin />} />
               <Route path="validate/:userId" element={<DetailUser />} />
               <Route path="notification" element={<Notification />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="lecture" element={<Lecture />} />
+
+              <Route path="all">
+                <Route index element={<Admin />} />
+                <Route path=":userId" element={<CreateAdmin />} />
+              </Route>
+
+              <Route path="questions">
+                <Route index element={<Question />} />
+                <Route path="create" element={<CreateQuestion />} />
+                <Route path=":userId" element={<UserAnswer />} />
+              </Route>
             </Route>
           </Route>
 
@@ -110,8 +156,8 @@ export default function App() {
 
             <Route element={<ProtectedForum />}>
               <Route path="/forums/:slug">
-                <Route path="video/:videoId" element={<VideoForum />} />
-                <Route path="voice/:voiceId" element={<VoiceForum />} />
+                <Route path="video/:mediaId" element={<MediaForum type="video" />} />
+                <Route path="voice/:mediaId" element={<MediaForum type="voice" />} />
               </Route>
             </Route>
 

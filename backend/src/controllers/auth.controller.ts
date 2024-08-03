@@ -23,6 +23,11 @@ export const register = async (req: Request, res: Response) => {
   try {
     const isUserExist = await AuthService.findUserByEmail(value.email)
     if (isUserExist) {
+      if (isUserExist.banned_type === 'QUIZ') {
+        logWarn(req, 'User is banned')
+        return res.status(400).json({ error: 'Email ini telah diblokir dari aplikasi kami' })
+      }
+
       logWarn(req, 'Email is already registered')
       return res.status(400).json({ error: 'Email sudah terdaftar' })
     }
@@ -50,7 +55,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
     const checkToken = await AuthService.findUserByToken(value.token)
     if (!checkToken) {
       logWarn(req, 'Token is not valid')
-      return res.status(400).json({ error: 'Token sudah tidak berlaku' })
+      return res.status(400).json({ error: 'Kode verifikasi sudah tidak berlaku' })
     }
 
     const user = await AuthService.verifyUserEmail(checkToken.id)
@@ -75,6 +80,11 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Email atau password Anda salah' })
     }
 
+    if (user.banned_type === 'QUIZ') {
+      logWarn(req, 'User is banned')
+      return res.status(400).json({ error: 'Email ini telah diblokir dari aplikasi kami' })
+    }
+
     const isValidPassword = AuthService.comparePassword(value.password as string, user.password)
     if (!isValidPassword) {
       logWarn(req, 'Email or password is wrong')
@@ -83,6 +93,16 @@ export const login = async (req: Request, res: Response) => {
 
     const { password, ...userWithoutPassword } = user
     const { validate, ...rest } = userWithoutPassword
+
+    if (user.role !== 'USER') {
+      const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: true, role: user.role })
+      const refreshToken = AuthService.refreshTokenSign({ id: user.id, isAdmin: true, role: user.role })
+
+      const data = { user: rest, access_token: accessToken, refresh_token: refreshToken }
+
+      logInfo(req, 'Admin is successfully logged in')
+      return res.status(200).json({ message: 'Login berhasil', data })
+    }
 
     if (!user.validate) {
       logWarn(req, 'Data has not been sent to Admin')
@@ -94,8 +114,8 @@ export const login = async (req: Request, res: Response) => {
       return res.status(200).json({ data: { user: userWithoutPassword } })
     }
 
-    const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: user.is_admin })
-    const refreshToken = AuthService.refreshTokenSign({ id: user.id, isAdmin: user.is_admin })
+    const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: false, role: user.role })
+    const refreshToken = AuthService.refreshTokenSign({ id: user.id, isAdmin: false, role: user.role })
 
     const data = { user: rest, access_token: accessToken, refresh_token: refreshToken }
 
@@ -117,7 +137,7 @@ export const loginGoogle = async (req: Request, res: Response) => {
     const googleRes = await AuthService.verifyGoogleToken(value.token)
     if (!googleRes) {
       logWarn(req, 'Token is not valid')
-      return res.status(400).json({ error: 'Token sudah tidak berlaku' })
+      return res.status(400).json({ error: 'Kode verifikasi tidak berlaku' })
     }
 
     const { name, email, picture } = googleRes
@@ -140,21 +160,44 @@ export const loginGoogle = async (req: Request, res: Response) => {
       return res.status(200).json({ message: 'Login berhasil', data: { user: results } })
     }
 
+    if (user.banned_type === 'QUIZ') {
+      logWarn(req, 'User is banned')
+      return res.status(400).json({ error: 'Email ini telah diblokir dari aplikasi kami' })
+    }
+
     const { password, ...userWithoutPassword } = user
     const { validate, ...rest } = userWithoutPassword
 
+    if (user.role !== 'USER') {
+      const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: true, role: user.role })
+      const refreshToken = AuthService.refreshTokenSign({ id: user.id, isAdmin: true, role: user.role })
+
+      const data = { user: rest, access_token: accessToken, refresh_token: refreshToken }
+
+      logInfo(req, 'Admin is successfully logged in')
+      return res.status(200).json({ message: 'Login berhasil', data })
+    }
+
     if (!user.validate) {
       logWarn(req, 'Data has not been sent to Admin')
-      return res.status(200).json({ data: { user: rest } })
+      return res.status(200).json({
+        message: 'Data pengguna belum dikirim ke admin',
+        data: { user: rest }
+      })
     }
 
     if (validate?.note ?? !validate?.is_valid ?? !validate?.note) {
-      logWarn(req, 'Data has been sent to Admin')
-      return res.status(200).json({ data: { user: userWithoutPassword } })
+      logWarn(req, 'Data Quiz has been sent to Admin')
+      return res.status(200).json({
+        data: {
+          message: 'Data Quiz pengguna belum dikirim ke admin',
+          user: userWithoutPassword
+        }
+      })
     }
 
-    const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: user.is_admin })
-    const refreshToken = AuthService.refreshTokenSign({ id: user.id, isAdmin: user.is_admin })
+    const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: false, role: user.role })
+    const refreshToken = AuthService.refreshTokenSign({ id: user.id, isAdmin: false, role: user.role })
 
     const data = { user: rest, access_token: accessToken, refresh_token: refreshToken }
 
@@ -179,6 +222,11 @@ export const forgotPassword = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Email tidak terdaftar' })
     }
 
+    if (user.banned_type === 'QUIZ') {
+      logWarn(req, 'User is banned')
+      return res.status(400).json({ error: 'Email ini telah diblokir dari aplikasi kami' })
+    }
+
     const token = AuthService.generateToken()
     await AuthService.updateUserToken(user.id, token)
     AuthService.sendForgotPasswordEmail(email as string, token)
@@ -201,7 +249,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     const user = await AuthService.findUserByToken(value.token)
     if (!user) {
       logWarn(req, 'Token is not valid')
-      return res.status(400).json({ error: 'Token sudah tidak berlaku' })
+      return res.status(400).json({ error: 'Kode verifikasi sudah tidak berlaku' })
     }
 
     const hashedPassword = AuthService.hashing(value.password)
@@ -245,7 +293,7 @@ export const refreshToken = async (req: Request, res: Response) => {
         return res.status(401).json({ error: 'Unauthorized' })
       }
 
-      const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: user.is_admin })
+      const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: false, role: user.role })
       const data = { user, access_token: accessToken, refresh_token: refreshToken }
 
       logInfo(req, 'Access token is successfully refreshed')

@@ -10,6 +10,7 @@ import ProtectedForum from './middlewares/ProtectedForum'
 import ProtectedFromUnverified from './middlewares/ProtectFromUnverified'
 import ProtectedFromAdmin from './middlewares/ProtectedFromAdmin'
 import ProtectedFromGuest from './middlewares/ProtectFromGuest'
+import ProtectFromNewUser from './middlewares/ProtectFromNewUser'
 
 export {
   AuthLayout,
@@ -22,5 +23,6 @@ export {
   ProtectedFromUnverified,
   ProtectedFromAdmin,
   ProtectedFromGuest,
-  AdminLayout
+  AdminLayout,
+  ProtectFromNewUser
 }

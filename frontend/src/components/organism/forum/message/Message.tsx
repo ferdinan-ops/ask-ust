@@ -17,8 +17,8 @@ export default function Message({ className, message, memberLoginId }: MessagePr
       className={cn('flex items-start gap-2', isUserLogin && 'flex-row-reverse items-start justify-start', className)}
     >
       <Image
-        src={message.member.user.photo}
-        alt={message.member.user.fullname}
+        src={message?.member?.user?.photo ?? ''}
+        alt={message?.member?.user?.fullname}
         className="h-7 w-7 rounded-full object-cover"
       />
       <div
@@ -29,7 +29,7 @@ export default function Message({ className, message, memberLoginId }: MessagePr
       >
         <div className="flex items-center gap-2">
           <p className={cn('truncate-1 text-sm font-bold', isUserLogin ? 'text-white' : 'text-primary')}>
-            {isUserLogin ? 'Anda' : message.member.user.fullname}
+            {isUserLogin ? 'Anda' : message?.member?.user?.fullname}
           </p>
           <p className={cn(isUserLogin ? 'text-white/60' : 'text-primary/60')}>&bull;</p>
           <p className={cn('text-xs font-medium', isUserLogin ? 'text-white/70' : 'text-primary/60')}>
@@ -39,7 +39,7 @@ export default function Message({ className, message, memberLoginId }: MessagePr
         {message.file_url && (
           <Image
             src={message.file_url}
-            alt={message.member.user.fullname}
+            alt={message?.member?.user?.fullname}
             className="w-full rounded-lg object-cover md:max-w-[300px] lg:max-w-[400px]"
           />
         )}

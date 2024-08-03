@@ -140,7 +140,6 @@ export const analyzeMessage = async (message: string) => {
     comment: {
       text: message
     },
-    languages: ['id'],
     requestedAttributes: {
       TOXICITY: {}
     }

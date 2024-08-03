@@ -37,7 +37,7 @@ export const useVerifyEmail = () => {
       useUserInfo.getState().setUser(data)
       toast({
         title: 'Email anda berhasil diverifikasi',
-        description: 'Silahkan login untuk melanjutkan'
+        description: 'Silahkan lengkapi berkas dan data diri anda untuk melanjutkan'
       })
     }
   })

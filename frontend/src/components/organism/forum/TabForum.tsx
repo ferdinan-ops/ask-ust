@@ -8,11 +8,11 @@ import { ForumSkeleton, NoForum } from '..'
 import CardForum from './CardForum'
 
 import { useGetJoinedForums } from '@/store/server/useUser'
-import { ParamsType } from '@/hooks/useParams'
 import { NoForumImg } from '@/assets'
 
 import { ForumResponseType } from '@/lib/types/forum.type'
 import { cn } from '@/lib/utils'
+import { ParamsType } from '@/hooks/useQueryParams'
 
 interface TabsProps extends JoinedForumProps {
   forums: ForumResponseType

@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form'
 import { Form, FormField } from '@/components/ui/form'
 import { FileWithPreview } from '@/components/atoms/forms/Dropzone'
 import { useSendImageMessage } from '@/store/server/useMessage'
+import { useToast } from '@/components/ui/use-toast'
 
 interface UploadFileProps {
   className?: string
@@ -21,12 +22,20 @@ interface FormFields {
 }
 
 export default function UploadFile({ className, forumId }: UploadFileProps) {
+  const { toast } = useToast()
   const [open, setOpen] = React.useState(false)
   const { mutate: sendImageMessage, isLoading } = useSendImageMessage()
 
   const forms = useForm<FormFields>()
 
   const onSubmit = (values: FormFields) => {
+    toast({
+      title: 'Tunggu sebentar...',
+      description: 'Konten yang Anda kirim sedang kami periksa keamanannya',
+      variant: 'warning',
+      duration: 1000
+    })
+
     const fields = { image: values.image[0], forumId }
     sendImageMessage(fields, {
       onSuccess: () => {

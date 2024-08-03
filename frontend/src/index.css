@@ -6,7 +6,7 @@
 @tailwind utilities;
 
 * {
-  font-family: 'Inter', 'Quicksand', sans-serif;
+  font-family: 'Quicksand', 'Inter', sans-serif;
   /* outline: red solid 1px; */
 }
 

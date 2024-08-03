@@ -26,9 +26,13 @@ export default function Notification() {
       <section className="mx-auto flex flex-col md:w-8/12">
         <Title heading={titleConf.heading} desc={titleConf.desc} />
         <div className="mt-8 flex flex-col gap-3">
-          {validates?.data.map((validate) => (
-            <NotifCard key={validate.id} user={validate.user} date={validate.created_at} isRead={validate.is_read} />
-          ))}
+          {validates?.meta && validates?.meta?.total === 0 ? (
+            <p className="text-center text-sm font-semibold italic">🙏 Tidak ada notifikasi 🙏</p>
+          ) : (
+            validates?.data.map((validate) => (
+              <NotifCard key={validate.id} user={validate.user} date={validate.created_at} isRead={validate.is_read} />
+            ))
+          )}
         </div>
 
         {validates?.meta && validates?.meta?.total > 10 ? (

@@ -10,15 +10,20 @@ export default function Unverified() {
   const navigate = useNavigate()
   const { mutate: deleteValidate, isLoading } = useDeleteValidate()
 
-  const { user, removeUser } = useUserInfo((state) => ({
+  const { user, removeUser, setUser } = useUserInfo((state) => ({
     user: state.user,
-    removeUser: state.removeUser
+    removeUser: state.removeUser,
+    setUser: state.setUser
   }))
 
   const isNotValid = !user?.validate?.is_valid && user?.validate?.note
   const isValid = user?.validate?.is_valid
 
   const handleReRegister = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { validate, ...userInfo } = user
+    setUser(userInfo)
+
     deleteValidate(user.validate?.id as string, {
       onSuccess: () => navigate('/validate')
     })
@@ -38,7 +43,14 @@ export default function Unverified() {
           isValid && 'border-green-400 bg-green-500 text-white'
         )}
       >
-        <Brand className="gap-1.5 pb-5 text-base md:gap-2.5 md:pb-7 md:text-lg" imageClassName="md:w-7 w-6" />
+        <Brand
+          className={cn(
+            'mb-5 w-fit gap-1.5 rounded-lg text-base md:mb-7 md:gap-2.5 md:text-lg',
+            isNotValid && 'mb-3 bg-red-950 p-2 md:mb-5',
+            isValid && 'mb-3 bg-green-950 p-2 md:mb-5'
+          )}
+          imageClassName="md:w-7 w-6"
+        />
         <div className="flex flex-col gap-1 md:gap-2">
           <h1 className={cn('text-lg font-black text-primary md:text-2xl', (isNotValid || isValid) && 'text-white')}>
             {isNotValid

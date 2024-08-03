@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
 
@@ -12,6 +12,7 @@ import { TermsType, termsValidation } from '@/lib/validations/auth.validation'
 import { useTerms } from '@/store/client'
 
 export default function Terms() {
+  const location = useLocation()
   const navigate = useNavigate()
   const forms = useForm<TermsType>({
     mode: 'onTouched',
@@ -24,12 +25,8 @@ export default function Terms() {
   }))
 
   React.useEffect(() => {
-    if (terms) {
-      forms.setValue('agreement', true)
-    }
+    if (terms) forms.setValue('agreement', true)
   }, [terms, forms])
-
-  const goBack = () => navigate('/register')
 
   const onSubmit = (values: TermsType) => {
     if (!values.agreement) {
@@ -38,8 +35,10 @@ export default function Terms() {
     }
 
     setTerms(true)
-    goBack()
+    navigate('/register')
   }
+
+  if (terms) return <Navigate to="/register" replace state={{ from: location }} />
 
   return (
     <main className="dark:bg-primary dark:text-white">
@@ -50,7 +49,7 @@ export default function Terms() {
         <h1 className="text-xl font-black md:text-2xl">Syarat dan Ketentuan Aplikasi</h1>
         <ul className="flex flex-col gap-5 text-xs font-medium leading-relaxed md:gap-8 md:text-sm">
           <li>
-            Selamat datang di ASK.UST, sebuah aplikasi forum diskusi berbasis website yang dirancang untuk menyediakan
+            Selamat datang di USTalk, sebuah aplikasi forum diskusi berbasis website yang dirancang untuk menyediakan
             lingkungan yang aman dan nyaman dari konten negatif. Sebelum menggunakan layanan kami, mohon baca dan pahami
             Syarat dan Ketentuan berikut ini. Dengan mendaftar dan menggunakan aplikasi kami, Anda setuju untuk mematuhi
             semua ketentuan yang telah ditetapkan.
@@ -146,7 +145,7 @@ export default function Terms() {
                     <FormControl>
                       <Checkbox checked={field.value} onCheckedChange={field.onChange} className="mt-[1.2px] rounded" />
                     </FormControl>
-                    <FormLabel className="text-xs font-semibold md:text-sm">
+                    <FormLabel className="cursor-pointer text-xs font-semibold md:text-sm">
                       Saya telah membaca dan menerima semua syarat dan ketentuan
                     </FormLabel>
                   </div>
@@ -155,7 +154,7 @@ export default function Terms() {
               )}
             />
             <div className="ml-auto flex items-center gap-3">
-              <Button className="font-semibold" type="button" variant="secondary" onClick={goBack}>
+              <Button className="font-semibold" type="button" variant="secondary" onClick={() => navigate('/')}>
                 Kembali
               </Button>
               {!terms && (

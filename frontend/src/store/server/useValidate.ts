@@ -3,6 +3,7 @@ import {
   getUnreadValidatesFn,
   getUserValidateByIdFn,
   getUserValidatesFn,
+  sendQuizRecordFn,
   storeValidateUserFn,
   updateReadStatusFn,
   updateValidateUserFn
@@ -34,7 +35,9 @@ export const useGetUserValidates = ({ search, page, filter }: GetAllParams) => {
 }
 
 export const useGetUserValidate = (userId: string) => {
-  return useQuery(['users', userId], async () => await getUserValidateByIdFn(userId))
+  return useQuery(['users', userId], async () => await getUserValidateByIdFn(userId), {
+    enabled: !!userId
+  })
 }
 
 export const useUpdateValidateUser = () => {
@@ -68,13 +71,22 @@ export const useDeleteValidate = () => {
   const queryClient = useQueryClient()
   return useMutation(deleteValidateUserFn, {
     onSuccess: (data) => {
-      console.log({ data })
       useUserInfo.getState().setUser(data)
       queryClient.invalidateQueries(['users', data.id])
       toast({
         title: 'Ayo daftarkan diri kamu kembali!',
         description: 'Berkas kamu sebelumnya sudah kami hapus dari sistem'
       })
+    }
+  })
+}
+
+export const useSendQuizRecord = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(sendQuizRecordFn, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['users'])
     }
   })
 }

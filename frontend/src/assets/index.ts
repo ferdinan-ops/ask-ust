@@ -1,4 +1,4 @@
-import Logo from './icons/logo.svg'
+import Logo from './icons/logo-2.svg'
 
 import Profile1 from './images/profile-1.webp'
 import Profile2 from './images/profile-2.webp'

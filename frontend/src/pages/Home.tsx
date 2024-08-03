@@ -8,18 +8,57 @@ import {
 } from '@/assets'
 import Brand from '@/components/atoms/Brand'
 import { Header, Section } from '@/components/organism'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
-import { useTitle } from '@/hooks'
+import { useGetUserRegisterInfo, useTitle } from '@/hooks'
 import { HiArrowRight } from 'react-icons/hi2'
 import { Link, useNavigate } from 'react-router-dom'
+import * as React from 'react'
+
+type RegisterStepType = 'validate' | 'quiz'
 
 export default function Home() {
   useTitle('Beranda')
   const navigate = useNavigate()
 
+  const user = useGetUserRegisterInfo()
+  const [registerStep, setRegisterStep] = React.useState<RegisterStepType | ''>('')
+
+  React.useEffect(() => {
+    if (user && user.role === 'USER') {
+      if (!user.validate) {
+        setRegisterStep('validate')
+      } else if (user.validate && !user.quiz?.isFinished) {
+        setRegisterStep('quiz')
+      }
+    }
+  }, [user, setRegisterStep])
+
+  const handleNextStep = () => {
+    navigate(registerStep === 'validate' ? '/validate' : '/quiz')
+  }
+
   return (
     <>
       <Header />
+      {registerStep && (
+        <Alert className="fixed bottom-5 left-1/2 z-50 flex w-fit -translate-x-1/2 items-center gap-3 p-5 md:bottom-6 md:right-6 md:max-w-md md:gap-2.5">
+          <div className="">
+            <AlertTitle className="w-max text-sm font-bold text-primary md:w-auto md:text-base">
+              {registerStep === 'validate' ? 'Ayo, lanjut validasi akun kamu!' : 'Ayo, lanjut kerjakan kuis kamu!'}
+            </AlertTitle>
+            <AlertDescription className="mt-1.5 text-[10px] font-medium text-primary/80 md:text-xs">
+              {registerStep === 'validate'
+                ? 'Kamu belum menyelesaikan validasi akun, selesaikan sekarang untuk dapat mengakses fitur USTalk.'
+                : 'Kamu belum menyelesaikan quiz, selesaikan sekarang untuk dapat mengakses fitur USTalk.'}
+            </AlertDescription>
+          </div>
+          <Button className="md:text-xs" onClick={handleNextStep}>
+            <span className="hidden md:flex">Lanjutkan</span>
+            <HiArrowRight className="md:hidden" />
+          </Button>
+        </Alert>
+      )}
       <Section className="relative items-start justify-start bg-primary bg-[url('@/assets/images/hero-bg.svg')] bg-cover bg-no-repeat xl:min-h-[calc(100vh-80px)] xl:pt-24">
         <Section.Container className="items-start gap-0 xl:flex-col xl:items-center xl:gap-0 xl:px-[120px] xl:text-center">
           <h1 className="text-2xl font-bold text-white xl:text-5xl xl:leading-[64px]">
@@ -69,7 +108,7 @@ export default function Home() {
           <Section.Body>
             <Section.Title>Tempat nongkrong yang nyaman</Section.Title>
             <Section.Paragraph>
-              ASK.UST memberikan tempat yang nyaman untuk berdiskusi dengan teman-teman kamu, dengan fitur-fitur yang
+              USTalk memberikan tempat yang nyaman untuk berdiskusi dengan teman-teman kamu, dengan fitur-fitur yang
               lengkap dan mudah digunakan.
             </Section.Paragraph>
           </Section.Body>
@@ -95,8 +134,8 @@ export default function Home() {
           <Section.Body>
             <Section.Title>Kontributor pembuatan aplikasi</Section.Title>
             <Section.Paragraph>
-              ASK.UST dibuat oleh seorang mahasiswa yaitu <b>Ferdinan Imanuel Tumanggor</b> yang memiliki kesulitan
-              dalam berdiskusi di universitas-nya, sehingga aplikasi ini dibuat untuk membantu teman-teman yang memiliki
+              USTalk dibuat oleh seorang mahasiswa yaitu <b>Ferdinan Imanuel Tumanggor</b> yang memiliki kesulitan dalam
+              berdiskusi di universitas-nya, sehingga aplikasi ini dibuat untuk membantu teman-teman yang memiliki
               kesulitan sepertinya.
             </Section.Paragraph>
           </Section.Body>
@@ -109,7 +148,7 @@ export default function Home() {
             Mulai berdiskusi dan bertanya serta temukan jawaban terbaik dari permasalahan kamu
           </Section.Title>
           <Section.Paragraph className="text-base">
-            Diskusi secara online semakin mudah dengan ASK.UST – tetap berdiskusi walaupun pake kuota dari Kemendikbud
+            Diskusi secara online semakin mudah dengan USTalk – tetap berdiskusi walaupun pake kuota dari Kemendikbud
             hehe ~. Jadi, tunggu apa lagi, ayo segera mendaftar dan rajin berdiskusi di sini supaya masalah kamu cepat
             terselesaikan biar gak stress mulu ~
           </Section.Paragraph>
@@ -125,7 +164,7 @@ export default function Home() {
 
       <footer className="bg-primary py-10 text-white xl:py-5">
         <Section.Container className="flex items-center justify-between gap-5 py-0">
-          <Brand className="gap-2" />
+          <Brand className="gap-2" imageClassName="w-7" />
           <p className="text-sm font-medium">
             dibangun oleh{' '}
             <Link to="https://github.com/ferdinan-ops" target="_blank" className="font-bold hover:underline">

@@ -9,6 +9,8 @@ import { userSelect } from '../utils/service'
 import sendMail from '../middlewares/mailer'
 
 import { type IGoogleLogin, type ITokenPayload, type IUser } from '../types/user.type'
+import { emailFormat } from '../utils/emailFormat'
+import { UserRole } from '@prisma/client'
 
 export const hashing = (password: string) => {
   return bcrypt.hashSync(password, 10)
@@ -38,21 +40,37 @@ export const sendVerifyEmail = (email: string, token: string) => {
     from: ENV.emailUsername,
     to: email,
     subject: 'Verifikasi Email',
-    html: `<p>Berikut ini token untuk verifikasi email anda:</p><h1>${token}</h1>`
+    html: emailFormat({
+      children: `
+      <p>Hai, </p>
+      <p>Sistem kami A?K.UST mendeteksi bahwa email ini digunakan untuk mendaftar di aplikasi kami.</p>
+      <p>Kami telah berhasil mengirimkan kode verifikasi pada email ini. Untuk melanjutkan proses, silahkan salin kode verifikasi yang terdapat dibawah ini, lalu tempel pada inputan dilaman Anda berada sebelumnya.</p>
+      <br/>
+      <h2 style="margin:0 auto; padding: 13px 16px; background-color: #ddd; border-radius: 6px; width: fit-content;">${token}</h2>
+      `
+    })
   })
+}
+
+export const updateUserPassword = async (userId: string, password: string) => {
+  return await db.user.update({ where: { id: userId }, data: { password } })
 }
 
 export const sendForgotPasswordEmail = (email: string, token: string) => {
   sendMail({
     from: ENV.emailUsername,
     to: email,
-    subject: 'Reset Password',
-    html: `<p>Berikut ini token untuk reset password anda:</p><h1>${token}</h1>`
+    subject: 'Atur Ulang Kata Sandi',
+    html: emailFormat({
+      children: `
+      <p>Hai, </p>
+      <p>Kami mendeteksi bahwa Anda meminta untuk mengatur ulang kata sandi akun Anda.</p>
+      <p>Kami telah berhasil mengirimkan kode verifikasi pada email ini. Untuk melanjutkan proses, silahkan salin kode verifikasi yang terdapat dibawah ini, lalu tempel pada inputan dilaman Anda berada sebelumnya.</p>
+      <br/>
+      <h2 style="margin:0 auto; padding: 13px 16px; background-color: #ddd; border-radius: 6px; width: fit-content;">${token}</h2>
+      `
+    })
   })
-}
-
-export const updateUserPassword = async (userId: string, password: string) => {
-  return await db.user.update({ where: { id: userId }, data: { password } })
 }
 
 export const formatUsername = (username: string) => {
@@ -67,6 +85,7 @@ interface IAddUserPayload {
   token: string
   is_email_verified?: boolean
   provider?: string
+  role?: UserRole
 }
 
 export const addUser = async (payload: IUser & IAddUserPayload) => {

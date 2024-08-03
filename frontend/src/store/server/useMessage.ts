@@ -62,7 +62,7 @@ export const useSendImageMessage = () => {
   const queryClient = useQueryClient()
   return useMutation(sendImageFn, {
     onError: (error: AxiosError) => {
-      handleOnError(error)
+      handleOnError(error, undefined, 'Gambar ini tidak pantas dan tidak sesuai dengan aturan yang berlaku')
     },
     onSuccess: () => {
       queryClient.invalidateQueries('messages')

@@ -7,25 +7,29 @@ import memberRoute from './member.route'
 import searchRoute from './search.route'
 import reportRoute from './report.route'
 import livekitRoute from './livekit.route'
-import videoRoute from './video.route'
-import voiceRoute from './voice.route'
+import mediaRoute from './media.route'
 import dashboardRoute from './dashboard.route'
 import messageRoute from './message.route'
 import validateRoute from './validate.route'
+import questionRoute from './question.route'
+import answerRoute from './answer.route'
+import lectureRoute from './lecture.route'
 
 const _routes = [
   ['/auth', authRoute],
-  ['/forums', forumRoute],
-  ['/users', userRoute],
-  ['/members', memberRoute],
+  ['/forum', forumRoute],
+  ['/user', userRoute],
+  ['/member', memberRoute],
   ['/search', searchRoute],
-  ['/reports', reportRoute],
+  ['/report', reportRoute],
   ['/livekit', livekitRoute],
-  ['/video', videoRoute],
-  ['/voice', voiceRoute],
+  ['/media', mediaRoute],
   ['/dashboard', dashboardRoute],
-  ['/messages', messageRoute],
-  ['/validate', validateRoute]
+  ['/message', messageRoute],
+  ['/validate', validateRoute],
+  ['/question', questionRoute],
+  ['/answer', answerRoute],
+  ['/', lectureRoute]
 ]
 
 const routes = (app: Application) => {

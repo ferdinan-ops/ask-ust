@@ -1,9 +1,15 @@
 import {
+  bannedUserFromAppFn,
   changePasswordFn,
+  createAdminFn,
+  deleteAdminFn,
+  getAdminFn,
+  getAllAdminFn,
   getJoinedForumsFn,
   getMeFn,
   getMyForumFn,
   getProfileForumsCountFn,
+  updateAdminFn,
   updateEmailFn,
   updateMeFn,
   uploadProfilePicFn
@@ -11,6 +17,8 @@ import {
 import { toast } from '@/components/ui/use-toast'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useUserInfo } from '../client'
+import { handleOnError } from '@/lib/services/handleToast'
+import { AxiosError } from 'axios'
 
 export const useGetMe = () => {
   return useQuery('me', getMeFn)
@@ -27,6 +35,9 @@ export const useGetMyForums = (page: number) => {
 export const useUpdateMe = () => {
   const queryClient = useQueryClient()
   return useMutation(updateMeFn, {
+    onError: (error: AxiosError) => {
+      handleOnError(error)
+    },
     onSuccess: (data) => {
       queryClient.invalidateQueries('me')
       useUserInfo.getState().setUser(data)
@@ -78,4 +89,70 @@ export const useUpdateProfilePic = () => {
 
 export const useGetProfileForumsCount = () => {
   return useQuery('profile-forums-count', async () => await getProfileForumsCountFn())
+}
+
+export const useBannedUser = () => {
+  const queryClient = useQueryClient()
+  return useMutation(bannedUserFromAppFn, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('me')
+    }
+  })
+}
+
+type AdminParams = {
+  search: string
+  page: number
+}
+
+export const useGetAdmins = ({ search, page }: AdminParams) => {
+  return useQuery(['admins', page, search], async () => await getAllAdminFn(search, page))
+}
+
+export const useCreateAdmin = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(createAdminFn, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('admins')
+      toast({
+        title: 'Berhasil menambahkan admin',
+        description: 'Admin baru berhasil ditambahkan'
+      })
+    }
+  })
+}
+
+export const useDeleteAdmin = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(deleteAdminFn, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('admins')
+      toast({
+        title: 'Berhasil menghapus admin',
+        description: 'Admin berhasil dihapus dari sistem'
+      })
+    }
+  })
+}
+
+export const useUpdateAdmin = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation(updateAdminFn, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('admins')
+      toast({
+        title: 'Berhasil mengubah data admin',
+        description: 'Data admin berhasil diubah dalam sistem'
+      })
+    }
+  })
+}
+
+export const useGetAdminById = (userId: string) => {
+  return useQuery(['admins', userId], async () => await getAdminFn(userId), {
+    enabled: !!userId
+  })
 }

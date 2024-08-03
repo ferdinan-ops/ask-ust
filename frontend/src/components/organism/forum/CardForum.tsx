@@ -4,6 +4,7 @@ import { HiOutlineChatBubbleBottomCenterText, HiOutlineUserGroup } from 'react-i
 import { ForumResponseType } from '@/lib/types/forum.type'
 import { cn } from '@/lib/utils'
 import { Image } from '@/components/atoms'
+import Markdown from '@/components/atoms/Markdown'
 
 interface CardForumProps {
   forums: ForumResponseType
@@ -21,7 +22,11 @@ export default function CardForum({ forums }: CardForumProps) {
           >
             <div className="flex flex-col gap-1">
               <h3 className="truncate-1 font-bold">{forum.title}</h3>
-              <p className="truncate-2 text-xs font-medium text-black/40 dark:text-white/40">{forum.description}</p>
+              <Markdown
+                values={forum.description}
+                type="reset"
+                className="truncate-2 text-xs font-medium text-black/40 dark:text-white/40 lg:text-xs"
+              />
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center">

@@ -5,7 +5,8 @@ import ENV from '../utils/environment'
 import * as UserService from './user.service'
 
 export const bannedMessage = 'Anda dibanned selama 1 hari'
-export const toxicMessage = 'Pesan atau gambar tidak diperbolehkan untuk diunggah'
+export const toxicMessage = 'Pesan ini tidak diperbolehkan'
+export const toxicImage = 'Gambar ini tidak diperbolehkan'
 
 export const fetchRecentViolationByUser = async (userId: string) => {
   return await db.violation.findFirst({
@@ -61,7 +62,9 @@ export const validateUser = async (userId: string) => {
   return user?.is_banned && banTime > new Date()
 }
 
-export const handleViolations = async (userId: string) => {
+export const handleViolations = async (userId: string, type: 'image' | 'message') => {
+  const errToxicMessage = type === 'image' ? toxicImage : toxicMessage
+
   try {
     const violation = await fetchViolationByUser(userId)
     if (violation) {
@@ -78,7 +81,7 @@ export const handleViolations = async (userId: string) => {
       }
 
       await incrementViolationCount(userId)
-      return { error: toxicMessage, success: false }
+      return { error: errToxicMessage, success: false }
     }
 
     const pastViolation = await fetchViolationByUser(userId)
@@ -95,7 +98,7 @@ export const handleViolations = async (userId: string) => {
       await incrementViolationCount(userId)
     }
 
-    return { error: toxicMessage, success: false }
+    return { error: errToxicMessage, success: false }
   } catch (error) {
     return { error, success: false }
   }

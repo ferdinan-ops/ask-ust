@@ -25,6 +25,10 @@ export const alertConfig = {
     title: 'Anda yakin keluar dari aplikasi?',
     desc: 'Tindakan ini akan mengeluarkan akun Anda dari aplikasi kami. Namun Anda bisa kembali lagi dengan login.',
     btnTxt: 'Keluar'
+  },
+  admin: {
+    title: 'Anda yakin menghapus admin ini?',
+    desc: 'Tindakan ini tidak dapat dibatalkan. Tindakan ini akan menghapus admin ini secara permanen dari sistem.'
   }
 }
 
@@ -46,12 +50,12 @@ export const titleConfig = {
   },
   login: {
     heading: 'Masuk ke akun kamu',
-    desc: 'Ajukan pertanyaanmu dengan mudah di ask.UST, mulai temukan solusi dari masalah kamu!',
+    desc: 'Ajukan pertanyaanmu dengan mudah di USTalk, mulai temukan solusi dari masalah kamu!',
     rightDesc: 'Diskusi secara online semakin mudah – tetap berdiskusi walaupun pake kuota dari Kemendikbud hehe ~'
   },
   register: {
     heading: 'Buat akun baru',
-    desc: 'Nggak susah kok, kamu cuma tinggal masukin beberapa data aja terus langsung jadi deh!',
+    desc: 'Nggak susah kok, kamu cuma tinggal masukin beberapa data aja',
     rightDesc:
       'Ayo mendaftar dan rajin berdiskusi di sini supaya masalah Anda cepat terselesaikan biar gak stress mulu~'
   },

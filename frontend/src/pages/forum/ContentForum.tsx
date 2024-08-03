@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { HiHashtag } from 'react-icons/hi2'
 
-import { MediaMenu, MemberCard, Messages } from '@/components/organism'
+import { MediaMenu, MemberCard, MemberRole, Messages } from '@/components/organism'
 import { ContentBox, Loading, SearchMember } from '@/components/atoms'
 
 import { useGetDetailForum } from '@/store/server/useForum'
@@ -41,11 +41,14 @@ export default function ContentForum() {
         <article className="flex flex-col">
           <ContentBox.Header>
             <h4 className="text-sm font-semibold">{forum?._count.members} Anggota</h4>
-            <SearchMember
-              forumId={slug as string}
-              admin={forum?.admin as MemberType}
-              moderators={forum?.moderators as MemberType[]}
-            />
+            <div className="flex items-center gap-3">
+              <MemberRole />
+              <SearchMember
+                forumId={slug as string}
+                admin={forum?.admin as MemberType}
+                moderators={forum?.moderators as MemberType[]}
+              />
+            </div>
           </ContentBox.Header>
           <ContentBox.Scroll className="gap-4">
             {forum?.members.map((member, i) => (

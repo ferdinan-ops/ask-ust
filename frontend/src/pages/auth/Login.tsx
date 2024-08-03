@@ -36,7 +36,11 @@ export default function Login() {
     login(values, {
       onSuccess: (data) => {
         forms.reset(loginDefaultValues)
-        if (data.user.is_admin) return navigate('/admin')
+        if (!data.user?.validate?.is_valid && data.user.role === 'USER') {
+          return navigate('/validate')
+        }
+
+        if (data.user.role !== 'USER') return navigate('/admin')
         navigate('/dashboard')
       }
     })
@@ -48,11 +52,11 @@ export default function Login() {
       const payload = { token: access_token }
       loginWithGoogle(payload, {
         onSuccess: (data) => {
-          if (!data.user?.validate?.is_valid) {
+          if (!data.user?.validate?.is_valid && data.user.role === 'USER') {
             return navigate('/validate')
           }
 
-          if (data.user.is_admin) return navigate('/admin')
+          if (data.user.role !== 'USER') return navigate('/admin')
           navigate('/dashboard')
         }
       })
@@ -72,11 +76,11 @@ export default function Login() {
           className="mt-4 w-full gap-[15px] py-[26px] text-primary dark:text-white"
         >
           <FcGoogle className="text-2xl" />
-          <span className="font-semibold">Login with Google</span>
+          <span className="font-semibold">Masuk dengan Google</span>
         </Button>
         <div className="my-3 flex items-center justify-between gap-[11px]">
           <div className="h-[2px] w-full rounded-full bg-zinc-300 dark:bg-zinc-700" />
-          <span className="font-semibold text-gray-600 dark:text-zinc-300">or</span>
+          <span className="text-xs font-semibold text-gray-600 dark:text-zinc-300">atau</span>
           <div className="h-[2px] w-full rounded-full bg-zinc-300 dark:bg-zinc-700" />
         </div>
         <Form {...forms}>

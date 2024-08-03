@@ -6,11 +6,11 @@ export default function ProtectedFromGuest() {
   const accessToken = useToken((state) => state.accessToken)
   const user = useUserInfo((state) => state.user)
 
-  if ((!user?.is_admin && !accessToken) || (!user && !accessToken)) {
+  if ((user?.role === 'USER' && !accessToken) || (!user && !accessToken)) {
     return <Navigate to="/sign-in" replace state={{ from: location }} />
   }
 
-  if (!user?.is_admin && accessToken) {
+  if (user?.role === 'USER' && accessToken) {
     return <Navigate to="/dashboard" replace state={{ from: location }} />
   }
 

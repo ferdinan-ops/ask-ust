@@ -41,13 +41,13 @@ export default function MessageAction({ children, message, member, onEdit, onDel
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className={cn('w-fit', (member?.id as string) === message.member_id && 'ml-auto')}>
+      <DialogTrigger className={cn('w-fit', (member?.id as string) === message?.member_id && 'ml-auto')}>
         {children}
       </DialogTrigger>
       <DialogContent className="max-w-[90%] rounded-lg sm:max-w-lg">
         <DialogHeader className="mb-2 text-left">
           <DialogTitle className="text-xl font-bold text-primary dark:text-white">
-            Pesan {isMine ? 'Anda' : message.member.user.username}
+            Pesan {isMine ? 'Anda' : message?.member?.user?.username}
           </DialogTitle>
           <DialogDescription className="text-[13px] font-medium">"{message.content}"</DialogDescription>
         </DialogHeader>

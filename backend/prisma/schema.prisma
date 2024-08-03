@@ -10,37 +10,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum BannedType {
+  VIOLATION
+  QUIZ
+}
+
+enum UserRole {
+  USER
+  SUPER_ADMIN
+  ADMIN
+}
+
 model User {
-  id                String    @id @default(uuid())
+  id                String      @id @default(uuid())
   fullname          String
-  username          String    @unique
-  email             String    @unique
-  password          String    @default("")
-  photo             String    @default("")
-  is_email_verified Boolean   @default(false)
-  token             String    @unique
-  provider          String    @default("email")
-  is_banned         Boolean   @default(false)
+  username          String      @unique
+  email             String      @unique
+  password          String      @default("")
+  photo             String      @default("")
+  role              UserRole    @default(USER)
+  is_email_verified Boolean     @default(false)
+  token             String      @unique
+  provider          String      @default("email")
+  is_banned         Boolean     @default(false)
   banned_until      DateTime?
-  is_admin          Boolean   @default(false)
+  banned_type       BannedType?
 
   forums     Forum[]
   members    Member[]
   violations Violation[]
   validate   Validate?
+  answers    Answer[]
 }
 
 model Validate {
-  id         String   @id @default(uuid())
-  user_id    String   @unique
-  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  file       String?
-  photo      String?
-  note       String?  @db.Text
-  is_valid   Boolean  @default(false)
-  is_read    Boolean  @default(false)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id              String   @id @default(uuid())
+  user_id         String   @unique
+  user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  role            String?
+  file            String?
+  photo           String?
+  note            String?  @db.Text
+  url_quiz_record String?
+  is_valid        Boolean  @default(false)
+  is_read         Boolean  @default(false)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
 }
 
 model Forum {
@@ -55,8 +70,7 @@ model Forum {
   members  Member[]
   reports  Report[]
   messages Message[]
-  video    Video?
-  voice    Voice?
+  media    Media?
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -82,11 +96,10 @@ model Member {
 
   reports  Report[]
   messages Message[]
-  video    Video?
-  voice    Voice?
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  media      Media?
 
   @@index([user_id])
   @@index([forum_id])
@@ -137,26 +150,10 @@ model Message {
   @@index([forum_id])
 }
 
-model Video {
+model Media {
   id         String  @id @default(uuid())
   is_enabled Boolean @default(false)
-
-  member_id String @unique
-  member    Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
-
-  forum_id String @unique
-  forum    Forum  @relation(fields: [forum_id], references: [id], onDelete: Cascade)
-
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-
-  @@index([member_id])
-  @@index([forum_id])
-}
-
-model Voice {
-  id         String  @id @default(uuid())
-  is_enabled Boolean @default(false)
+  type       String
 
   member_id String @unique
   member    Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
@@ -178,4 +175,57 @@ model Violation {
   last_violation  DateTime @default(now())
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+enum QuestionType {
+  TEXT
+  RADIO
+  CHECKBOX
+}
+
+model Question {
+  id              String       @id @default(uuid())
+  text            String       @db.Text
+  type            QuestionType
+  options         Json
+  correct_answers Json
+  created_at      DateTime     @default(now())
+  updated_at      DateTime     @updatedAt
+
+  answers Answer[]
+}
+
+model Answer {
+  id         String  @id @default(uuid())
+  answer     Json
+  is_correct Boolean @default(false)
+
+  user_id String
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  question_id String
+  question    Question @relation(fields: [question_id], references: [id], onDelete: Cascade)
+}
+
+model Lecture {
+  id   String @id @default(uuid())
+  name String
+
+  course_lectures CourseLecture[]
+}
+
+model Course {
+  id   String @id @default(uuid())
+  name String
+
+  course_lectures CourseLecture[]
+}
+
+model CourseLecture {
+  id         String @id @default(uuid())
+  course_id  String
+  lecture_id String
+
+  course  Course  @relation(fields: [course_id], references: [id], onDelete: Cascade)
+  lecture Lecture @relation(fields: [lecture_id], references: [id], onDelete: Cascade)
 }

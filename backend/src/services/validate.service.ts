@@ -4,6 +4,7 @@ import { IValidateUpdatePayload, IValidateUser } from '../types/validate.type'
 import { userSelect, userValidateSelect } from '../utils/service'
 import sendMail from '../middlewares/mailer'
 import ENV from '../utils/environment'
+import { emailFormat } from '../utils/emailFormat'
 
 export const addNewValidate = async (payload: IValidateUser) => {
   return await db.validate.create({
@@ -30,8 +31,15 @@ export const fetchValidates = async (page: number, limit: number, search: string
     db.validate.findMany({
       where: {
         user: {
-          OR: [{ fullname: { contains: search } }, { username: { contains: search } }, { email: { contains: search } }],
-          is_admin: false
+          OR: [
+            { fullname: { contains: search } },
+            { username: { contains: search } },
+            { email: { contains: search } },
+            { banned_type: 'VIOLATION' },
+            { banned_type: null }
+          ],
+          role: 'USER',
+          answers: { some: {} }
         },
 
         /**
@@ -52,7 +60,7 @@ export const fetchValidates = async (page: number, limit: number, search: string
       where: {
         user: {
           OR: [{ fullname: { contains: search } }, { username: { contains: search } }, { email: { contains: search } }],
-          is_admin: false
+          role: 'USER'
         },
         ...(filter === 'valid' && { is_valid: true }),
         ...(filter === 'invalid' && { is_valid: false, note: { not: null } }),
@@ -65,20 +73,47 @@ export const fetchValidates = async (page: number, limit: number, search: string
 }
 
 export const fetchValidateByUserId = async (userId: string, isUser?: boolean) => {
+  const userQuizzes = await db.answer.findMany({
+    where: {
+      user_id: userId
+    }
+  })
+
   if (isUser) {
-    return await db.validate.findUnique({
+    const validate = await db.validate.findUnique({
       where: { user_id: userId },
       select: {
-        user: userSelect,
+        user: {
+          select: {
+            ...userSelect.select,
+            is_banned: true,
+            banned_type: true
+          }
+        },
         ...userValidateSelect.select
       }
     })
+
+    return {
+      quiz: { isFinished: userQuizzes.length > 0 },
+      validate
+    }
   }
 
-  return await db.validate.findUnique({
+  const validate = await db.validate.findUnique({
     where: { user_id: userId },
     include: { user: userSelect }
   })
+
+  const userQuizzesCorrect = userQuizzes.filter((quiz) => quiz.is_correct)
+
+  return {
+    quiz: {
+      total: userQuizzesCorrect.length,
+      isFinished: userQuizzes.length > 0
+    },
+    validate
+  }
 }
 
 export const changeValidateReadStatus = async (validateId: string) => {
@@ -105,25 +140,29 @@ export const removeValidateUser = async (validateId: string) => {
 }
 
 export const sendNotificationToAdmin = async (userId: string, fullname: string) => {
-  const user = await db.user.findFirst({
-    where: { is_admin: true },
+  const users = await db.user.findMany({
+    where: {
+      OR: [{ role: 'SUPER_ADMIN' }, { role: 'ADMIN' }]
+    },
     select: { email: true }
   })
 
-  sendMail({
-    from: ENV.emailUsername,
-    to: user?.email as string,
-    subject: 'Verifikasi Data',
-    html: `
-    <p>Halo Admin,</p>
-    <p>Ada data pengguna baru dengan nama <b>${fullname}</b> yang perlu diverifikasi oleh kamu, ayo segera cek aplikasi <b>ask.ust</b> untuk melihat data tersebut.</p>
-    <br/>
-    <br/>
-    <a href="${ENV.publicUrl}/admin/validate/${userId}" style="background-color: #18181b; outline: none; border-radius: 6px; padding: 10px 16px;color: #fff; border: 0; cursor: pointer; text-decoration: none">
-    Lihat ke aplikasi
-    </a>
-    <br/>
+  users.forEach((user) => {
+    sendMail({
+      from: ENV.emailUsername,
+      to: user?.email,
+      subject: 'Verifikasi Data',
+      html: emailFormat({
+        btnText: 'Lihat ke aplikasi',
+        btnLink: `${ENV.publicUrl}/admin/validate/${userId}`,
+        children: `
+        <p>Halo Admin,</p>
+        <p>
+          Terdapat data pengguna baru dengan nama <b>${fullname}</b> yang perlu diverifikasi oleh kamu, ayo segera cek aplikasi A?K.UST untuk melihat data tersebut.
+        </p>
     `
+      })
+    })
   })
 }
 
@@ -132,16 +171,23 @@ export const sendValidateNotification = async (email: string, isValid: boolean, 
     from: ENV.emailUsername,
     to: email,
     subject: 'Verifikasi Data',
-    html: `
-    <p>Verifikasi data anda telah selesai</p>
-    <h1>${isValid ? 'Selamat!!!, data kamu terbukti valid' : 'Maaf, data kamu tidak valid'}</h1>
-    <p>${note !== '' ? note : 'Yey, setelah kami periksa keseluruhan data kamu, kamu telah terbukti sebagai salah satu bagian dari civitas akademik Universitas Katolik Santo Thomas Medan. Ayo mulai gunakan dan jelajahi aplikasi <b>ask.ust</b> ini dengan berdiskusi dan berbincang-bincang dengan pengguna lainnya.'}</p>
-    <br/>
-    <br/>
-    <a href="${ENV.publicUrl}/unverified" style="background-color: #18181b; outline: none; border-radius: 6px; padding: 10px 16px;color: #fff; border: 0; cursor: pointer; text-decoration: none">
-    Lihat ke aplikasi
-    </a>
-    <br/>
+    html: emailFormat({
+      btnText: 'Lihat ke aplikasi',
+      btnLink: `${ENV.publicUrl}/unverified`,
+      children: `
+        <p>Verifikasi data anda telah selesai</p>
+        <h1>${isValid ? 'Selamat!, data kamu terbukti valid' : 'Maaf, data kamu tidak valid'}</h1>
+        <p>${note !== '' ? note : 'Yey, setelah kami periksa keseluruhan data kamu, kamu telah terbukti sebagai salah satu bagian dari civitas akademik Universitas Katolik Santo Thomas Medan. Ayo mulai gunakan dan jelajahi aplikasi <b>USTalk</b> ini dengan berdiskusi dan berbincang-bincang dengan pengguna lainnya.'}</p>
     `
+    })
+  })
+}
+
+export const uploadQuizRecord = async (userId: string, url: string) => {
+  return await db.validate.update({
+    where: { user_id: userId },
+    data: {
+      url_quiz_record: url
+    }
   })
 }

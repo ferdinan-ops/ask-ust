@@ -1,3 +1,5 @@
+import { UserRole } from '@prisma/client'
+
 export interface IUser {
   fullname: string
   username: string
@@ -11,6 +13,7 @@ export interface IUser {
 export interface ITokenPayload {
   id: string
   isAdmin: boolean
+  role: UserRole
 }
 
 export type IUserUpdatePayload = Omit<IUser, 'email' | 'password' | 'photo'>

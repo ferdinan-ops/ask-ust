@@ -27,9 +27,8 @@ module.exports = {
       },
       colors: {
         primary: '#18181b'
-        // primary: '#00bac7'
       }
     }
   },
-  plugins: [require('tailwindcss-animate')]
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')]
 }

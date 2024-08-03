@@ -6,7 +6,7 @@ export const userSelect = {
     email: true,
     photo: true,
     provider: true,
-    is_admin: true
+    role: true
   }
 }
 
@@ -15,6 +15,8 @@ export const userValidateSelect = {
     id: true,
     is_valid: true,
     note: true,
-    user_id: true
+    user_id: true,
+    role: true,
+    url_quiz_record: true
   }
 }

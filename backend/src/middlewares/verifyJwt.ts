@@ -3,10 +3,12 @@ import { type NextFunction, type Request, type Response } from 'express'
 
 import ENV from '../utils/environment'
 import { logWarn } from '../utils/logger'
+import { UserRole } from '@prisma/client'
 
 interface DecodedToken {
   id: string
   isAdmin: boolean
+  role: UserRole
   iat: number
   exp: number
 }
@@ -26,10 +28,11 @@ const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
       return res.status(403).json({ message: 'Forbidden' })
     }
 
-    const { id, isAdmin } = decoded as DecodedToken
+    const { id, isAdmin, role } = decoded as DecodedToken
 
     req.userId = id
     req.isAdmin = isAdmin
+    req.role = role
     next()
   })
 }
@@ -48,10 +51,11 @@ export const verifyUserRole = (req: Request, res: Response, next: NextFunction) 
         return res.status(403).json({ message: 'Forbidden' })
       }
 
-      const { id, isAdmin } = decoded as DecodedToken
+      const { id, isAdmin, role } = decoded as DecodedToken
 
       req.userId = id
       req.isAdmin = isAdmin
+      req.role = role
       next()
     })
   }
@@ -59,6 +63,15 @@ export const verifyUserRole = (req: Request, res: Response, next: NextFunction) 
 
 export const verifyAdmin = (req: Request, res: Response, next: NextFunction) => {
   if (!req.isAdmin) {
+    logWarn(req, 'Unauthorized access')
+    return res.status(401).json({ message: 'Unauthorized' })
+  }
+
+  next()
+}
+
+export const verifySuperAdmin = (req: Request, res: Response, next: NextFunction) => {
+  if (req.role !== 'SUPER_ADMIN') {
     logWarn(req, 'Unauthorized access')
     return res.status(401).json({ message: 'Unauthorized' })
   }

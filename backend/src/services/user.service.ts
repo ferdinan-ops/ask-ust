@@ -1,7 +1,6 @@
 import db from '../utils/db'
 
-import { type IUserUpdatePayload } from '../types/user.type'
-// import { deleteFile } from '../utils/fileSettings'
+import { IUser, type IUserUpdatePayload } from '../types/user.type'
 import { userSelect } from '../utils/service'
 import ENV from '../utils/environment'
 
@@ -113,7 +112,7 @@ export const getForumByMemberId = async (userId: string, page: number, limit: nu
   return { data, count }
 }
 
-export const processPhoto = async (oldPhoto: string, filename: string) => {
+export const processPhoto = async (_oldPhoto: string, filename: string) => {
   // if (oldPhoto) await deleteFile(oldPhoto)
   return filename
 }
@@ -144,5 +143,56 @@ export const updateEmail = async (userId: string, email: string, token: string) 
 }
 
 export const changeBannedStatus = async (userId: string) => {
-  return await db.user.update({ where: { id: userId }, data: { banned_until: ENV.banOneDay, is_banned: true } })
+  return await db.user.update({
+    where: { id: userId },
+    data: { banned_until: ENV.banOneDay, is_banned: true, banned_type: 'VIOLATION' }
+  })
+}
+
+export const bannedUserEmail = async (userId: string) => {
+  return await db.user.update({
+    where: { id: userId },
+    data: { is_banned: true, banned_type: 'QUIZ' }
+  })
+}
+
+export const removeUserById = async (userId: string) => {
+  return await db.user.delete({ where: { id: userId } })
+}
+
+export const fetchAdmins = async (page: number, limit: number, search: string) => {
+  const [data, count] = await db.$transaction([
+    db.user.findMany({
+      where: {
+        OR: [{ fullname: { contains: search } }, { username: { contains: search } }, { email: { contains: search } }],
+        role: 'ADMIN'
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+      select: userSelect.select,
+      orderBy: { fullname: 'asc' }
+    }),
+    db.user.count({
+      where: {
+        OR: [{ fullname: { contains: search } }, { username: { contains: search } }, { email: { contains: search } }],
+        role: 'ADMIN'
+      }
+    })
+  ])
+
+  return { data, count }
+}
+
+export const fetchAdminById = async (userId: string) => {
+  return await db.user.findFirst({
+    where: { role: 'ADMIN', id: userId },
+    select: userSelect.select
+  })
+}
+
+export const changeAdminById = async (userId: string, payload: IUser) => {
+  return await db.user.update({
+    where: { id: userId },
+    data: payload
+  })
 }

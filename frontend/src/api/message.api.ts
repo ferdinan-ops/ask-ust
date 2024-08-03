@@ -7,29 +7,28 @@ import {
 import api from './axiosInstance'
 
 export const sendMessageFn = async (payload: MessageBodyType) => {
-  const response = await api.post('/messages', payload)
-  console.log(response.data)
+  const response = await api.post('/message', payload)
   return response.data?.data
 }
 
 export const updateMessageFn = async (payload: MessageBodyType & { messageId: string }) => {
   const { messageId, ...rest } = payload
-  const response = await api.put(`/messages/${messageId}`, rest)
+  const response = await api.put(`/message/${messageId}`, rest)
   return response.data?.data
 }
 
 export const deleteMessageFn = async (payload: DeleteMessageParamsType) => {
-  const response = await api.delete(`/messages/${payload.messageId}/forum/${payload.forumId}`)
+  const response = await api.delete(`/message/${payload.messageId}/forum/${payload.forumId}`)
   return response.data?.data
 }
 
 export const deleteMessageBySpecificRoleFn = async (payload: DeleteMessageParamsType) => {
-  const response = await api.delete(`/messages/${payload.messageId}/forum/${payload.forumId}/role`)
+  const response = await api.delete(`/message/${payload.messageId}/forum/${payload.forumId}/role`)
   return response.data?.data
 }
 
 export const getMessagesFn = async (forumId: string, cursor?: number): Promise<MessageResponseType> => {
-  const response = await api.get(`/messages/forum/${forumId}`, { params: { cursor } })
+  const response = await api.get(`/message/forum/${forumId}`, { params: { cursor } })
   return response.data
 }
 
@@ -38,7 +37,7 @@ export const sendImageFn = async (payload: SendImageMessageType) => {
   formData.append('forumId', payload.forumId)
   formData.append('image', payload.image)
 
-  const response = await api.post('/messages/image', formData, {
+  const response = await api.post('/message/image', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }

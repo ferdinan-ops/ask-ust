@@ -1,6 +1,7 @@
 export interface IValidateUser {
   user_id: string
   file: string
+  role: string
   photo: string
   is_valid?: boolean
   note?: string

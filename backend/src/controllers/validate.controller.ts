@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-delimiter-style */
 import { Request, Response } from 'express'
 import { logError, logInfo } from '../utils/logger'
 import * as ValidateService from '../services/validate.service'
@@ -8,6 +9,7 @@ import { IValidateUpdatePayload } from '../types/validate.type'
 export const createValidateUser = async (req: Request, res: Response) => {
   const userId = req.body?.userId as string
   const agreement = req.body?.agreement as boolean
+  const role = req.body?.role as string
 
   const file = req.files?.file
   const photo = req.files?.photo
@@ -17,14 +19,19 @@ export const createValidateUser = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'User ID is required' })
   }
 
+  if (!role) {
+    logError(req, 'Role is required')
+    return res.status(400).json({ message: 'Role is required' })
+  }
+
   if (!file?.[0].filename || !photo?.[0].filename) {
     logError(req, 'File not found')
     return res.status(400).json({ message: 'File not found' })
   }
 
   try {
-    const validateUser = await ValidateService.fetchValidateByUserId(userId)
-    if (validateUser) {
+    const validateUser = await ValidateService.fetchValidateByUserId(userId, true)
+    if (validateUser.validate) {
       logError(req, 'User already has validate data')
       return res.status(400).json({ message: 'User already has validate data' })
     }
@@ -32,6 +39,7 @@ export const createValidateUser = async (req: Request, res: Response) => {
     let data
     const results = await ValidateService.addNewValidate({
       user_id: userId,
+      role,
       file: file[0].filename,
       photo: photo[0].filename
     })
@@ -66,6 +74,8 @@ export const updateValidateUser = async (req: Request, res: Response) => {
     logError(req, 'Note is required when user is not valid')
     return res.status(400).json({ message: 'Note is required when user is not valid' })
   }
+
+  if (value.isValid) value.note = ''
 
   try {
     const data = await ValidateService.changeValidateStatus(req.params.validateId, value)
@@ -110,17 +120,18 @@ export const getUserValidate = async (req: Request, res: Response) => {
     let data
     if (isAdmin) {
       const result = await ValidateService.fetchValidateByUserId(userId)
-      const { user, ...validate } = result ?? {}
-      data = { ...user, validate }
+      const { quiz, validate } = result as { quiz: any; validate: any }
+      const { user, ...rest } = validate
+      data = { ...user, validate: rest, quiz }
     } else {
       const result = await ValidateService.fetchValidateByUserId(userId, !isAdmin)
-      if (!result?.user) {
+      if (!result.validate) {
         const user = await UserService.getUserLogin(userId)
-        console.log({ user })
         data = { ...user }
       } else {
-        const { user, ...validate } = result
-        data = { ...user, validate }
+        const { quiz, validate } = result as { quiz: any; validate: any }
+        const { user, ...rest } = validate
+        data = { ...user, validate: rest, quiz }
       }
     }
 
@@ -167,6 +178,24 @@ export const deleteValidateUser = async (req: Request, res: Response) => {
 
     logInfo(req, 'Deleting validate user')
     res.status(200).json({ message: 'Berhasil menghapus data verifikasi user', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const sendQuizRecord = async (req: Request, res: Response) => {
+  const userId = req.params.userId
+  const quiz = req.body?.quiz as string
+
+  if (!quiz) {
+    logError(req, 'Quiz is required')
+    res.status(400).json({ message: 'Url kuis harus diisi' })
+  }
+
+  try {
+    const data = await ValidateService.uploadQuizRecord(userId, quiz)
+    logInfo(req, 'Sending quiz record')
+    res.status(200).json({ message: 'Berhasil mengirimkan data quiz', data })
   } catch (error) {
     res.status(500).json({ error })
   }

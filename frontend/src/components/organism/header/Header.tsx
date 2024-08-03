@@ -1,4 +1,4 @@
-import { HiOutlineArrowRightOnRectangle, HiOutlineBell, HiOutlineChevronDown } from 'react-icons/hi2'
+import { HiOutlineArrowRightOnRectangle, HiOutlineBell, HiOutlineChevronDown, HiOutlineUserPlus } from 'react-icons/hi2'
 import { useNavigate } from 'react-router-dom'
 import * as React from 'react'
 
@@ -31,7 +31,7 @@ export default function Header({ className, page = 'home' }: HeaderProps) {
 
   const user = useUserInfo((state) => state.user)
   const accessToken = useToken((state) => state.accessToken)
-  const { data: notifCount } = useGetUnreadValidates(!!user?.is_admin)
+  const { data: notifCount } = useGetUnreadValidates(user?.role !== 'USER')
 
   const [isOpen, setIsOpen] = React.useState(false)
   const handleClose = () => setIsOpen(false)
@@ -42,17 +42,17 @@ export default function Header({ className, page = 'home' }: HeaderProps) {
   }
 
   return (
-    <header className={cn('flex h-20 w-full items-center bg-primary text-white', className)}>
+    <header className={cn('sticky top-0 z-50 flex h-20 w-full items-center bg-primary text-white', className)}>
       <nav className="mx-auto flex w-[1180px] items-center justify-between px-5 md:px-10 xl:px-0">
         <Brand
-          href={user?.is_admin ? '/admin' : '/'}
+          href={user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN' ? '/admin' : '/'}
           imageClassName="xl:w-8 w-7"
           className="gap-3 text-lg font-bold xl:gap-4 xl:text-xl"
         />
 
         {accessToken ? (
           <div className="flex items-center gap-5">
-            {user?.is_admin && (
+            {user?.role !== 'USER' && (
               <Button
                 size="icon"
                 variant="secondary"
@@ -73,7 +73,7 @@ export default function Header({ className, page = 'home' }: HeaderProps) {
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
                   'cursor-pointer rounded-full bg-white/10 text-white hover:bg-white/5 xl:rounded-lg xl:px-2.5 xl:py-2',
-                  user?.is_admin && page === 'admin' && 'bg-zinc-100 text-primary hover:bg-zinc-200'
+                  user?.role !== 'USER' && page === 'admin' && 'bg-zinc-100 text-primary hover:bg-zinc-200'
                 )}
               >
                 <HiOutlineChevronDown className="text-font hidden text-lg lg:block" />
@@ -82,13 +82,25 @@ export default function Header({ className, page = 'home' }: HeaderProps) {
               <FloatBox isOpen={isOpen}>
                 <ProfileBox user={user} className="border-b border-zinc-200 pb-4 text-primary" />
 
-                {user?.is_admin
-                  ? adminLinks.map((link, i) => (
-                      <FloatBox.Item key={i} href={link.to} label={link.label} onClick={handleClose} icon={link.icon} />
-                    ))
-                  : userLinks.map((link, i) => (
+                {user?.role !== 'USER' ? (
+                  <React.Fragment>
+                    {user.role === 'SUPER_ADMIN' && (
+                      <FloatBox.Item
+                        href="/admin/all"
+                        label="Daftar Admin"
+                        onClick={handleClose}
+                        icon={HiOutlineUserPlus}
+                      />
+                    )}
+                    {adminLinks.map((link, i) => (
                       <FloatBox.Item key={i} href={link.to} label={link.label} onClick={handleClose} icon={link.icon} />
                     ))}
+                  </React.Fragment>
+                ) : (
+                  userLinks.map((link, i) => (
+                    <FloatBox.Item key={i} href={link.to} label={link.label} onClick={handleClose} icon={link.icon} />
+                  ))
+                )}
 
                 <Alert title={alertConf.title} desc={alertConf.desc} btnText={alertConf.btnTxt} action={handleLogout}>
                   <button className={cn(FloatBox.itemClass, 'mt-2 w-full cursor-pointer text-red-500')}>

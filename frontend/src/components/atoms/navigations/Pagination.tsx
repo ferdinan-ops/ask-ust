@@ -14,12 +14,13 @@ interface PaginationProps {
   currentPage: number
   pageSize: number
   className?: string
+  isAbsolute?: boolean
 }
 
 const btnClass = 'py-2 text-xs font-semibold'
 
 export default function Pagination(props: PaginationProps) {
-  const { onPageChange, totalCount, siblingCount = 1, currentPage, pageSize, className } = props
+  const { onPageChange, totalCount, siblingCount = 1, currentPage, pageSize, className, isAbsolute = true } = props
 
   const paginationRange = usePagination({
     currentPage,
@@ -45,7 +46,8 @@ export default function Pagination(props: PaginationProps) {
   return (
     <div
       className={cn(
-        'bottom-0 right-0 mt-5 flex items-center justify-center gap-1 lg:absolute lg:mt-0 lg:justify-end',
+        'mt-5 flex items-center justify-center gap-1 lg:mt-0 lg:justify-end',
+        isAbsolute && 'bottom-0 right-0 lg:absolute',
         className
       )}
     >
@@ -62,11 +64,12 @@ export default function Pagination(props: PaginationProps) {
         }
         return (
           <Button
+            key={index}
             variant="outline"
             onClick={() => onPageChange(Number(pageNumber))}
             className={cn(pageNumber === currentPage && 'border-primary bg-zinc-100 text-primary', btnClass)}
           >
-            1
+            {pageNumber}
           </Button>
         )
       })}

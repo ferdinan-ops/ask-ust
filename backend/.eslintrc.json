@@ -11,7 +11,7 @@
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint"],
-  "ignorePatterns": ["**/build/*", "**/node_modules", "**/public/*"],
+  "ignorePatterns": ["**/build/*", "**/node_modules", "**/public/*", "**/prisma/**"],
   "rules": {
     "@typescript-eslint/restrict-template-expressions": "off",
     "@typescript-eslint/explicit-function-return-type": "off",

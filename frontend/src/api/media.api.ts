@@ -1,13 +1,18 @@
 import api from './axiosInstance'
 import { MediaRoomType } from '@/lib/types/media.type'
 
-export const createVideoCallFn = async (forumId: string): Promise<MediaRoomType> => {
-  const response = await api.post('/video', { forumId })
-  return response.data?.data?.video
+type MediaCallForm = {
+  forumId: string
+  type: 'video' | 'voice'
 }
 
-export const getVideoCallFn = async (videoId: string): Promise<MediaRoomType> => {
-  const response = await api.get(`/video/${videoId}`)
+export const createMediaCallFn = async ({ forumId, type }: MediaCallForm): Promise<MediaRoomType> => {
+  const response = await api.post('/media', { forumId, type })
+  return response.data?.data?.media
+}
+
+export const getMediaCallFn = async (mediaId: string): Promise<MediaRoomType> => {
+  const response = await api.get(`/media/${mediaId}`)
   return response.data?.data
 }
 
@@ -16,32 +21,12 @@ export const getLivekitToken = async (id: string, username: string): Promise<str
   return response.data?.token
 }
 
-export const createVoiceCallFn = async (forumId: string): Promise<MediaRoomType> => {
-  const response = await api.post('/voice', { forumId })
-  return response.data?.data?.voice
-}
-
-export const getVoiceCallFn = async (voiceId: string): Promise<MediaRoomType> => {
-  const response = await api.get(`/voice/${voiceId}`)
+export const getEnabledMediaCallFn = async (forumId: string): Promise<MediaRoomType> => {
+  const response = await api.get(`/media/forum/${forumId}/enabled`)
   return response.data?.data
 }
 
-export const getEnabledVoiceCallFn = async (forumId: string): Promise<MediaRoomType> => {
-  const response = await api.get(`/voice/forum/${forumId}/enabled`)
-  return response.data?.data
-}
-
-export const getEnabledVideoCallFn = async (forumId: string): Promise<MediaRoomType> => {
-  const response = await api.get(`/video/forum/${forumId}/enabled`)
-  return response.data?.data
-}
-
-export const deleteVoiceCallFn = async (voiceId: string): Promise<MediaRoomType> => {
-  const response = await api.delete(`/voice/${voiceId}`)
-  return response.data?.data
-}
-
-export const deleteVideoCallFn = async (videoId: string): Promise<MediaRoomType> => {
-  const response = await api.delete(`/video/${videoId}`)
+export const deleteMediaCallFn = async (mediaId: string): Promise<MediaRoomType> => {
+  const response = await api.delete(`/media/${mediaId}`)
   return response.data?.data
 }

@@ -7,7 +7,7 @@ import {
   HiOutlineVideoCamera
 } from 'react-icons/hi2'
 import { ShareForum } from '..'
-import { useCreateVideoCall, useCreateVoiceCall } from '@/store/server/useMedia'
+import { useCreateMediaCall } from '@/store/server/useMedia'
 import { useNavigate } from 'react-router-dom'
 import { useGetDevices } from '@/hooks'
 import * as React from 'react'
@@ -23,21 +23,13 @@ export default function MediaMenu({ forumId, invitedCode }: MediaMenuProps) {
   const navigate = useNavigate()
   const { isMobile, isTablet, isDesktop } = useGetDevices()
 
-  const { mutate: createVideoCall, isLoading: isLoadingVideo } = useCreateVideoCall()
-  const { mutate: createVoiceCall, isLoading: isLoadingVoice } = useCreateVoiceCall()
+  const { mutate: createMedia, isLoading: isLoadingMedia } = useCreateMediaCall()
 
-  const handleCreateVideoCall = () => {
-    createVideoCall(forumId as string, {
+  const handleCreateMedia = (type: 'video' | 'voice') => {
+    const payload = { forumId: forumId as string, type }
+    createMedia(payload, {
       onSuccess: (data) => {
-        navigate(`/forums/${forumId}/video/${data.id}`)
-      }
-    })
-  }
-
-  const handleCreateVoiceCall = () => {
-    createVoiceCall(forumId as string, {
-      onSuccess: (data) => {
-        navigate(`/forums/${forumId}/voice/${data.id}`)
+        navigate(`/forums/${forumId}/${type}/${data.id}`)
       }
     })
   }
@@ -52,11 +44,11 @@ export default function MediaMenu({ forumId, invitedCode }: MediaMenuProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-2">
-            <DropdownMenuItem className="gap-2.5 font-semibold text-primary" onClick={handleCreateVideoCall}>
+            <DropdownMenuItem className="gap-2.5 font-semibold text-primary" onClick={() => handleCreateMedia('video')}>
               <HiOutlineVideoCamera className="text-lg" />
               <p className="text-[13px]">Panggilan video</p>
             </DropdownMenuItem>
-            <DropdownMenuItem className="gap-2.5 font-semibold text-primary" onClick={handleCreateVoiceCall}>
+            <DropdownMenuItem className="gap-2.5 font-semibold text-primary" onClick={() => handleCreateMedia('voice')}>
               <HiOutlinePhone className="text-lg" />
               <p className="text-[13px]">Panggilan suara</p>
             </DropdownMenuItem>
@@ -81,8 +73,8 @@ export default function MediaMenu({ forumId, invitedCode }: MediaMenuProps) {
       )}
       {(isDesktop || isTablet) && (
         <article className="flex items-center gap-0 md:gap-2">
-          <IconButton onClick={handleCreateVideoCall} icon={HiOutlineVideoCamera} loading={isLoadingVideo} />
-          <IconButton onClick={handleCreateVoiceCall} icon={HiOutlinePhone} loading={isLoadingVoice} />
+          <IconButton onClick={() => handleCreateMedia('video')} icon={HiOutlineVideoCamera} loading={isLoadingMedia} />
+          <IconButton onClick={() => handleCreateMedia('voice')} icon={HiOutlinePhone} loading={isLoadingMedia} />
           {isTablet && <IconButton onClick={() => navigate(`/forums/${forumId}/member`)} icon={HiOutlineUserGroup} />}
 
           <ShareForum inviteCode={invitedCode}>

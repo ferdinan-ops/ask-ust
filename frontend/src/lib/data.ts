@@ -1,5 +1,6 @@
 import {
   HiOutlineBell,
+  HiOutlineBookOpen,
   HiOutlineCog6Tooth,
   HiOutlineInbox,
   HiOutlineSquares2X2,
@@ -66,7 +67,8 @@ export const MEMBERS = [
 ]
 
 export const headerLinks = [
-  { to: '/admin', label: 'Pengguna', icon: HiOutlineUserGroup, type: 'admin' },
+  { to: '/admin', label: 'Daftar Pengguna', icon: HiOutlineUserGroup, type: 'admin' },
+  { to: '/admin/questions', label: 'Pertanyaan Kuis', icon: HiOutlineBookOpen, type: 'admin' },
   { to: '/admin/notification', label: 'Notifikasi', icon: HiOutlineBell, type: 'admin' },
   { to: '/admin/settings', label: 'Pengaturan', icon: HiOutlineCog6Tooth, type: 'admin' },
   { to: '/dashboard', label: 'Dashboard', icon: HiOutlineSquares2X2, type: 'user' },

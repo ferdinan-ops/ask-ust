@@ -1,11 +1,11 @@
 import { useGetForum } from '@/store/server/useForum'
-import { useParams, useTitle } from '@/hooks'
+import { useQueryParams, useTitle } from '@/hooks'
 import { TabForum } from '@/components/organism'
 import { ForumResponseType } from '@/lib/types/forum.type'
 
 export default function Forums() {
   useTitle('Forum')
-  const { createParam, params } = useParams(['page'])
+  const { params, createParam } = useQueryParams(['page'])
   const { data: forums, isLoading } = useGetForum(Number(params.page) || 1)
 
   return (

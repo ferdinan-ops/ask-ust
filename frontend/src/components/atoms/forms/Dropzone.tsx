@@ -114,7 +114,11 @@ export default function Dropzone({
               <FileBox.Filled
                 file={file}
                 closedModal={closedModal}
-                previewCondition={file.type !== 'application/pdf'}
+                previewCondition={
+                  file.type !== 'application/pdf' &&
+                  file.type !== 'application/vnd.ms-excel' &&
+                  file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                }
                 onDelete={(e) => deleteFile(e, file)}
               />
             </FileBox.Container>
@@ -132,9 +136,9 @@ export default function Dropzone({
         </FileBox.Container>
       )}
 
-      {errors[id] && (
+      {/* {errors[id] && (
         <span className="text-sm font-medium text-red-500 dark:text-red-900">{errors[id]?.message?.toString()}</span>
-      )}
+      )} */}
     </div>
   )
 }

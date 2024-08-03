@@ -3,11 +3,6 @@ import { logError, logInfo } from '../utils/logger'
 import ENV from '../utils/environment'
 import { AccessToken } from 'livekit-server-sdk'
 
-// import { type RequestInfo, type RequestInit } from 'node-fetch'
-
-// const fetch = async (url: RequestInfo, init?: RequestInit) =>
-//   await import('node-fetch').then(async ({ default: fetch }) => await fetch(url, init))
-
 export const createToken = async (req: Request, res: Response) => {
   const roomName = req.query.id as string
   const participantName = req.query.username as string

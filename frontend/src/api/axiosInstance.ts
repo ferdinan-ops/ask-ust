@@ -39,7 +39,7 @@ api.interceptors.response.use(
 
         try {
           const response = await refreshTokenFn(refreshToken)
-          useToken.getState().storeAccessToken(response.access_token)
+          useToken.getState().storeAccessToken(response.access_token as string)
           useUserInfo.getState().setUser(response.user)
           return api(originalConfig)
         } catch (error) {

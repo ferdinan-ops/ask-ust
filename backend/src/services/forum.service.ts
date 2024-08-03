@@ -66,7 +66,8 @@ export const getForumById = async (forumId: string) => {
         include: {
           user: userSelect,
           reports: true
-        }
+        },
+        orderBy: { role: 'asc' }
       },
       _count: {
         select: { messages: true, members: true }
