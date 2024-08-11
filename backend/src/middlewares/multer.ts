@@ -1,17 +1,19 @@
 import { type Request } from 'express'
 import multer from 'multer'
-import { v4 } from 'uuid'
+// import { v4 } from 'uuid'
 
 import logger from '../utils/logger'
 
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => {
-    cb(null, 'storage')
-  },
-  filename: (_req, file, cb) => {
-    cb(null, v4() + '-' + file.originalname)
-  }
-})
+// const storage = multer.diskStorage({
+//   destination: (_req, _file, cb) => {
+//     cb(null, 'storage')
+//   },
+//   filename: (_req, file, cb) => {
+//     cb(null, v4() + '-' + file.originalname)
+//   }
+// })
+
+const storage = multer.memoryStorage()
 
 const fileFilter = (_req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
   const allowedTypes = [

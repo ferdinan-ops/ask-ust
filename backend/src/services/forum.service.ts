@@ -350,11 +350,7 @@ export const fetchSummaryFromGeminiAi = async (forumId: string) => {
 
     const messagesPlainText = messages.map((message) => message.content).join('\n')
 
-    const prompt = `Berikut adalah beberapa komentar dari sebuah forum yang berjudul ${messages?.[0].forum.title}. Buatlah kesimpulan dari diskusi ini.\n\nKomentar:\n${messagesPlainText}`
-
-    // const prompt = `Berikut adalah beberapa komentar dari sebuah diskusi. Buatlah kesimpulan dari diskusi ini.\n\nKomentar:\n${messages
-    //   .map((message) => `${message.member.user.fullname}: ${message.content}`)
-    //   .join('\n')}`
+    const prompt = `Berikut adalah beberapa komentar dari sebuah forum yang berjudul ${messages?.[0].forum.title}. Buatlah dan kalkulasikan kesimpulan dari diskusi ini.\n\nKomentar:\n${messagesPlainText}`
 
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${ENV.geminiApiKey}`
     const response = await axios.post(url, { contents: [{ parts: [{ text: prompt }] }] })

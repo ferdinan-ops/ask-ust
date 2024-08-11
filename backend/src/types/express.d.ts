@@ -6,14 +6,8 @@ declare namespace Express {
     isAdmin?: boolean
 
     files?: {
-      file: Array<{
-        filename: string
-        data: Buffer
-      }>
-      photo: Array<{
-        filename: string
-        data: Buffer
-      }>
+      valid_file: any[]
+      photo: any[]
     }
   }
 }

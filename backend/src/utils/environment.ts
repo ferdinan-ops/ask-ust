@@ -20,7 +20,10 @@ const ENV = {
   questionDosenId: process.env.QUESTION_DOSEN_UUID,
   questionMatkulId: process.env.QUESTION_MATA_KULIAH_UUID,
   openAiUserApiKey: process.env.OPEN_AI_USER_API_KEY,
-  geminiApiKey: process.env.GEMINI_API_KEY
+  geminiApiKey: process.env.GEMINI_API_KEY,
+  supabaseUrl: process.env.SUPABASE_URL,
+  supabaseKey: process.env.SUPABASE_ANON_KEY,
+  supabaseBucketName: process.env.SUPABASE_BUCKET_NAME
 }
 
 export default ENV

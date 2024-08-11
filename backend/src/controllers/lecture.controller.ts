@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import * as LectureService from '../services/lecture.service'
-import { logInfo, logWarn } from '../utils/logger'
+import logger, { logInfo, logWarn } from '../utils/logger'
 import { ILecture } from '../types/lecture.type'
+import { uploadFileToBucket } from '../middlewares/supabase'
 
 // Lecturers
 export const getLecturers = async (req: Request, res: Response) => {
@@ -34,7 +35,8 @@ export const importLecturers = async (req: Request, res: Response) => {
   }
 
   try {
-    const worksheet = LectureService.readXlsx(req.file.path) as ILecture[]
+    const file = await uploadFileToBucket(req.file)
+    const worksheet = (await LectureService.readXlsx(file as string)) as ILecture[]
 
     // Check if required columns exist
     const requiredColumns = ['id', 'nama']
@@ -103,7 +105,8 @@ export const importCourses = async (req: Request, res: Response) => {
   }
 
   try {
-    const worksheet = LectureService.readXlsx(req.file.path) as ILecture[]
+    const file = await uploadFileToBucket(req.file)
+    const worksheet = (await LectureService.readXlsx(file as string)) as ILecture[]
 
     // Check if required columns exist
     const requiredColumns = ['id', 'nama']
@@ -176,7 +179,10 @@ export const importCourseAndLecturers = async (req: Request, res: Response) => {
   }
 
   try {
-    const worksheet = LectureService.readXlsx(req.file.path) as ICourseLectureExcel[]
+    const file = await uploadFileToBucket(req.file)
+    logger.info({ file })
+    const worksheet = (await LectureService.readXlsx(file as string)) as ICourseLectureExcel[]
+    logger.info({ worksheet })
 
     // Check if required columns exist
     const requiredColumns = ['id_dosen', 'id_mata_kuliah']

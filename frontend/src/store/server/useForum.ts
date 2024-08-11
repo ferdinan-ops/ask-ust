@@ -159,11 +159,6 @@ export const useUpdateForumType = () => {
 }
 
 export const useGetForumConclusion = (forumId: string) => {
-  // return useMutation(getForumConclusionFn, {
-  //   onSuccess: (data) => {
-  //     console.log(data)
-  //   }
-  // })
   return useQuery('forum-conclusion', async () => await getForumConclusionFn(forumId), {
     enabled: !!forumId,
     refetchOnWindowFocus: false,

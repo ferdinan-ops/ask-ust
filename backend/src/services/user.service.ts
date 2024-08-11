@@ -112,24 +112,23 @@ export const getForumByMemberId = async (userId: string, page: number, limit: nu
   return { data, count }
 }
 
-export const processPhoto = async (_oldPhoto: string, filename: string) => {
-  // if (oldPhoto) await deleteFile(oldPhoto)
-  return filename
-}
+// export const processPhoto = async (_oldPhoto: string, filename: string) => {
+//   // if (oldPhoto) await deleteFile(oldPhoto)
+//   return filename
+// }
 
 export const updatePhoto = async (userId: string, filename: string) => {
   const user = await db.user.findUnique({ where: { id: userId } })
   if (!user) throw new Error('User tidak ditemukan')
 
-  const oldPhoto = user.photo
-  const newPhoto = await processPhoto(oldPhoto, filename)
+  // const oldPhoto = user.photo
+  // const newPhoto = await processPhoto(oldPhoto, filename)
 
   return await db.user.update({
     where: { id: userId },
-    data: { photo: newPhoto },
+    data: { photo: filename },
     select: {
-      ...userSelect.select,
-      validate: true
+      ...userSelect.select
     }
   })
 }

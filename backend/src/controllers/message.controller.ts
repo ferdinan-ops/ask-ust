@@ -1,13 +1,14 @@
 import { type Request, type Response } from 'express'
 import { validMessage } from '../validations/message.validation'
 import { type IMessageBody } from '../types/message.type'
-import { logError, logInfo, logWarn } from '../utils/logger'
+import logger, { logError, logInfo, logWarn } from '../utils/logger'
 
 import * as MessageService from '../services/message.service'
 import * as ViolationService from '../services/violation.service'
 import * as ForumService from '../services/forum.service'
 
 import ENV from '../utils/environment'
+import { uploadFileToBucket } from '../middlewares/supabase'
 
 export const sendMessage = async (req: Request, res: Response) => {
   const userId = req.userId as string
@@ -26,7 +27,7 @@ export const sendMessage = async (req: Request, res: Response) => {
     }
 
     const resultAnalysis = await MessageService.analyzeMessage(value.content)
-    if (resultAnalysis.isToxic) {
+    if (resultAnalysis?.isToxic) {
       const violation = await ViolationService.handleViolations(userId, 'message')
 
       if (!violation.success) {
@@ -197,7 +198,6 @@ export const sendImage = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Id forum tidak diberikan' })
   }
 
-  const filename = req.file.filename
   const userId = req.userId as string
   const forumId = req.body.forumId as string
 
@@ -208,9 +208,13 @@ export const sendImage = async (req: Request, res: Response) => {
       res.status(400).json({ error: ViolationService.bannedMessage })
     }
 
+    const image = await uploadFileToBucket(req.file)
     const forum = await ForumService.getForumById(forumId)
+
     if (forum?.category === 'REGULAR') {
-      const results = await MessageService.analyzeImage(filename)
+      logger.info('Checking image')
+      const results = await MessageService.analyzeImage(image as string)
+      logger.info({ results })
       const isSecure = results && Object.values(results).every((value) => value === 'VERY_UNLIKELY')
 
       if (!isSecure) {
@@ -223,7 +227,7 @@ export const sendImage = async (req: Request, res: Response) => {
       }
     }
 
-    const data = await MessageService.uploadImage(filename, forumId, userId)
+    const data = await MessageService.uploadImage(image as string, forumId, userId)
 
     const forumKey = `chat:${forumId}:messages`
     req.io?.emit(forumKey, data)

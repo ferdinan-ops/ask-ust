@@ -17,7 +17,7 @@ const validateRoute = express.Router()
 validateRoute.post(
   '/',
   upload.fields([
-    { name: 'file', maxCount: 1 },
+    { name: 'valid_file', maxCount: 1 },
     { name: 'photo', maxCount: 1 }
   ]),
   createValidateUser

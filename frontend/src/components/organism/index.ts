@@ -22,6 +22,7 @@ import UploadXlsx from './modal/UploadXlsx'
 import CategoryForumGuide from './modal/guide/CategoryForumGuide'
 import ValidateDataGuide from './modal/guide/ValidateDataGuide'
 import QuizGuide from './modal/guide/QuizGuide'
+import ImportDataGuide from './modal/guide/ImportDataGuide'
 
 import MediaCard from './media/MediaCard'
 import MediaRoom from './media/MediaRoom'
@@ -93,5 +94,6 @@ export {
   UploadXlsx,
   FilterButton,
   CategoryForumGuide,
-  UnvalidateForum
+  UnvalidateForum,
+  ImportDataGuide
 }

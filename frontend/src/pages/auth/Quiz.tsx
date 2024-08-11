@@ -27,9 +27,9 @@ export default function Quiz() {
   const { mutateAsync: createAnswers } = useCreateAnswers()
   const { mutateAsync: sendQuizRecord } = useSendQuizRecord()
 
-  // useDisableShorcut()
-  // const isTryToCopy = useDisableCopy()
-  // const isTabActive = useTabVisibility()
+  useDisableShorcut()
+  const isTryToCopy = useDisableCopy()
+  const isTabActive = useTabVisibility()
 
   const { user, setFinishQuiz } = useUserInfo((state) => ({
     user: state.user,
@@ -116,7 +116,7 @@ export default function Quiz() {
         }}
       />
 
-      {/* <BannedQuizAlert
+      <BannedQuizAlert
         isStart={!openGuide}
         bannedConditions={[{ condition: !isTabActive }, { condition: isTryToCopy }]}
         action={() => {
@@ -124,7 +124,7 @@ export default function Quiz() {
           setIsRecordStart(false)
           navigate('/')
         }}
-      /> */}
+      />
 
       <section className="mx-auto flex w-full flex-col md:w-8/12">
         <QuestionHeader count={questions.default.length + questions.dosen.length} />

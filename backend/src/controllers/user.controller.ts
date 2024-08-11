@@ -7,6 +7,7 @@ import { validChangePassword, validUpdateUser } from '../validations/user.valida
 
 import { IUser, type IChangePasswordPayload, type IUserUpdatePayload } from '../types/user.type'
 import { validRegister } from '../validations/auth.validation'
+import { uploadFileToBucket } from '../middlewares/supabase'
 
 export const getMe = async (req: Request, res: Response) => {
   try {
@@ -137,7 +138,8 @@ export const changeProfilePicture = async (req: Request, res: Response) => {
   }
 
   try {
-    const data = await UserService.updatePhoto(req.userId as string, req.file.filename)
+    const photo = await uploadFileToBucket(req.file)
+    const data = await UserService.updatePhoto(req.userId as string, photo as string)
 
     logInfo(req, 'Changing user profile picture')
     res.status(200).json({ message: 'Berhasil mengubah foto profil user', data })

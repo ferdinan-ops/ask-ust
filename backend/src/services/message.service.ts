@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { type IMessageBody } from '../types/message.type'
 import db from '../utils/db'
 import ENV from '../utils/environment'
@@ -7,6 +8,8 @@ import { compressedFile } from '../utils/fileSettings'
 import vision from '@google-cloud/vision'
 import path from 'path'
 import axios from 'axios'
+
+import logger from '../utils/logger'
 
 interface IMessagePayload extends IMessageBody {
   userId: string
@@ -123,40 +126,53 @@ export const processedImage = async (image: string) => {
 }
 
 export const analyzeImage = async (image: string) => {
-  const imagePath = path.join(__dirname, '../../storage', image)
+  // const imagePath = path.join(__dirname, '../../storage', image)
   // const imagePath = 'https://storage.googleapis.com/forumbucket/' + image
   const client = new vision.ImageAnnotatorClient({
     keyFilename: path.resolve('./keys.json')
   })
 
-  const [safeSearch] = await client.safeSearchDetection(imagePath)
+  try {
+    const response = await axios.get(image, { responseType: 'arraybuffer' })
+    const imageBuffer = Buffer.from(response.data, 'binary')
 
-  return safeSearch.safeSearchAnnotation
+    const [safeSearch] = await client.safeSearchDetection({ image: { content: imageBuffer.toString('base64') } })
+
+    logger.info(safeSearch)
+
+    return safeSearch.safeSearchAnnotation
+  } catch (error) {
+    logger.error(error)
+  }
 }
 
 export const analyzeMessage = async (message: string) => {
-  const url = `https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${ENV.perspectiveApiKey}`
-  const response = await axios.post(url, {
-    comment: {
-      text: message
-    },
-    requestedAttributes: {
-      TOXICITY: {}
+  try {
+    const url = `https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${ENV.perspectiveApiKey}`
+    const response = await axios.post(url, {
+      comment: {
+        text: message
+      },
+      requestedAttributes: {
+        TOXICITY: {}
+      }
+    })
+
+    const toxicityScore = response.data.attributeScores.TOXICITY.summaryScore.value
+
+    if (toxicityScore >= 0.4) {
+      return {
+        isToxic: true,
+        score: toxicityScore
+      }
     }
-  })
 
-  const toxicityScore = response.data.attributeScores.TOXICITY.summaryScore.value
-
-  if (toxicityScore >= 0.4) {
     return {
-      isToxic: true,
+      isToxic: false,
       score: toxicityScore
     }
-  }
-
-  return {
-    isToxic: false,
-    score: toxicityScore
+  } catch (error) {
+    logger.error(error)
   }
 }
 

@@ -74,7 +74,6 @@ export const updateForumTypeFn = async ({ forumId, note, isPublish }: IUpdateFor
 }
 
 export const getForumConclusionFn = async (forumId: string): Promise<string> => {
-  console.log({ forumId })
   const response = await api.get(`/forum/${forumId}/summary`)
   return response.data?.data
 }

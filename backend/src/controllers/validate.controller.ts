@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/member-delimiter-style */
-import { Request, Response } from 'express'
+import { Request, Response, Express } from 'express'
 import { logError, logInfo } from '../utils/logger'
 import * as ValidateService from '../services/validate.service'
 import * as UserService from '../services/user.service'
 import { validUpdateValidate } from '../validations/validate.validation'
 import { IValidateUpdatePayload } from '../types/validate.type'
+import { uploadFileToBucket } from '../middlewares/supabase'
 
 export const createValidateUser = async (req: Request, res: Response) => {
   const userId = req.body?.userId as string
   const agreement = req.body?.agreement as boolean
   const role = req.body?.role as string
 
-  const file = req.files?.file
+  const document = req.files?.valid_file
   const photo = req.files?.photo
 
   if (!userId) {
@@ -24,7 +25,7 @@ export const createValidateUser = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Role is required' })
   }
 
-  if (!file?.[0].filename || !photo?.[0].filename) {
+  if (!document || !photo) {
     logError(req, 'File not found')
     return res.status(400).json({ message: 'File not found' })
   }
@@ -36,12 +37,15 @@ export const createValidateUser = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'User already has validate data' })
     }
 
+    const file = await uploadFileToBucket(req.files?.valid_file[0] as Express.Multer.File)
+    const photo = await uploadFileToBucket(req.files?.photo[0] as Express.Multer.File)
+
     let data
     const results = await ValidateService.addNewValidate({
       user_id: userId,
       role,
-      file: file[0].filename,
-      photo: photo[0].filename
+      file: file as string,
+      photo: photo as string
     })
 
     if (results) {
@@ -50,7 +54,7 @@ export const createValidateUser = async (req: Request, res: Response) => {
     }
 
     if (agreement) {
-      data = await UserService.updatePhoto(userId, photo[0].filename)
+      data = await UserService.updatePhoto(userId, photo as string)
       logInfo(req, 'Updating user photo')
     }
 

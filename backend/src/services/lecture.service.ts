@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/member-delimiter-style */
+import axios from 'axios'
 import { ICourseLecture } from '../types/lecture.type'
 import db from '../utils/db'
 import XLSX from 'xlsx'
@@ -94,8 +95,10 @@ export const addManyCourseAndLecturers = async (courseLecturers: ICourseLecture[
   })
 }
 
-export const readXlsx = (filePath: string) => {
-  const workbook = XLSX.readFile(filePath)
+export const readXlsx = async (filePath: string) => {
+  const response = await axios.get(filePath, { responseType: 'arraybuffer' })
+
+  const workbook = XLSX.read(response.data as string, { type: 'array' })
   const sheetName = workbook.SheetNames[0]
   const worksheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName])
 

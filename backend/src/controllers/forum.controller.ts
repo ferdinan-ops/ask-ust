@@ -6,6 +6,7 @@ import * as ForumService from '../services/forum.service'
 
 import { IForumTypeUpdatePayload, type IForum } from '../types/forum.type'
 import { ForumType } from '@prisma/client'
+import { uploadFileToBucket } from '../middlewares/supabase'
 
 export const createForum = async (req: Request, res: Response) => {
   const { value, error } = validForum(req.body as IForum)
@@ -14,9 +15,12 @@ export const createForum = async (req: Request, res: Response) => {
     return res.status(400).json({ error: error.details[0].message })
   }
 
-  if (req.file?.filename) value.image = req.file.filename
-
   try {
+    if (req.file) {
+      const image = await uploadFileToBucket(req.file)
+      value.image = image
+    }
+
     const data = await ForumService.addNewForum({
       ...value,
       type: (value.category === 'REGULAR' ? 'PUBLIC' : 'PENDING') as ForumType,
@@ -129,9 +133,12 @@ export const updateForum = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Forum id is not provided' })
   }
 
-  if (req.file?.filename) value.image = req.file.filename
-
   try {
+    if (req.file) {
+      const image = await uploadFileToBucket(req.file)
+      value.image = image
+    }
+
     const data = await ForumService.updateForumById(req.params.forumId, req.userId as string, value)
 
     logInfo(req, 'Updating forum')

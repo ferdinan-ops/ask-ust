@@ -11,7 +11,7 @@ type StorePayload = {
 
 export const storeValidateUserFn = async (payload: StorePayload): Promise<UserType> => {
   const formData = new FormData()
-  formData.append('file', payload.file[0])
+  formData.append('valid_file', payload.file[0])
   formData.append('photo', payload.photo[0])
   formData.append('userId', useUserInfo.getState().user?.id.toString())
   formData.append('role', payload.role)

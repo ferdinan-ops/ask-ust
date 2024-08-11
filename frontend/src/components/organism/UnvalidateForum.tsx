@@ -27,8 +27,6 @@ export default function UnvalidateForum({ forum }: UnvalidateForumProps) {
     })
   }
 
-  console.log(forum)
-
   return (
     <div className="flex flex-1 flex-col items-center justify-center px-6 md:px-0">
       <section

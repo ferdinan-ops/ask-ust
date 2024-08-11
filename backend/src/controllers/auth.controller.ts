@@ -94,8 +94,6 @@ export const login = async (req: Request, res: Response) => {
     const { password, ...userWithoutPassword } = user
     const { validate, ...rest } = userWithoutPassword
 
-    console.log(user.role)
-
     if (user.role !== 'USER') {
       const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: true, role: user.role })
       const refreshToken = AuthService.refreshTokenSign({ id: user.id, isAdmin: true, role: user.role })
@@ -171,8 +169,6 @@ export const loginGoogle = async (req: Request, res: Response) => {
     const { validate, ...rest } = userWithoutPassword
 
     if (user.role !== 'USER') {
-      console.log(user.role)
-
       const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: true, role: user.role })
       const refreshToken = AuthService.refreshTokenSign({ id: user.id, isAdmin: true, role: user.role })
 
@@ -298,8 +294,6 @@ export const refreshToken = async (req: Request, res: Response) => {
       }
 
       if (user.role !== 'USER') {
-        console.log(user.role)
-
         const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: true, role: user.role })
         const data = { user, access_token: accessToken, refresh_token: refreshToken }
 
