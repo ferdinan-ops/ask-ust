@@ -26,12 +26,14 @@ export default function ProtectedFromUnverified({ type = 'default' }: ProtectedF
     if (!user) return <Nav to="/register" />
     if (!user?.validate) return <Nav to="/validate" />
     if (user.validate?.id && !user?.quiz?.isFinished) return <Nav to="/quiz" />
+    if (user.validate?.id && user?.quiz?.isFinished && user.is_banned && user.banned_type === 'QUIZ')
+      return <Nav to="/quiz" />
   }
 
   if (type === 'quiz') {
     if (!user) return <Nav to="/register" />
     if (!user?.validate) return <Nav to="/validate" />
-    if (user.validate?.id && user?.quiz?.isFinished) return <Nav to="/unverified" />
+    if (user.validate?.id && user?.quiz?.isFinished && !user.is_banned) return <Nav to="/unverified" />
   }
 
   return <Outlet />

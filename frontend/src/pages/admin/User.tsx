@@ -1,4 +1,3 @@
-import { HiAdjustmentsHorizontal } from 'react-icons/hi2'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
@@ -14,27 +13,23 @@ import {
   TableRow,
   TableSearch
 } from '@/components/ui/table'
-import { FileButton, FloatBox, Loading, Pagination, Title } from '@/components/atoms'
+import { FileButton, Loading, Pagination, Title } from '@/components/atoms'
 import { Form, FormField, FormItem } from '@/components/ui/form'
-import { Button } from '@/components/ui/button'
 
 import { useGetUserValidates } from '@/store/server/useValidate'
+import { SearchFormType } from '@/lib/types/pagination.type'
 import { useQueryParams, useTitle } from '@/hooks'
 import { titleConfig } from '@/lib/config'
 import { filterItems } from '@/lib/data'
+import { FilterButton } from '@/components/organism'
 
 const titleConf = titleConfig.userLists
-
-interface FormFields {
-  search: string
-}
 
 export default function User() {
   useTitle('Daftar Pengguna')
   const navigate = useNavigate()
 
-  const [isOpen, setIsOpen] = React.useState(false)
-  const forms = useForm<FormFields>({ mode: 'onSubmit' })
+  const forms = useForm<SearchFormType>({ mode: 'onSubmit' })
   const { params, createParam, deleteParam } = useQueryParams(['page', 'search', 'filter'])
 
   const {
@@ -42,9 +37,9 @@ export default function User() {
     isFetching,
     refetch
   } = useGetUserValidates({
-    search: params.search || '',
+    search: params.search,
     page: Number(params.page) || 1,
-    filter: params.filter || ''
+    filter: params.filter
   })
 
   React.useEffect(() => {
@@ -55,22 +50,19 @@ export default function User() {
     if (value === 'all') {
       deleteParam('filter')
       refetch()
-      return setIsOpen(false)
+    } else {
+      createParam({ key: 'filter', value })
+      refetch()
     }
-
-    createParam({ key: 'filter', value })
-    refetch()
-    setIsOpen(false)
   }
 
-  const onSubmit = (values: FormFields) => {
+  const onSubmit = (values: SearchFormType) => {
     if (!values.search) {
       deleteParam('search')
-      return refetch()
+    } else {
+      createParam({ key: 'search', value: values.search })
+      refetch()
     }
-
-    createParam({ key: 'search', value: values.search })
-    refetch()
   }
 
   return (
@@ -93,22 +85,7 @@ export default function User() {
       </section>
 
       <section className="mt-5 flex items-center justify-between md:mt-10">
-        <div className="relative w-fit">
-          <Button className="gap-3" onClick={() => setIsOpen(!isOpen)}>
-            <HiAdjustmentsHorizontal className="text-xl" />
-            <span className="hidden text-[13px] md:flex">Filter</span>
-          </Button>
-          <FloatBox isOpen={isOpen} className="left-0 max-w-[200px] p-2">
-            {filterItems.map((item, i) => (
-              <FloatBox.Item
-                key={i}
-                label={item.label}
-                className="mt-0 text-xs"
-                onClick={() => handleFilter(item.value)}
-              />
-            ))}
-          </FloatBox>
-        </div>
+        <FilterButton lists={filterItems} onFilter={handleFilter} />
 
         <Form {...forms}>
           <form onSubmit={forms.handleSubmit(onSubmit)} className="md:w-4/12">
@@ -158,11 +135,11 @@ export default function User() {
                   </TableCell>
                   <TableCell>
                     {validate.is_valid ? (
-                      <TableLabel type="valid" />
+                      <TableLabel value={{ label: 'Valid', type: 'valid' }} />
                     ) : validate.note ? (
-                      <TableLabel type="invalid" />
+                      <TableLabel value={{ label: 'Tidak Valid', type: 'invalid' }} />
                     ) : (
-                      <TableLabel type="pending" />
+                      <TableLabel value={{ label: 'Belum divalidasi', type: 'pending' }} />
                     )}
                   </TableCell>
                   <TableCell>

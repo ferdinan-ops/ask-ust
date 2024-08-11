@@ -89,7 +89,7 @@ export const useLoginWithGoogle = () => {
         toast({
           title: 'Akun google kamu berhasil terdaftar',
           description: `Selamat akun kamu berhasil terdaftar di aplikasi kami, ${
-            data.user.validate ? 'Tunggu verifikasi dari admin' : 'silahkan lengkapi data diri kamu'
+            data.user.validate ? 'Tunggu verifikasi dari admin' : 'silahkan lanjut proses pendaftaranya'
           }`
         })
       }

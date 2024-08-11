@@ -4,7 +4,7 @@ interface QuestionHeaderProps {
 
 export default function QuestionHeader({ count }: QuestionHeaderProps) {
   return (
-    <article className="rounded-xl bg-primary p-8">
+    <article className="rounded-xl border border-white/30 bg-primary p-8">
       <div className="flex flex-col gap-3">
         <h1 className="text-2xl font-bold leading-relaxed text-white md:text-3xl">
           Seberapa Universitas Katolik Santo Thomas kah kamu? 🤔

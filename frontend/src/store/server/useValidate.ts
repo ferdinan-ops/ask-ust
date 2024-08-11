@@ -11,26 +11,17 @@ import {
 import { toast } from '@/components/ui/use-toast'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { useUserInfo } from '../client'
+import { MetaParamsType } from '@/lib/types/pagination.type'
 
 export const useStoreValidateUser = () => {
   return useMutation(storeValidateUserFn, {
     onSuccess: (data) => {
       useUserInfo.getState().setUser(data)
-      toast({
-        title: 'Verifikasi berhasil',
-        description: 'Silahkan tunggu proses verifikasi dari kami'
-      })
     }
   })
 }
 
-export interface GetAllParams {
-  search?: string
-  page?: number
-  filter?: string
-}
-
-export const useGetUserValidates = ({ search, page, filter }: GetAllParams) => {
+export const useGetUserValidates = ({ search, page, filter }: MetaParamsType & { filter?: string }) => {
   return useQuery(['users', search, page, filter], async () => await getUserValidatesFn(search, page, filter))
 }
 

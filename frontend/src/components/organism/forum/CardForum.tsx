@@ -12,44 +12,60 @@ interface CardForumProps {
 
 export default function CardForum({ forums }: CardForumProps) {
   return (
-    <section className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+    <section className="columns-1 gap-5 space-y-5 md:columns-3">
       {forums?.data.length !== 0 &&
         forums?.data.map((forum) => (
           <Link
             key={forum.id}
             to={`/forums/${forum.id}`}
-            className="flex cursor-pointer flex-col gap-3 rounded-2xl bg-[#F7F9FB] p-6 hover:bg-[#eef0f2] dark:bg-white/5 hover:dark:bg-white/10"
+            className="flex h-fit cursor-pointer break-inside-avoid flex-col rounded-2xl bg-[#F7F9FB] hover:bg-[#eef0f2] dark:bg-white/5 hover:dark:bg-white/10"
           >
-            <div className="flex flex-col gap-1">
-              <h3 className="truncate-1 font-bold">{forum.title}</h3>
-              <Markdown
-                values={forum.description}
-                type="reset"
-                className="truncate-2 text-xs font-medium text-black/40 dark:text-white/40 lg:text-xs"
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                {forum.members.slice(0, 3).map((member, index) => (
-                  <Image
-                    key={member.id}
-                    src={member?.user?.photo}
-                    alt={member?.user?.fullname}
-                    className={cn(
-                      index !== 0 && '-ml-3',
-                      'h-6 w-6 rounded-full border-2 border-[#F7F9FB] dark:border-black'
-                    )}
-                  />
-                ))}
+            {forum.image && (
+              <div className="relative flex justify-center overflow-hidden rounded-t-xl">
+                <Image
+                  src={forum?.image}
+                  alt={forum?.title}
+                  className="relative z-10 max-h-[160px] max-w-full object-contain"
+                />
+                <Image
+                  src={forum?.image}
+                  alt={forum?.title}
+                  className="absolute inset-0 z-0 w-full object-fill blur-sm"
+                />
               </div>
-              <div className="flex items-center gap-4 text-black/40 dark:text-white/40">
-                <div className="flex items-center gap-1">
-                  <HiOutlineUserGroup />
-                  <span className="text-xs">{forum._count.members}</span>
+            )}
+            <div className="flex flex-col gap-3 p-6">
+              <div className="flex flex-col gap-1">
+                <h3 className="truncate-1 font-bold">{forum.title}</h3>
+                <Markdown
+                  values={forum.description}
+                  type="reset"
+                  className="truncate-2 text-xs font-medium text-black/40 dark:text-white/40 lg:text-xs"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  {forum.members.slice(0, 3).map((member, index) => (
+                    <Image
+                      key={member.id}
+                      src={member?.user?.photo}
+                      alt={member?.user?.fullname}
+                      className={cn(
+                        index !== 0 && '-ml-3',
+                        'h-6 w-6 rounded-full border-2 border-[#F7F9FB] dark:border-black'
+                      )}
+                    />
+                  ))}
                 </div>
-                <div className="flex items-center gap-1.5 text-black/40 dark:text-white/40">
-                  <HiOutlineChatBubbleBottomCenterText />
-                  <span className="text-xs">{forum._count.messages}</span>
+                <div className="flex items-center gap-4 text-black/40 dark:text-white/40">
+                  <div className="flex items-center gap-1">
+                    <HiOutlineUserGroup />
+                    <span className="text-xs">{forum._count.members}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-black/40 dark:text-white/40">
+                    <HiOutlineChatBubbleBottomCenterText />
+                    <span className="text-xs">{forum._count.messages}</span>
+                  </div>
                 </div>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import { Brand } from '@/components/atoms'
 import { Button } from '@/components/ui/button'
+import { useReload } from '@/hooks'
 import { cn } from '@/lib/utils'
 import { useUserInfo } from '@/store/client'
 import { useDeleteValidate } from '@/store/server/useValidate'
@@ -18,6 +19,8 @@ export default function Unverified() {
 
   const isNotValid = !user?.validate?.is_valid && user?.validate?.note
   const isValid = user?.validate?.is_valid
+
+  useReload()
 
   const handleReRegister = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -16,6 +16,7 @@ export interface IAnswerPayload {
 }
 
 export interface IAnswerBody {
+  validate_id: string
   user_id: string
   answers: IBody[]
 }

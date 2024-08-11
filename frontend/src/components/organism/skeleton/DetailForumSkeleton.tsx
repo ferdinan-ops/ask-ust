@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 export default function DetailForumSkeleton() {
   return (
-    <section className="mx-auto md:w-10/12 lg:w-8/12">
+    <section className="mx-auto w-full md:w-10/12 lg:w-8/12">
       <Skeleton className="mb-4 h-8 w-1/2" />
       <div className="flex flex-col gap-1">
         {[...Array(3)].map((_, index) => (

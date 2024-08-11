@@ -75,8 +75,11 @@ export default function ManageMember() {
         <h2 className="bg-primary py-2 text-center text-sm font-semibold text-white dark:bg-white dark:text-primary md:text-base">
           Laporan
         </h2>
-        {reports?.map((report) => (
-          <li className="flex items-center justify-between border-b border-zinc-200 px-4 py-2 dark:border-white/10">
+        {reports?.map((report, index) => (
+          <li
+            key={index}
+            className="flex items-center justify-between border-b border-zinc-200 px-4 py-2 dark:border-white/10"
+          >
             <span className="text-sm font-medium">{report.title}</span>
             <span className="rounded bg-red-200 px-2 py-1 text-xs dark:bg-red-900">{report.value} laporan</span>
           </li>

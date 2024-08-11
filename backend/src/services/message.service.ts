@@ -124,7 +124,7 @@ export const processedImage = async (image: string) => {
 
 export const analyzeImage = async (image: string) => {
   const imagePath = path.join(__dirname, '../../storage', image)
-
+  // const imagePath = 'https://storage.googleapis.com/forumbucket/' + image
   const client = new vision.ImageAnnotatorClient({
     keyFilename: path.resolve('./keys.json')
   })

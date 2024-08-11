@@ -16,7 +16,7 @@ const titleConf = titleConfig.notification
 export default function Notification() {
   const { params, createParam } = useQueryParams(['page', 'search', 'filter'])
   const { data: validates, isFetching } = useGetUserValidates({
-    search: params.search || '',
+    search: params.search,
     page: Number(params.page) || 1
   })
 

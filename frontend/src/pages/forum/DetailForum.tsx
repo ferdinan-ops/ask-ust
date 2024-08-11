@@ -14,10 +14,10 @@ import { Button } from '@/components/ui/button'
 
 import { useDeleteForum, useGetDetailForum, useJoinForum, useLeaveForum } from '@/store/server/useForum'
 import { useTitle } from '@/hooks'
-import { Alert, DetailForumSkeleton } from '@/components/organism'
+import { Alert, DetailForumSkeleton, UnvalidateForum } from '@/components/organism'
 import { alertConfig } from '@/lib/config'
 import { useUserInfo } from '@/store/client'
-import { BackButton } from '@/components/atoms'
+import { BackButton, Image } from '@/components/atoms'
 import Markdown from '@/components/atoms/Markdown'
 
 const alertDeleteConf = alertConfig.detailForum.delete
@@ -57,13 +57,20 @@ export default function DetailForum() {
 
   if (isLoading) return <DetailForumSkeleton />
 
+  if (forum?.type === 'PENDING' || forum?.type === 'RESTRICTED') {
+    return <UnvalidateForum forum={forum} />
+  }
+
   return (
-    <section className="mx-auto md:w-10/12 lg:w-8/12">
+    <section className="mx-auto w-full md:w-10/12 lg:w-8/12">
       <BackButton />
       <h1 className="mb-3.5 text-2xl font-bold md:mb-5 md:text-3xl">{forum?.title}</h1>
       <div className="text-sm font-medium leading-relaxed text-zinc-700 dark:text-zinc-400 md:text-base">
         <Markdown values={forum?.description as string} />
       </div>
+
+      {forum?.image && <Image src={forum?.image} alt={forum?.title} className="mt-6 max-w-full md:mt-8" />}
+
       <div className="mt-5 flex gap-2 border-b pb-7 dark:border-white/10 md:mt-6">
         <div className="flex items-center gap-3 rounded-md bg-zinc-200 p-2">
           <HiOutlineUserGroup className="text-lg md:text-xl" />

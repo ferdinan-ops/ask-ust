@@ -57,7 +57,7 @@ export default function DetailUser() {
     updateValidateUser(payload, {
       onSuccess: () => {
         updateReadStatus(user?.validate?.id as string, {
-          onSuccess: () => navigate('/admin')
+          onSuccess: () => navigate('/admin/validate')
         })
       }
     })

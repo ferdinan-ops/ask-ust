@@ -1,19 +1,16 @@
 import { Loading, Pagination, Title } from '@/components/atoms'
 import { Form, FormField, FormItem } from '@/components/ui/form'
-import { useQueryParams } from '@/hooks'
-import { useGetCourses, useImportCourse } from '@/store/server/useData'
 import { useForm } from 'react-hook-form'
+import * as React from 'react'
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableSearch } from '@/components/ui/table'
-import * as React from 'react'
+import { useGetCourses, useImportCourse } from '@/store/server/useData'
+import { SearchFormType } from '@/lib/types/pagination.type'
 import UploadXlsx from '../modal/UploadXlsx'
-
-interface FormFields {
-  search: string
-}
+import { useQueryParams } from '@/hooks'
 
 export default function CourseFetch() {
-  const forms = useForm<FormFields>({ mode: 'onSubmit' })
+  const forms = useForm<SearchFormType>({ mode: 'onSubmit' })
   const { params, createParam, deleteParam } = useQueryParams(['page-course', 'search-course'])
 
   const {
@@ -22,7 +19,7 @@ export default function CourseFetch() {
     refetch: refetchCourses
   } = useGetCourses({
     page: Number(params['page-course']) || 1,
-    search: params['search-course'] || ''
+    search: params['search-course']
   })
 
   const { mutate: importCourse, isLoading } = useImportCourse()
@@ -37,7 +34,7 @@ export default function CourseFetch() {
     importCourse(values.file[0])
   }
 
-  const onSubmit = (values: FormFields) => {
+  const onSubmit = (values: SearchFormType) => {
     if (!values.search) {
       deleteParam('search-course')
       return refetchCourses()

@@ -17,7 +17,7 @@ import {
 import ImagePreview from './components/atoms/forms/ImagePreview'
 import { Toaster } from './components/ui/toaster'
 
-import { ContentForum, CreateForum, DetailForum, Forums, MediaForum } from './pages/forum'
+import { ContentForum, CreateForum, DetailForum, Forums, MediaForum, SummaryForum } from './pages/forum'
 import { ManageMember, Member } from './pages/member'
 import { EditProfile, Profile } from './pages/user'
 
@@ -41,8 +41,10 @@ import {
   Notification,
   Question,
   Settings,
+  UpdateForumType,
   User,
-  UserAnswer
+  UserAnswer,
+  ValidateForum
 } from './pages/admin'
 
 import InviteCode from './pages/InviteCode'
@@ -103,12 +105,21 @@ export default function App() {
           {/* ADMIN ROUTES */}
           <Route element={<ProtectedFromGuest />}>
             <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<User />} />
+              <Route index element={<NotFound />} />
               <Route path="create" element={<CreateAdmin />} />
-              <Route path="validate/:userId" element={<DetailUser />} />
               <Route path="notification" element={<Notification />} />
               <Route path="settings" element={<Settings />} />
               <Route path="lecture" element={<Lecture />} />
+
+              <Route path="validate">
+                <Route index element={<User />} />
+                <Route path=":userId" element={<DetailUser />} />
+              </Route>
+
+              <Route path="forum">
+                <Route index element={<ValidateForum />} />
+                <Route path=":forumId" element={<UpdateForumType />} />
+              </Route>
 
               <Route path="all">
                 <Route index element={<Admin />} />
@@ -135,6 +146,7 @@ export default function App() {
                   <Route path=":slug">
                     <Route index element={<DetailForum />} />
                     <Route element={<ProtectedForum />}>
+                      <Route path="summary" element={<SummaryForum />} />
                       <Route path="member">
                         <Route index element={<Member />} />
                         <Route path=":memberId" element={<ManageMember />} />

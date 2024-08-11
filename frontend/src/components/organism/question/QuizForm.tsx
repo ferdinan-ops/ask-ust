@@ -15,7 +15,10 @@ interface QuizFormProps {
 
 export default function QuizForm({ name, question, formControl }: QuizFormProps) {
   return (
-    <article className="relative mt-10 overflow-hidden rounded-xl border px-4 py-3 md:px-6 md:py-5" key={question.id}>
+    <article
+      className="relative mt-10 overflow-hidden rounded-xl border px-4 py-3 dark:text-primary md:px-6 md:py-5"
+      key={question.id}
+    >
       <div className="absolute bottom-0 left-0 top-0 w-1 bg-primary" />
       <div className="flex flex-col gap-3 md:gap-5">
         <p className="text-xs font-medium leading-relaxed md:text-sm">{question.text}</p>
@@ -35,7 +38,8 @@ export default function QuizForm({ name, question, formControl }: QuizFormProps)
                       placeholder="Isi jawaban dengan benar"
                       className={cn(
                         'max-w-md rounded-none border-x-0 border-t-0 bg-zinc-100 text-[11px] ring-0 md:text-[13px]',
-                        'border-b focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0'
+                        'border-b focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0',
+                        'dark:border-zinc-300 dark:bg-zinc-100 dark:text-primary'
                       )}
                     />
                   </FormControl>
@@ -64,9 +68,12 @@ export default function QuizForm({ name, question, formControl }: QuizFormProps)
                       {question.options.map((answer, index) => (
                         <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
                           <FormControl>
-                            <RadioGroupItem value={answer.value.toLocaleLowerCase()} />
+                            <RadioGroupItem
+                              value={answer.value.toLocaleLowerCase()}
+                              className="dark:focus-visible:ring-primary"
+                            />
                           </FormControl>
-                          <FormLabel className="cursor-pointer text-[11px] font-medium dark:text-white md:text-xs">
+                          <FormLabel className="cursor-pointer text-[11px] font-medium md:text-xs">
                             {answer.value}
                           </FormLabel>
                         </FormItem>
@@ -98,10 +105,10 @@ export default function QuizForm({ name, question, formControl }: QuizFormProps)
                               checked={field.value?.checked}
                               defaultChecked={false}
                               onCheckedChange={(checked) => field.onChange({ value: answer.value, checked })}
-                              className="rounded"
+                              className="rounded dark:border-primary dark:data-[state=checked]:bg-primary dark:data-[state=checked]:text-white"
                             />
                           </FormControl>
-                          <FormLabel className="cursor-pointer text-[11px] font-medium dark:text-white md:text-xs">
+                          <FormLabel className="cursor-pointer text-[11px] font-medium md:text-xs">
                             {answer.value}
                           </FormLabel>
                         </FormItem>

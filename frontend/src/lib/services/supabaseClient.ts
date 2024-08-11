@@ -6,7 +6,7 @@ const supabase = createClient(ENV.supabaseUrl, ENV.supabaseKey)
 
 export const uploadVideoToBucket = async (file: File) => {
   try {
-    const fileName = `recordings/${v4()}-${new Date().toISOString()}-${file.name}.mp4`
+    const fileName = `recordings/${v4()}-${file.name}`
     const { data, error } = await supabase.storage.from(ENV.supabaseBucketName).upload(fileName, file)
 
     if (error) throw error

@@ -1,7 +1,11 @@
-import { Image, Loading, Pagination, Title } from '@/components/atoms'
-import { Alert } from '@/components/organism'
+import * as React from 'react'
+import { HiPlus } from 'react-icons/hi2'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+
 import { Button } from '@/components/ui/button'
 import { Form, FormField, FormItem } from '@/components/ui/form'
+import { Image, Loading, Pagination, Title } from '@/components/atoms'
 import {
   Table,
   TableBody,
@@ -12,22 +16,17 @@ import {
   TableRow,
   TableSearch
 } from '@/components/ui/table'
+
 import { useQueryParams } from '@/hooks'
 import { alertConfig } from '@/lib/config'
+import { Alert } from '@/components/organism'
+import { SearchFormType } from '@/lib/types/pagination.type'
 import { useDeleteAdmin, useGetAdmins } from '@/store/server/useUser'
-import * as React from 'react'
-import { useForm } from 'react-hook-form'
-import { HiPlus } from 'react-icons/hi2'
-import { useNavigate } from 'react-router-dom'
-
-interface FormFields {
-  search: string
-}
 
 const alertDeleteConf = alertConfig.admin
 
 export default function Admin() {
-  const forms = useForm<FormFields>()
+  const forms = useForm<SearchFormType>()
   const navigate = useNavigate()
   const { params, createParam, deleteParam } = useQueryParams(['page', 'search'])
   const { mutate: deleteAdmin } = useDeleteAdmin()
@@ -37,7 +36,7 @@ export default function Admin() {
     isFetching,
     refetch
   } = useGetAdmins({
-    search: params.search || '',
+    search: params.search,
     page: Number(params.page) || 1
   })
 
@@ -45,7 +44,7 @@ export default function Admin() {
     if (params.search) forms.setValue('search', params.search)
   }, [params, forms])
 
-  const onSubmit = (values: FormFields) => {
+  const onSubmit = (values: SearchFormType) => {
     if (!values.search) {
       deleteParam('search')
       return refetch()

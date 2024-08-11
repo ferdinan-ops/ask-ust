@@ -27,9 +27,9 @@ export default function Quiz() {
   const { mutateAsync: createAnswers } = useCreateAnswers()
   const { mutateAsync: sendQuizRecord } = useSendQuizRecord()
 
-  useDisableShorcut()
-  const isTryToCopy = useDisableCopy()
-  const isTabActive = useTabVisibility()
+  // useDisableShorcut()
+  // const isTryToCopy = useDisableCopy()
+  // const isTabActive = useTabVisibility()
 
   const { user, setFinishQuiz } = useUserInfo((state) => ({
     user: state.user,
@@ -71,7 +71,12 @@ export default function Quiz() {
       setIsRecordStart(false)
       setLoading(true)
 
-      const payload = { userId: user.id, answers: values.data }
+      const payload = {
+        userId: user.id,
+        validateId: user.validate?.id as string,
+        answers: values.data
+      }
+
       await createAnswers(payload)
       await handleUpload(blob as Blob)
 
@@ -83,7 +88,7 @@ export default function Quiz() {
       })
       navigate('/unverified')
     },
-    [blob, createAnswers, handleUpload, navigate, setFinishQuiz, setIsRecordStart, user.id]
+    [blob, createAnswers, handleUpload, user.id, setFinishQuiz, setLoading, navigate]
   )
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
@@ -111,7 +116,7 @@ export default function Quiz() {
         }}
       />
 
-      <BannedQuizAlert
+      {/* <BannedQuizAlert
         isStart={!openGuide}
         bannedConditions={[{ condition: !isTabActive }, { condition: isTryToCopy }]}
         action={() => {
@@ -119,7 +124,7 @@ export default function Quiz() {
           setIsRecordStart(false)
           navigate('/')
         }}
-      />
+      /> */}
 
       <section className="mx-auto flex w-full flex-col md:w-8/12">
         <QuestionHeader count={questions.default.length + questions.dosen.length} />

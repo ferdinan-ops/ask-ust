@@ -30,12 +30,15 @@ export default function useMessageSocket({ addKey, updateKey, queryKey, queryFor
             ...page,
             data: page.data.map((item: MessageType) => {
               if (item.id === message.id) {
+                console.log({ message })
                 return message
               }
               return item
             })
           }
         })
+
+        console.log({ newData })
 
         return {
           ...oldData,
@@ -47,6 +50,13 @@ export default function useMessageSocket({ addKey, updateKey, queryKey, queryFor
     socket.on(addKey, (message: MessageType) => {
       queryClient.setQueryData([queryKey], (oldData: any) => {
         if (!oldData || !oldData.pages || oldData.pages.length === 0) {
+          console.log({
+            pages: [
+              {
+                data: [message]
+              }
+            ]
+          })
           return {
             pages: [
               {
@@ -62,6 +72,11 @@ export default function useMessageSocket({ addKey, updateKey, queryKey, queryFor
           ...newData[0],
           data: [message, ...newData[0].data]
         }
+
+        console.log({
+          ...oldData,
+          pages: newData
+        })
 
         return {
           ...oldData,

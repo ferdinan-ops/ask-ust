@@ -12,8 +12,12 @@ import { useCreateForum, useGetDetailForum, useUpdateForum } from '@/store/serve
 import { forumDefaultValues } from '@/lib/defaultValues'
 import { ForumType } from '@/lib/types/forum.type'
 import { useTitle } from '@/hooks'
-import { BackButton, TextEditor, Title } from '@/components/atoms'
+import { BackButton, Dropzone, TextEditor, Title } from '@/components/atoms'
 import { titleConfig } from '@/lib/config'
+import { FileWithPreview } from '@/components/atoms/forms/Dropzone'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { forumCategories } from '@/lib/data'
+import { CategoryForumGuide } from '@/components/organism'
 
 const titleConf = titleConfig.createForum
 
@@ -46,39 +50,98 @@ export default function CreateForum() {
   }
 
   const onSubmit = (data: ForumInputType) => {
-    const { title, description } = data
-
     if (!id) {
-      const createFields = { title: title as string, description }
+      const createFields = {
+        title: data.title as string,
+        description: data.description,
+        category: data.category as string,
+        image: data.image
+      }
       return createForum(createFields, { onSuccess })
     }
 
-    const updateFields = { description, forumId: id as string }
+    const updateFields = {
+      description: data.description,
+      image: data.image,
+      forumId: id as string
+    }
     updateForum(updateFields, { onSuccess })
   }
 
   return (
     <section className="mx-auto w-full md:w-8/12">
       <BackButton />
+      <CategoryForumGuide />
       <Title heading={id ? titleConf.heading.update : titleConf.heading.create} desc={titleConf.desc} />
 
       <Form {...forms}>
         <form onSubmit={forms.handleSubmit(onSubmit)} className="mt-6 flex flex-col gap-5 md:mt-8">
           {!id && (
-            <FormField
-              name="title"
-              control={forms.control}
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="Teknologi" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <React.Fragment>
+              <FormField
+                name="title"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel className="font-semibold dark:text-white">Nama</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Teknologi" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                name="category"
+                control={forms.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2 font-semibold dark:text-white">Kategori</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="capitalize">
+                          <SelectValue placeholder="Pilih kategori forum" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {forumCategories.map((category, index) => (
+                          <SelectItem
+                            key={index}
+                            value={category.value}
+                            className="cursor-pointer font-semibold capitalize"
+                          >
+                            {category.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </React.Fragment>
           )}
+
+          <FormField
+            name="image"
+            control={forms.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-semibold dark:text-white">Gambar (opsional)</FormLabel>
+                <FormControl>
+                  <Dropzone
+                    id="file"
+                    setValue={field.onChange}
+                    fileValue={field.value as FileWithPreview[]}
+                    description="JPG atau PNG ukuran tidak lebih dari 10MB"
+                    accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'] }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             name="description"
             control={forms.control}

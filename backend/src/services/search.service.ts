@@ -6,7 +6,8 @@ export const getForumByKeyword = async (keyword: string) => {
     where: {
       title: {
         contains: keyword
-      }
+      },
+      type: 'PUBLIC'
     },
     orderBy: {
       created_at: 'desc'

@@ -5,6 +5,8 @@ import { logError, logInfo, logWarn } from '../utils/logger'
 
 import * as MessageService from '../services/message.service'
 import * as ViolationService from '../services/violation.service'
+import * as ForumService from '../services/forum.service'
+
 import ENV from '../utils/environment'
 
 export const sendMessage = async (req: Request, res: Response) => {
@@ -206,21 +208,24 @@ export const sendImage = async (req: Request, res: Response) => {
       res.status(400).json({ error: ViolationService.bannedMessage })
     }
 
-    const results = await MessageService.analyzeImage(filename)
-    const isSecure = results && Object.values(results).every((value) => value === 'VERY_UNLIKELY')
+    const forum = await ForumService.getForumById(forumId)
+    if (forum?.category === 'REGULAR') {
+      const results = await MessageService.analyzeImage(filename)
+      const isSecure = results && Object.values(results).every((value) => value === 'VERY_UNLIKELY')
 
-    if (!isSecure) {
-      const violation = await ViolationService.handleViolations(userId, 'image')
+      if (!isSecure) {
+        const violation = await ViolationService.handleViolations(userId, 'image')
 
-      if (!violation.success) {
-        logError(req, violation.error as string)
-        return res.status(400).json({ error: violation.error })
+        if (!violation.success) {
+          logError(req, violation.error as string)
+          return res.status(400).json({ error: violation.error })
+        }
       }
     }
 
     const data = await MessageService.uploadImage(filename, forumId, userId)
 
-    const forumKey = `chat:${forumId}:messages:update`
+    const forumKey = `chat:${forumId}:messages`
     req.io?.emit(forumKey, data)
 
     logInfo(req, 'Sending image')

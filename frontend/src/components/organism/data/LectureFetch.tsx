@@ -1,19 +1,17 @@
+import * as React from 'react'
+import { useForm } from 'react-hook-form'
 import { Loading, Pagination, Title } from '@/components/atoms'
 import { Form, FormField, FormItem } from '@/components/ui/form'
-import { useQueryParams } from '@/hooks'
-import { useGetLecturers, useImportLecture } from '@/store/server/useData'
-import { useForm } from 'react-hook-form'
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableSearch } from '@/components/ui/table'
-import UploadXlsx from '../modal/UploadXlsx'
-import * as React from 'react'
 
-interface FormFields {
-  search: string
-}
+import { useQueryParams } from '@/hooks'
+import { SearchFormType } from '@/lib/types/pagination.type'
+import { useGetLecturers, useImportLecture } from '@/store/server/useData'
+
+import UploadXlsx from '../modal/UploadXlsx'
 
 export default function LectureFetch() {
-  const forms = useForm<FormFields>({ mode: 'onSubmit' })
+  const forms = useForm<SearchFormType>({ mode: 'onSubmit' })
   const { params, createParam, deleteParam } = useQueryParams(['page-lecture', 'search-lecture'])
 
   const {
@@ -22,7 +20,7 @@ export default function LectureFetch() {
     refetch: refetchLecturers
   } = useGetLecturers({
     page: Number(params['page-lecture']) || 1,
-    search: params['search-lecture'] || ''
+    search: params['search-lecture']
   })
 
   const { mutate: importLecture, isLoading } = useImportLecture()
@@ -37,7 +35,7 @@ export default function LectureFetch() {
     importLecture(values.file[0])
   }
 
-  const onSubmit = (values: FormFields) => {
+  const onSubmit = (values: SearchFormType) => {
     if (!values.search) {
       deleteParam('search-lecture')
       return refetchLecturers()

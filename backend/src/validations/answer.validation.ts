@@ -3,6 +3,7 @@ import { IAnswerBody, IBody } from '../types/answer.type'
 
 export const validAnswers = (payload: IAnswerBody) => {
   const schema = Joi.object({
+    validate_id: Joi.string().required(),
     user_id: Joi.string().required(),
     answers: Joi.array().items(
       Joi.object<IBody>({

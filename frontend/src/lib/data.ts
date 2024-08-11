@@ -1,5 +1,5 @@
 import {
-  HiOutlineBell,
+  // HiOutlineBell,
   HiOutlineBookOpen,
   HiOutlineCog6Tooth,
   HiOutlineInbox,
@@ -67,11 +67,13 @@ export const MEMBERS = [
 ]
 
 export const headerLinks = [
-  { to: '/admin', label: 'Daftar Pengguna', icon: HiOutlineUserGroup, type: 'admin' },
+  { to: '/admin/validate', label: 'Daftar Pengguna', icon: HiOutlineUserGroup, type: 'admin' },
+  { to: '/admin/forum', label: 'Daftar Forum', icon: HiOutlineInbox, type: 'admin' },
   { to: '/admin/questions', label: 'Pertanyaan Kuis', icon: HiOutlineBookOpen, type: 'admin' },
-  { to: '/admin/notification', label: 'Notifikasi', icon: HiOutlineBell, type: 'admin' },
+  // { to: '/admin/notification', label: 'Notifikasi', icon: HiOutlineBell, type: 'admin' },
   { to: '/admin/settings', label: 'Pengaturan', icon: HiOutlineCog6Tooth, type: 'admin' },
   { to: '/dashboard', label: 'Dashboard', icon: HiOutlineSquares2X2, type: 'user' },
+  { to: '/forums', label: 'Forum', icon: HiOutlineInbox, type: 'user' },
   { to: '/me', label: 'Profil', icon: HiOutlineUser, type: 'user' }
 ]
 
@@ -80,4 +82,18 @@ export const filterItems = [
   { label: 'Valid', value: 'valid' },
   { label: 'Tidak valid', value: 'invalid' },
   { label: 'Belum divalidasi', value: 'pending' }
+]
+
+export const filterForumType = [
+  { label: 'Semua', value: 'all' },
+  { label: 'Publik', value: 'PUBLIC' },
+  { label: 'Belum divalidasi', value: 'PENDING' },
+  { label: 'Dilarang', value: 'RESTRICTED' }
+]
+
+export const forumCategories = [
+  { label: 'Regular (Biasa)', value: 'REGULAR' },
+  { label: 'Budaya', value: 'CULTURE' },
+  { label: 'Sains', value: 'SCIENCE' },
+  { label: 'Ilmu pengetahuan', value: 'KNOWLEDGE' }
 ]

@@ -54,7 +54,7 @@ export const createValidateUser = async (req: Request, res: Response) => {
       logInfo(req, 'Updating user photo')
     }
 
-    await ValidateService.sendNotificationToAdmin(userId, results.user.fullname)
+    // await ValidateService.sendNotificationToAdmin(userId, results.user.fullname)
 
     logInfo(req, 'Creating new validate user')
     res.status(201).json({ message: 'Berhasil menambahkan data verifikasi user', data })

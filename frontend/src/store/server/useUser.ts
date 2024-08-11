@@ -1,3 +1,6 @@
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { AxiosError } from 'axios'
+
 import {
   bannedUserFromAppFn,
   changePasswordFn,
@@ -14,11 +17,10 @@ import {
   updateMeFn,
   uploadProfilePicFn
 } from '@/api/user.api'
-import { toast } from '@/components/ui/use-toast'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { useUserInfo } from '../client'
+import { MetaParamsType } from '@/lib/types/pagination.type'
 import { handleOnError } from '@/lib/services/handleToast'
-import { AxiosError } from 'axios'
+import { toast } from '@/components/ui/use-toast'
+import { useUserInfo } from '../client'
 
 export const useGetMe = () => {
   return useQuery('me', getMeFn)
@@ -29,7 +31,15 @@ export const useGetJoinedForums = (page: number) => {
 }
 
 export const useGetMyForums = (page: number) => {
-  return useQuery(['my-forums', page], async () => await getMyForumFn(page))
+  return useQuery(['my-forums', page], async () => await getMyForumFn(page), {
+    select: (data) => {
+      // limit data to 6
+      return {
+        ...data,
+        data: data.data.slice(0, 6)
+      }
+    }
+  })
 }
 
 export const useUpdateMe = () => {
@@ -100,13 +110,8 @@ export const useBannedUser = () => {
   })
 }
 
-type AdminParams = {
-  search: string
-  page: number
-}
-
-export const useGetAdmins = ({ search, page }: AdminParams) => {
-  return useQuery(['admins', page, search], async () => await getAllAdminFn(search, page))
+export const useGetAdmins = ({ search, page }: MetaParamsType) => {
+  return useQuery(['admins', page, search], async () => await getAllAdminFn({ search, page }))
 }
 
 export const useCreateAdmin = () => {

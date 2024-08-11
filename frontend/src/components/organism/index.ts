@@ -4,6 +4,8 @@ import Header from './header/Header'
 import Leftbar from './Leftbar'
 import LogoutAlert from './LogoutAlert'
 import Alert from './Alert'
+import FilterButton from './FilterButton'
+import UnvalidateForum from './UnvalidateForum'
 
 import TabForum from './forum/TabForum'
 import NoForum from './forum/NoForum'
@@ -15,9 +17,11 @@ import EditEmail from './modal/EditEmail'
 import ShareForum from './modal/ShareForum'
 import MessageAction from './modal/MessageAction'
 import MemberRole from './modal/MemberRole'
-import ValidateDataGuide from './modal/ValidateDataGuide'
-import QuizGuide from './modal/QuizGuide'
 import UploadXlsx from './modal/UploadXlsx'
+
+import CategoryForumGuide from './modal/guide/CategoryForumGuide'
+import ValidateDataGuide from './modal/guide/ValidateDataGuide'
+import QuizGuide from './modal/guide/QuizGuide'
 
 import MediaCard from './media/MediaCard'
 import MediaRoom from './media/MediaRoom'
@@ -86,5 +90,8 @@ export {
   BannedQuizAlert,
   CourseFetch,
   LectureFetch,
-  UploadXlsx
+  UploadXlsx,
+  FilterButton,
+  CategoryForumGuide,
+  UnvalidateForum
 }

@@ -1,4 +1,4 @@
-import { HiOutlineArrowRightOnRectangle, HiOutlineBell, HiOutlineChevronDown, HiOutlineUserPlus } from 'react-icons/hi2'
+import { HiOutlineArrowRightOnRectangle, HiOutlineChevronDown, HiOutlineUserPlus } from 'react-icons/hi2'
 import { useNavigate } from 'react-router-dom'
 import * as React from 'react'
 
@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils'
 
 import { useToken, useUserInfo } from '@/store/client'
 import { useLogout } from '@/store/server/useAuth'
-import { useGetUnreadValidates } from '@/store/server/useValidate'
+// import { useGetUnreadValidates } from '@/store/server/useValidate'
 
 const adminLinks = headerLinks.filter((link) => link.type === 'admin')
 const userLinks = headerLinks.filter((link) => link.type === 'user')
@@ -31,7 +31,7 @@ export default function Header({ className, page = 'home' }: HeaderProps) {
 
   const user = useUserInfo((state) => state.user)
   const accessToken = useToken((state) => state.accessToken)
-  const { data: notifCount } = useGetUnreadValidates(user?.role !== 'USER')
+  // const { data: notifCount } = useGetUnreadValidates(user?.role !== 'USER')
 
   const [isOpen, setIsOpen] = React.useState(false)
   const handleClose = () => setIsOpen(false)
@@ -45,14 +45,14 @@ export default function Header({ className, page = 'home' }: HeaderProps) {
     <header className={cn('sticky top-0 z-50 flex h-20 w-full items-center bg-primary text-white', className)}>
       <nav className="mx-auto flex w-[1180px] items-center justify-between px-5 md:px-10 xl:px-0">
         <Brand
-          href={user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN' ? '/admin' : '/'}
+          href={user?.role === 'ADMIN' || user?.role === 'SUPER_ADMIN' ? '/admin/validate' : '/'}
           imageClassName="xl:w-8 w-7"
           className="gap-3 text-lg font-bold xl:gap-4 xl:text-xl"
         />
 
         {accessToken ? (
           <div className="flex items-center gap-5">
-            {user?.role !== 'USER' && (
+            {/* {user?.role !== 'USER' && (
               <Button
                 size="icon"
                 variant="secondary"
@@ -64,7 +64,7 @@ export default function Header({ className, page = 'home' }: HeaderProps) {
                   <div className="absolute right-2.5 top-2 h-2.5 w-2.5 rounded-full border-2 border-white bg-red-500" />
                 ) : null}
               </Button>
-            )}
+            )} */}
 
             <div className="relative w-fit">
               <ProfileBox

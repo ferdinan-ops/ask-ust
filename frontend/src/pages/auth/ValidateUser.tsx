@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Checkbox } from '@/components/ui/checkbox'
+// import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 
 import { AuthLayout } from '@/components/layouts'
@@ -139,7 +139,7 @@ export default function ValidateUser() {
               )}
             />
 
-            <FormField
+            {/* <FormField
               name="agreement"
               control={forms.control}
               render={({ field }) => (
@@ -153,7 +153,7 @@ export default function ValidateUser() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <Button className="font-semibold" type="submit" loading={isLoading}>
               Verifikasi
             </Button>

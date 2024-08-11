@@ -40,7 +40,7 @@ export default function Login() {
           return navigate('/validate')
         }
 
-        if (data.user.role !== 'USER') return navigate('/admin')
+        if (data.user.role !== 'USER') return navigate('/admin/validate')
         navigate('/dashboard')
       }
     })
@@ -56,7 +56,7 @@ export default function Login() {
             return navigate('/validate')
           }
 
-          if (data.user.role !== 'USER') return navigate('/admin')
+          if (data.user.role !== 'USER') return navigate('/admin/validate')
           navigate('/dashboard')
         }
       })
@@ -122,7 +122,7 @@ export default function Login() {
             </Button>
           </form>
         </Form>
-        <p className="mt-7 text-center text-[15px] font-semibold text-zinc-500 dark:text-zinc-400">
+        <p className="mt-7 text-center text-[13px] font-semibold text-zinc-500 dark:text-zinc-400 md:text-[15px]">
           Belum punya akun?{' '}
           <Link to="/register" className="text-primary hover:underline dark:text-white">
             Daftar sekarang, gratis!

@@ -96,13 +96,13 @@ export default function Settings() {
             className="text-font gap-2.5 border-zinc-300 text-[13px]"
           >
             <HiOutlineLockClosed className="text-xl" />
-            Atur ulang kata sandi
+            <span className="w-max">Atur ulang kata sandi</span>
           </Button>
           <EditEmail email={user?.email as string} />
           <LogoutAlert>
             <Button variant="destructive" className="gap-2.5 text-[13px]">
               <HiOutlineArrowLeftOnRectangle className="text-xl" />
-              Keluar dari aplikasi
+              <span className="w-max">Keluar dari aplikasi</span>
             </Button>
           </LogoutAlert>
         </div>

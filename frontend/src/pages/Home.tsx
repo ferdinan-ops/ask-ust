@@ -31,6 +31,8 @@ export default function Home() {
       } else if (user.validate && !user.quiz?.isFinished) {
         setRegisterStep('quiz')
       }
+    } else {
+      setRegisterStep('')
     }
   }, [user, setRegisterStep])
 
@@ -80,11 +82,13 @@ export default function Home() {
         <img
           src={HeroIllustration1}
           alt="illustration"
-          className="absolute bottom-0 right-[200px] hidden md:flex md:w-1/3 xl:left-[-262px] xl:w-auto "
+          draggable={false}
+          className="absolute bottom-0 right-[200px] hidden md:flex md:w-1/3 xl:left-[-262px] xl:w-auto"
         />
         <img
           src={HeroIllustration2}
           alt="illustration"
+          draggable={false}
           className="absolute bottom-0 right-[-50px] w-1/2 md:w-1/3 xl:right-[-262px] xl:w-auto"
         />
       </Section>

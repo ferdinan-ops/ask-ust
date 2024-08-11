@@ -42,9 +42,9 @@ export default function QuizGuide({ action, open, onOpenChange }: QuizGuideProps
             <article className="flex flex-col gap-1 pb-4">
               <div className="flex items-center gap-2">
                 <HiCheckBadge className="text-xl text-blue-500" />
-                <p className="text-sm font-bold text-primary">Kerjakan secepat mungkin</p>
+                <p className="text-sm font-bold text-primary dark:text-white">Kerjakan secepat mungkin</p>
               </div>
-              <p className="ml-7 border-b pb-4 text-xs font-medium leading-relaxed text-primary/95">
+              <p className="ml-7 border-b pb-4 text-xs font-medium leading-relaxed text-primary/95 dark:border-white/20 dark:text-white/95">
                 Kamu akan diberikan waktu selama <b>15 menit</b> untuk menyelesaikan 10 soal kuis ini dengan jawaban
                 yang benar. Sistem akan menghentikan pengerjaan secara otomatis ketika waktu habis.
               </p>
@@ -52,9 +52,9 @@ export default function QuizGuide({ action, open, onOpenChange }: QuizGuideProps
             <article className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
                 <HiCheckBadge className="text-xl text-blue-500" />
-                <p className="text-sm font-bold text-primary">Dilarang menyalin soal!</p>
+                <p className="text-sm font-bold text-primary dark:text-white">Dilarang menyalin soal!</p>
               </div>
-              <div className="ml-7 border-b pb-4 text-xs font-medium leading-relaxed text-primary/95">
+              <div className="ml-7 border-b pb-4 text-xs font-medium leading-relaxed text-primary/95 dark:border-white/20 dark:text-white/95">
                 <p>
                   Jangan coba untuk menyalin soal atau jawaban dari kuis ini, karena akun yang telah kamu daftarkan akan
                   kami <b>banned</b> untuk <b>selamanya</b> karena mencoba untuk melakukan <b>kecurangan</b>, bahkan
@@ -69,9 +69,9 @@ export default function QuizGuide({ action, open, onOpenChange }: QuizGuideProps
             <article className="flex flex-col gap-1 pt-4">
               <div className="flex items-center gap-2">
                 <HiCheckBadge className="text-xl text-blue-500" />
-                <p className="text-sm font-bold text-primary">Dilarang beralih dari halaman kuis!</p>
+                <p className="text-sm font-bold text-primary dark:text-white">Dilarang beralih dari halaman kuis!</p>
               </div>
-              <div className="ml-7 pb-4 text-xs font-medium leading-relaxed text-primary/95">
+              <div className="ml-7 pb-4 text-xs font-medium leading-relaxed text-primary/95 dark:text-white/95">
                 <p>
                   Jangan coba untuk beralih dari halaman quiz ini, seperti <b>membuka tab baru</b>, atau{' '}
                   <b>membuka software atau aplikasi</b> lainnya, karena akun yang telah kamu daftarkan akan kami{' '}
@@ -87,7 +87,7 @@ export default function QuizGuide({ action, open, onOpenChange }: QuizGuideProps
         </ScrollArea>
         <AlertDialogFooter>
           <AlertDialogAction onClick={action} disabled={!isCanClose}>
-            Saya siap, mulai kuis!!
+            {isCanClose ? 'Saya siap, Mulai kuis!!' : 'Baca dulu yaa 😊'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

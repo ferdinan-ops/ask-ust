@@ -7,11 +7,11 @@ export default function ProtectedFromAdmin() {
   const user = useUserInfo((state) => state.user)
 
   if ((user?.role !== 'USER' && !accessToken) || (!user && !accessToken)) {
-    return <Navigate to="/sign-in" replace state={{ from: location }} />
+    return <Navigate to="/login" replace state={{ from: location }} />
   }
 
   if (user?.role !== 'USER' && accessToken) {
-    return <Navigate to="/admin" replace state={{ from: location }} />
+    return <Navigate to="/admin/validate" replace state={{ from: location }} />
   }
 
   return <Outlet />

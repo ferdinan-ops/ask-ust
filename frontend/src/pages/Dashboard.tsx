@@ -11,6 +11,7 @@ import { useGetMyForums } from '@/store/server/useUser'
 import { useForm } from 'react-hook-form'
 import * as React from 'react'
 import { ForumListType } from '@/lib/types/forum.type'
+import { Link } from 'react-router-dom'
 
 export default function Dashboard() {
   useTitle('Dashboard')
@@ -145,7 +146,11 @@ function ForumTable({ forums }: ForumTableProps) {
       <TableBody>
         {forums?.map((forum) => (
           <TableRow key={forum.id}>
-            <TableCell className="font-semibold"># {forum.title}</TableCell>
+            <TableCell className="font-semibold">
+              <Link to={`/forums/${forum.id}`} className="text-primary">
+                # {forum.title}
+              </Link>
+            </TableCell>
             <TableCell>
               <div className="flex items-center">
                 {forum.members.slice(0, 3).map((member, index) => (

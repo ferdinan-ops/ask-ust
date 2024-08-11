@@ -10,6 +10,7 @@ import useQueryParams from './useQueryParams'
 import useScrollToTop from './useScrollToTop'
 import useGetDevices from './useGetDevices'
 import useDebounce from './useDebounce'
+import useReload from './useReload'
 import useTimer from './useTimer'
 import useTitle from './useTitle'
 
@@ -31,5 +32,6 @@ export {
   useDisableShorcut,
   useTimer,
   useScrollToTop,
-  useGetUserRegisterInfo
+  useGetUserRegisterInfo,
+  useReload
 }

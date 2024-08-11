@@ -124,7 +124,16 @@ export const changeValidateReadStatus = async (validateId: string) => {
 }
 
 export const fetchUnreadValidatesCount = async () => {
-  return await db.validate.count({ where: { is_read: false } })
+  return await db.validate.count({
+    where: {
+      is_read: false,
+      user: {
+        OR: [{ banned_type: 'VIOLATION' }, { banned_type: null }],
+        role: 'USER',
+        answers: { some: {} }
+      }
+    }
+  })
 }
 
 export const removeValidateUser = async (validateId: string) => {
@@ -136,33 +145,6 @@ export const removeValidateUser = async (validateId: string) => {
         select: userSelect.select
       }
     }
-  })
-}
-
-export const sendNotificationToAdmin = async (userId: string, fullname: string) => {
-  const users = await db.user.findMany({
-    where: {
-      OR: [{ role: 'SUPER_ADMIN' }, { role: 'ADMIN' }]
-    },
-    select: { email: true }
-  })
-
-  users.forEach((user) => {
-    sendMail({
-      from: ENV.aplicationName,
-      to: user?.email,
-      subject: 'Verifikasi Data',
-      html: emailFormat({
-        btnText: 'Lihat ke aplikasi',
-        btnLink: `${ENV.publicUrl}/admin/validate/${userId}`,
-        children: `
-        <p>Halo Admin,</p>
-        <p>
-          Terdapat data pengguna baru dengan nama <b>${fullname}</b> yang perlu diverifikasi oleh kamu, ayo segera cek aplikasi USTalk untuk melihat data tersebut.
-        </p>
-    `
-      })
-    })
   })
 }
 

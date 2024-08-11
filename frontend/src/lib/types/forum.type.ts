@@ -1,19 +1,20 @@
 import { MemberType } from './member.type'
+import { MetaType } from './pagination.type'
+import { UserType } from './user.type'
 
 export type ForumType = {
   id: string
   title: string
   description: string
   invite_code: string
+  image?: string
+  category: string
+  type: 'PUBLIC' | 'PENDING' | 'RESTRICTED'
+  note?: string
   user_id: string
   created_at: string
   updated_at: string
-}
-
-export type MetaType = {
-  current_page: number
-  limit: number
-  total: number
+  user?: UserType
 }
 
 type ForumCountType = {

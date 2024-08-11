@@ -62,7 +62,7 @@ export default function EditEmail({ email, className }: EditEmailProps) {
       <DialogTrigger asChild>
         <Button variant="secondary" className="gap-3 bg-zinc-200 hover:bg-zinc-300">
           <HiOutlineEnvelope className="text-xl" />
-          Ubah email Anda
+          <span className="w-max">Ubah email Anda</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

@@ -1,10 +1,11 @@
 import { type Response, type Request } from 'express'
 
-import { logError, logInfo } from '../utils/logger'
-import { validForum, validUpdateForum } from '../validations/forum.validation'
+import logger, { logError, logInfo } from '../utils/logger'
+import { validForum, validUpdateForum, validUpdateForumType } from '../validations/forum.validation'
 import * as ForumService from '../services/forum.service'
 
-import { type IForum } from '../types/forum.type'
+import { IForumTypeUpdatePayload, type IForum } from '../types/forum.type'
+import { ForumType } from '@prisma/client'
 
 export const createForum = async (req: Request, res: Response) => {
   const { value, error } = validForum(req.body as IForum)
@@ -13,11 +14,18 @@ export const createForum = async (req: Request, res: Response) => {
     return res.status(400).json({ error: error.details[0].message })
   }
 
+  if (req.file?.filename) value.image = req.file.filename
+
   try {
     const data = await ForumService.addNewForum({
       ...value,
+      type: (value.category === 'REGULAR' ? 'PUBLIC' : 'PENDING') as ForumType,
       userId: req.userId as string
     })
+
+    if (value.category !== 'REGULAR') {
+      await ForumService.sendNotifForumToAdmin(data.id, req.userId as string)
+    }
 
     logInfo(req, 'Creating new forum')
     res.status(201).json({ message: 'Forum baru berhasil dibuat', data })
@@ -46,21 +54,36 @@ export const deleteForum = async (req: Request, res: Response) => {
 }
 
 export const getForums = async (req: Request, res: Response) => {
-  const { page, limit, q } = req.query
+  const { page, limit, q, filter } = req.query
   const currentPage = Number(page) || 1
   const perPage = Number(limit) || 10
+  const filterBy = filter as ForumType
 
   try {
-    const { data, count } = await ForumService.getForumsFromDB(currentPage, perPage, (q as string) ?? '')
+    let forums
+    if (req.isAdmin) {
+      forums = await ForumService.fetchForumsForAdmin({
+        page: currentPage,
+        limit: perPage,
+        search: (q as string) || '',
+        filter: filterBy
+      })
+    } else {
+      forums = await ForumService.getForumsFromDB({
+        page: currentPage,
+        limit: perPage,
+        search: (q as string) || ''
+      })
+    }
 
     logInfo(req, 'Getting forums')
     res.status(200).json({
       message: 'Berhasil menampilkan seluruh forum',
-      data,
+      data: forums.data,
       meta: {
         current_page: currentPage,
         limit: perPage,
-        total: count
+        total: forums.count
       }
     })
   } catch (error) {
@@ -75,7 +98,17 @@ export const getForum = async (req: Request, res: Response) => {
   }
 
   try {
-    const data = await ForumService.getForumById(req.params.forumId)
+    let data
+    if (req.isAdmin) {
+      data = await ForumService.getForumById(req.params.forumId)
+    } else {
+      data = await ForumService.getForumByIdForUser(req.params.forumId)
+    }
+
+    if (!data) {
+      logError(req, 'Forum not found')
+      return res.status(404).json({ error: 'Forum not found' })
+    }
 
     logInfo(req, 'Getting forum')
     res.status(200).json({ message: 'Berhasil menampilkan detail forum', data })
@@ -95,6 +128,8 @@ export const updateForum = async (req: Request, res: Response) => {
     logError(req, 'Forum id is not provided')
     return res.status(400).json({ error: 'Forum id is not provided' })
   }
+
+  if (req.file?.filename) value.image = req.file.filename
 
   try {
     const data = await ForumService.updateForumById(req.params.forumId, req.userId as string, value)
@@ -170,6 +205,46 @@ export const joinForumWithInviteCode = async (req: Request, res: Response) => {
     const data = await ForumService.addMemberToForum(forum?.id, req.userId as string)
     logInfo(req, 'Joining forum with invite code')
     res.status(200).json({ message: 'Berhasil join forum', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const updateForumType = async (req: Request, res: Response) => {
+  const { value, error } = validUpdateForumType(req.body as IForumTypeUpdatePayload)
+  if (error) {
+    logError(req, error)
+    return res.status(400).json({ error: error.details[0].message })
+  }
+
+  if (!value.is_publish && !value.note) {
+    logError(req, 'Note is required when forum type is RESTRICTED')
+    return res.status(400).json({ message: 'Alasan harus diisi bila tipe forum adalah RESTRICTED' })
+  }
+
+  if (value.is_publish) value.note = ''
+
+  try {
+    const data = await ForumService.changeForumTypeFromDB(req.params.forumId, value)
+    await ForumService.sendValidateForumNotif(data.id)
+
+    logInfo(req, 'Updating forum type')
+    res.status(200).json({ message: 'Berhasil mengubah tipe forum', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const getForumConclusion = async (req: Request, res: Response) => {
+  logger.info('hit getForumConclusion')
+  try {
+    // const data = await ForumService.fetchSummaryFromGPT(req.params.forumId)
+    const data = await ForumService.fetchSummaryFromGeminiAi(req.params.forumId)
+
+    logger.info({ data })
+
+    logInfo(req, 'Getting forum conclusion')
+    res.status(200).json({ message: 'Berhasil mendapatkan kesimpulan forum', data })
   } catch (error) {
     res.status(500).json({ error })
   }

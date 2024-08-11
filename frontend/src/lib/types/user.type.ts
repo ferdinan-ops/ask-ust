@@ -1,4 +1,4 @@
-import { MetaType } from './forum.type'
+import { MetaType } from './pagination.type'
 
 export type UserType = {
   id: string

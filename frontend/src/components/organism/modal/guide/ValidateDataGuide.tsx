@@ -21,28 +21,28 @@ export default function ValidateDataGuide() {
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="mt-5 h-[420px] w-full">
-          <section className="flex flex-col">
+          <section className="flex flex-col text-primary dark:text-white">
             <article className="flex flex-col gap-1 pb-4">
               <div className="flex items-center gap-2">
                 <HiCheckBadge className="text-xl text-blue-500" />
-                <p className="text-sm font-semibold text-primary">Siapa kamu?</p>
+                <p className="text-sm font-semibold text-primary dark:text-white">Siapa kamu?</p>
               </div>
-              <p className="ml-7 border-b pb-4 text-xs leading-relaxed">
+              <p className="ml-7 border-b pb-4 text-xs leading-relaxed dark:border-white/20">
                 Pilih peran kamu di Universitas Katolik Santo Thomas, apakah kamu adalah seorang <b>mahasiswa</b>,{' '}
-                <b>dosen</b>, atau <b>karyawan</b> atau yang <b>lainnya</b>. Untuk inputan selanjutnya kamu harus
+                <b>dosen</b>, <b>karyawan</b> atau yang <b>lainnya</b>. Untuk inputan selanjutnya kamu harus
                 menyesuaikannya dengan peran yang kamu pilih.
               </p>
             </article>
             <article className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
                 <HiCheckBadge className="text-xl text-blue-500" />
-                <p className="text-sm font-semibold text-primary">File validasi</p>
+                <p className="text-sm font-semibold text-primary dark:text-white">File validasi</p>
               </div>
-              <div className="ml-7 border-b pb-4 text-xs leading-relaxed">
+              <div className="ml-7 border-b pb-4 text-xs leading-relaxed dark:border-white/20">
                 <p>
                   Persiapkan dokumen-dokumen yang dapat digunakan untuk menunjukkan bahwa kamu merupakan bagian dari
                   Universitas Katolik Santo Thomas, seperti Kartu Rencana Studi (KRS), Kartu Tanda Mahasiswa (KTM),
-                  bukti pembayaran uang kuliah dll dalam bentuk pdf, ataupun gambar.
+                  bukti pembayaran uang kuliah dan lain-lain, dalam bentuk pdf, ataupun gambar.
                 </p>
                 <p className="mt-3 font-semibold">Cara mengisi:</p>
                 <ul className="ml-5 mt-1 list-disc">
@@ -56,9 +56,9 @@ export default function ValidateDataGuide() {
             <article className="flex flex-col gap-1 pt-4">
               <div className="flex items-center gap-2">
                 <HiCheckBadge className="text-xl text-blue-500" />
-                <p className="text-sm font-semibold text-primary">Foto diri</p>
+                <p className="text-sm font-semibold text-primary dark:text-white">Foto diri</p>
               </div>
-              <div className="ml-7 border-b pb-4 text-xs leading-relaxed">
+              <div className="ml-7 text-xs leading-relaxed">
                 <p>
                   Persiapkan diri kamu sekarang dengan foto yang terbaik, jangan lupa untuk tersenyum! Kenakan pakaian
                   atau aksesoris yang menunjukkan kamu sebagai bagian dari Universitas Katolik Santo Thomas.
@@ -100,16 +100,16 @@ export default function ValidateDataGuide() {
               </div>
             </article>
 
-            <article className="flex flex-col gap-1 pb-5 pt-4">
+            {/* <article className="flex flex-col gap-1 pb-5 pt-4">
               <div className="flex items-center gap-2">
                 <HiCheckBadge className="text-xl text-blue-500" />
-                <p className="text-sm font-semibold text-primary">Gunakan foto sebagai foto profil</p>
+                <p className="text-sm font-semibold text-primary dark:text-white">Gunakan foto sebagai foto profil</p>
               </div>
               <p className="ml-7 text-xs leading-relaxed">
                 Dengan mencentang pilihan ini, foto yang kamu unggah pada kolom inputan foto akan langsung digunakan
                 sebagai foto profil pada akun kamu.
               </p>
-            </article>
+            </article> */}
           </section>
         </ScrollArea>
         <Button className="ml-auto w-fit" onClick={() => setOpen(false)}>

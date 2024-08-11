@@ -1,14 +1,5 @@
 import Logo from './icons/logo-2.svg'
 
-import Profile1 from './images/profile-1.webp'
-import Profile2 from './images/profile-2.webp'
-import Profile3 from './images/profile-3.webp'
-import Profile4 from './images/profile-4.webp'
-import Profile5 from './images/profile-5.webp'
-import Profile6 from './images/profile-6.webp'
-import Profile7 from './images/profile-7.webp'
-import Profile8 from './images/profile-8.webp'
-
 import LoginBg from './images/login-bg.webp'
 import RegisterBg from './images/register-bg.webp'
 import VerifyEmailBg from './images/verify-email-bg.webp'
@@ -34,6 +25,8 @@ import NoForumImg from './images/no-forum-illustration.svg'
 import NoChartImg from './images/no-chart-illustration.svg'
 import NoTable from './images/no-table-illustration.svg'
 
+import BrainGif from './images/brain.gif'
+
 export {
   LoginBg,
   RegisterBg,
@@ -41,14 +34,6 @@ export {
   VerifyEmailBg,
   ValidateBg,
   Logo,
-  Profile1,
-  Profile2,
-  Profile3,
-  Profile4,
-  Profile5,
-  Profile6,
-  Profile7,
-  Profile8,
   NotFoundBg,
   HeroBg,
   HeroIllustration1,
@@ -63,5 +48,6 @@ export {
   ReportDashboard,
   NoForumImg,
   NoTable,
-  NoChartImg
+  NoChartImg,
+  BrainGif
 }

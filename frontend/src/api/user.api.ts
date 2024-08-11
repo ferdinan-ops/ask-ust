@@ -1,13 +1,15 @@
 import { AdminResponseType, UserForumCountType, UserType } from '@/lib/types/user.type'
-import api from './axiosInstance'
+import { RegisterType } from '@/lib/validations/auth.validation'
+import { MetaParamsType } from '@/lib/types/pagination.type'
 import { ForumResponseType } from '@/lib/types/forum.type'
+import api from './axiosInstance'
+
 import {
   ChangePasswordType,
   ChangeProfilePicType,
   EditAdminType,
   EditUserType
 } from '@/lib/validations/user.validation'
-import { RegisterType } from '@/lib/validations/auth.validation'
 
 export const getMeFn = async (): Promise<UserType> => {
   const response = await api.get('/user')
@@ -74,7 +76,7 @@ export const deleteAdminFn = async (userId: string) => {
   return await api.delete(`/user/admin/${userId}`)
 }
 
-export const getAllAdminFn = async (search: string, page: number): Promise<AdminResponseType> => {
+export const getAllAdminFn = async ({ search, page }: MetaParamsType): Promise<AdminResponseType> => {
   const response = await api.get('/user/admin', { params: { q: search, page } })
   return response.data
 }

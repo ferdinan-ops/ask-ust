@@ -13,7 +13,7 @@ export default function AuthLayout({ children, desc, bgImage }: AuthLayoutProps)
       </section>
       <section className="relative hidden overflow-hidden bg-gradient-to-b from-gray-700 to-zinc-900 lg:flex lg:flex-1">
         <div className="relative z-10 flex flex-col items-center justify-center gap-[67px]">
-          <img src={bgImage} alt="auth" className="w-full" />
+          <img src={bgImage} alt="auth" className="w-full" draggable={false} />
           <div className="flex flex-col gap-2 self-start px-[92px]">
             <p className="text-sm font-semibold leading-7 tracking-wider text-white/60">USTalk</p>
             <p className="text-3xl font-semibold leading-10 text-white">{desc}</p>

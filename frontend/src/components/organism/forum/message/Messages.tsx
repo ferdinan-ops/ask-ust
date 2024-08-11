@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { HiOutlineFlag, HiOutlinePencilSquare, HiOutlineTrash } from 'react-icons/hi2'
+import { HiOutlineFlag, HiOutlinePencilSquare, HiOutlineTrash, HiSparkles } from 'react-icons/hi2'
 
 import Message from './Message'
 import { Alert, MediaAction, MessageAction, ReportMember } from '../..'
@@ -17,6 +17,7 @@ import { Loader2 } from 'lucide-react'
 import { ContentBox } from '@/components/atoms'
 import ContextItem from './ContextItem'
 import { MemberType } from '@/lib/types/member.type'
+import { useNavigate } from 'react-router-dom'
 
 interface MessagesProps {
   forumId: string
@@ -26,6 +27,7 @@ const alertConf = alertConfig.messages
 const heightClass = 'max-h-[calc(100vh-181px)] md:max-h-[calc(100vh-148px)] lg:max-h-[calc(100vh-272px)]'
 
 export default function Messages({ forumId }: MessagesProps) {
+  const navigate = useNavigate()
   const messageRef = React.useRef<HTMLDivElement>(null)
   const bottomRef = React.useRef<HTMLDivElement>(null)
 
@@ -65,7 +67,7 @@ export default function Messages({ forumId }: MessagesProps) {
   }
 
   return (
-    <ContentBox className="flex flex-1 flex-col">
+    <ContentBox className="relative flex flex-1 flex-col">
       <ContentBox.Scroll ref={messageRef} className={cn('gap-2 md:gap-3 md:px-5 xl:py-7', heightClass)}>
         {hasNextPage && <LoadMore fetchNextPage={fetchNextPage} isFetchingNextPage={isFetchingNextPage} />}
 
@@ -136,6 +138,15 @@ export default function Messages({ forumId }: MessagesProps) {
         </div>
 
         <MediaAction forumId={forumId} />
+        {member?.role === 'ADMIN' && (
+          <Button
+            className="mx-auto mt-5 w-fit gap-2 bg-gradient-to-r from-[#08CCAE]/90 to-[#FF456B]/90 py-4 font-semibold text-white hover:from-[#08CCAE] hover:to-[#FF456B]"
+            onClick={() => navigate(`/forums/${forumId}/summary`)}
+          >
+            <span>Generate hasil diskusi</span>
+            <HiSparkles />
+          </Button>
+        )}
         <div ref={bottomRef} />
       </ContentBox.Scroll>
 

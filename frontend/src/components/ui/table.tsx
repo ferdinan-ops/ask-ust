@@ -136,22 +136,23 @@ const TableSearch = React.forwardRef<HTMLInputElement, TableSearchProps>(
 )
 
 interface TableLabelProps {
-  type: 'valid' | 'invalid' | 'pending'
+  value: {
+    label: string
+    type: 'valid' | 'invalid' | 'pending'
+  }
 }
 
-function TableLabel({ type }: TableLabelProps) {
+function TableLabel({ value }: TableLabelProps) {
   return (
     <span
       className={cn(
         'rounded-full px-3 py-1 text-xs font-semibold',
-        type === 'valid' && 'bg-green-200 text-green-600',
-        type === 'invalid' && 'bg-red-200 text-red-600',
-        type === 'pending' && 'bg-yellow-200 text-yellow-600'
+        value.type === 'valid' && 'bg-green-200 text-green-600',
+        value.type === 'invalid' && 'bg-red-200 text-red-600',
+        value.type === 'pending' && 'bg-yellow-200 text-yellow-600'
       )}
     >
-      {type === 'valid' && 'Valid'}
-      {type === 'invalid' && 'Tidak valid'}
-      {type === 'pending' && 'Belum divalidasi'}
+      {value.label}
     </span>
   )
 }

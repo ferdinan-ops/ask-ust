@@ -36,7 +36,7 @@ interface ImageProps {
 }
 
 const Image = ({ src, alt, className }: ImageProps) => (
-  <img src={src} alt={alt} className={cn('w-full object-cover xl:w-[60%]', className)} />
+  <img src={src} alt={alt} draggable={false} className={cn('w-full object-cover xl:w-[60%]', className)} />
 )
 
 interface BodyProps {

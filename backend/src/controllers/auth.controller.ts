@@ -94,6 +94,8 @@ export const login = async (req: Request, res: Response) => {
     const { password, ...userWithoutPassword } = user
     const { validate, ...rest } = userWithoutPassword
 
+    console.log(user.role)
+
     if (user.role !== 'USER') {
       const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: true, role: user.role })
       const refreshToken = AuthService.refreshTokenSign({ id: user.id, isAdmin: true, role: user.role })
@@ -169,6 +171,8 @@ export const loginGoogle = async (req: Request, res: Response) => {
     const { validate, ...rest } = userWithoutPassword
 
     if (user.role !== 'USER') {
+      console.log(user.role)
+
       const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: true, role: user.role })
       const refreshToken = AuthService.refreshTokenSign({ id: user.id, isAdmin: true, role: user.role })
 
@@ -279,18 +283,28 @@ export const refreshToken = async (req: Request, res: Response) => {
     return res.status(401).json({ error: 'Unauthorized' })
   }
 
-  try {
-    jwt.verify(refreshToken as string, ENV.refreshTokenSecret as string, async (error, decoded) => {
-      const results = decoded as { id?: string }
-      if (error ?? !results?.id) {
-        logError(req, 'Refresh token is invalid/Forbidden')
-        return res.status(403).json({ error: 'Forbidden' })
-      }
+  jwt.verify(refreshToken as string, ENV.refreshTokenSecret as string, async (error, decoded) => {
+    const results = decoded as { id?: string }
+    if (error ?? !results?.id) {
+      logError(req, 'Refresh token is invalid/Forbidden')
+      return res.status(403).json({ error: 'Forbidden' })
+    }
 
+    try {
       const user = await AuthService.findUserById(results?.id)
       if (!user) {
         logWarn(req, 'User is not found')
         return res.status(401).json({ error: 'Unauthorized' })
+      }
+
+      if (user.role !== 'USER') {
+        console.log(user.role)
+
+        const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: true, role: user.role })
+        const data = { user, access_token: accessToken, refresh_token: refreshToken }
+
+        logInfo(req, 'Access token is successfully refreshed')
+        res.status(200).json({ message: 'Access token berhasil diperbarui', data })
       }
 
       const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: false, role: user.role })
@@ -298,8 +312,9 @@ export const refreshToken = async (req: Request, res: Response) => {
 
       logInfo(req, 'Access token is successfully refreshed')
       res.status(200).json({ message: 'Access token berhasil diperbarui', data })
-    })
-  } catch (error) {
-    res.status(500).json({ error })
-  }
+    } catch (error) {
+      logError(req, error as string)
+      res.status(500).json({ error })
+    }
+  })
 }

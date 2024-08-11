@@ -56,8 +56,8 @@ export const getUserLoginForums = async (userId: string, page: number, limit: nu
   const [data, count] = await db.$transaction([
     db.forum.findMany({
       where: { user_id: userId },
-      skip: (page - 1) * limit,
-      take: limit,
+      // skip: (page - 1) * limit,
+      // take: limit,
       include: {
         members: {
           include: { user: userSelect }
@@ -87,8 +87,8 @@ export const getForumByMemberId = async (userId: string, page: number, limit: nu
           }
         }
       },
-      skip: (page - 1) * limit,
-      take: limit,
+      // skip: (page - 1) * limit,
+      // take: limit,
       include: {
         members: {
           include: { user: userSelect }
