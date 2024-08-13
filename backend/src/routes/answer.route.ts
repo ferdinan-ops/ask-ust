@@ -1,6 +1,7 @@
 import express from 'express'
 import { createAnswers, getAnswers } from '../controllers/answer.controller'
 import verifyJwt, { verifyAdmin } from '../middlewares/verifyJwt'
+import upload from '../middlewares/multer'
 
 const answerRoute = express.Router()
 

@@ -27,14 +27,14 @@ export default function Video({ isRecordingStarted, onUpload, onChange }: VideoP
               chunksRef.current.push(event.data)
             }
           }
-          mediaRecorderRef.current.onstop = () => {
+          mediaRecorderRef.current.onstop = async () => {
             const blob = new Blob(chunksRef.current, { type: 'video/webm' })
             const url = URL.createObjectURL(blob)
             setMediaBlobUrl(url)
             setIsRecordingActive(false)
             chunksRef.current = []
             onChange(blob)
-            onUpload(blob)
+            // onUpload(blob)
           }
           mediaRecorderRef.current.start()
           setIsRecordingActive(true)

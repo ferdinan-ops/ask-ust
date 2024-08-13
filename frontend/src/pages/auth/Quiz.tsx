@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-semi */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Loading, Video } from '@/components/atoms'
 import { Button } from '@/components/ui/button'
@@ -11,11 +12,11 @@ import { useUserInfo } from '@/store/client'
 import { BannedQuizAlert, QuestionHeader, QuizForm, QuizGuide, QuizTimer } from '@/components/organism'
 import { useCreateAnswers } from '@/store/server/useAnswer'
 import { useNavigate } from 'react-router-dom'
+import { useBannedUser } from '@/store/server/useUser'
+import { toast } from '@/components/ui/use-toast'
+import { uploadVideoToBucket } from '@/lib/services/supabaseClient'
 import { useSendQuizRecord } from '@/store/server/useValidate'
 import useRecord from '@/hooks/useRecord'
-import { useBannedUser } from '@/store/server/useUser'
-import { uploadVideoToBucket } from '@/lib/services/supabaseClient'
-import { toast } from '@/components/ui/use-toast'
 
 export default function Quiz() {
   useTitle('Kuis')
@@ -24,7 +25,7 @@ export default function Quiz() {
 
   const { mutate: bannedUser } = useBannedUser()
   const { data: questions, isSuccess } = useGetQuestionForUser()
-  const { mutateAsync: createAnswers } = useCreateAnswers()
+  const { mutateAsync: createAnswers, isSuccess: successCreate } = useCreateAnswers()
   const { mutateAsync: sendQuizRecord } = useSendQuizRecord()
 
   useDisableShorcut()
@@ -39,9 +40,10 @@ export default function Quiz() {
   const [openGuide, setOpenGuide] = React.useState(true)
   const [isTimerStart, setIsTimerStart] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
+  const [finishUpload, setFinishUpload] = React.useState(false)
 
   const { isFinished } = useTimer(!openGuide && isTimerStart)
-  const { blob, setBlob, isRecordStart, setIsRecordStart } = useRecord()
+  const { blob: recordBlob, setBlob, isRecordStart, setIsRecordStart } = useRecord()
 
   React.useEffect(() => {
     if (user.is_banned && user.banned_type === 'QUIZ') {
@@ -55,31 +57,18 @@ export default function Quiz() {
     if (isFinished) {
       setIsRecordStart(false)
       ;(async () => {
+        await handleUpload(recordBlob as Blob)
         await handleCreateAnswers(forms.getValues())
       })()
     }
   }, [isFinished, forms])
 
-  const handleUpload = async (blob: Blob) => {
-    const file = new File([blob], 'video.mp4', { type: 'video/mp4' })
-    const results = await uploadVideoToBucket(file)
-    await sendQuizRecord({ userId: user.id, url: results as string })
-  }
+  React.useEffect(() => {
+    if (recordBlob) (async () => await handleUpload(recordBlob as Blob))()
+  }, [recordBlob])
 
-  const handleCreateAnswers = React.useCallback(
-    async (values: FieldValues) => {
-      setIsRecordStart(false)
-      setLoading(true)
-
-      const payload = {
-        userId: user.id,
-        validateId: user.validate?.id as string,
-        answers: values.data
-      }
-
-      await createAnswers(payload)
-      await handleUpload(blob as Blob)
-
+  React.useEffect(() => {
+    if (successCreate && finishUpload) {
       setFinishQuiz(true)
       setLoading(false)
       toast({
@@ -87,9 +76,28 @@ export default function Quiz() {
         description: 'Jawaban kamu akan diperiksa dan akunmu akan segera divalidasi'
       })
       navigate('/unverified')
-    },
-    [blob, createAnswers, handleUpload, user.id, setFinishQuiz, setLoading, navigate]
-  )
+    }
+  }, [successCreate, finishUpload])
+
+  const handleUpload = async (blob: Blob) => {
+    setLoading(true)
+    setFinishUpload(false)
+    const file = new File([blob], 'video.mp4', { type: 'video/mp4' })
+    const results = await uploadVideoToBucket(file)
+    await sendQuizRecord({ userId: user.id, url: results as string })
+    setFinishUpload(true)
+  }
+
+  const handleCreateAnswers = async (values: FieldValues) => {
+    setIsRecordStart(false)
+    setLoading(true)
+
+    // buat menunggu selama 10 detik
+    await new Promise((resolve) => setTimeout(resolve, 10000))
+
+    const payload = { userId: user.id, answers: values.data, validateId: user.validate?.id as string }
+    await createAnswers(payload)
+  }
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
     await handleCreateAnswers(values)
@@ -101,6 +109,8 @@ export default function Quiz() {
   }
 
   if (!isSuccess) return <Loading className="min-h-screen" />
+
+  console.log({ blob: recordBlob })
 
   return (
     <main className="relative mx-auto flex min-h-[calc(100vh-80px)] max-w-[1180px] flex-col p-3 md:px-0 md:py-12">

@@ -9,6 +9,7 @@ import { QuestionType } from '@prisma/client'
 import { IAnswerBody } from '../types/answer.type'
 import ENV from '../utils/environment'
 import { logError, logInfo } from '../utils/logger'
+// import { uploadRecordToBucket } from '../middlewares/supabase'
 
 export const createAnswers = async (req: Request, res: Response) => {
   const { value, error } = validAnswers(req.body as IAnswerBody)
@@ -78,6 +79,8 @@ export const createAnswers = async (req: Request, res: Response) => {
     await AnswerService.sendNotificationToAdmin(payload.user_id)
     const correctAnswerCount = await AnswerService.getIsCorrectAnswerCount(payload.user_id)
 
+    console.log({ correctAnswerCount })
+
     let value
     if (correctAnswerCount >= 6) {
       value = { isValid: true, note: '' }
@@ -87,6 +90,10 @@ export const createAnswers = async (req: Request, res: Response) => {
         note: 'Maaf, jawaban kuis yang telah kamu kirimkan sepertinya tidak sesuai dengan harapan kami. Mohon ikuti syarat dan ketentuan yang berlaku dari aplikasi ini ya!'
       }
     }
+
+    // logger.info(req.file.mi)
+    // const urlQuizRecord = await uploadRecordToBucket(req.file as Express.Multer.File)
+    // await ValidateService.uploadQuizRecord(payload.user_id, urlQuizRecord as string)
 
     const validate = await ValidateService.changeValidateStatus(payload.validate_id, value)
     await ValidateService.sendValidateNotification(validate.user.email, validate.is_valid, validate.note as string)

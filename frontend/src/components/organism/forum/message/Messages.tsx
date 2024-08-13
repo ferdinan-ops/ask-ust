@@ -138,7 +138,7 @@ export default function Messages({ forumId }: MessagesProps) {
         </div>
 
         <MediaAction forumId={forumId} />
-        {member?.role === 'ADMIN' && data?.pages.length && data?.pages.length > 5 && (
+        {member?.role === 'ADMIN' && data?.pages?.[0]?.data && data?.pages?.[0]?.data.length > 5 && (
           <Button
             className="mx-auto mt-5 w-fit gap-2 bg-gradient-to-r from-[#08CCAE]/90 to-[#FF456B]/90 py-4 font-semibold text-white hover:from-[#08CCAE] hover:to-[#FF456B]"
             onClick={() => navigate(`/forums/${forumId}/summary`)}

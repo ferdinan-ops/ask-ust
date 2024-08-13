@@ -51,9 +51,9 @@ export default function Camera({ value, onChange }: CameraProps) {
       )}
 
       {isShow && (
-        <div className="fixed inset-0 z-50 bg-black" style={{ margin: 0 }}>
+        <div className="fixed inset-0 z-50 flex bg-black" style={{ margin: 0 }}>
           {value ? (
-            <img src={value} alt="webcam" className="mx-auto h-full" />
+            <img src={value} alt="webcam" className="m-auto max-w-full md:h-full" />
           ) : (
             <Webcam ref={webcamRef} screenshotFormat="image/jpeg" screenshotQuality={0.8} className="h-full w-full" />
           )}

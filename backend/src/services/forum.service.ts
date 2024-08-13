@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/indent */
 import { v4 } from 'uuid'
 import { ForumType, MemberRole } from '@prisma/client'
-import OpenAI from 'openai'
 
 import db from '../utils/db'
 
@@ -13,10 +12,6 @@ import ENV from '../utils/environment'
 import { emailFormat } from '../utils/emailFormat'
 import logger from '../utils/logger'
 import axios from 'axios'
-
-const openai = new OpenAI({
-  apiKey: ENV.openAiUserApiKey as string
-})
 
 export const addNewForum = async (payload: IForum & { userId: string; type: ForumType }) => {
   const { userId, title, description, category, type, image } = payload
@@ -290,48 +285,6 @@ export const sendValidateForumNotif = async (forumId: string) => {
       `
     })
   })
-}
-
-export const fetchSummaryFromGPT = async (forumId: string) => {
-  try {
-    const messages = await db.message.findMany({
-      where: { forum_id: forumId },
-      select: {
-        content: true,
-        member: {
-          select: {
-            user: {
-              select: {
-                fullname: true
-              }
-            }
-          }
-        }
-      }
-    })
-
-    const prompt = `Berikut adalah beberapa komentar dari sebuah diskusi. Buatlah kesimpulan dari diskusi ini.\n\nKomentar:\n${messages
-      .map((message) => `${message.member.user.fullname}: ${message.content}`)
-      .join('\n')}`
-
-    logger.info({ prompt })
-
-    const completion = await openai.chat.completions.create({
-      model: 'text-davinci-003',
-      messages: [
-        {
-          role: 'system',
-          content: prompt
-        }
-      ]
-    })
-
-    logger.info({ completion, api: ENV.openAiUserApiKey })
-
-    return completion.choices[0].message.content
-  } catch (error) {
-    logger.error(error)
-  }
 }
 
 export const fetchSummaryFromGeminiAi = async (forumId: string) => {

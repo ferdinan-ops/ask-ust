@@ -48,12 +48,7 @@ export const fetchCourseAndLecturers = async (page: number, limit: number, searc
   const [data, count] = await db.$transaction([
     db.courseLecture.findMany({
       where: {
-        lecture: {
-          OR: [{ name: { contains: search } }]
-        },
-        course: {
-          OR: [{ name: { contains: search } }]
-        }
+        OR: [{ lecture: { name: { contains: search } } }, { course: { name: { contains: search } } }]
       },
       skip: (page - 1) * limit,
       take: limit,
@@ -64,12 +59,7 @@ export const fetchCourseAndLecturers = async (page: number, limit: number, searc
     }),
     db.courseLecture.count({
       where: {
-        lecture: {
-          OR: [{ name: { contains: search } }]
-        },
-        course: {
-          OR: [{ name: { contains: search } }]
-        }
+        OR: [{ lecture: { name: { contains: search } } }, { course: { name: { contains: search } } }]
       }
     })
   ])

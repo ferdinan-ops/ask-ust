@@ -23,7 +23,10 @@ const ENV = {
   geminiApiKey: process.env.GEMINI_API_KEY,
   supabaseUrl: process.env.SUPABASE_URL,
   supabaseKey: process.env.SUPABASE_ANON_KEY,
-  supabaseBucketName: process.env.SUPABASE_BUCKET_NAME
+  supabaseBucketName: process.env.SUPABASE_BUCKET_NAME,
+  supabaseRecordUrl: process.env.SUPABASE_RECORD_URL,
+  supabaseRecordKey: process.env.SUPABASE_RECORD_ANON_KEY,
+  supabaseRecordBucketName: process.env.SUPABASE_RECORD_BUCKET_NAME
 }
 
 export default ENV

@@ -307,7 +307,6 @@ export const refreshToken = async (req: Request, res: Response) => {
       logInfo(req, 'Access token is successfully refreshed')
       res.status(200).json({ message: 'Access token berhasil diperbarui', data })
     } catch (error) {
-      logError(req, error as string)
       res.status(500).json({ error })
     }
   })

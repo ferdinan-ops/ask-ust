@@ -8,7 +8,6 @@ import { compressedFile } from '../utils/fileSettings'
 import vision from '@google-cloud/vision'
 import path from 'path'
 import axios from 'axios'
-
 import logger from '../utils/logger'
 
 interface IMessagePayload extends IMessageBody {

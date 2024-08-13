@@ -86,12 +86,6 @@ export const useLoginWithGoogle = () => {
         })
       } else {
         useUserInfo.getState().setUser(data.user)
-        toast({
-          title: 'Akun google kamu berhasil terdaftar',
-          description: `Selamat akun kamu berhasil terdaftar di aplikasi kami, ${
-            data.user.validate ? 'Tunggu verifikasi dari admin' : 'silahkan lanjut proses pendaftaranya'
-          }`
-        })
       }
     }
   })

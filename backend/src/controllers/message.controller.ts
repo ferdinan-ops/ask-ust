@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express'
 import { validMessage } from '../validations/message.validation'
 import { type IMessageBody } from '../types/message.type'
-import logger, { logError, logInfo, logWarn } from '../utils/logger'
+import { logError, logInfo, logWarn } from '../utils/logger'
 
 import * as MessageService from '../services/message.service'
 import * as ViolationService from '../services/violation.service'
@@ -212,9 +212,7 @@ export const sendImage = async (req: Request, res: Response) => {
     const forum = await ForumService.getForumById(forumId)
 
     if (forum?.category === 'REGULAR') {
-      logger.info('Checking image')
       const results = await MessageService.analyzeImage(image as string)
-      logger.info({ results })
       const isSecure = results && Object.values(results).every((value) => value === 'VERY_UNLIKELY')
 
       if (!isSecure) {
