@@ -1,5 +1,5 @@
 import { BrainGif } from '@/assets'
-import { BackButton, Title } from '@/components/atoms'
+import { BackButton } from '@/components/atoms'
 import Markdown from '@/components/atoms/Markdown'
 import { formatDate } from '@/lib/utils'
 import { useGetDetailForum, useGetForumConclusion } from '@/store/server/useForum'
