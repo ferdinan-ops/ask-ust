@@ -3,7 +3,7 @@
 import { Loading, Video } from '@/components/atoms'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
-import { useDisableCopy, useDisableShorcut, useTimer, useTitle } from '@/hooks'
+import { useDisableCopy, useTimer, useTitle } from '@/hooks'
 import { useGetQuestionForUser } from '@/store/server/useQuestion'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import * as React from 'react'
@@ -28,7 +28,7 @@ export default function Quiz() {
   const { mutateAsync: createAnswers, isSuccess: successCreate } = useCreateAnswers()
   const { mutateAsync: sendQuizRecord } = useSendQuizRecord()
 
-  useDisableShorcut()
+  // useDisableShorcut()
   const isTryToCopy = useDisableCopy()
   const isTabActive = useTabVisibility()
 
@@ -42,42 +42,8 @@ export default function Quiz() {
   const [loading, setLoading] = React.useState(false)
   const [finishUpload, setFinishUpload] = React.useState(false)
 
-  const { isFinished } = useTimer(!openGuide && isTimerStart)
+  const { isFinished, stopTimer, timeLeft, setIsFinished } = useTimer(!openGuide && isTimerStart)
   const { blob: recordBlob, setBlob, isRecordStart, setIsRecordStart } = useRecord()
-
-  React.useEffect(() => {
-    if (user.is_banned && user.banned_type === 'QUIZ') {
-      setIsTimerStart(false)
-      setIsRecordStart(false)
-      bannedUser(user.id)
-    }
-  }, [user.is_banned, user.banned_type, setIsTimerStart, user.id, bannedUser, setIsRecordStart])
-
-  React.useEffect(() => {
-    if (isFinished) {
-      setIsRecordStart(false)
-      ;(async () => {
-        await handleUpload(recordBlob as Blob)
-        await handleCreateAnswers(forms.getValues())
-      })()
-    }
-  }, [isFinished, forms])
-
-  React.useEffect(() => {
-    if (recordBlob) (async () => await handleUpload(recordBlob as Blob))()
-  }, [recordBlob])
-
-  React.useEffect(() => {
-    if (successCreate && finishUpload) {
-      setFinishQuiz(true)
-      setLoading(false)
-      toast({
-        title: 'Jawaban berhasil dikirim',
-        description: 'Jawaban kamu akan diperiksa dan akunmu akan segera divalidasi'
-      })
-      navigate('/unverified')
-    }
-  }, [successCreate, finishUpload])
 
   const handleUpload = async (blob: Blob) => {
     setLoading(true)
@@ -92,8 +58,8 @@ export default function Quiz() {
     setIsRecordStart(false)
     setLoading(true)
 
-    // buat menunggu selama 10 detik
-    await new Promise((resolve) => setTimeout(resolve, 10000))
+    // buat menunggu selama 5 detik
+    await new Promise((resolve) => setTimeout(resolve, 5000))
 
     const payload = { userId: user.id, answers: values.data, validateId: user.validate?.id as string }
     await createAnswers(payload)
@@ -103,10 +69,40 @@ export default function Quiz() {
     await handleCreateAnswers(values)
   }
 
-  const handleSubmit = async () => {
-    const values = forms.getValues()
-    await handleCreateAnswers(values)
-  }
+  React.useEffect(() => {
+    if (user.is_banned && user.banned_type === 'QUIZ') {
+      setIsRecordStart(false)
+      stopTimer()
+      bannedUser(user.id)
+    }
+  }, [user.is_banned, user.banned_type, user.id])
+
+  React.useEffect(() => {
+    if (isFinished && !user.is_banned) {
+      setIsRecordStart(false)
+      ;(async () => {
+        await handleUpload(recordBlob as Blob)
+        await handleCreateAnswers(forms.getValues())
+      })()
+    }
+  }, [isFinished, forms, recordBlob, user.is_banned])
+
+  React.useEffect(() => {
+    if (recordBlob && !user.is_banned) (async () => await handleUpload(recordBlob as Blob))()
+  }, [recordBlob, user.is_banned])
+
+  React.useEffect(() => {
+    if (successCreate && finishUpload) {
+      sessionStorage.removeItem('hasReloaded')
+      setFinishQuiz(true)
+      setLoading(false)
+      toast({
+        title: 'Jawaban berhasil dikirim',
+        description: 'Jawaban kamu akan diperiksa dan akunmu akan segera divalidasi'
+      })
+      navigate('/unverified')
+    }
+  }, [successCreate, finishUpload])
 
   if (!isSuccess) return <Loading className="min-h-screen" />
 
@@ -115,7 +111,11 @@ export default function Quiz() {
   return (
     <main className="relative mx-auto flex min-h-[calc(100vh-80px)] max-w-[1180px] flex-col p-3 md:px-0 md:py-12">
       <Video isRecordingStarted={isRecordStart} onChange={setBlob} onUpload={handleUpload} />
-      <QuizTimer isStart={!openGuide} actionAfterFinish={handleSubmit} />
+      <QuizTimer
+        isStart={!openGuide}
+        timer={{ timeLeft, isFinished, setIsFinished }}
+        actionAfterFinish={async () => await handleCreateAnswers(forms.getValues)}
+      />
       <QuizGuide
         open={openGuide}
         onOpenChange={setOpenGuide}
@@ -130,6 +130,7 @@ export default function Quiz() {
         isStart={!openGuide}
         bannedConditions={[{ condition: !isTabActive }, { condition: isTryToCopy }]}
         action={() => {
+          sessionStorage.removeItem('hasReloaded')
           setFinishQuiz(true)
           setIsRecordStart(false)
           navigate('/')

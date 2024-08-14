@@ -1,6 +1,5 @@
 import { QuestionType } from '@prisma/client'
 import db from '../utils/db'
-import logger from '../utils/logger'
 
 interface ICorrectAnswer {
   value: string
@@ -42,8 +41,6 @@ export const addNewQuestion = async (payload: IQuestion) => {
 
   const optionsJson = JSON.stringify(options)
   const correctAnswerJson = JSON.stringify(correctAnswer)
-
-  logger.info({ optionsJson, correctAnswerJson })
 
   return await db.question.create({
     data: {

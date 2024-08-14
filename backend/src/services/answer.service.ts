@@ -16,7 +16,10 @@ export const getAnswersByUserId = async (userId: string) => {
 
 export const getIsCorrectAnswerCount = async (userId: string) => {
   return await db.answer.count({
-    where: { user_id: userId, is_correct: true }
+    where: {
+      user_id: userId,
+      is_correct: true
+    }
   })
 }
 

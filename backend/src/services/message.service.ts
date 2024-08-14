@@ -137,8 +137,6 @@ export const analyzeImage = async (image: string) => {
 
     const [safeSearch] = await client.safeSearchDetection({ image: { content: imageBuffer.toString('base64') } })
 
-    logger.info(safeSearch)
-
     return safeSearch.safeSearchAnnotation
   } catch (error) {
     logger.error(error)

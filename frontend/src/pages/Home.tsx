@@ -10,7 +10,7 @@ import Brand from '@/components/atoms/Brand'
 import { Header, Section } from '@/components/organism'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
-import { useGetUserRegisterInfo, useTitle } from '@/hooks'
+import { useGetUserRegisterInfo, useReload, useTitle } from '@/hooks'
 import { HiArrowRight } from 'react-icons/hi2'
 import { Link, useNavigate } from 'react-router-dom'
 import * as React from 'react'
@@ -23,6 +23,8 @@ export default function Home() {
 
   const user = useGetUserRegisterInfo()
   const [registerStep, setRegisterStep] = React.useState<RegisterStepType | ''>('')
+
+  useReload()
 
   React.useEffect(() => {
     if (user && user.role === 'USER') {

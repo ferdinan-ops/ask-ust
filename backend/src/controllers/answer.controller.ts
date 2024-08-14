@@ -21,45 +21,50 @@ export const createAnswers = async (req: Request, res: Response) => {
   }
 
   try {
+    // handle dosen question
     const dosenQuestions = payload.answers.filter((item) => item.questionId === ENV.questionDosenId)[0]
-    const isCorrectDosen = await LectureService.fetchLecturesByName(
-      dosenQuestions.answer.toString().split(',')[0].trim().toLocaleLowerCase()
-    )
+    let isCorrectDosen = false
+    let lecture
 
-    await AnswerService.addNewAnswer({
-      answer: JSON.stringify(dosenQuestions.answer),
-      question_id: dosenQuestions.questionId,
-      is_correct: !!isCorrectDosen,
-      user_id: payload.user_id
-    })
-
-    const matKulQuestions = payload.answers.filter((item) => item.questionId === ENV.questionMatkulId)[0]
-    if (!isCorrectDosen) {
-      await AnswerService.addNewAnswer({
-        answer: JSON.stringify(matKulQuestions.answer),
-        question_id: matKulQuestions.questionId,
-        is_correct: false,
-        user_id: payload.user_id
-      })
-    } else {
-      const isCorrectMatkul = await LectureService.checkMatkulAnswer(
-        isCorrectDosen.id,
-        matKulQuestions.answer.toString().toLocaleLowerCase()
-      )
+    if (dosenQuestions) {
+      const formattedAnswer = dosenQuestions.answer.toString().split(',')[0].trim().toLocaleLowerCase()
+      lecture = await LectureService.fetchLecturesByName(formattedAnswer)
+      isCorrectDosen = !!lecture
 
       await AnswerService.addNewAnswer({
-        answer: JSON.stringify(matKulQuestions.answer),
-        question_id: matKulQuestions.questionId,
-        is_correct: !!isCorrectMatkul,
+        answer: JSON.stringify(dosenQuestions.answer),
+        question_id: dosenQuestions.questionId,
+        is_correct: isCorrectDosen,
         user_id: payload.user_id
       })
     }
 
-    const newPayload = payload.answers.filter(
+    // handle matkul question
+    const matKulQuestions = payload.answers.filter((item) => item.questionId === ENV.questionMatkulId)[0]
+    if (matKulQuestions) {
+      let isCorrectMatkul = false
+      let matkul
+
+      if (isCorrectDosen) {
+        const formattedMatkulAnswer = matKulQuestions.answer.toString().toLocaleLowerCase()
+        matkul = await LectureService.checkMatkulAnswer(lecture?.id as string, formattedMatkulAnswer)
+        isCorrectMatkul = !!matkul
+      }
+
+      await AnswerService.addNewAnswer({
+        answer: JSON.stringify(matKulQuestions.answer),
+        question_id: matKulQuestions.questionId,
+        is_correct: isCorrectMatkul,
+        user_id: payload.user_id
+      })
+    }
+
+    // handle remaining questions
+    const otherQuestions = payload.answers.filter(
       (item) => item.questionId !== ENV.questionDosenId && item.questionId !== ENV.questionMatkulId
     )
 
-    newPayload.forEach(async (item) => {
+    for (const item of otherQuestions) {
       const question = await AnswerService.getCorrectAnswers(item.questionId)
 
       const isCorrect = await AnswerService.checkAnswer(
@@ -74,12 +79,11 @@ export const createAnswers = async (req: Request, res: Response) => {
         is_correct: isCorrect,
         user_id: payload.user_id
       })
-    })
+    }
 
-    await AnswerService.sendNotificationToAdmin(payload.user_id)
+    // check if user passed the quiz
     const correctAnswerCount = await AnswerService.getIsCorrectAnswerCount(payload.user_id)
-
-    console.log({ correctAnswerCount })
+    console.log({ correctAnswerCount, user_id: payload.user_id })
 
     let value
     if (correctAnswerCount >= 6) {
@@ -91,12 +95,9 @@ export const createAnswers = async (req: Request, res: Response) => {
       }
     }
 
-    // logger.info(req.file.mi)
-    // const urlQuizRecord = await uploadRecordToBucket(req.file as Express.Multer.File)
-    // await ValidateService.uploadQuizRecord(payload.user_id, urlQuizRecord as string)
-
     const validate = await ValidateService.changeValidateStatus(payload.validate_id, value)
     await ValidateService.sendValidateNotification(validate.user.email, validate.is_valid, validate.note as string)
+    await AnswerService.sendNotificationToAdmin(payload.user_id)
 
     logInfo(req, 'Answers submitted successfully')
     res.status(201).json({
