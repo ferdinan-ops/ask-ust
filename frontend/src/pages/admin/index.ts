@@ -9,22 +9,6 @@ import Question from './question/Question'
 import CreateQuestion from './question/CreateQuestion'
 import UserAnswer from './question/UserAnswer'
 
-import ValidateForum from './forum/ValidateForum'
-import UpdateForumType from './forum/UpdateForumType'
-
 import Lecture from './Lecture'
 
-export {
-  User,
-  DetailUser,
-  Notification,
-  Settings,
-  Question,
-  CreateQuestion,
-  UserAnswer,
-  Admin,
-  CreateAdmin,
-  Lecture,
-  ValidateForum,
-  UpdateForumType
-}
+export { User, DetailUser, Notification, Settings, Question, CreateQuestion, UserAnswer, Admin, CreateAdmin, Lecture }

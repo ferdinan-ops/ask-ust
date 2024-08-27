@@ -16,7 +16,6 @@ import { BackButton, Dropzone, TextEditor, Title } from '@/components/atoms'
 import { titleConfig } from '@/lib/config'
 import { FileWithPreview } from '@/components/atoms/forms/Dropzone'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { forumCategories } from '@/lib/data'
 import { CategoryForumGuide } from '@/components/organism'
 
 const titleConf = titleConfig.createForum
@@ -54,9 +53,10 @@ export default function CreateForum() {
       const createFields = {
         title: data.title as string,
         description: data.description,
-        category: data.category as string,
+        privacy: data.privacy as string,
         image: data.image
       }
+
       return createForum(createFields, { onSuccess })
     }
 
@@ -75,7 +75,7 @@ export default function CreateForum() {
       <Title heading={id ? titleConf.heading.update : titleConf.heading.create} desc={titleConf.desc} />
 
       <Form {...forms}>
-        <form onSubmit={forms.handleSubmit(onSubmit)} className="mt-6 flex flex-col gap-5 md:mt-8">
+        <form onSubmit={forms.handleSubmit(onSubmit)} className="mt-6 flex flex-col gap-5 md:mt-8 md:gap-7">
           {!id && (
             <React.Fragment>
               <FormField
@@ -93,25 +93,23 @@ export default function CreateForum() {
               />
 
               <FormField
-                name="category"
+                name="privacy"
                 control={forms.control}
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-2 font-semibold dark:text-white">Kategori</FormLabel>
+                  <FormItem className="w-full">
+                    <FormLabel className="flex items-center gap-2 font-semibold dark:text-white">
+                      Tipe Privasi
+                    </FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className="capitalize">
-                          <SelectValue placeholder="Pilih kategori forum" />
+                          <SelectValue placeholder="Pilih tipe privasi forum" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {forumCategories.map((category, index) => (
-                          <SelectItem
-                            key={index}
-                            value={category.value}
-                            className="cursor-pointer font-semibold capitalize"
-                          >
-                            {category.label}
+                        {['PUBLIC', 'PRIVATE'].map((privacy, idx) => (
+                          <SelectItem value={privacy} key={idx} className="cursor-pointer font-semibold capitalize">
+                            {privacy === 'PRIVATE' ? 'Privat' : 'Publik'}
                           </SelectItem>
                         ))}
                       </SelectContent>

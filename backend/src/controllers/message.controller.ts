@@ -5,7 +5,6 @@ import { logError, logInfo, logWarn } from '../utils/logger'
 
 import * as MessageService from '../services/message.service'
 import * as ViolationService from '../services/violation.service'
-import * as ForumService from '../services/forum.service'
 
 import ENV from '../utils/environment'
 import { uploadFileToBucket } from '../middlewares/supabase'
@@ -209,19 +208,15 @@ export const sendImage = async (req: Request, res: Response) => {
     }
 
     const image = await uploadFileToBucket(req.file)
-    const forum = await ForumService.getForumById(forumId)
+    const results = await MessageService.analyzeImage(image as string)
+    const isSecure = results && Object.values(results).every((value) => value === 'VERY_UNLIKELY')
 
-    if (forum?.category === 'REGULAR') {
-      const results = await MessageService.analyzeImage(image as string)
-      const isSecure = results && Object.values(results).every((value) => value === 'VERY_UNLIKELY')
+    if (!isSecure) {
+      const violation = await ViolationService.handleViolations(userId, 'image')
 
-      if (!isSecure) {
-        const violation = await ViolationService.handleViolations(userId, 'image')
-
-        if (!violation.success) {
-          logError(req, violation.error as string)
-          return res.status(400).json({ error: violation.error })
-        }
+      if (!violation.success) {
+        logError(req, violation.error as string)
+        return res.status(400).json({ error: violation.error })
       }
     }
 

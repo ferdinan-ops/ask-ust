@@ -1,22 +1,33 @@
-import { useParams } from 'react-router-dom'
-import { HiHashtag } from 'react-icons/hi2'
+import { useNavigate, useParams } from 'react-router-dom'
+import { HiHashtag, HiOutlineUserPlus } from 'react-icons/hi2'
 
-import { MediaMenu, MemberCard, MemberRole, Messages } from '@/components/organism'
+import { MediaMenu, MemberCard, MemberRole, MemberSettings, Messages, OnBoardingForum } from '@/components/organism'
 import { ContentBox, Loading, SearchMember } from '@/components/atoms'
 
 import { useGetDetailForum } from '@/store/server/useForum'
 import { MemberType } from '@/lib/types/member.type'
-import { useTitle } from '@/hooks'
+import { useGetDevices, useTitle } from '@/hooks'
+import { Button } from '@/components/ui/button'
+import { useGetMemberLogin, useGetMembers } from '@/store/server/useMember'
 
 export default function ContentForum() {
+  const navigate = useNavigate()
   const { slug } = useParams<{ slug: string }>()
-  const { data: forum, isLoading } = useGetDetailForum(slug as string)
+  const { data: forum, isSuccess } = useGetDetailForum(slug as string)
+  const { data: members, isSuccess: successMembers } = useGetMembers(slug as string)
+  const { data: member, isSuccess: successMember } = useGetMemberLogin(slug as string)
+
+  const { isDesktop } = useGetDevices()
+
   useTitle(`Forum - ${forum?.title}`)
 
-  if (isLoading) return <Loading />
+  const navToRequestedMember = () => navigate(`/forums/${slug}/member/requested`)
+
+  if (!isSuccess || !successMembers || !successMember) return <Loading />
 
   return (
     <section className="flex flex-1 flex-col justify-between gap-7 lg:flex-row lg:p-7">
+      {isDesktop && <OnBoardingForum />}
       <ContentBox className="flex flex-1 flex-col overflow-hidden rounded-none border-[#E9E9E9] dark:border-white/10 dark:bg-primary lg:w-9/12 lg:rounded-lg lg:border">
         <ContentBox.Header>
           <article className="flex items-start gap-3">
@@ -32,7 +43,11 @@ export default function ContentForum() {
               </p>
             </div>
           </article>
-          <MediaMenu forumId={slug as string} invitedCode={forum?.invite_code as string} />
+          <MediaMenu
+            forumId={slug as string}
+            invitedCode={forum?.invite_code as string}
+            privacy={forum?.privacy as string}
+          />
         </ContentBox.Header>
         <Messages forumId={slug as string} />
       </ContentBox>
@@ -40,25 +55,45 @@ export default function ContentForum() {
       <ContentBox className="hidden w-3/12 overflow-hidden rounded-lg border border-[#E9E9E9] dark:border-white/10 lg:block">
         <article className="flex flex-col">
           <ContentBox.Header>
-            <h4 className="text-sm font-semibold">{forum?._count.members} Anggota</h4>
-            <div className="flex items-center gap-3">
+            <h4 className="text-sm font-semibold">{members.data.length} Anggota</h4>
+            <div className="flex items-center gap-2">
+              {member?.role === 'ADMIN' && (
+                <Button
+                  size="gray-icon"
+                  variant="gray-icon"
+                  type="button"
+                  onClick={navToRequestedMember}
+                  id="request-member"
+                >
+                  <HiOutlineUserPlus />
+                </Button>
+              )}
               <MemberRole />
               <SearchMember
                 forumId={slug as string}
-                admin={forum?.admin as MemberType}
-                moderators={forum?.moderators as MemberType[]}
+                admin={members?.admin as MemberType}
+                moderators={members?.moderators as MemberType[]}
               />
             </div>
           </ContentBox.Header>
           <ContentBox.Scroll className="gap-4">
-            {forum?.members.map((member, i) => (
-              <MemberCard
-                key={i}
-                member={member}
-                forumId={forum.id}
-                moderators={forum.moderators}
-                admin={forum.admin as MemberType}
-              />
+            {members.data.map((member, i) => (
+              <MemberCard key={i}>
+                <MemberCard.Name
+                  fullname={member.user.fullname}
+                  username={member.user.username}
+                  photo={member.user.photo}
+                >
+                  <MemberCard.Badge role={member.role} />
+                </MemberCard.Name>
+                <MemberSettings
+                  moderators={members.moderators}
+                  admin={members.admin as MemberType}
+                  forumId={slug as string}
+                  memberId={member.id}
+                  memberUserId={member.user_id}
+                />
+              </MemberCard>
             ))}
           </ContentBox.Scroll>
         </article>

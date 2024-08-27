@@ -70,7 +70,7 @@ export default function UploadPhoto({ user, className }: UploadPhotoProps) {
                   closedModal={() => setOpen(false)}
                   setValue={field.onChange}
                   fileValue={field.value as unknown as FileWithPreview[]}
-                  accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'], 'application/pdf': ['.pdf'] }}
+                  accept={{ 'image/jpeg': ['.jpg', '.jpeg'], 'image/png': ['.png'] }}
                 />
               )}
             />

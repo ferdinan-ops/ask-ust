@@ -44,7 +44,7 @@ export default function Question() {
         />
       ))}
 
-      <div className="-mb-5 mt-5 flex items-center justify-between">
+      <div className="-mb-5 mt-5 flex flex-col items-start justify-between gap-3 md:flex-row md:items-center md:gap-0">
         <h4 className="text-xs font-semibold md:text-sm">
           Pertanyaan default <i>(tidak dapat diubah):</i>
         </h4>

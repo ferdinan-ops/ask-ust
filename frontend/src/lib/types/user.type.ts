@@ -1,3 +1,4 @@
+import { MemberType } from './member.type'
 import { MetaType } from './pagination.type'
 
 export type UserType = {
@@ -11,6 +12,7 @@ export type UserType = {
   is_banned: boolean
   banned_type: 'VIOLATION' | 'QUIZ'
   validate?: ValidateUserType
+  members?: MemberType[]
   quiz?: {
     total?: number
     isFinished?: boolean

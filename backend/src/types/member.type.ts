@@ -28,3 +28,8 @@ export interface IUpdateMemberParams {
   userId: string
   role: MemberRole
 }
+
+export interface ICreateMemberPayload {
+  forum_id: string
+  user_id: string
+}

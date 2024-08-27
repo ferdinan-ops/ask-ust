@@ -22,19 +22,22 @@ enum UserRole {
 }
 
 model User {
-  id                String      @id @default(uuid())
-  fullname          String
-  username          String      @unique
-  email             String      @unique
-  password          String      @default("")
-  photo             String      @default("")
-  role              UserRole    @default(USER)
-  is_email_verified Boolean     @default(false)
-  token             String      @unique
-  provider          String      @default("email")
-  is_banned         Boolean     @default(false)
-  banned_until      DateTime?
-  banned_type       BannedType?
+  id       String @id @default(uuid())
+  fullname String
+  username String @unique
+  email    String @unique
+  password String @default("")
+  photo    String @default("")
+
+  token             String  @unique
+  provider          String  @default("email")
+  is_email_verified Boolean @default(false)
+
+  is_banned    Boolean     @default(false)
+  banned_until DateTime?
+  banned_type  BannedType?
+
+  role UserRole @default(USER)
 
   forums     Forum[]
   members    Member[]
@@ -58,28 +61,19 @@ model Validate {
   updated_at      DateTime @updatedAt
 }
 
-enum ForumCategory {
-  REGULAR
-  CULTURE
-  SCIENCE
-  KNOWLEDGE
-}
-
-enum ForumType {
+enum ForumPrivacy {
   PUBLIC
-  PENDING
-  RESTRICTED
+  PRIVATE
 }
 
 model Forum {
-  id          String        @id @default(uuid())
-  title       String        @unique
-  description String        @db.Text
-  invite_code String        @unique
-  image       String?       @default("")
-  category    ForumCategory @default(REGULAR)
-  type        ForumType     @default(PUBLIC)
-  note        String?       @db.Text
+  id          String  @id @default(uuid())
+  title       String  @unique
+  description String  @db.Text
+  invite_code String  @unique
+  image       String? @default("")
+
+  privacy ForumPrivacy @default(PUBLIC)
 
   user_id String
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
@@ -102,8 +96,9 @@ enum MemberRole {
 }
 
 model Member {
-  id   String     @id @default(uuid())
-  role MemberRole @default(GUEST)
+  id          String     @id @default(uuid())
+  role        MemberRole @default(GUEST)
+  is_accepted Boolean    @default(true)
 
   user_id String
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
@@ -192,6 +187,8 @@ model Violation {
   last_violation  DateTime @default(now())
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
 }
 
 enum QuestionType {

@@ -1,8 +1,9 @@
 import Search from './forms/Search'
+import SearchMember from './forms/SearchMember'
+import SearchUser from './forms/SearchUser'
 import Dropzone from './forms/Dropzone'
 import Password from './forms/Password'
 import BgAbsolute from './forms/BgAbsolute'
-import SearchMember from './forms/SearchMember'
 import Camera from './forms/Camera'
 import TextEditor from './forms/TextEditor'
 import Video from './forms/Video'
@@ -45,5 +46,6 @@ export {
   Camera,
   FileBox,
   TextEditor,
-  Video
+  Video,
+  SearchUser
 }

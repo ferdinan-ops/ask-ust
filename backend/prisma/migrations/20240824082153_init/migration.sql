@@ -6,12 +6,13 @@ CREATE TABLE `User` (
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL DEFAULT '',
     `photo` VARCHAR(191) NOT NULL DEFAULT '',
-    `is_email_verified` BOOLEAN NOT NULL DEFAULT false,
     `token` VARCHAR(191) NOT NULL,
     `provider` VARCHAR(191) NOT NULL DEFAULT 'email',
+    `is_email_verified` BOOLEAN NOT NULL DEFAULT false,
     `is_banned` BOOLEAN NOT NULL DEFAULT false,
     `banned_until` DATETIME(3) NULL,
-    `is_admin` BOOLEAN NOT NULL DEFAULT false,
+    `banned_type` ENUM('VIOLATION', 'QUIZ') NULL,
+    `role` ENUM('USER', 'SUPER_ADMIN', 'ADMIN') NOT NULL DEFAULT 'USER',
 
     UNIQUE INDEX `User_username_key`(`username`),
     UNIQUE INDEX `User_email_key`(`email`),
@@ -27,6 +28,7 @@ CREATE TABLE `Validate` (
     `file` VARCHAR(191) NULL,
     `photo` VARCHAR(191) NULL,
     `note` TEXT NULL,
+    `url_quiz_record` VARCHAR(191) NULL,
     `is_valid` BOOLEAN NOT NULL DEFAULT false,
     `is_read` BOOLEAN NOT NULL DEFAULT false,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -42,6 +44,8 @@ CREATE TABLE `Forum` (
     `title` VARCHAR(191) NOT NULL,
     `description` TEXT NOT NULL,
     `invite_code` VARCHAR(191) NOT NULL,
+    `image` VARCHAR(191) NULL DEFAULT '',
+    `privacy` ENUM('PUBLIC', 'PRIVATE') NOT NULL DEFAULT 'PUBLIC',
     `user_id` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
@@ -56,6 +60,7 @@ CREATE TABLE `Forum` (
 CREATE TABLE `Member` (
     `id` VARCHAR(191) NOT NULL,
     `role` ENUM('ADMIN', 'MODERATOR', 'GUEST') NOT NULL DEFAULT 'GUEST',
+    `is_accepted` BOOLEAN NOT NULL DEFAULT true,
     `user_id` VARCHAR(191) NOT NULL,
     `forum_id` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -121,6 +126,7 @@ CREATE TABLE `Violation` (
     `last_violation` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `Violation_user_id_key`(`user_id`),
+    INDEX `Violation_user_id_idx`(`user_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -131,6 +137,8 @@ CREATE TABLE `Question` (
     `type` ENUM('TEXT', 'RADIO', 'CHECKBOX') NOT NULL,
     `options` JSON NOT NULL,
     `correct_answers` JSON NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -143,8 +151,31 @@ CREATE TABLE `Answer` (
     `user_id` VARCHAR(191) NOT NULL,
     `question_id` VARCHAR(191) NOT NULL,
 
-    INDEX `Answer_user_id_idx`(`user_id`),
-    INDEX `Answer_question_id_idx`(`question_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Lecture` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Course` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `CourseLecture` (
+    `id` VARCHAR(191) NOT NULL,
+    `course_id` VARCHAR(191) NOT NULL,
+    `lecture_id` VARCHAR(191) NOT NULL,
+
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -186,3 +217,9 @@ ALTER TABLE `Answer` ADD CONSTRAINT `Answer_user_id_fkey` FOREIGN KEY (`user_id`
 
 -- AddForeignKey
 ALTER TABLE `Answer` ADD CONSTRAINT `Answer_question_id_fkey` FOREIGN KEY (`question_id`) REFERENCES `Question`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CourseLecture` ADD CONSTRAINT `CourseLecture_course_id_fkey` FOREIGN KEY (`course_id`) REFERENCES `Course`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CourseLecture` ADD CONSTRAINT `CourseLecture_lecture_id_fkey` FOREIGN KEY (`lecture_id`) REFERENCES `Lecture`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

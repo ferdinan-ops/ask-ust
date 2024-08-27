@@ -59,11 +59,11 @@ export default function QuizForm({ name, question, formControl }: QuizFormProps)
                     <RadioGroup
                       className="flex flex-col gap-2.5 md:gap-4"
                       onValueChange={(value) => field.onChange({ questionId: question.id, answer: value })}
-                      value={
-                        field.value?.answer
-                          ? question.options.find((option) => option.value === field.value?.answer)?.value
-                          : ''
-                      }
+                      // value={
+                      //   field.value?.answer
+                      //     ? question.options.find((option) => option.value === field.value?.answer)?.value
+                      //     : ''
+                      // }
                     >
                       {question.options.map((answer, index) => (
                         <FormItem className="flex items-center space-x-3 space-y-0" key={index}>

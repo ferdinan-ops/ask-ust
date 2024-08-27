@@ -58,6 +58,11 @@ export default function CardForum({ forums }: CardForumProps) {
                   ))}
                 </div>
                 <div className="flex items-center gap-4 text-black/40 dark:text-white/40">
+                  {forum.privacy === 'PRIVATE' && (
+                    <span className="rounded-full bg-orange-200 px-2 py-1 text-[10px] font-bold text-orange-500">
+                      PRIVAT
+                    </span>
+                  )}
                   <div className="flex items-center gap-1">
                     <HiOutlineUserGroup />
                     <span className="text-xs">{forum._count.members}</span>

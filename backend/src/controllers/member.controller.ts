@@ -2,9 +2,9 @@ import { type Request, type Response } from 'express'
 
 import { logError, logInfo } from '../utils/logger'
 import * as MemberService from '../services/member.service'
-import { validReportMember, validUpdateMember } from '../validations/member.validation'
+import { validCreateMember, validReportMember, validUpdateMember } from '../validations/member.validation'
 
-import { type IReportMemberPayload, type IUpdateMemberPayload } from '../types/member.type'
+import { ICreateMemberPayload, type IReportMemberPayload, type IUpdateMemberPayload } from '../types/member.type'
 import { MemberRole } from '@prisma/client'
 
 export const getMembers = async (req: Request, res: Response) => {
@@ -131,6 +131,50 @@ export const getMemberLogin = async (req: Request, res: Response) => {
 
     logInfo(req, 'Getting member login')
     res.status(200).json({ message: 'Berhasil menampilkan member login', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const getRequestedMembers = async (req: Request, res: Response) => {
+  const { forumId } = req.params
+
+  try {
+    const data = await MemberService.fetchRequestedMembers(forumId)
+
+    logInfo(req, 'Getting requested members')
+    res.status(200).json({ message: 'Berhasil menampilkan member yang belum diterima', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const createMember = async (req: Request, res: Response) => {
+  const { value, error } = validCreateMember(req.body as ICreateMemberPayload)
+  if (error) {
+    logError(req, error)
+    return res.status(400).json({ error: error.details[0].message })
+  }
+
+  try {
+    const data = await MemberService.addNewRequestedMember(value.forum_id, value.user_id)
+    await MemberService.sendUserJoinEmail(value.forum_id, value.user_id)
+
+    logInfo(req, 'Adding member')
+    res.status(200).json({ message: 'Berhasil menambahkan member', data })
+  } catch (error) {
+    res.status(500).json({ error })
+  }
+}
+
+export const updateMemberStatus = async (req: Request, res: Response) => {
+  const { memberId } = req.params
+
+  try {
+    const data = await MemberService.changeMemberStatus(memberId)
+
+    logInfo(req, 'Updating member status')
+    res.status(200).json({ message: 'Berhasil mengubah status member', data })
   } catch (error) {
     res.status(500).json({ error })
   }

@@ -2,6 +2,7 @@ import {
   HiOutlineArrowLeftOnRectangle,
   HiOutlineArrowRightOnRectangle,
   HiOutlineChatBubbleBottomCenterText,
+  HiOutlineEyeSlash,
   HiOutlinePencilSquare,
   HiOutlineUserGroup,
   HiTrash
@@ -14,7 +15,7 @@ import { Button } from '@/components/ui/button'
 
 import { useDeleteForum, useGetDetailForum, useJoinForum, useLeaveForum } from '@/store/server/useForum'
 import { useTitle } from '@/hooks'
-import { Alert, DetailForumSkeleton, UnvalidateForum } from '@/components/organism'
+import { Alert, DetailForumSkeleton } from '@/components/organism'
 import { alertConfig } from '@/lib/config'
 import { useUserInfo } from '@/store/client'
 import { BackButton, Image } from '@/components/atoms'
@@ -57,10 +58,6 @@ export default function DetailForum() {
 
   if (isLoading) return <DetailForumSkeleton />
 
-  if (forum?.type === 'PENDING' || forum?.type === 'RESTRICTED') {
-    return <UnvalidateForum forum={forum} />
-  }
-
   return (
     <section className="mx-auto w-full md:w-10/12 lg:w-8/12">
       <BackButton />
@@ -72,14 +69,20 @@ export default function DetailForum() {
       {forum?.image && <Image src={forum?.image} alt={forum?.title} className="mt-6 max-w-full md:mt-8" />}
 
       <div className="mt-5 flex gap-2 border-b pb-7 dark:border-white/10 md:mt-6">
-        <div className="flex items-center gap-3 rounded-md bg-zinc-200 p-2">
+        <div className="flex items-center gap-3 rounded-md bg-zinc-200 p-2 dark:bg-white/10">
           <HiOutlineUserGroup className="text-lg md:text-xl" />
           <p className="text-xs font-medium md:text-sm">{forum?._count.members} anggota</p>
         </div>
-        <div className="flex items-center gap-3 rounded-md bg-zinc-200 p-2">
+        <div className="flex items-center gap-3 rounded-md bg-zinc-200 p-2 dark:bg-white/10">
           <HiOutlineChatBubbleBottomCenterText className="text-lg md:text-xl" />
           <p className="text-xs font-medium md:text-sm">{forum?._count.messages} pesan</p>
         </div>
+        {forum?.privacy === 'PRIVATE' && (
+          <div className="flex items-center gap-3 rounded-md bg-zinc-200 p-2 dark:bg-white/10">
+            <HiOutlineEyeSlash className="text-lg md:text-xl" />
+            <p className="text-xs font-medium md:text-sm">PRIVAT</p>
+          </div>
+        )}
       </div>
       <h1 className="my-5 text-lg font-semibold">Aksi</h1>
       <div className="flex flex-col gap-4 md:flex-row md:items-center">

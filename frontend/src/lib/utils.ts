@@ -64,19 +64,19 @@ export const removeUuid = (filename: string): string => {
 }
 
 export const getExtension = (filename: string): string => {
-  const lastDotIndex = filename.lastIndexOf('.')
-  const ext = filename.substring(lastDotIndex)
+  const lastDotIndex = filename?.lastIndexOf('.')
+  const ext = filename?.substring(lastDotIndex)
   return ext
 }
 
 export const truncateFilename = (filename: string, maxLength: number): string => {
   const noUuid = removeUuid(filename)
-  const lastDotIndex = noUuid.lastIndexOf('.')
-  const ext = noUuid.substring(lastDotIndex)
-  const nameWithoutExt = noUuid.substring(0, lastDotIndex)
+  const lastDotIndex = noUuid?.lastIndexOf('.')
+  const ext = noUuid?.substring(lastDotIndex)
+  const nameWithoutExt = noUuid?.substring(0, lastDotIndex)
 
   if (nameWithoutExt.length > maxLength) {
-    return nameWithoutExt.substring(0, maxLength - 3) + '_' + ext
+    return nameWithoutExt?.substring(0, maxLength - 3) + '_' + ext
   }
 
   return noUuid

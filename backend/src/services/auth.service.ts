@@ -21,7 +21,7 @@ export const comparePassword = (password: string, hashedPassword: string) => {
 }
 
 export const accessTokenSign = (payload: ITokenPayload) => {
-  return jwt.sign(payload, ENV.accessTokenSecret as string, { expiresIn: '1d' })
+  return jwt.sign(payload, ENV.accessTokenSecret as string)
 }
 
 export const refreshTokenSign = (payload: ITokenPayload) => {

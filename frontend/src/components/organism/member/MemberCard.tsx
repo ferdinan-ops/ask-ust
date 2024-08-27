@@ -1,48 +1,47 @@
 import { Image } from '@/components/atoms'
-import { MemberType } from '@/lib/types/member.type'
-import { HiCheckBadge, HiExclamationCircle } from 'react-icons/hi2'
+// import { MemberType } from '@/lib/types/member.type'
+import { HiCheckBadge } from 'react-icons/hi2'
 import { cn } from '@/lib/utils'
-import { MemberSettings } from '..'
-import { useUserInfo } from '@/store/client'
+// import { MemberSettings } from '..'
+// import { useUserInfo } from '@/store/client'
 
 interface MemberCardProps {
-  member: MemberType
-  forumId: string
-  moderators: MemberType[]
-  admin: MemberType
+  className?: string
+  children: React.ReactNode
+}
+
+export default function MemberCard({ className, children }: MemberCardProps) {
+  return <div className={cn('flex items-center justify-between', className)}>{children}</div>
+}
+
+interface NameProps {
+  fullname: string
+  username?: string
+  photo?: string
+  children?: React.ReactNode
   className?: string
 }
 
-export default function MemberCard({ member, forumId, moderators, admin, className }: MemberCardProps) {
-  const { user } = useUserInfo()
-  const isNotGuest = admin?.user_id === user?.id || moderators?.some((mod) => mod.user_id === user?.id)
-
+function Name({ fullname, username, photo, children, className }: NameProps) {
   return (
-    <div className={cn('flex items-center justify-between', className)}>
-      <div className="flex items-start gap-3">
-        <div className="relative">
-          <Image src={member.user.photo} alt={member.user.fullname} className="h-6 w-6 rounded-lg" />
+    <div className={cn('flex items-start gap-3', className)}>
+      <Image src={photo} alt={fullname} className="h-6 w-6 rounded-lg" />
+      <div className="flex flex-col">
+        <div className="flex items-center gap-1 text-sm font-medium">
+          <span className="truncate-1">{fullname}</span>
+          {children}
         </div>
-        <div className="flex flex-col">
-          <p className="flex items-center gap-1 text-sm font-medium">
-            <span className="truncate-1">{member.user.fullname}</span>
-            {member.role === 'ADMIN' && <HiCheckBadge className="text-blue-500" />}
-            {member.role === 'MODERATOR' && <HiCheckBadge className="text-green-500" />}
-            {isNotGuest && member.reports.length > 0 && (
-              <HiExclamationCircle className="text-red-500 dark:text-red-300" />
-            )}
-          </p>
-          <span className="text-xs font-medium text-zinc-400 dark:text-white/40">@{member.user.username}</span>
-        </div>
+        {username && <span className="text-xs font-medium text-zinc-400 dark:text-white/40">@{username}</span>}
       </div>
-
-      <MemberSettings
-        moderators={moderators}
-        admin={admin as MemberType}
-        forumId={forumId}
-        memberId={member.id}
-        memberUserId={member.user_id}
-      />
     </div>
   )
 }
+
+function Badge({ role }: { role: string }) {
+  if (role === 'ADMIN') return <HiCheckBadge className="text-blue-500" />
+  if (role === 'MODERATOR') return <HiCheckBadge className="text-green-500" />
+  return null
+}
+
+MemberCard.Name = Name
+MemberCard.Badge = Badge

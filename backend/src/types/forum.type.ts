@@ -1,13 +1,8 @@
-import { ForumCategory, ForumType } from '@prisma/client'
+import { ForumPrivacy } from '@prisma/client'
 
 export interface IForum {
   title?: string
-  category?: ForumCategory
   image?: string
+  privacy?: ForumPrivacy
   description: string
-}
-
-export interface IForumTypeUpdatePayload {
-  note: string
-  is_publish: ForumType
 }

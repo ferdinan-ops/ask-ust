@@ -17,10 +17,11 @@ export default function MemberRole() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          size="icon"
-          variant="secondary"
+          size="gray-icon"
+          variant="gray-icon"
+          className="font-medium"
           onClick={() => setOpen(true)}
-          className="h-8 w-8 cursor-pointer rounded-lg bg-black/5 px-2 py-1 text-lg font-semibold text-black/40 hover:bg-black/10 dark:bg-white/10 dark:text-white dark:hover:bg-white/5"
+          id="member-role"
         >
           ?
         </Button>
@@ -36,9 +37,9 @@ export default function MemberRole() {
           <article className="flex flex-col gap-1">
             <div className="flex items-center gap-2">
               <HiCheckBadge className="text-xl text-blue-500" />
-              <p className="text-sm font-semibold text-primary">Owner</p>
+              <p className="text-sm font-semibold text-primary dark:text-white">Owner</p>
             </div>
-            <p className="ml-7 border-b pb-4 text-xs">
+            <p className="ml-7 border-b pb-4 text-xs dark:text-white">
               Owner adalah pemilik forum yang dapat membuat moderator, menghapus forum dan pesan tidak pantas, dan
               memanajemen anggota dan forum.
             </p>
@@ -46,9 +47,9 @@ export default function MemberRole() {
           <article className="flex flex-col gap-1 pt-4">
             <div className="flex items-center gap-2">
               <HiCheckBadge className="text-xl text-green-500" />
-              <p className="text-sm font-semibold text-primary">Moderator</p>
+              <p className="text-sm font-semibold text-primary dark:text-white">Moderator</p>
             </div>
-            <p className="ml-7 border-b pb-4 text-xs">
+            <p className="ml-7 border-b pb-4 text-xs dark:text-white">
               Moderator adalah anggota yang membantu Owner dalam mengatur forum, mengawasi anggota forum, dan menghapus
               pesan tidak pantas.
             </p>
@@ -56,9 +57,9 @@ export default function MemberRole() {
           <article className="flex flex-col gap-1 pb-5 pt-4">
             <div className="flex items-center gap-2">
               <HiCheckBadge className="text-xl text-gray-50" />
-              <p className="text-sm font-semibold text-primary">Guest</p>
+              <p className="text-sm font-semibold text-primary dark:text-white">Guest</p>
             </div>
-            <p className="ml-7 text-xs">
+            <p className="ml-7 text-xs dark:text-white">
               Guest adalah anggota biasa yang dapat mengirim pesan dan berdiskui dengan anggota lainnya, serta
               melaporkan anggota yang bermasalah.
             </p>

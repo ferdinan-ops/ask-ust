@@ -18,7 +18,7 @@ import ImagePreview from './components/atoms/forms/ImagePreview'
 import { Toaster } from './components/ui/toaster'
 
 import { ContentForum, CreateForum, DetailForum, Forums, MediaForum, SummaryForum } from './pages/forum'
-import { ManageMember, Member } from './pages/member'
+import { ManageMember, Member, RequestMember } from './pages/member'
 import { EditProfile, Profile } from './pages/user'
 
 import {
@@ -41,10 +41,8 @@ import {
   Notification,
   Question,
   Settings,
-  UpdateForumType,
   User,
-  UserAnswer,
-  ValidateForum
+  UserAnswer
 } from './pages/admin'
 
 import InviteCode from './pages/InviteCode'
@@ -116,11 +114,6 @@ export default function App() {
                 <Route path=":userId" element={<DetailUser />} />
               </Route>
 
-              <Route path="forum">
-                <Route index element={<ValidateForum />} />
-                <Route path=":forumId" element={<UpdateForumType />} />
-              </Route>
-
               <Route path="all">
                 <Route index element={<Admin />} />
                 <Route path=":userId" element={<CreateAdmin />} />
@@ -149,6 +142,7 @@ export default function App() {
                       <Route path="summary" element={<SummaryForum />} />
                       <Route path="member">
                         <Route index element={<Member />} />
+                        <Route path="requested" element={<RequestMember />} />
                         <Route path=":memberId" element={<ManageMember />} />
                       </Route>
                     </Route>

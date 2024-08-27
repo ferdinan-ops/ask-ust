@@ -24,7 +24,7 @@ async function defaultQuestionSeed() {
   await prisma.question.create({
     data: {
       id: process.env.QUESTION_DOSEN_UUID,
-      text: 'Tuliskan nama dari salah satu dosen yang kamu kenal!',
+      text: 'Tuliskan nama dari salah satu dosen yang kamu kenal! (Contoh: Prof. John Doe, S.Kom., M.Kom)',
       type: 'TEXT',
       options: JSON.stringify([]),
       correct_answers: JSON.stringify([])
@@ -173,7 +173,7 @@ async function questionSeed() {
 }
 
 async function main() {
-  // superAdminSeed()
+  superAdminSeed()
   defaultQuestionSeed()
   questionSeed()
 }

@@ -8,7 +8,7 @@ import * as ValidateService from '../services/validate.service'
 import { QuestionType } from '@prisma/client'
 import { IAnswerBody } from '../types/answer.type'
 import ENV from '../utils/environment'
-import { logError, logInfo } from '../utils/logger'
+import logger, { logError, logInfo } from '../utils/logger'
 // import { uploadRecordToBucket } from '../middlewares/supabase'
 
 export const createAnswers = async (req: Request, res: Response) => {
@@ -22,14 +22,17 @@ export const createAnswers = async (req: Request, res: Response) => {
 
   try {
     // handle dosen question
-    const dosenQuestions = payload.answers.filter((item) => item.questionId === ENV.questionDosenId)[0]
     let isCorrectDosen = false
     let lecture
 
+    const dosenQuestions = payload.answers.filter((item) => item.questionId === ENV.questionDosenId)[0]
+    logger.info({ dosenQuestions })
     if (dosenQuestions) {
       const formattedAnswer = dosenQuestions.answer.toString().split(',')[0].trim().toLocaleLowerCase()
       lecture = await LectureService.fetchLecturesByName(formattedAnswer)
       isCorrectDosen = !!lecture
+
+      logger.info({ isCorrectDosen, formattedAnswer, lecture })
 
       await AnswerService.addNewAnswer({
         answer: JSON.stringify(dosenQuestions.answer),
@@ -49,6 +52,7 @@ export const createAnswers = async (req: Request, res: Response) => {
         const formattedMatkulAnswer = matKulQuestions.answer.toString().toLocaleLowerCase()
         matkul = await LectureService.checkMatkulAnswer(lecture?.id as string, formattedMatkulAnswer)
         isCorrectMatkul = !!matkul
+        logger.info({ isCorrectMatkul, formattedMatkulAnswer, matkul })
       }
 
       await AnswerService.addNewAnswer({

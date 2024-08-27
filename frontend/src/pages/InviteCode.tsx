@@ -56,8 +56,11 @@ export default function InviteCode() {
           <div className="flex flex-col">
             <Title
               heading="Horee!!"
-              desc="Selamat Anda berhasil didaftarkan pada forum. Silahkan tekan tombol di bawah ini untuk melihat forum yang
-            telah Anda ikuti"
+              desc={`Selamat Anda berhasil didaftarkan pada forum. ${
+                results?.privacy === 'PRIVATE'
+                  ? 'Mohon tunggu dulu ya, pemilik forum akan menerima permintaanmu untuk bergabung'
+                  : ''
+              }. Silahkan tekan tombol di bawah ini untuk melihat forum yang telah Anda ikuti`}
               className="mt-1 text-center"
             />
             <p className="my-20 text-center text-8xl">🤩</p>

@@ -51,6 +51,7 @@ export default function Quiz() {
     const file = new File([blob], 'video.mp4', { type: 'video/mp4' })
     const results = await uploadVideoToBucket(file)
     await sendQuizRecord({ userId: user.id, url: results as string })
+    console.log('finish upload record to bucket')
     setFinishUpload(true)
   }
 
@@ -60,9 +61,15 @@ export default function Quiz() {
 
     // buat menunggu selama 5 detik
     await new Promise((resolve) => setTimeout(resolve, 5000))
+    console.log('finish waiting promise')
 
     const payload = { userId: user.id, answers: values.data, validateId: user.validate?.id as string }
-    await createAnswers(payload)
+    await createAnswers(payload, {
+      onError: (error) => {
+        console.log({ error })
+      }
+    })
+    console.log('finish create answers')
   }
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
@@ -106,7 +113,7 @@ export default function Quiz() {
 
   if (!isSuccess) return <Loading className="min-h-screen" />
 
-  console.log({ blob: recordBlob })
+  console.log({ blob: recordBlob, loading })
 
   return (
     <main className="relative mx-auto flex min-h-[calc(100vh-80px)] max-w-[1180px] flex-col p-3 md:px-0 md:py-12">

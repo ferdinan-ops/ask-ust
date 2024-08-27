@@ -2,7 +2,6 @@ import { getExtension, truncateFilename } from '@/lib/utils'
 import { TableButton } from '../ui/table'
 import { BsFileEarmarkPdfFill } from 'react-icons/bs'
 import { HiPhoto } from 'react-icons/hi2'
-import ENV from '@/lib/environment'
 
 interface FileButtonProps {
   filename: string
@@ -12,7 +11,7 @@ interface FileButtonProps {
 
 export default function FileButton({ filename, maxLetters, className }: FileButtonProps) {
   const handleSeeFile = (filename: string) => {
-    window.open(`${ENV.storageUrl}/${filename}`, '_blank')
+    window.open(filename, '_blank')
   }
 
   return (

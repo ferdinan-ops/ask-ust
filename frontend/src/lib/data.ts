@@ -68,7 +68,7 @@ export const MEMBERS = [
 
 export const headerLinks = [
   { to: '/admin/validate', label: 'Daftar Pengguna', icon: HiOutlineUserGroup, type: 'admin' },
-  { to: '/admin/forum', label: 'Daftar Forum', icon: HiOutlineInbox, type: 'admin' },
+  // { to: '/admin/forum', label: 'Daftar Forum', icon: HiOutlineInbox, type: 'admin' },
   { to: '/admin/questions', label: 'Pertanyaan Kuis', icon: HiOutlineBookOpen, type: 'admin' },
   // { to: '/admin/notification', label: 'Notifikasi', icon: HiOutlineBell, type: 'admin' },
   { to: '/admin/settings', label: 'Pengaturan', icon: HiOutlineCog6Tooth, type: 'admin' },

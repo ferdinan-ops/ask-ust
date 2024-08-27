@@ -25,13 +25,8 @@ export default function SearchMember({ forumId, admin, moderators }: SearchMembe
 
   return (
     <React.Fragment>
-      <Button
-        size="icon"
-        variant="secondary"
-        onClick={() => setIsOpen(true)}
-        className="h-8 w-8 cursor-pointer rounded-lg bg-black/5 px-2 py-1 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/5"
-      >
-        <PiMagnifyingGlass className="text-lg text-black/40 dark:text-white" />
+      <Button size="gray-icon" variant="gray-icon" onClick={() => setIsOpen(true)} id="search-member">
+        <PiMagnifyingGlass />
       </Button>
       <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
         <CommandInput

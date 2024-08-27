@@ -1,4 +1,4 @@
-import { getForumByKeywordFn, getMemberByKeywordFn } from '@/api/search.api'
+import { getForumByKeywordFn, getMemberByKeywordFn, getUserByKeywordFn } from '@/api/search.api'
 import { useQuery } from 'react-query'
 
 export const useSearchForums = (keyword: string, enabled: boolean) => {
@@ -8,7 +8,13 @@ export const useSearchForums = (keyword: string, enabled: boolean) => {
 }
 
 export const useSearchMembers = (keyword: string, forumId: string, enabled: boolean) => {
-  return useQuery(['member', keyword], async () => await getMemberByKeywordFn(keyword, forumId), {
+  return useQuery(['members', keyword], async () => await getMemberByKeywordFn(keyword, forumId), {
+    enabled
+  })
+}
+
+export const useSearchUsers = (keyword: string, enabled: boolean) => {
+  return useQuery(['user', keyword], async () => await getUserByKeywordFn(keyword), {
     enabled
   })
 }

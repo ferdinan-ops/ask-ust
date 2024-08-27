@@ -11,8 +11,7 @@ import {
   joinForumFn,
   joinForumWithInviteCodeFn,
   leaveForumFn,
-  updateForumByIdFn,
-  updateForumTypeFn
+  updateForumByIdFn
 } from '@/api/forum.api'
 
 import { handleOnError } from '@/lib/services/handleToast'
@@ -26,6 +25,7 @@ export const useCreateForum = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries('forums')
+      queryClient.invalidateQueries('my-forums')
       toast({
         title: 'Forum berhasil dibuat',
         description: 'Forum anda berhasil dibuat dan dapat dilihat oleh semua orang'
@@ -34,28 +34,13 @@ export const useCreateForum = () => {
   })
 }
 
-export const useGetForums = ({ search, page, filter }: MetaParamsType & { filter?: string }) => {
-  return useQuery(['forums', search, page, filter], async () => await getForumsFn({ page, search, filter }))
+export const useGetForums = ({ search, page }: MetaParamsType) => {
+  return useQuery(['forums', search, page], async () => await getForumsFn({ page, search }))
 }
 
 export const useGetDetailForum = (forumId: string) => {
   return useQuery([`forums`, forumId], async () => await getForumByIdFn(forumId), {
-    enabled: !!forumId,
-    select: (data) => {
-      if (data.members) {
-        return {
-          ...data,
-          moderators: data.members.filter((member) => member.role === 'MODERATOR'),
-          admin: data.members.find((member) => member.role === 'ADMIN')
-        }
-      }
-
-      return {
-        ...data,
-        moderators: [],
-        admin: {}
-      }
-    }
+    enabled: !!forumId
   })
 }
 
@@ -67,6 +52,7 @@ export const useUpdateForum = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(`forums`)
+      queryClient.invalidateQueries(`my-forums`)
       toast({
         title: 'Forum berhasil diupdate',
         description: 'Forum anda berhasil diupdate dan dapat dilihat oleh semua orang'
@@ -83,6 +69,7 @@ export const useDeleteForum = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(`forums`)
+      queryClient.invalidateQueries(`my-forums`)
       toast({
         title: 'Forum berhasil dihapus',
         description: 'Forum anda berhasil dihapus secara permanen dari sistem'
@@ -137,22 +124,6 @@ export const useInviteCodeForum = () => {
       toast({
         title: 'Anda berhasil bergabung',
         description: 'Anda berhasil bergabung dengan forum ini'
-      })
-    }
-  })
-}
-
-export const useUpdateForumType = () => {
-  const queryClient = useQueryClient()
-  return useMutation(updateForumTypeFn, {
-    onError: (error: AxiosError) => {
-      handleOnError(error)
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(`forums`)
-      toast({
-        title: 'Tipe Publikasi Forum berhasil diubah',
-        description: 'Tipe Publikasi Forum berhasil diubah di sistem. Ini akan diberitahukan kepada pemilik forum.'
       })
     }
   })

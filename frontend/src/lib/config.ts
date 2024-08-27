@@ -41,6 +41,10 @@ export const titleConfig = {
     heading: 'Anggota Forum',
     desc: 'Anda dapat melihat seluruh anggota yang tergabung dalam forum ini. Anda juga dapat mencari anggota berdasarkan nama atau username.'
   },
+  requestedMember: {
+    heading: 'Permintaan Bergabung',
+    desc: 'Berikut adalah daftar pengguna yang ingin bergabung dengan forum ini. Anda dapat menerima atau membiarkan permintaan mereka.'
+  },
   createForum: {
     heading: {
       create: 'Buka Forum Baru',

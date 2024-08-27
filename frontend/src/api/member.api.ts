@@ -1,4 +1,10 @@
-import { KickMemberParams, MemberType, ReportMemberParams, UpdateMemberParams } from '@/lib/types/member.type'
+import {
+  CreateMemberType,
+  KickMemberParams,
+  MemberType,
+  ReportMemberParams,
+  UpdateMemberParams
+} from '@/lib/types/member.type'
 import api from './axiosInstance'
 
 export const getMembersFn = async (forumId: string): Promise<MemberType[]> => {
@@ -26,4 +32,17 @@ export const reportMemberFn = async ({ forum_id, member_id, report_category }: R
 export const getMemberLoginFn = async (forumId: string): Promise<MemberType> => {
   const response = await api.get(`/member/forum/${forumId}/detail`)
   return response.data?.data?.members[0]
+}
+
+export const getRequestedMembersFn = async (forumId: string): Promise<MemberType[]> => {
+  const response = await api.get(`/member/forum/${forumId}/requested`)
+  return response.data?.data
+}
+
+export const createMemberFn = async (payload: CreateMemberType) => {
+  return await api.post(`/member`, payload)
+}
+
+export const updateMemberStatusFn = async (memberId: string) => {
+  return await api.put(`/member/${memberId}/status`)
 }

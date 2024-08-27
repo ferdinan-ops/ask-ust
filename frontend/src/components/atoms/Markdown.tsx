@@ -34,4 +34,7 @@ lg:text-[15px] lg:prose-h1:text-[28px]
 lg:prose-h2:text-[22px] lg:prose-h3:text-xl
 lg:prose-h4:text-lg
 lg:prose-h5:text-base
-lg:prose-h6:text-sm`
+lg:prose-h6:text-sm
+dark:text-white 
+dark:prose-strong:text-white
+dark:prose-headings:text-white`

@@ -5,10 +5,10 @@ import Leftbar from './Leftbar'
 import LogoutAlert from './LogoutAlert'
 import Alert from './Alert'
 import FilterButton from './FilterButton'
-import UnvalidateForum from './UnvalidateForum'
 
 import TabForum from './forum/TabForum'
 import NoForum from './forum/NoForum'
+import OnBoardingForum from './forum/OnBoardingForum'
 
 import UploadFile from './modal/UploadFile'
 import UploadPhoto from './modal/UploadPhoto'
@@ -94,6 +94,6 @@ export {
   UploadXlsx,
   FilterButton,
   CategoryForumGuide,
-  UnvalidateForum,
-  ImportDataGuide
+  ImportDataGuide,
+  OnBoardingForum
 }

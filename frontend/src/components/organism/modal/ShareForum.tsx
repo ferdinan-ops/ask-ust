@@ -47,7 +47,7 @@ export default function ShareForum({ inviteCode, children }: ShareForumProps) {
           <p className="mb-2 text-sm font-medium leading-none dark:text-white">Tautan</p>
           <div className="flex h-10 w-full items-center justify-between gap-3 rounded-md border border-zinc-200 bg-white py-2 pl-3 text-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-white">
             <p className="truncate-1">
-              {window.location.origin}/invite-code/${inviteCode}
+              {window.location.origin}/invite-code/{inviteCode}
             </p>
             <Button variant="secondary" size="icon" className="border-none dark:bg-primary" onClick={handleShare}>
               {isCopied ? <HiCheck /> : <MdContentCopy />}

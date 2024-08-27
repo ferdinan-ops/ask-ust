@@ -4,7 +4,7 @@ import * as React from 'react'
 
 import { useDisableBodyScroll, useOutsideClick } from '@/hooks'
 import { ActiveLink, BgAbsolute, Search } from '../atoms'
-import { useGetJoinedForums } from '@/store/server/useUser'
+import { useGetJoinedForums, useGetMyForums } from '@/store/server/useUser'
 import { MAIN_MENU } from '@/lib/data'
 import { cn } from '@/lib/utils'
 import { LogoutAlert } from '.'
@@ -26,6 +26,7 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
 
   const { user } = useUserInfo()
   const { data: joinedForums, isSuccess } = useGetJoinedForums(1)
+  const { data: myForums, isSuccess: isSuccessForum } = useGetMyForums(1)
 
   const handleClose = () => {
     setIsShow(false)
@@ -71,6 +72,24 @@ export default function Leftbar({ isShow, setIsShow }: LeftbarProps) {
               ))}
             </div>
           </div>
+          {isSuccessForum && myForums.data.length !== 0 && (
+            <div className="flex flex-col gap-2">
+              <span className="px-3 py-1 text-xs font-semibold uppercase text-black/40 dark:text-white/40">
+                Forumku
+              </span>
+              <div className="flex flex-col gap-1 text-primary dark:text-white">
+                {myForums.data.map((forum) => (
+                  <ActiveLink
+                    href={`/forums/${forum.id}`}
+                    name={forum.title}
+                    icon={HiHashtag}
+                    key={forum.id}
+                    action={handleClose}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
           {isSuccess && joinedForums.data.length !== 0 && (
             <div className="flex flex-col gap-2">
               <span className="px-3 py-1 text-xs font-semibold uppercase text-black/40 dark:text-white/40">

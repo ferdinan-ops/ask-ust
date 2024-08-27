@@ -1,16 +1,30 @@
 import {
+  createMemberFn,
   getMemberFn,
   getMemberLoginFn,
   getMembersFn,
+  getRequestedMembersFn,
   kickMemberFn,
   reportMemberFn,
+  updateMemberStatusFn,
   updateRoleMemberFn
 } from '@/api/member.api'
 import { toast } from '@/components/ui/use-toast'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 export const useGetMembers = (forumId: string) => {
-  return useQuery('members', () => getMembersFn(forumId))
+  return useQuery('members', () => getMembersFn(forumId), {
+    select: (data) => {
+      const moderators = data.filter((member) => member.role === 'MODERATOR')
+      const admin = data.find((member) => member.role === 'ADMIN')
+
+      return {
+        data,
+        moderators,
+        admin
+      }
+    }
+  })
 }
 
 export const useGetMember = (memberId: string) => {
@@ -58,4 +72,34 @@ export const useReportMember = () => {
 
 export const useGetMemberLogin = (forumId: string) => {
   return useQuery(['member', forumId], () => getMemberLoginFn(forumId))
+}
+
+export const useGetRequestedMembers = (forumId: string) => {
+  return useQuery(['members', forumId, 'requested'], () => getRequestedMembersFn(forumId))
+}
+
+export const useCreateMember = () => {
+  const queryClient = useQueryClient()
+  return useMutation(createMemberFn, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('members')
+      toast({
+        title: 'Anggota berhasil ditambahkan',
+        description: 'Anggota berhasil ditambahkan pada forum ini'
+      })
+    }
+  })
+}
+
+export const useUpdateMemberStatus = () => {
+  const queryClient = useQueryClient()
+  return useMutation(updateMemberStatusFn, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('members')
+      toast({
+        title: 'Pengguna berhasil ditambahkan',
+        description: 'Pengguna tersebut berhasil ditambahkan menjadi anggota pada forum ini'
+      })
+    }
+  })
 }

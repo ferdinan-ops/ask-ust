@@ -36,15 +36,18 @@ api.interceptors.response.use(
       if (error.response.status === 403) {
         originalConfig._retry = true
         const refreshToken = useToken.getState().refreshToken
+        console.log('refreshToken', refreshToken)
 
         try {
           const response = await refreshTokenFn(refreshToken)
+          console.log({ response })
           useToken.getState().storeAccessToken(response.access_token as string)
           useUserInfo.getState().setUser(response.user)
           return api(originalConfig)
         } catch (error) {
           useToken.getState().removeAccessToken()
           useToken.getState().removeRefreshToken()
+          useUserInfo.getState().removeUser()
           window.location.href = '/login'
           toast({
             title: 'Sesi Anda telah berakhir',

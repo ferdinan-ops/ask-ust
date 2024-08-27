@@ -8,7 +8,7 @@ export const addForumFn = async (data: AddForumType): Promise<ForumType> => {
   const formData = new FormData()
   formData.append('title', data.title)
   formData.append('description', data.description)
-  formData.append('category', data.category)
+  formData.append('privacy', data.privacy)
   if (data.image) formData.append('image', data?.image[0])
 
   const response = await api.post('/forum', formData, {
@@ -17,12 +17,8 @@ export const addForumFn = async (data: AddForumType): Promise<ForumType> => {
   return response.data?.data
 }
 
-export const getForumsFn = async ({
-  search,
-  page,
-  filter
-}: MetaParamsType & { filter?: string }): Promise<ForumResponseType> => {
-  const response = await api.get('/forum', { params: { page, q: search, filter } })
+export const getForumsFn = async ({ search, page }: MetaParamsType): Promise<ForumResponseType> => {
+  const response = await api.get('/forum', { params: { page, q: search } })
   return response.data
 }
 
@@ -61,16 +57,6 @@ export const leaveForumFn = async (forumId: string): Promise<ForumType> => {
 export const joinForumWithInviteCodeFn = async (inviteCode: string): Promise<ForumType> => {
   const response = await api.post(`/forum/invite-code`, { invite_code: inviteCode })
   return response.data?.data
-}
-
-interface IUpdateForumType {
-  forumId: string
-  note?: string
-  isPublish: boolean
-}
-
-export const updateForumTypeFn = async ({ forumId, note, isPublish }: IUpdateForumType) => {
-  return await api.put(`/forum/${forumId}/type`, { note, is_publish: isPublish })
 }
 
 export const getForumConclusionFn = async (forumId: string): Promise<string> => {

@@ -1,5 +1,5 @@
 import Joi from 'joi'
-import { type IReportMemberPayload, type IUpdateMemberPayload } from '../types/member.type'
+import { ICreateMemberPayload, type IReportMemberPayload, type IUpdateMemberPayload } from '../types/member.type'
 import { ReportCategory } from '@prisma/client'
 
 export const validUpdateMember = (payload: IUpdateMemberPayload) => {
@@ -20,6 +20,15 @@ export const validReportMember = (payload: IReportMemberPayload) => {
       .required(),
     member_id: Joi.string().required(),
     forum_id: Joi.string().required()
+  })
+
+  return schema.validate(payload)
+}
+
+export const validCreateMember = (payload: ICreateMemberPayload) => {
+  const schema = Joi.object<ICreateMemberPayload>({
+    forum_id: Joi.string().required(),
+    user_id: Joi.string().required()
   })
 
   return schema.validate(payload)

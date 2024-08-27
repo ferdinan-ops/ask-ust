@@ -23,14 +23,28 @@ export default function CategoryForumGuide() {
           <article className="flex flex-col gap-1 pb-4">
             <div className="flex items-center gap-2">
               <HiCheckBadge className="text-xl text-blue-500" />
-              <p className="text-sm font-semibold text-primary dark:text-white">Kategori forum</p>
+              <p className="text-sm font-semibold text-primary dark:text-white">Tipe privasi</p>
             </div>
-            <p className="ml-7 border-b pb-4 text-xs leading-relaxed dark:border-white/20">
-              Terdapat 3 kategori forum yang dapat kamu pilih, yaitu <b>Regular (Biasa)</b>, <b>Budaya</b>, <b>Sains</b>{' '}
-              dan <b>Ilmu pengetahuan</b>. Kategori <b>selain regular</b> akan memerlukan validasi dari admin untuk
-              dapat membuat forum, pastikan kamu telah menyesuaikan kategori forum yang kamu pilih dengan isi forum yang
-              akan kamu buat.
-            </p>
+            <div className="ml-7 border-b pb-4 text-xs leading-relaxed dark:border-white/20">
+              <p>
+                Terdapat 2 jenis tipe privasi yang dapat kamu pilih dalam membuat forum yaitu <b>Publik</b> dan{' '}
+                <b>Privat</b>.
+              </p>
+              <ul className="ml-5 mt-2 list-disc">
+                <li>
+                  Jika kamu memilih tipe <b>Publik</b>, forum yang kamu buat akan dapat diakses oleh semua pengguna.
+                </li>
+                <li>
+                  Jika kamu memilih tipe <b>Privat</b>, forum yang kamu buat hanya dapat diakses oleh pengguna yang kamu
+                  undang.
+                </li>
+              </ul>
+              <p className="mt-3 font-bold">Perhatian:</p>
+              <p>
+                Kamu tidak dapat mengubah tipe privasi dari forum yang telah kamu buat nantinya. Jadi, pastikan tipe
+                privasi yang kamu pilih sesuai dengan forum yang akan kamu buat
+              </p>
+            </div>
           </article>
           <article className="flex flex-col gap-1">
             <div className="flex items-center gap-2">

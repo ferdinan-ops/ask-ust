@@ -16,16 +16,18 @@ export const getMembersByForumId = async ({ forumId, page, limit, search }: IMem
     db.member.findMany({
       where: {
         forum_id: forumId,
+        is_accepted: true,
         OR: optionsSearchMember(search)
       },
-      skip: (page - 1) * limit,
-      take: limit,
+      // skip: (page - 1) * limit,
+      // take: limit,
       include: { user: userSelect, reports: true },
       orderBy: { created_at: 'asc' }
     }),
     db.member.count({
       where: {
         forum_id: forumId,
+        is_accepted: true,
         OR: optionsSearchMember(search)
       }
     })
@@ -36,7 +38,7 @@ export const getMembersByForumId = async ({ forumId, page, limit, search }: IMem
 
 export const getMemberById = async (memberId: string) => {
   return await db.member.findUnique({
-    where: { id: memberId },
+    where: { id: memberId, is_accepted: true },
     include: { user: userSelect }
   })
 }
@@ -79,7 +81,7 @@ export const getMemberByUserIdAndForumId = async (userId: string, forumId: strin
     where: { id: forumId },
     include: {
       members: {
-        where: { user_id: userId }
+        where: { user_id: userId, is_accepted: true }
       }
     }
   })
@@ -176,6 +178,65 @@ export const sendRoleEmailToMember = async (memberId: string, forumId: string, r
         </p>
 
       `
+      })
+    })
+  }
+}
+
+export const fetchRequestedMembers = async (forumId: string) => {
+  return await db.member.findMany({
+    where: {
+      forum_id: forumId,
+      is_accepted: false
+    },
+    include: { user: userSelect }
+  })
+}
+
+export const addNewRequestedMember = async (forumId: string, userId: string) => {
+  return await db.member.create({
+    data: {
+      forum_id: forumId,
+      user_id: userId,
+      is_accepted: true
+    }
+  })
+}
+
+export const changeMemberStatus = async (memberId: string) => {
+  return await db.member.update({
+    where: { id: memberId },
+    data: { is_accepted: true }
+  })
+}
+
+export const sendUserJoinEmail = async (forumId: string, userId: string) => {
+  const forum = await db.forum.findUnique({
+    where: { id: forumId }
+  })
+
+  const user = await db.user.findUnique({
+    where: { id: userId }
+  })
+
+  const userEmail = user?.email
+
+  if (userEmail) {
+    sendMail({
+      from: ENV.aplicationName,
+      to: userEmail,
+      subject: 'Pendaftaran Berhasil',
+      html: emailFormat({
+        children: `
+          <h3>Selamat!!</h3>
+          <p>Hai ${user?.fullname},</p>
+          <p>
+            Kamu telah berhasil bergabung dengan forum <b>${forum?.title}</b>. Ayo segera masuk dan cek ke dalam aplikasi untuk dapat berinteraksi dengan anggota lainnya.
+          </p>
+          <p>
+            Jangan lupa untuk selalu mengikuti peraturan yang berlaku di dalam forum agar tetap kondusif dan nyaman bagi semua anggota yang bergabung.
+          </p>
+        `
       })
     })
   }

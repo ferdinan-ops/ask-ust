@@ -8,9 +8,7 @@ export type ForumType = {
   description: string
   invite_code: string
   image?: string
-  category: string
-  type: 'PUBLIC' | 'PENDING' | 'RESTRICTED'
-  note?: string
+  privacy: string
   user_id: string
   created_at: string
   updated_at: string

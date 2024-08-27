@@ -6,6 +6,7 @@ export type MemberType = {
   role: string
   user_id: string
   forum_id: string
+  is_accepted: boolean
   created_at: string
   updated_at: string
   user: UserType
@@ -27,4 +28,9 @@ export type ReportMemberParams = {
   member_id: string
   forum_id: string
   report_category: string
+}
+
+export type CreateMemberType = {
+  forum_id: string
+  user_id: string
 }

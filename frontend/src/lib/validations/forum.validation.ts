@@ -3,14 +3,14 @@ import * as Yup from 'yup'
 export type ForumInputType = {
   title?: string
   image?: File[]
-  category?: string
+  privacy?: string
   description: string
 }
 
 export const addForumValidation = Yup.object({
   title: Yup.string().required('Judul harus diisi'),
   description: Yup.string().required('Deskripsi harus diisi'),
-  category: Yup.string().required('Kategori harus diisi'),
+  privacy: Yup.string().required('Tipe privasi harus diisi'),
   image: Yup.mixed()
 })
 

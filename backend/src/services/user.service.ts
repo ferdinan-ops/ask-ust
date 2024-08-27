@@ -91,10 +91,16 @@ export const getForumByMemberId = async (userId: string, page: number, limit: nu
       // take: limit,
       include: {
         members: {
-          include: { user: userSelect }
+          include: { user: userSelect },
+          where: { is_accepted: true }
         },
         _count: {
-          select: { messages: true, members: true }
+          select: {
+            messages: true,
+            members: {
+              where: { is_accepted: true }
+            }
+          }
         }
       }
     }),

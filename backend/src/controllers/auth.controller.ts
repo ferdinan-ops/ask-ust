@@ -280,28 +280,27 @@ export const refreshToken = async (req: Request, res: Response) => {
   }
 
   jwt.verify(refreshToken as string, ENV.refreshTokenSecret as string, async (error, decoded) => {
+    if (error) {
+      logError(req, 'Refresh token is invalid/Forbidden')
+      return res.status(403).json({ error: 'Forbidden' })
+    }
+
     const results = decoded as { id?: string }
-    if (error ?? !results?.id) {
+    if (!results.id) {
       logError(req, 'Refresh token is invalid/Forbidden')
       return res.status(403).json({ error: 'Forbidden' })
     }
 
     try {
       const user = await AuthService.findUserById(results?.id)
+      console.log(user)
       if (!user) {
         logWarn(req, 'User is not found')
         return res.status(401).json({ error: 'Unauthorized' })
       }
 
-      if (user.role !== 'USER') {
-        const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: true, role: user.role })
-        const data = { user, access_token: accessToken, refresh_token: refreshToken }
-
-        logInfo(req, 'Access token is successfully refreshed')
-        res.status(200).json({ message: 'Access token berhasil diperbarui', data })
-      }
-
-      const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin: false, role: user.role })
+      const isAdmin = user.role !== 'USER'
+      const accessToken = AuthService.accessTokenSign({ id: user.id, isAdmin, role: user.role })
       const data = { user, access_token: accessToken, refresh_token: refreshToken }
 
       logInfo(req, 'Access token is successfully refreshed')

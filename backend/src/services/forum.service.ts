@@ -1,28 +1,25 @@
 /* eslint-disable @typescript-eslint/member-delimiter-style */
 /* eslint-disable @typescript-eslint/indent */
 import { v4 } from 'uuid'
-import { ForumType, MemberRole } from '@prisma/client'
+import { MemberRole } from '@prisma/client'
 
 import db from '../utils/db'
 
-import { IForumTypeUpdatePayload, type IForum } from '../types/forum.type'
+import { type IForum } from '../types/forum.type'
 import { userSelect, userValidateSelect } from '../utils/service'
-import sendMail from '../middlewares/mailer'
 import ENV from '../utils/environment'
-import { emailFormat } from '../utils/emailFormat'
 import logger from '../utils/logger'
 import axios from 'axios'
 
-export const addNewForum = async (payload: IForum & { userId: string; type: ForumType }) => {
-  const { userId, title, description, category, type, image } = payload
+export const addNewForum = async (payload: IForum & { userId: string }) => {
+  const { userId, title, description, image, privacy } = payload
 
   return await db.forum.create({
     data: {
       user_id: userId,
       title: title as string,
       description,
-      category,
-      type,
+      privacy,
       image: image ?? null,
       invite_code: v4(),
       members: {
@@ -42,29 +39,45 @@ interface IGetParams {
   search: string
 }
 
-export const fetchForumsForAdmin = async ({ page, limit, search, filter }: IGetParams & { filter: ForumType }) => {
+export const getForumsFromDB = async ({ page, limit, search, userId }: IGetParams & { userId: string }) => {
   const [data, count] = await db.$transaction([
     db.forum.findMany({
       where: {
-        OR: [{ title: { contains: search } }, { description: { contains: search } }],
-        ...(filter ? { type: filter } : {})
+        OR: [
+          { privacy: 'PUBLIC' }, // Mendapatkan forum publik
+          // filter by search
+          // { title: { contains: search } },
+          // { description: { contains: search } },
+          {
+            AND: [
+              { privacy: 'PRIVATE' }, // Mendapatkan forum privat
+              {
+                OR: [
+                  { user_id: userId }, // Forum yang dimiliki oleh user
+                  { members: { some: { user_id: userId, is_accepted: true } } } // Forum yang user tersebut sudah menjadi anggota
+                ]
+              }
+            ]
+          }
+        ]
       },
-      skip: (page - 1) * limit,
-      take: limit,
       include: {
         members: {
+          where: {
+            is_accepted: true
+          },
           include: {
             user: userSelect
           },
           orderBy: { created_at: 'asc' }
         },
         _count: {
-          select: { messages: true, members: true, reports: true }
-        },
-        user: {
           select: {
-            ...userSelect.select,
-            validate: userValidateSelect
+            messages: true,
+            members: {
+              where: { is_accepted: true }
+            },
+            reports: true
           }
         }
       },
@@ -72,39 +85,23 @@ export const fetchForumsForAdmin = async ({ page, limit, search, filter }: IGetP
     }),
     db.forum.count({
       where: {
-        OR: [{ title: { contains: search } }, { description: { contains: search } }],
-        ...(filter ? { type: filter } : {})
-      }
-    })
-  ])
-
-  return { data, count }
-}
-
-export const getForumsFromDB = async ({ page, limit, search }: IGetParams) => {
-  const [data, count] = await db.$transaction([
-    db.forum.findMany({
-      where: {
-        OR: [{ title: { contains: search } }, { description: { contains: search } }],
-        type: 'PUBLIC'
-      },
-      include: {
-        members: {
-          include: {
-            user: userSelect
-          },
-          orderBy: { created_at: 'asc' }
-        },
-        _count: {
-          select: { messages: true, members: true, reports: true }
-        }
-      },
-      orderBy: { created_at: 'desc' }
-    }),
-    db.forum.count({
-      where: {
-        OR: [{ title: { contains: search } }, { description: { contains: search } }],
-        type: 'PUBLIC'
+        OR: [
+          { privacy: 'PUBLIC' }, // Mendapatkan forum publik
+          // filter by search
+          { title: { contains: search } },
+          { description: { contains: search } },
+          {
+            AND: [
+              { privacy: 'PRIVATE' }, // Mendapatkan forum privat
+              {
+                OR: [
+                  { user_id: userId }, // Forum yang dimiliki oleh user
+                  { members: { some: { user_id: userId, is_accepted: true } } } // Forum yang user tersebut sudah menjadi anggota
+                ]
+              }
+            ]
+          }
+        ]
       }
     })
   ])
@@ -117,6 +114,9 @@ export const getForumById = async (forumId: string) => {
     where: { id: forumId },
     include: {
       members: {
+        where: {
+          is_accepted: true
+        },
         include: {
           user: userSelect,
           reports: true
@@ -124,7 +124,12 @@ export const getForumById = async (forumId: string) => {
         orderBy: { role: 'asc' }
       },
       _count: {
-        select: { messages: true, members: true }
+        select: {
+          messages: true,
+          members: {
+            where: { is_accepted: true }
+          }
+        }
       },
       user: {
         select: {
@@ -136,38 +141,21 @@ export const getForumById = async (forumId: string) => {
   })
 }
 
-export const getForumByIdForUser = async (forumId: string) => {
-  const forum = await db.forum.findUnique({
-    where: { id: forumId },
-    include: {
-      members: {
-        include: {
-          user: userSelect,
-          reports: true
-        },
-        orderBy: { role: 'asc' }
-      },
-      _count: {
-        select: { messages: true, members: true }
-      }
-    }
-  })
-
-  if (forum?.type === 'PENDING' || forum?.type === 'RESTRICTED') {
-    return { id: forum.id, title: forum.title, category: forum.category, type: forum.type, note: forum.note }
-  }
-
-  return forum
+interface IAddMemberParams {
+  forumId: string
+  userId: string
+  status?: boolean
 }
 
-export const addMemberToForum = async (forumId: string, userId: string) => {
+export const addMemberToForum = async ({ forumId, userId, status }: IAddMemberParams) => {
   return await db.forum.update({
     where: { id: forumId },
     data: {
       members: {
         create: [
           {
-            user_id: userId
+            user_id: userId,
+            is_accepted: status
           }
         ]
       }
@@ -227,63 +215,6 @@ export const isMemberAlreadyJoin = async (forumId: string, userId: string) => {
         }
       }
     }
-  })
-}
-
-export const sendNotifForumToAdmin = async (forumId: string, userId: string) => {
-  const user = await db.user.findUnique({ where: { id: userId } })
-  const forum = await db.forum.findUnique({ where: { id: forumId } })
-
-  const admins = await db.user.findMany({
-    where: {
-      OR: [{ role: 'ADMIN' }, { role: 'SUPER_ADMIN' }]
-    },
-    select: { email: true }
-  })
-
-  admins.forEach((admin) => {
-    sendMail({
-      from: ENV.aplicationName,
-      to: admin.email,
-      subject: 'Validasi Forum Baru',
-      html: emailFormat({
-        btnText: 'Lihat ke aplikasi',
-        btnLink: `${ENV.publicUrl}/admin/forum/${forumId}`,
-        children: `
-        <p>Halo Admin,</p>
-        <p>Forum baru dengan judul <b>${forum?.title}</b> telah dibuat oleh ${user?.fullname} dengan kategori forum <b>${forum?.category}</b>. Silahkan validasi forum tersebut, segera cek aplikasi USTalk untuk melihat.</p>
-        `
-      })
-    })
-  })
-}
-
-export const changeForumTypeFromDB = async (forumId: string, payload: IForumTypeUpdatePayload) => {
-  return await db.forum.update({
-    where: { id: forumId },
-    data: {
-      type: payload.is_publish ? 'PUBLIC' : 'RESTRICTED',
-      note: payload.note
-    }
-  })
-}
-
-export const sendValidateForumNotif = async (forumId: string) => {
-  const forum = await db.forum.findUnique({ where: { id: forumId }, include: { user: true } })
-
-  sendMail({
-    from: ENV.aplicationName,
-    to: forum?.user?.email,
-    subject: `Forum ${forum?.title} ${forum?.type === 'PUBLIC' ? 'diiizinkan' : 'ditolak'}`,
-    html: emailFormat({
-      btnText: 'Lihat ke aplikasi',
-      btnLink: `${ENV.publicUrl}/forum/${forumId}`,
-      children: `
-      <p>Halo ${forum?.user?.fullname},</p>
-      <h1>${forum?.type === 'PUBLIC' ? `Selamat! Forum ${forum.title} diizinkan untuk publik.` : `Maaf, Forum ${forum?.title} tidak diizinkan untuk dipulikasikan`}</h1>
-      <p>${forum?.note === '' ? 'Yey, setelah melihat forum kamu, kami memutuskan untuk mengizinkan forum kamu untuk dipublikasikan. Ayo mulai gunakan forum ini dengan berdiskusi dan berbincang-bincang dengan pengguna lainnya.' : 'forum.note'} </p>
-      `
-    })
   })
 }
 
